@@ -1,0 +1,228 @@
+name,cho_per_100g,protein,fat,calories,fiber,is_vegan,is_vegetarian,is_gluten_free,is_lactose_free,food_clean
+gouda cheese,0.6,7.0,7.7,100,0.0,False,True,True,False,gouda cheese
+apple butter,8.5,0.045,0.063,35,0.3,False,True,True,False,apple butter
+chicken spread,2.3,10.1,9.8,88,0.2,False,False,True,True,chicken spread
+cheese spread,8.4,17.0,68.6,708,0.0,False,True,True,False,cheese spread
+american cheese spread,1.4,2.6,3.4,46,0.0,False,True,True,False,american cheese spread
+kung pao chicken,41.5,59.0,42.2,779,9.1,False,False,True,True,kung pao chicken
+frijoles with cheese,28.7,11.4,7.8,225,0.0,False,True,True,False,frijoles with cheese
+corn on the cob with butter,31.9,4.5,3.4,155,0.0,False,True,True,False,corn on the cob with butter
+ham cheese roll,1.1,3.8,5.2,67,0.0,False,False,False,False,ham cheese roll
+nachos with cheese jalapeno peppers,60.1,16.8,34.1,608,0.0,False,True,True,False,nachos with cheese jalapeno peppers
+mozzarella steak fried,7.7,4.6,5.9,102,0.6,True,True,True,False,mozzarella steak fried
+fried rice,43.4,6.5,3.2,228,1.5,True,True,True,True,fried rice
+cream of chicken soup,18.0,6.0,14.5,227,0.0,False,False,True,False,cream of chicken soup
+mushroom barley soup,29.3,4.6,5.5,186,0.0,True,True,False,True,mushroom barley soup
+bean with frankfurters soup,22.0,10.0,7.0,188,0.0,True,True,True,True,bean with frankfurters soup
+ramen noodle soup dry,53.9,8.9,13.3,371,2.0,True,True,False,True,ramen noodle soup dry
+english muffin mcdonalds,2.9,5.7,2.3,97,0.2,True,True,False,True,english muffin mcdonalds
+onion rings fried,2.8,0.3,1.6,27,0.2,True,True,True,True,onion rings fried
+meat ravioli canned,36.0,8.9,8.9,259,4.2,False,False,True,True,meat ravioli canned
+cheeseburger burger king,31.5,19.4,19.7,380,3.7,True,True,True,True,cheeseburger burger king
+big n tasty with cheese mcdonalds,39.7,27.2,36.0,573,3.2,False,True,True,False,big n tasty with cheese mcdonalds
+big mac mcdonalds,44.0,25.9,32.8,563,3.5,True,True,True,False,big mac mcdonalds
+roast beef sandwich,33.1,22.6,15.3,364,1.9,False,False,True,True,roast beef sandwich
+sandwich with tuna salad,55.4,29.7,28.0,584,0.0,False,False,True,True,sandwich with tuna salad
+sausage pizza,35.5,13.3,14.3,325,2.7,False,False,False,True,sausage pizza
+wolffish cooked,0.0,53.4,7.3,293,0.0,True,True,True,True,wolffish cooked
+roe cooked,0.5,8.1,2.3,58,0.0,True,True,True,True,roe cooked
+salmon cooked,0.0,78.7,44.0,733,0.0,False,False,True,True,salmon cooked
+greenland halibut cooked,0.0,58.6,56.4,760,0.0,True,True,True,True,greenland halibut cooked
+greenland halibut raw,0.0,58.6,56.5,759,0.0,True,True,True,True,greenland halibut raw
+perch cooked,0.0,11.4,0.5,54,0.0,True,True,True,True,perch cooked
+bluefin tuna raw,0.0,6.6,1.4,41,0.0,False,False,True,True,bluefin tuna raw
+caviar,0.6,3.9,2.9,42,0.0,True,True,True,True,caviar
+cod canned,0.0,71.0,2.7,328,0.0,False,False,True,True,cod canned
+clams fried,1.0,1.3,1.0,19,0.0,True,True,True,True,clams fried
+blue mussels cooked,14.8,47.6,9.0,344,0.0,True,True,True,False,blue mussels cooked
+blue mussels raw,5.5,17.9,3.4,129,0.0,True,True,True,False,blue mussels raw
+shrimp imitation,2.6,3.5,0.4,29,0.0,False,False,True,True,shrimp imitation
+squid raw,0.9,4.4,0.4,26,0.0,False,False,True,True,squid raw
+clams canned,9.4,38.8,2.5,227,0.0,True,True,True,True,clams canned
+cisco smoked,0.0,4.6,3.4,50,0.0,True,True,True,True,cisco smoked
+table wine,4.0,0.1,0.0,123,0.0,True,True,True,True,table wine
+petite sirah red wine,3.9,0.1,0.0,125,15.7,True,True,True,True,petite sirah red wine
+sangiovese red wine,3.9,0.1,0.0,126,0.0,True,True,True,True,sangiovese red wine
+sauvignon blanc white wine,3.0,0.1,0.0,119,0.0,True,True,True,True,sauvignon blanc white wine
+agave syrup,5.3,0.025,0.081,21,0.01,True,True,True,True,agave syrup
+baking chocolate,8.7,3.7,15.2,145,4.8,True,True,True,True,baking chocolate
+vanilla frosting,313.7,0.0,75.0,1931,0.0,True,True,True,True,vanilla frosting
+pineapple topping,225.8,0.3,0.3,860,1.4,True,True,True,True,pineapple topping
+almond paste,108.5,20.4,63.0,1040,10.9,True,True,True,True,almond paste
+sesame flour low fat,10.0,14.2,0.5,94,0.0,True,True,False,True,sesame flour low fat
+cornstarch,116.8,0.3,0.03,488,1.2,True,True,True,True,cornstarch
+danish pastry with nuts,29.7,4.6,16.4,280,1.3,True,True,False,True,danish pastry with nuts
+chocolate cream pie,33.3,2.6,19.2,301,2.0,False,True,False,False,chocolate cream pie
+angel food cake,16.2,1.7,0.2,72,0.4,True,True,False,True,angel food cake
+banana cream pie,390.2,52.2,161.3,3190,8.3,False,True,False,False,banana cream pie
+marshmallow,16.3,0.4,0.033,64,0.013,True,True,True,True,marshmallow
+sugar apple,18.2,1.6,0.2,72,3.4,True,True,True,True,sugar apple
+rolo nestle,0.2,0.009,1.0,24,0.0,True,True,True,True,rolo nestle
+vanilla fudge,23.2,0.3,1.5,108,0.0,True,True,True,True,vanilla fudge
+praline,23.2,1.3,10.1,189,1.4,True,True,True,True,praline
+chewing gum,2.9,0.0,0.032,11,0.012,True,True,True,True,chewing gum
+twix mars,18.8,1.4,7.2,146,0.3,True,True,True,True,twix mars
+gum drops,4.4,0.0,0.042,18,0.0,True,True,True,True,gum drops
+amaranth cooked,46.0,9.3,3.9,251,5.2,True,True,True,True,amaranth cooked
+weetabix weetabix,0.0,0.0,11.5,2078,0.0,True,True,True,True,weetabix weetabix
+quinoa dry,38.5,8.5,3.6,221,4.2,True,True,True,True,quinoa dry
+rice crisps,24.1,1.8,0.4,107,0.2,True,True,True,True,rice crisps
+rice pilaf raw,155.7,21.3,2.8,732,2.4,True,True,True,True,rice pilaf raw
+blackberries raw,13.8,2.0,0.7,62,7.6,True,True,True,True,blackberries raw
+peach,14.3,1.4,0.4,59,2.3,True,True,True,True,peach
+abiyuch,40.1,3.4,0.2,157,12.1,True,True,True,True,abiyuch
+fruit walnut salad mcdonalds,43.8,4.8,13.3,312,0.0,True,True,True,True,fruit walnut salad mcdonalds
+grapefruit,13.3,1.0,0.2,53,2.0,True,True,True,True,grapefruit
+chokecherries,51.8,4.7,2.6,249,30.8,True,True,True,True,chokecherries
+wild plum,35.3,0.7,0.3,147,9.7,True,True,True,True,wild plum
+grapes,0.9,0.045,0.044,3,0.087,True,True,True,True,grapes
+peach dried,50.8,3.0,0.6,199,7.0,True,True,True,True,peach dried
+golden raisins,131.2,5.6,0.8,498,6.6,True,True,True,True,golden raisins
+prune plums dried,81.5,2.7,0.5,308,9.4,True,True,True,True,prune plums dried
+lychee dried,1.8,0.01,0.003,7,0.1,True,True,True,True,lychee dried
+jackfruit,8.1,0.6,0.2,33,0.5,True,True,True,True,jackfruit
+passion fruit,4.2,0.4,0.1,17,1.9,True,True,True,True,passion fruit
+pummelo,12.0,1.0,0.06,48,1.3,True,True,True,True,pummelo
+garden cress raw,0.5,0.2,0.062,3,0.063,True,True,True,True,garden cress raw
+coriander seeds,1.0,0.2,0.3,5,0.8,True,True,True,True,coriander seeds
+ginger root,0.4,0.068,0.028,2,0.058,True,True,True,True,ginger root
+eppaw,31.7,4.6,1.8,150,0.0,True,True,True,True,eppaw
+ginger ground,1.3,0.2,0.043,6,0.3,True,True,True,True,ginger ground
+savory ground,1.0,0.074,0.029,4,0.6,True,True,True,True,savory ground
+spearmint fresh,0.5,0.2,0.089,3,0.4,True,True,True,True,spearmint fresh
+peppermint,0.2,0.038,0.004,1,0.1,True,True,True,True,peppermint
+parsley fresh,0.2,0.1,0.078,1,0.1,True,True,True,True,parsley fresh
+oregano dried,68.9,9.0,4.3,265,42.5,True,True,True,True,oregano dried
+chili powder,1.3,0.4,0.4,8,0.9,True,True,True,True,chili powder
+yellow beans cooked,44.7,16.2,1.9,255,18.4,True,True,True,True,yellow beans cooked
+mung beans cooked,38.7,14.2,0.8,212,15.4,True,True,True,True,mung beans cooked
+cowpeas canned,32.7,11.4,1.3,185,7.9,True,True,True,True,cowpeas canned
+lentils cooked,39.9,17.9,0.8,230,15.6,True,True,True,True,lentils cooked
+cowpeas cooked,14.5,5.4,0.4,81,4.6,True,True,True,True,cowpeas cooked
+french beans cooked,42.5,12.5,1.3,228,16.6,True,True,True,True,french beans cooked
+catjang cowpeas cooked,34.7,13.9,1.2,200,6.2,True,True,True,True,catjang cowpeas cooked
+bacon beef steak,0.2,8.2,12.5,146,0.0,False,False,True,True,bacon beef steak
+lamb rib cooked,0.0,53.9,76.0,915,0.0,False,False,True,True,lamb rib cooked
+chicken patty,7.7,8.9,11.7,172,0.2,False,False,True,True,chicken patty
+lamb meat raw,0.0,79.6,84.6,1102,0.0,False,False,True,True,lamb meat raw
+beef top loin filet grilled,0.8,37.0,19.0,323,0.0,False,False,True,True,beef top loin filet grilled
+ground beef raw,0.0,65.1,136.1,1506,0.0,False,False,True,True,ground beef raw
+t bone steak cooked,0.0,89.3,74.1,1049,0.0,True,True,True,True,t bone steak cooked
+beef plate steak grilled,0.0,47.1,35.6,508,0.0,False,False,True,True,beef plate steak grilled
+veal leg round cooked,0.0,98.4,17.2,574,0.0,False,False,True,True,veal leg round cooked
+beef top blade cooked,0.0,21.9,10.0,184,0.0,False,False,True,True,beef top blade cooked
+beef brisket cooked,0.0,46.0,43.6,589,0.0,False,False,True,True,beef brisket cooked
+chuck blade roast cooked,0.0,66.1,62.0,842,0.0,True,True,True,True,chuck blade roast cooked
+turkey ham,0.3,5.5,1.6,38,0.0,False,False,True,True,turkey ham
+ostrich leg raw,0.0,19.0,1.5,94,0.0,True,True,True,True,ostrich leg raw
+beef heart cooked,0.057,8.1,1.3,47,0.0,False,False,True,True,beef heart cooked
+veal thymus cooked,0.0,6.4,0.9,35,0.0,False,False,True,True,veal thymus cooked
+veal kidneys cooked,0.0,48.4,10.4,300,0.0,False,False,True,True,veal kidneys cooked
+turkey giblets cooked,0.0,25.1,6.3,164,0.0,False,False,True,True,turkey giblets cooked
+ham patties,1.1,8.3,18.3,205,0.0,False,False,True,True,ham patties
+boston butt steak cooked,0.0,46.4,32.7,494,0.0,True,True,True,True,boston butt steak cooked
+pork boston steaks cooked,0.0,43.2,28.1,438,0.0,False,False,True,True,pork boston steaks cooked
+pork arm picnic raw,0.0,513.6,343.4,5298,0.0,False,False,True,True,pork arm picnic raw
+salt pork raw,0.0,1.4,22.8,212,0.0,False,False,True,True,salt pork raw
+pork tenderloin cooked,0.0,22.7,6.2,153,0.0,False,False,True,True,pork tenderloin cooked
+chicken skin roasted,0.0,22.8,45.6,508,0.0,False,False,True,True,chicken skin roasted
+chicken back raw,0.0,8.3,17.0,188,0.0,False,False,True,True,chicken back raw
+quail egg,0.08,1.2,1.0,14,0.0,False,True,True,True,quail egg
+goose meat cooked,0.0,35.2,30.7,427,0.0,False,False,True,True,goose meat cooked
+duck meat raw,0.0,145.7,498.8,5123,0.0,False,False,True,True,duck meat raw
+tapioca pudding,23.9,2.1,4.3,143,0.0,True,True,True,False,tapioca pudding
+lemon pudding,30.2,4.1,4.4,173,0.0,True,True,True,False,lemon pudding
+zaziki milfina,0.0,0.0,4.4,51,0.0,True,True,True,True,zaziki milfina
+vanilla yoghurt oikos,0.0,0.0,1.8,120,0.0,True,True,True,True,vanilla yoghurt oikos
+gushers fruit gushers,0.2,0.0,6.0,360,0.0,True,True,True,True,gushers fruit gushers
+glucerna abbott,120.9,0.0,35.6,1010,12.8,True,True,True,True,glucerna abbott
+sports drink,7.2,0.0,0.0,26,0.0,True,True,True,True,sports drink
+malt beverage,19.1,0.5,0.3,88,0.0,True,True,False,True,malt beverage
+chocolate powder for milk,19.9,1.0,0.5,88,1.0,False,True,True,False,chocolate powder for milk
+rice drink,22.0,0.7,2.3,113,0.7,True,True,True,True,rice drink
+coconut water,8.9,1.7,0.5,46,2.6,True,True,True,True,coconut water
+instant coffee with water decaffeinated,0.8,0.2,0.0,4,0.0,True,True,True,True,instant coffee with water decaffeinated
+cranberry apricot juice,39.7,0.5,0.0,157,0.2,True,True,True,True,cranberry apricot juice
+fruit punch,24.4,0.2,0.4,98,0.0,True,True,True,True,fruit punch
+tap water,0.0,0.0,0.0,0,0.0,True,True,True,True,tap water
+pink lemonade,21.6,0.1,0.3,86,0.2,True,True,True,True,pink lemonade
+cola without caffeine coca cola,38.9,0.0,0.0,151,0.0,True,True,True,True,cola without caffeine coca cola
+beechnuts dried,10.1,1.9,15.0,173,0.0,True,True,True,True,beechnuts dried
+sunflower seeds dry roasted,1.9,1.5,4.0,47,0.9,True,True,True,True,sunflower seeds dry roasted
+ginkgo nuts canned,34.3,3.5,2.5,172,14.4,True,True,True,True,ginkgo nuts canned
+cashew nuts raw,8.5,5.2,12.4,156,0.9,True,True,True,True,cashew nuts raw
+lotus seeds dried,20.6,4.9,0.6,106,0.0,True,True,True,True,lotus seeds dried
+sesame seeds toasted,2.1,1.4,3.8,45,1.1,True,True,True,True,sesame seeds toasted
+sardine oil,0.0,0.0,13.6,123,0.0,False,False,True,True,sardine oil
+margarine spread,0.1,0.082,6.7,59,0.0,True,True,True,True,margarine spread
+lard vegetable oil,0.0,0.0,12.8,115,0.0,False,False,True,True,lard vegetable oil
+sheanut oil,0.0,0.0,218.0,1927,0.0,True,True,True,True,sheanut oil
+teaseed oil,0.0,0.0,13.6,120,0.0,True,True,True,True,teaseed oil
+vegetable palm kernel oil,0.0,0.0,13.6,117,0.0,True,True,True,True,vegetable palm kernel oil
+whole wheat spaghetti dry,21.2,4.1,0.4,98,0.0,True,True,False,True,whole wheat spaghetti dry
+spaghetti cooked,71.0,13.3,2.1,363,4.1,True,True,False,True,spaghetti cooked
+blueberry muffin,30.2,2.6,9.2,214,0.6,True,True,False,True,blueberry muffin
+buttermilk waffle,16.0,2.4,3.1,102,0.9,True,True,True,False,buttermilk waffle
+wheat bran bread,17.2,3.2,1.2,89,1.4,True,True,False,True,wheat bran bread
+butter toastbrot ja,2.0,0.0,0.9,66,0.0,False,True,True,False,butter toastbrot ja
+protein bread,8.3,2.3,0.4,47,0.6,True,True,False,True,protein bread
+hotdog roll,21.1,4.1,1.6,117,0.8,True,True,False,True,hotdog roll
+oat bran dinner roll,13.3,3.1,1.5,78,1.4,True,True,False,True,oat bran dinner roll
+biscotti abbracci mulino bianco,0.8,0.4,2.6,54,0.0,True,True,True,True,biscotti abbracci mulino bianco
+oatmeal cookies with raisins,10.3,1.0,2.4,65,0.0,True,True,True,True,oatmeal cookies with raisins
+breadsticks,17.1,3.0,2.4,103,0.8,True,True,True,True,breadsticks
+granola bites,3.3,0.4,0.9,23,0.3,True,True,False,True,granola bites
+cracker meal,93.0,10.7,2.0,440,3.0,True,True,False,True,cracker meal
+filinchen gutena,0.5,0.4,0.2,19,0.0,True,True,True,True,filinchen gutena
+melba toast crackers,23.0,3.6,1.0,117,1.9,True,True,False,True,melba toast crackers
+french fries,2.2,0.2,0.4,13,0.2,True,True,True,True,french fries
+mashed potatoes,35.5,4.0,6.8,215,3.1,True,True,True,True,mashed potatoes
+potato skin raw,4.7,1.0,0.099,22,1.0,True,True,True,True,potato skin raw
+hash brown potato,15.3,1.4,9.0,144,1.4,True,True,True,True,hash brown potato
+adobo fresco,53.6,5.8,60.2,780,3.7,True,True,True,True,adobo fresco
+chili pepper sauce red,0.6,0.1,0.089,3,0.1,True,True,True,True,chili pepper sauce red
+catsup,4.5,0.2,0.066,19,0.053,True,True,True,True,catsup
+pizza sauce,21.8,5.5,2.9,136,5.0,True,True,False,True,pizza sauce
+french dressing reduced fat,4.7,0.072,2.2,37,0.2,True,True,True,True,french dressing reduced fat
+ranch dressing fat free,3.7,0.039,0.3,17,0.088,True,True,True,True,ranch dressing fat free
+sofrito,11.2,26.4,37.5,488,3.5,True,True,True,True,sofrito
+barbecue sauce kraft,6.5,0.1,0.053,28,0.032,True,True,True,True,barbecue sauce kraft
+vinegar,0.089,0.0,0.0,3,0.0,True,True,True,True,vinegar
+pork gravy powder,4.3,0.6,0.6,25,0.2,False,False,True,True,pork gravy powder
+oyster sauce,2.0,0.2,0.066,9,0.024,False,False,True,True,oyster sauce
+salsa sauce,1.2,0.3,0.039,5,0.3,True,True,True,True,salsa sauce
+plum sauce,8.1,0.2,0.2,35,0.1,True,True,True,True,plum sauce
+bacon meatless,9.1,15.4,42.5,446,3.7,False,False,True,True,bacon meatless
+soymilk,8.4,7.1,4.8,109,1.0,True,True,True,True,soymilk
+tofu fried,1.2,2.4,2.6,35,0.5,True,True,True,True,tofu fried
+broccoli raab raw,1.1,1.3,0.2,9,1.1,True,True,True,True,broccoli raab raw
+kelp,0.5,0.07,0.067,2,0.018,True,True,True,True,kelp
+broccoli cooked,20.1,6.7,1.1,98,9.2,True,True,True,True,broccoli cooked
+serrano pepper,0.4,0.1,0.075,2,0.2,True,True,True,True,serrano pepper
+asparagus cooked,0.6,0.4,0.074,3,0.3,True,True,True,True,asparagus cooked
+jerusalem artichokes,26.2,3.0,0.047,110,2.4,True,True,True,True,jerusalem artichokes
+sweet red peppers cooked,4.5,0.7,0.1,19,0.9,True,True,True,True,sweet red peppers cooked
+taro shoots cooked,4.5,1.0,0.1,20,0.0,True,True,True,True,taro shoots cooked
+irishmoss,0.6,0.037,0.049,2,0.082,True,True,True,True,irishmoss
+indian squash cooked,7.6,0.7,0.4,38,3.5,True,True,True,True,indian squash cooked
+sesbania flower cooked,5.3,1.2,0.007,22,0.0,True,True,True,True,sesbania flower cooked
+pumpkin leaves cooked,2.4,1.9,0.2,15,1.9,True,True,True,True,pumpkin leaves cooked
+wakame,7.3,2.4,0.5,36,0.4,True,True,True,True,wakame
+chinese cabbage pak choi cooked,3.0,2.7,0.3,20,1.7,True,True,True,True,chinese cabbage pak choi cooked
+drumstick pods raw,8.5,2.1,0.2,37,3.2,True,True,True,True,drumstick pods raw
+summer squash raw,8.7,3.1,0.5,42,2.9,True,True,True,True,summer squash raw
+beet greens raw,1.6,0.8,0.078,8,1.4,True,True,True,True,beet greens raw
+witloof chicory,2.1,0.5,0.031,9,1.6,True,True,True,True,witloof chicory
+dried tomatoes,1.1,0.3,0.053,5,0.2,True,True,True,True,dried tomatoes
+carrots raw,5.8,0.6,0.1,25,1.7,True,True,True,True,carrots raw
+fennel,17.1,2.9,0.5,73,7.3,True,True,True,True,fennel
+sweet corn white,13.9,2.4,0.9,63,2.0,True,True,True,True,sweet corn white
+celeriac raw,14.4,2.3,0.5,66,2.8,True,True,True,True,celeriac raw
+burdock root cooked,35.1,3.5,0.2,146,3.0,True,True,True,True,burdock root cooked
+chowchow pickles,65.3,3.7,2.2,296,3.7,True,True,True,True,chowchow pickles
+lambs quarters cooked,9.0,5.8,1.3,58,3.8,True,True,True,True,lambs quarters cooked
+kohlrabi cooked,11.0,3.0,0.2,48,1.8,True,True,True,True,kohlrabi cooked
+banana pepper,1.8,0.5,0.1,9,1.1,True,True,True,True,banana pepper
+onion cooked,1.5,0.2,0.034,7,0.2,True,True,True,True,onion cooked
+chanterelle mushrooms,0.4,0.033,0.063,2,0.2,True,True,True,True,chanterelle mushrooms
+oyster mushroom,0.9,0.5,0.035,5,0.3,False,False,True,True,oyster mushroom

@@ -1,0 +1,21 @@
+name,ingredients_json,is_vegan_recipe,is_vegetarian_recipe,is_gluten_free_recipe,is_lactose_free_recipe
+Ricetta 1,"[{""name"": ""Arancia"", ""quantity_g"": 80}, {""name"": ""Pollo"", ""quantity_g"": 45}, {""name"": ""Banana"", ""quantity_g"": 65}]",False,False,True,True
+Ricetta 2,"[{""name"": ""Mela"", ""quantity_g"": 39}, {""name"": ""Farro"", ""quantity_g"": 86}]",True,True,False,True
+Ricetta 3,"[{""name"": ""Latte"", ""quantity_g"": 126}, {""name"": ""Pane"", ""quantity_g"": 33}]",False,True,False,False
+Ricetta 4,"[{""name"": ""Uova"", ""quantity_g"": 71}, {""name"": ""Arancia"", ""quantity_g"": 79}, {""name"": ""Mandorle"", ""quantity_g"": 65}, {""name"": ""Patate"", ""quantity_g"": 69}]",False,True,True,True
+Ricetta 5,"[{""name"": ""Pomodori"", ""quantity_g"": 106}, {""name"": ""Pane"", ""quantity_g"": 98}]",True,True,False,True
+Ricetta 6,"[{""name"": ""Riso"", ""quantity_g"": 80}, {""name"": ""Tofu"", ""quantity_g"": 100}]",True,True,True,True
+Ricetta 7,"[{""name"": ""Pasta"", ""quantity_g"": 90}, {""name"": ""Lenticchie"", ""quantity_g"": 70}]",True,True,False,True
+Ricetta 8,"[{""name"": ""Quinoa"", ""quantity_g"": 85}, {""name"": ""Zucchine"", ""quantity_g"": 65}, {""name"": ""Carote"", ""quantity_g"": 70}]",True,True,True,True
+Ricetta 9,"[{""name"": ""Ceci"", ""quantity_g"": 120}, {""name"": ""Spinaci"", ""quantity_g"": 50}]",True,True,True,True
+Ricetta 10,"[{""name"": ""Manzo"", ""quantity_g"": 100}, {""name"": ""Patate"", ""quantity_g"": 80}]",False,False,True,True
+Ricetta 11,"[{""name"": ""Tacchino"", ""quantity_g"": 90}, {""name"": ""Riso"", ""quantity_g"": 60}, {""name"": ""Mais"", ""quantity_g"": 30}]",False,False,True,True
+Ricetta 12,"[{""name"": ""Tofu"", ""quantity_g"": 80}, {""name"": ""Bulgur"", ""quantity_g"": 100}]",True,True,False,True
+Ricetta 13,"[{""name"": ""Pane"", ""quantity_g"": 70}, {""name"": ""Formaggio"", ""quantity_g"": 50}]",False,True,False,False
+Ricetta 14,"[{""name"": ""Avena"", ""quantity_g"": 60}, {""name"": ""Yogurt"", ""quantity_g"": 70}]",False,True,False,False
+Ricetta 15,"[{""name"": ""Tempeh"", ""quantity_g"": 90}, {""name"": ""Ceci"", ""quantity_g"": 60}]",True,True,True,True
+Ricetta 16,"[{""name"": ""Pane"", ""quantity_g"": 85}, {""name"": ""Uova"", ""quantity_g"": 65}]",False,True,False,True
+Ricetta 17,"[{""name"": ""Couscous"", ""quantity_g"": 80}, {""name"": ""Zucchine"", ""quantity_g"": 50}]",True,True,False,True
+Ricetta 18,"[{""name"": ""Tonno"", ""quantity_g"": 100}, {""name"": ""Peperoni"", ""quantity_g"": 60}]",False,False,True,True
+Ricetta 19,"[{""name"": ""Melanzane"", ""quantity_g"": 50}, {""name"": ""Orzo"", ""quantity_g"": 90}]",True,True,False,True
+Ricetta 20,"[{""name"": ""Piselli"", ""quantity_g"": 70}, {""name"": ""Quinoa"", ""quantity_g"": 80}]",True,True,True,True
