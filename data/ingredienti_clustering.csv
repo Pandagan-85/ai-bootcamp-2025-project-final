@@ -1,0 +1,2396 @@
+name,cho_per_100g,calories_per_100g,protein_per_100g,fat_per_100g,fiber_per_100g,is_vegan,is_vegetarian,is_gluten_free,is_lactose_free,food_group,typical_serving_size_g
+formaggio crema,0.8,51,0.9,5.0,0.0,True,True,True,True,proteine,90
+formaggio neufchatel,3.1,215,7.8,19.4,0.0,True,True,True,True,proteine,90
+requeijao cremoso catupiria leggera,0.9,49,0.8,3.6,0.1,False,True,True,True,carboidrati,100
+ricotta,1.5,30,1.5,2.0,0.0,True,True,True,True,carboidrati,100
+crema di formaggio a basso contenuto di grassi,1.2,30,1.2,2.3,0.0,True,True,True,True,proteine,90
+crema di formaggio senza grassi,1.4,19,2.8,0.2,0.0,True,False,True,True,proteine,90
+formaggio gruyere,0.1,116,8.3,9.1,0.0,True,True,True,True,proteine,90
+formaggio cheddar,0.9,113,6.4,9.3,0.0,True,True,True,True,proteine,90
+Parmigiano,0.6,71,6.4,4.5,0.0,False,False,False,True,dolcificanti,5
+formaggio romano,0.2,19,1.6,1.3,0.0,True,True,True,True,proteine,90
+parmigiano grattugiato,0.7,21,1.4,1.4,0.0,False,False,False,True,dolcificanti,5
+formaggio salut di porto,0.8,465,31.4,37.2,0.0,True,False,True,True,proteine,90
+formaggio svizzero,0.4,98,6.7,7.7,0.0,True,True,True,True,proteine,90
+formaggio di capra duro,0.6,128,8.6,10.1,0.0,True,False,True,True,proteine,90
+formaggio gouda,0.6,100,7.0,7.7,0.0,True,True,True,True,proteine,90
+pepe jack formaggio erba medica,0.0,75,5.0,6.0,2.5,True,False,True,True,proteine,90
+Formaggio a grana grossa,0.9,106,7.1,8.3,0.0,True,True,True,True,proteine,90
+formaggio gjetost,96.8,1058,21.9,67.0,0.0,True,True,True,True,proteine,90
+formaggio tilsit,0.8,136,9.8,10.4,0.0,True,True,True,True,proteine,90
+Formaggio di capra,0.009,103,6.1,8.4,0.0,True,False,True,True,proteine,90
+formaggio mattone,0.8,111,7.0,8.9,0.0,True,True,True,True,proteine,90
+asadero formaggio,3.2,402,25.5,31.9,0.0,True,True,True,True,proteine,90
+formaggio camembert,0.1,90,5.9,7.3,0.0,True,True,True,True,proteine,90
+provolone formaggio ridotto grasso,4.0,310,27.9,19.9,0.0,True,True,True,True,proteine,90
+formaggio roquefort,1.7,314,18.3,26.0,0.0,True,True,True,True,proteine,90
+formaggio queso blanco,3.0,366,24.0,28.7,0.0,True,False,True,True,proteine,90
+questo formaggio seco,2.0,315,23.8,23.6,0.0,True,False,True,True,proteine,90
+formaggio di capra morbido,0.0,75,5.2,6.0,0.0,True,False,True,True,proteine,90
+mozzarella,0.7,90,6.7,6.6,0.0,True,True,True,True,proteine,90
+formaggio chihuahua,7.3,494,28.5,39.2,0.0,True,True,True,True,proteine,90
+Limburger cheese,0.1,98,6.0,8.2,0.0,True,True,True,True,carboidrati,100
+muenster cheese,1.5,486,30.9,39.7,0.0,True,True,True,True,condimenti,10
+formaggio affresco queso,3.6,365,22.1,29.1,0.0,True,False,True,True,proteine,90
+formaggio brie,0.1,100,6.2,8.3,0.0,True,True,True,True,proteine,90
+pimento formaggio,2.4,525,31.0,43.7,0.1,True,False,True,True,proteine,90
+Formaggio messicano,3.8,316,27.7,21.7,0.0,True,False,True,True,proteine,90
+Feta,1.2,80,4.3,6.4,0.0,True,True,True,True,frutta,120
+mozzarella senza grassi,4.0,159,35.8,0.0,2.0,False,False,False,True,proteine,90
+provolone,2.8,463,33.8,35.1,0.0,True,True,True,True,frutta,120
+anejo formaggio,6.1,492,28.3,39.6,0.0,True,True,True,True,proteine,90
+tesoro,17.3,64,0.08,0.0,0.025,False,True,True,False,carboidrati,100
+burro di mele,8.5,35,0.045,0.063,0.3,True,False,False,True,grassi,15
+confettura di frutta,13.8,56,0.0,0.095,0.2,True,False,True,True,frutta,120
+crema di nocciole al cioccolato,11.5,100,1.0,5.5,1.0,True,True,True,True,condimenti,10
+Burro di arachidi,3.6,88,3.3,7.4,0.9,True,False,False,True,grassi,15
+spalmatura di arachidi,2.2,101,3.8,8.5,1.2,False,True,False,True,grassi,15
+Barbaforte/rafano/cren,2.3,88,10.1,9.8,0.2,True,True,True,True,carboidrati,100
+cheese spread,8.4,708,17.0,68.6,0.0,True,True,True,True,condimenti,10
+tahini,3.9,86,2.7,7.2,1.4,True,True,True,True,condimenti,10
+Marmellata d'arancia,13.3,49,0.014,0.0,0.1,False,False,False,True,frutta,120
+spalmatura di formaggio americano,1.4,46,2.6,3.4,0.0,True,True,True,True,proteine,90
+confettura di albicocche,12.9,48,0.1,0.01,0.044,True,True,True,True,dolcificanti,5
+Burro di arachidi ripieno,3.5,94,3.8,8.0,1.3,True,False,True,True,grassi,15
+prosciutto e formaggio spalmabile,0.3,37,2.4,2.8,0.0,True,True,False,True,proteine,90
+pollo e riso in casseruola fatti in casa,2.4,27,2.0,1.0,0.3,True,True,True,True,carboidrati,100
+pagnotta per picnic,1.3,65,4.2,4.7,0.0,True,True,True,True,carboidrati,100
+Tamale di mais,44.3,309,5.8,12.0,5.3,False,False,False,False,dolcificanti,5
+patate al forno con salsa di formaggio pancetta,44.4,451,18.4,25.9,0.0,True,True,True,True,proteine,90
+involtino d'uovo cinese,24.3,223,7.4,10.6,2.3,True,True,True,True,proteine,90
+croissant al burro,26.1,231,4.7,12.0,1.5,True,False,True,True,carboidrati,100
+enchilada con formaggio manzo,30.5,323,11.9,17.6,0.0,True,True,True,True,proteine,90
+hash di manzo cotto con patate,21.9,387,20.6,24.2,2.6,True,True,True,True,proteine,90
+biscotto con pancetta al formaggio uovo,35.4,436,17.4,25.3,0.3,True,True,True,True,carboidrati,100
+bagel con prosciutto uovo formaggio,52.4,483,26.7,18.5,0.4,True,True,True,True,proteine,90
+quesadilla con pollo,43.3,529,27.1,27.5,3.1,True,True,True,False,proteine,90
+riso di mais,25.2,110,1.8,0.3,0.4,False,False,False,False,carboidrati,100
+pollo kung pao,41.5,779,59.0,42.2,9.1,True,True,True,False,proteine,90
+empanada di manzo,27.8,298,10.1,16.3,1.8,True,True,True,False,proteine,90
+Frijoles con formaggio,28.7,225,11.4,7.8,0.0,True,True,True,True,proteine,90
+burrito con carne di manzo,43.9,285,9.1,8.1,4.4,True,True,True,False,proteine,90
+Panino al pollo croccante,33.2,350,14.8,17.6,0.0,True,True,True,True,proteine,90
+enchilada con formaggio,21.2,374,15.4,25.3,2.6,True,False,True,True,proteine,90
+involtino d'uovo di maiale,25.1,189,8.4,6.1,1.8,True,True,False,True,proteine,90
+mais sulla pannocchia con burro,31.9,155,4.5,3.4,0.0,True,False,False,True,grassi,15
+frittelle con sciroppo di burro,45.4,260,4.1,7.0,0.0,True,False,True,True,grassi,15
+burrito con fagioli,35.7,224,7.0,6.7,0.0,True,True,True,True,proteine,90
+Uova strapazzate,1.0,100,6.5,7.6,0.0,False,False,True,False,carboidrati,100
+patate al forno con panna acida,50.0,393,6.7,22.3,0.0,True,False,True,True,grassi,15
+Tacchino e sugo,11.1,161,14.1,6.3,0.0,True,True,False,False,condimenti,10
+involtino d'uovo di pollo,22.8,158,8.4,3.6,1.9,True,True,True,False,proteine,90
+involtino d'uovo vegetale,25.0,153,5.2,3.6,2.2,True,False,True,True,proteine,90
+Rotolo di prosciutto,1.1,67,3.8,5.2,0.0,True,True,False,True,proteine,90
+biscotto con prosciutto,43.8,386,13.4,18.4,0.8,True,True,True,False,carboidrati,100
+pollo al limone,122.0,1440,68.6,74.9,7.0,True,True,True,False,frutta,120
+hummus,49.5,435,12.0,21.1,9.8,True,True,True,True,condimenti,10
+croissant con formaggio all'uovo,24.3,368,12.8,24.7,0.0,True,True,True,True,carboidrati,100
+enchirito con fagioli di manzo di formaggio,33.8,344,17.9,16.1,0.0,True,True,True,True,proteine,90
+Carne di maiale acida dolce,3.3,38,1.2,2.2,0.1,True,True,False,False,proteine,90
+torta di granchio,5.1,160,11.3,10.4,0.2,True,True,True,True,carboidrati,100
+Involtoio per la cena all'uovo,18.2,107,3.3,2.2,1.3,True,False,True,False,proteine,90
+muffin inglese con salsiccia al formaggio d'uovo,28.8,472,22.1,29.9,0.3,True,True,True,True,carboidrati,100
+pancakes al latticello,10.9,86,2.6,3.5,0.0,True,True,True,True,condimenti,10
+omelette,0.4,94,6.4,7.1,0.0,True,True,True,True,condimenti,10
+taco con lattuga al formaggio di pollo,19.3,185,13.0,6.2,1.2,True,True,True,True,verdura,80
+Souffleto di spinaci,8.0,230,10.7,17.6,1.0,True,True,True,True,verdura,80
+muffin inglese con salsiccia al formaggio,27.3,365,14.3,22.3,0.5,True,True,True,True,carboidrati,100
+Gratina di patate,27.6,328,12.4,18.6,4.4,False,False,False,True,grassi,15
+biscotto con uovo,35.4,436,17.4,25.3,0.3,True,False,True,True,carboidrati,100
+patatine fritte fritte,29.4,222,2.4,10.5,2.7,True,True,True,True,frutta,120
+Pollo agrodolce,4.4,46,1.8,2.3,0.2,True,True,True,True,proteine,90
+burrito con fagioli di manzo,47.0,460,27.8,18.0,7.2,True,True,True,False,proteine,90
+nachos con zucchero alla cannella,63.4,592,7.2,36.0,0.0,True,True,True,True,dolcificanti,5
+arroz con grandule,35.4,209,4.0,5.7,1.6,True,True,True,True,frutta,120
+chili con carne,33.1,271,14.7,8.8,8.3,True,True,True,True,proteine,90
+arroz con abichuelas,37.3,223,6.2,5.4,4.1,False,False,True,True,proteine,90
+biscotto con salsiccia,33.3,412,10.7,27.1,0.4,True,True,True,False,carboidrati,100
+stufato vegetariano,17.3,304,42.0,7.4,2.7,False,False,True,False,dolcificanti,5
+panino al pollo con formaggio,41.6,632,29.4,38.8,0.0,True,True,True,True,proteine,90
+biscotto con bistecca all'uovo,21.3,410,17.9,28.4,0.0,True,False,True,True,carboidrati,100
+insalata di taco,17.9,212,10.0,11.2,0.0,False,False,False,False,frutta,120
+succotash,46.8,213,9.7,1.5,0.0,True,True,True,True,frutta,120
+nachos con peperoncino al formaggio,60.1,608,16.8,34.1,0.0,True,False,True,True,proteine,90
+biscotto con prosciutto all'uovo,31.4,442,20.4,27.0,0.8,True,True,True,True,carboidrati,100
+"LadyfingersCity name (optional, probably does not need a translation)",16.9,103,3.0,2.6,0.3,True,True,True,True,carboidrati,100
+mozzarella bistecca fritta,7.7,102,4.6,5.9,0.6,True,True,True,True,proteine,90
+tamale navajo,33.7,285,11.7,11.4,5.8,True,True,True,True,frutta,120
+pancake ai mirtilli,11.0,84,2.3,3.5,0.0,False,True,False,True,grassi,15
+chimichanga con formaggio di manzo,39.3,443,20.1,23.4,0.0,True,True,True,True,proteine,90
+sandwich al formaggio d'uovo,25.9,340,15.6,19.4,0.0,True,False,True,True,proteine,90
+biscotto con pancetta all'uovo,28.6,458,17.0,31.1,0.8,True,True,True,True,carboidrati,100
+pupusas con questo,26.2,300,13.7,15.5,3.4,False,False,False,False,dolcificanti,5
+Croissant di mele,21.1,145,4.2,5.0,1.4,True,True,True,False,carboidrati,100
+fagioli rossi refred,36.0,336,11.7,16.1,11.0,True,True,True,True,proteine,90
+tostada con guacamole,16.0,180,6.2,11.6,0.0,False,False,True,False,dolcificanti,5
+panino al pollo,39.1,468,30.4,20.9,2.6,True,True,True,False,proteine,90
+riso fritto,43.4,228,6.5,3.2,1.5,False,True,True,False,carboidrati,100
+pupusas del cerdo,28.1,283,14.0,12.7,3.2,False,False,True,False,frutta,120
+Torta di tacchino,70.3,699,25.8,34.9,4.4,True,True,True,False,carboidrati,100
+Croissant al formaggio,37.6,331,7.4,16.7,2.1,True,True,True,True,carboidrati,100
+chimichanga con manzo,42.8,425,19.6,19.7,0.0,True,True,True,True,proteine,90
+toast alla francese con burro,18.0,178,5.2,9.4,0.0,True,True,True,True,grassi,15
+sandwich al prosciutto uovo formaggio,30.9,347,19.2,16.3,0.0,True,True,True,True,proteine,90
+muffin inglese con burro,30.4,189,4.9,5.8,0.0,True,True,True,True,carboidrati,100
+pasta salata una cena padella tandaco,5.5,172,0.0,1.2,0.0,False,True,True,False,carboidrati,100
+sandwich al formaggio di prosciutto,33.3,352,20.7,15.5,0.0,True,True,False,True,proteine,90
+Pesce gelfilto dolce,3.1,35,3.8,0.7,0.0,True,True,True,True,proteine,90
+uovo bracconato,0.4,72,6.3,4.7,0.0,True,False,True,True,proteine,90
+tostada con formaggio di manzo,22.8,315,19.0,16.3,0.0,True,True,True,True,proteine,90
+tostada con formaggio di fagioli,26.5,223,9.6,9.9,0.0,True,True,True,True,proteine,90
+Tamale di maiale,22.4,247,10.4,12.8,3.4,True,True,False,False,dolcificanti,5
+Nachos con formaggio,27.9,274,3.5,17.2,2.6,True,True,True,True,proteine,90
+maiale tirato in salsa barbecue,46.7,418,32.8,11.0,3.0,True,True,True,True,condimenti,10
+patate al forno con salsa di formaggio,46.5,474,14.6,28.7,0.0,True,False,True,True,proteine,90
+fagioli al forno,43.3,310,11.1,10.3,11.0,False,False,True,True,proteine,90
+arroz con frijoles,35.6,220,6.8,5.6,5.0,True,True,True,True,frutta,120
+taco con lattuga al formaggio di manzo,13.7,156,6.1,8.8,2.7,True,True,True,True,verdura,80
+burrito con fagioli formaggio manzo,19.8,165,7.3,6.6,0.0,True,True,True,True,proteine,90
+miscela di uova,0.098,30,2.4,2.2,0.0,False,False,True,False,dolcificanti,5
+falafel,5.4,57,2.3,3.0,0.0,True,True,True,True,frutta,120
+insalata di taco con peperoncino con carne,17.7,193,11.6,8.8,0.0,True,True,False,False,proteine,90
+wonton wrappers,18.5,93,3.1,0.5,0.6,True,True,True,True,condimenti,10
+"hushpuppiesCity name (optional, probably does not need a translation)",69.9,512,11.7,20.5,4.3,True,True,True,True,dolcificanti,5
+torta di pollo,57.3,598,14.6,34.6,3.0,True,True,True,False,carboidrati,100
+pollo tsos generale,128.3,1578,69.0,87.5,4.8,True,True,True,False,proteine,90
+burrito con formaggio di fagioli,57.8,379,13.6,11.2,7.8,True,True,True,True,proteine,90
+filetti vegetariani,7.7,247,19.6,15.3,5.2,False,False,False,False,grassi,15
+biscotto con salsiccia all'uovo,34.1,505,18.0,33.6,0.3,True,True,True,True,carboidrati,100
+Chow mein di pollo,50.1,513,40.8,16.9,6.0,True,True,True,True,proteine,90
+burrito di frutta,35.0,231,2.5,9.5,0.0,True,False,True,False,frutta,120
+arroz con leche,63.0,369,8.1,9.3,1.3,False,True,True,True,frutta,120
+caramello crema pasticcera flan,69.7,444,13.9,12.3,0.0,True,True,True,True,carboidrati,100
+dessert di gelatina,38.3,167,3.3,0.0,0.0,True,True,True,True,condimenti,10
+dessert al cioccolato al latte,51.6,229,5.9,1.4,0.0,True,True,True,True,proteine,90
+mousse al cioccolato,24.1,338,6.2,24.0,0.9,True,False,True,True,dolcificanti,5
+dulce de leche,10.5,60,1.3,1.4,0.0,False,True,True,False,frutta,120
+mela croccante,87.0,454,4.9,9.7,3.9,True,True,False,True,frutta,120
+Spaghetti agli spinaci cotti,36.6,182,6.4,0.9,0.0,False,False,True,True,carboidrati,100
+pasta di mais cotta,39.1,176,3.7,1.0,6.7,False,False,True,False,carboidrati,100
+spaghetti con salsa di carne,43.1,255,14.3,2.9,5.1,True,True,True,False,carboidrati,100
+pasta con polpette in salsa di pomodoro,28.3,273,10.6,13.0,6.9,False,False,True,False,carboidrati,100
+tortellini al formaggio,50.8,332,14.6,7.8,2.1,True,True,True,True,proteine,90
+pasta con fragranze affettate in salsa di pomodoro,32.0,227,11.0,6.0,4.0,False,False,True,False,carboidrati,100
+lasagne,18.9,166,9.0,6.1,2.1,True,True,True,True,carboidrati,100
+maccheroni,43.7,310,12.6,9.4,2.3,True,True,True,True,frutta,120
+lasagne vegetali,32.2,316,15.6,13.7,4.3,False,True,True,False,verdura,80
+tagliatelle d'uovo di spinaci cotte,38.8,211,8.1,2.5,3.7,True,False,True,True,verdura,80
+lasagne di formaggio,33.6,316,15.9,13.0,4.1,True,True,True,True,proteine,90
+pasta con sugo di pomodoro,35.1,176,5.6,1.8,2.3,True,True,True,False,carboidrati,100
+pasta di spinaci cotta,7.1,37,1.4,0.3,0.0,False,False,True,False,carboidrati,100
+Zuppa di pollo vegetale,21.1,166,12.3,4.8,1.0,True,True,True,False,proteine,90
+Zuppa di prosciutto di fagioli,33.5,198,10.3,2.5,9.8,True,True,True,True,proteine,90
+crema di zuppa di pollo,18.0,227,6.0,14.5,0.0,True,True,True,True,proteine,90
+zuppa di pomodoro in scatola,22.6,139,6.3,3.3,1.5,False,False,True,False,verdura,80
+Zuppa a goccia d'uovo,10.3,65,2.8,1.5,1.0,True,True,True,False,proteine,90
+brodo di scotch,23.0,197,12.1,6.4,3.0,True,True,True,True,condimenti,10
+crema di zuppa di cipolla,31.7,268,6.7,12.8,1.2,True,True,True,True,verdura,80
+brodo di pollo secco,1.1,10,0.7,0.2,0.0,True,True,True,False,proteine,90
+zuppa di verdure con brodo di manzo,26.3,162,6.0,3.8,3.2,True,True,True,True,proteine,90
+peperoncino con fagioli in scatola,30.5,287,14.6,14.1,11.3,True,True,True,True,proteine,90
+Zuppa di tagliatelle di manzo,17.9,168,9.6,6.2,1.5,True,True,True,False,proteine,90
+consomme secco,1.9,17,2.2,0.2,0.0,True,True,True,True,condimenti,10
+Zuppa di funghi di pollo,15.1,126,2.0,6.1,4.0,True,True,True,False,proteine,90
+Zuppa di verdure di manzo,15.4,120,8.0,2.9,3.0,True,True,True,True,proteine,90
+Zuppa di fagioli neri,39.6,234,12.4,3.4,17.5,False,True,True,True,proteine,90
+Zuppa di piselli spaccata con pancetta di prosciutto,28.6,189,11.6,3.1,4.1,True,True,False,True,proteine,90
+crema di zuppa di funghi,17.1,199,3.4,13.4,1.8,False,True,True,True,frutta,120
+Zuppa di piselli verdi,51.7,320,16.7,5.7,10.0,False,False,True,False,frutta,120
+Zuppa di brodo di pollo,1.9,78,11.1,2.6,0.0,True,True,True,True,proteine,90
+Zuppa di zuppa di funghi di pollo,38.3,431,16.2,23.7,7.5,True,True,True,True,proteine,90
+Zuppa di gnocchi di pollo,14.7,235,13.6,13.4,1.2,True,True,True,True,carboidrati,100
+Zuppa di verdure di pollo,17.0,148,7.1,5.6,1.7,True,True,True,True,proteine,90
+Zuppa di verdure di tacchino,8.6,72,3.1,3.0,0.5,True,True,True,True,verdura,80
+zuppa di wonton,11.7,71,4.6,0.6,0.4,True,True,True,True,frutta,120
+stock di carne bovina,2.9,31,4.7,0.2,0.0,True,True,True,True,proteine,90
+Zuppa d'orzo ai funghi,29.3,186,4.6,5.5,0.0,False,False,True,False,carboidrati,100
+Zuppa di gazpacho,6.6,70,10.7,0.4,0.7,True,True,True,True,frutta,120
+Zuppa di funghi di manzo,15.9,186,14.0,7.3,0.6,True,True,True,False,proteine,90
+Zuppa di riso di pollo,13.0,127,12.3,3.2,1.0,True,True,True,False,carboidrati,100
+Zuppa di peperoni,9.1,100,6.2,4.5,0.5,False,False,False,True,condimenti,10
+Zuppa di verdure,24.6,149,4.3,4.0,1.3,True,True,True,True,verdura,80
+Zuppa di peperoncino,49.6,308,13.4,6.7,6.6,False,False,True,True,condimenti,10
+Zuppa di pollo,16.9,174,12.4,6.5,1.5,True,True,True,False,proteine,90
+fagiolo con zuppa di frankfurters,22.0,188,10.0,7.0,0.0,True,True,True,True,frutta,120
+Zuppa di piselli,25.6,161,8.3,2.8,4.9,False,True,True,True,grassi,15
+Zuppa di tacchino,14.1,135,10.2,4.4,0.0,True,True,True,True,frutta,120
+Zuppa di stockpot,23.1,201,9.8,7.8,0.0,True,True,True,True,frutta,120
+zuppa acida calda,10.1,91,6.0,2.8,1.2,False,False,True,True,frutta,120
+Zuppa di formaggio,28.0,203,2.0,9.7,5.5,True,True,True,True,proteine,90
+crema di zuppa di patate,32.2,186,3.8,4.7,3.3,True,True,True,True,frutta,120
+fagiolo con zuppa di pancetta,16.4,106,5.5,2.1,9.0,True,True,True,True,frutta,120
+stock ittici,0.0,40,5.3,1.9,0.0,True,True,True,True,grassi,15
+Zuppa di piselli spaccata con prosciutto,56.2,381,20.7,8.9,4.6,True,True,False,True,proteine,90
+Zuppa di brodo di manzo,0.01,17,2.7,0.5,0.0,True,True,True,True,proteine,90
+zuppa di lenticchie con prosciutto,20.2,139,9.3,2.8,0.0,True,True,False,True,proteine,90
+Zuppa di pomodoro,22.5,98,2.2,0.7,1.6,False,False,True,False,verdura,80
+brodo di pesce,1.0,39,4.9,1.5,0.0,True,True,True,True,proteine,90
+peperoncino senza fagioli in scatola,14.6,283,18.1,17.0,0.0,False,False,True,False,proteine,90
+Zuppa di minestrone,22.6,167,8.6,5.0,2.0,True,True,True,True,carboidrati,100
+Zuppa di zuppa di zuppa di vongole,24.5,154,4.4,4.4,3.0,True,True,True,True,frutta,120
+Zuppa di pomodori,9.9,54,1.9,0.8,0.7,False,False,True,True,dolcificanti,5
+crema di riso colpo di stato,28.1,127,2.2,0.2,0.2,True,True,True,True,carboidrati,100
+crema di zuppa di sedano,17.7,181,3.3,11.2,1.5,True,False,True,True,verdura,80
+sugo di pollo,12.9,188,4.6,13.6,1.0,True,True,True,False,proteine,90
+Zuppa di riso al pomodoro,44.1,240,4.2,5.5,3.4,False,False,True,False,carboidrati,100
+Zuppa di manzo vegetale,9.6,128,18.1,2.0,4.4,True,True,True,True,proteine,90
+Zuppa di tagliatelle di manzo di pomodoro,42.3,281,8.9,8.6,3.0,True,True,True,True,verdura,80
+Zuppa di stufato di ostriche,8.2,118,4.2,7.7,0.0,False,True,True,True,frutta,120
+minestra di ramen asciutta,53.9,371,8.9,13.3,2.0,False,True,False,True,carboidrati,100
+Zuppa di tagliatelle di pollo,18.4,145,7.2,4.7,2.7,True,True,True,False,proteine,90
+Bouillon di pollo secco,0.7,11,0.7,0.6,0.0,True,True,True,False,proteine,90
+crema di zuppa di asparagi,21.5,174,4.6,8.2,1.0,True,True,True,True,condimenti,10
+Zuppa di tagliatelle di tacchino,17.3,139,7.8,4.0,1.5,True,True,True,True,dolcificanti,5
+crema di zuppa di gamberetti,16.5,181,5.6,10.4,0.5,True,True,True,True,frutta,120
+fagiolo con zuppa di maiale,44.1,335,15.3,11.5,15.3,True,True,False,False,frutta,120
+brodo di pollo,1.0,12,1.0,0.5,0.0,True,True,True,True,proteine,90
+Brodo di manzo in polvere,0.6,8,0.6,0.3,0.0,True,True,True,True,proteine,90
+Zuppa di piselli spaccata,29.9,180,9.7,2.3,4.8,False,True,True,False,dolcificanti,5
+zuppa di scarola,4.0,61,3.4,4.0,0.0,False,False,True,True,frutta,120
+brodo di pollo,8.5,86,6.0,2.9,0.0,True,True,True,True,proteine,90
+zuppa di pomodoro biscotto,47.7,248,4.5,5.0,2.1,False,False,True,True,carboidrati,100
+Zuppa di pinne di squalo,8.2,99,6.9,4.3,0.0,True,False,True,True,frutta,120
+Zuppa di cipolle,16.4,113,7.5,3.5,1.7,True,False,True,True,frutta,120
+Zuppa di pollo gumbo,16.8,113,5.3,2.9,4.0,True,True,True,False,proteine,90
+Zuppa di granchio,12.5,95,10.4,0.8,2.4,True,True,True,True,frutta,120
+zuppa di trippa,8.1,148,17.2,5.2,0.0,False,True,True,False,frutta,120
+piccolo pranzo india,2.0,164,0.0,10.6,0.0,True,True,True,True,carboidrati,100
+originale pollo sandwich pulcino fil a,0.0,125,0.0,5.1,0.0,True,True,True,False,proteine,90
+Salsiccia mcmuffin mcdonalds,28.2,383,14.6,24.2,1.6,True,True,True,True,carboidrati,100
+salsiccia mcgriddles mcdonalds,42.2,421,11.4,24.0,1.4,True,True,True,True,proteine,90
+pollo croccante drumstick kentucky pollo fritto,0.0,70,10.6,3.0,0.0,True,True,True,True,proteine,90
+pollo croccante drumsticks Kentucky pollo fritto,4.5,156,11.8,10.1,0.0,True,True,True,True,proteine,90
+pollo fritto kentucky biscotto,22.1,185,3.8,9.1,0.8,True,True,True,True,carboidrati,100
+muffin mcdonalds inglese,2.9,97,5.7,2.3,0.2,True,True,True,True,carboidrati,100
+patatine fritte mcdonalds,49.8,378,4.0,18.1,4.6,True,True,True,True,frutta,120
+"hotdogCity name (optional, probably does not need a translation)",28.5,383,16.4,23.0,0.0,True,True,True,True,condimenti,10
+patatine fritte hamburger re,28.6,207,2.4,9.2,2.1,True,True,True,True,frutta,120
+taco originale con lattuga di manzo taco campana,13.7,158,6.1,8.8,2.7,True,True,True,False,verdura,80
+hotdog con peperoncino,31.3,296,13.5,13.4,0.0,True,True,True,True,condimenti,10
+pollo croccante ali Kentucky pollo fritto,5.1,148,9.2,10.1,0.0,True,True,True,True,proteine,90
+uovo bianco delizia mcdonalds,0.0,250,0.0,16.0,0.0,True,False,True,True,proteine,90
+french toast sticks hamburger king,8.7,73,1.3,3.7,0.3,True,True,True,True,condimenti,10
+mcchicken mcdonalds,36.6,358,13.7,17.3,1.7,True,True,True,True,condimenti,10
+nachos suprema taco campana,45.0,480,14.8,26.6,8.0,True,False,True,True,condimenti,10
+pollo croccante ala Kentucky pollo fritto,1.3,104,12.6,5.3,0.0,True,True,True,True,proteine,90
+pollo strisce hamburger re,7.4,105,6.6,5.5,0.5,True,True,True,True,proteine,90
+pollo croccante petto kentucky pollo fritto,0.4,214,38.2,6.7,0.0,True,True,True,True,proteine,90
+salsiccia biscotto McDonalds,31.8,440,11.3,29.7,1.4,True,True,True,True,carboidrati,100
+salsiccia burrito mcdonalds,24.2,339,13.0,17.1,1.2,True,True,True,True,proteine,90
+anelli di cipolla fritti,2.8,27,0.3,1.6,0.2,False,False,False,False,verdura,80
+anelli di cipolla hamburger re,39.7,379,3.5,23.0,2.5,False,False,False,False,verdura,80
+Tacchino patty fritto,4.4,79,3.9,5.0,0.1,True,True,True,True,frutta,120
+Hotcakes con sciroppo mcdonalds,101.8,601,9.0,17.8,2.0,True,True,True,True,dolcificanti,5
+pollo croccante coscia Kentucky pollo fritto,0.0,163,20.4,9.1,0.0,True,True,True,True,proteine,90
+Cane di mais,21.0,195,6.7,9.4,0.8,False,True,True,True,dolcificanti,5
+scatola di pollo mcdonalds,5.5,70,0.2,4.0,0.0,True,True,True,True,proteine,90
+pollo fritto Kentucky zeppa di patate,45.0,379,5.4,19.8,4.2,True,True,True,True,proteine,90
+Uova strapazzate di mcdonalds,0.9,98,7.7,7.5,0.0,False,True,True,False,dolcificanti,5
+uovo muffin mcdonalds,27.3,287,17.2,12.2,1.4,True,True,True,True,carboidrati,100
+nachos taco campana,36.0,362,5.1,21.9,3.8,True,True,True,True,condimenti,10
+biscotto grande mcdonalds,39.4,310,5.5,14.4,1.8,True,True,True,True,carboidrati,100
+pollo croccante strisce di pollo kentucky pollo fritto,6.4,129,9.5,7.2,0.7,True,True,True,True,proteine,90
+Hotcakes mcdonalds,19.0,113,3.0,2.9,0.7,True,True,True,True,condimenti,10
+pollo croccante petto Kentucky pollo fritto,11.9,375,29.7,23.2,0.0,True,True,True,True,proteine,90
+Hotcakes salsiccia mcdonalds,102.4,776,15.5,34.9,2.1,True,True,True,True,proteine,90
+pollo mcnuggets mcdonalds,2.4,48,2.5,3.2,0.0,True,True,True,True,proteine,90
+chips chipotle,2.1,151,0.2,7.1,0.0,True,True,True,True,carboidrati,100
+biscotto McDonalds,33.3,261,4.7,12.2,1.5,True,True,True,True,carboidrati,100
+ciotola di riso con pollo,6.4,36,1.6,0.4,0.2,True,True,True,False,carboidrati,100
+spaghetti con polpette,22.9,200,8.7,8.2,5.4,True,True,True,True,carboidrati,100
+ravioli di carne in scatola,36.0,259,8.9,8.9,4.2,True,True,False,False,proteine,90
+ravioli di formaggio in scatola,33.0,186,6.0,3.5,3.1,True,True,True,True,proteine,90
+premium croccante pollo ranch blt sandwich mcdonalds,59.8,586,35.3,22.9,3.4,True,True,True,True,proteine,90
+sandwich alla bistecca,52.0,459,30.3,14.1,0.0,False,False,False,True,carboidrati,100
+cheeseburger hamburger re,31.5,380,19.4,19.7,3.7,True,True,True,True,condimenti,10
+cheeseburger mcdonalds,33.1,313,15.4,14.0,1.3,True,True,True,True,condimenti,10
+doppio cheeseburger,41.0,643,37.0,36.9,2.1,True,True,True,True,dolcificanti,5
+doppio hamburger,51.4,942,52.1,58.6,5.2,False,True,True,True,dolcificanti,5
+premium grigliato pollo classico sandwich mcdonalds,44.6,366,28.3,8.6,2.8,True,True,True,True,proteine,90
+grande n gustoso con formaggio mcdonalds,39.7,573,27.2,36.0,3.2,True,False,True,True,proteine,90
+premium club di pollo grigliato sandwich mcdonalds,44.3,493,38.3,18.0,2.7,True,True,True,True,proteine,90
+quarto libbre mcdonalds,37.9,417,24.1,19.8,2.7,False,False,True,True,condimenti,10
+premium croccante pollo classico sandwich mcdonalds,58.6,524,27.8,20.0,3.2,True,True,True,True,proteine,90
+hamburger vegetariano,10.0,124,11.0,4.4,3.4,False,False,True,True,carboidrati,100
+quarto libbre con formaggio mcdonalds,39.7,513,29.0,28.3,2.8,True,False,True,True,proteine,90
+carne di manzo bistecca sandwich cruda,0.0,173,9.2,15.1,0.0,True,True,True,True,proteine,90
+cheeseburger,28.7,292,15.0,13.2,1.6,True,True,True,True,condimenti,10
+premium grigliato pollo ranch blt sandwich mcdonalds,44.3,412,33.7,10.9,2.8,True,True,True,True,proteine,90
+doppio whopper con formaggio hamburger re,53.9,1061,57.7,68.1,6.4,True,True,True,True,proteine,90
+grande mac mcdonalds,44.0,563,25.9,32.8,3.5,True,True,True,True,condimenti,10
+sandwich con salumi,79.9,833,41.1,39.3,4.7,True,True,True,True,condimenti,10
+filet o fish mcdonalds,35.4,378,15.1,19.6,1.9,True,True,True,True,frutta,120
+Pollo impanato a mano offerte carls jr,0.2,57,0.0,2.9,0.0,True,True,True,False,proteine,90
+Pollo grigliato sandwich wendy,0.0,370,0.0,8.0,0.0,True,True,True,False,proteine,90
+sandwich con roast beef,44.3,410,28.6,13.0,0.0,True,True,True,True,condimenti,10
+hamburger hamburger re,26.5,258,14.7,10.4,2.0,True,True,True,True,frutta,120
+grande n gustoso mcdonalds,38.5,524,24.7,31.7,3.2,True,True,True,True,condimenti,10
+panino al roast beef,33.1,364,22.6,15.3,1.9,True,True,True,True,grassi,15
+sandwich di manzo arrosto con formaggio,45.4,473,32.2,18.0,0.0,True,True,True,True,proteine,90
+hamburger,28.7,255,12.9,9.9,1.7,True,True,True,True,carboidrati,100
+premium pesce panino hamburger re,58.7,572,22.6,27.4,2.0,True,True,True,True,proteine,90
+Whopper hamburger King,52.8,790,35.4,48.4,3.2,True,True,True,True,condimenti,10
+sandwich con insalata di tonno,55.4,584,29.7,28.0,0.0,True,True,True,True,proteine,90
+originale pollo panino hamburger re,52.2,569,24.2,29.2,4.8,True,True,True,True,proteine,90
+doppio whopper hamburger re,51.4,942,52.1,58.6,5.2,True,True,True,True,condimenti,10
+premium croccante pollo club sandwich mcdonalds,57.4,635,39.1,29.9,3.0,True,True,True,True,proteine,90
+hamburger mcdonalds,28.8,251,12.3,9.6,1.2,True,True,True,True,condimenti,10
+salame piccante pizza domino,36.0,308,12.7,12.6,2.4,True,True,True,True,carboidrati,100
+pizza salsiccia,35.5,325,13.3,14.3,2.7,True,True,True,True,carboidrati,100
+pizza salata,35.5,313,13.0,13.2,2.6,True,True,True,True,carboidrati,100
+salame pizza pizza capanna,30.3,269,12.3,10.9,1.6,True,True,True,True,carboidrati,100
+cheese pizza capanna pizza,30.0,260,11.5,10.5,1.7,True,True,True,True,carboidrati,100
+pizza al formaggio,35.7,285,12.2,10.4,2.5,True,False,True,True,carboidrati,100
+formaggio pizza domino,35.9,278,11.7,9.7,2.4,True,True,True,True,carboidrati,100
+pizza di verdure di carne,34.5,332,15.0,14.8,3.0,True,True,True,False,carboidrati,100
+sucker grezzo,0.0,146,26.6,3.7,0.0,True,True,True,True,carboidrati,100
+luccio settentrionale grezzo,0.0,348,76.3,2.7,0.0,False,False,True,False,dolcificanti,5
+Eglefino cotto,0.0,135,30.0,0.8,0.0,False,False,True,False,carboidrati,100
+burbot cotto,0.0,104,22.3,0.9,0.0,True,True,True,True,carboidrati,100
+pollock cotto,0.0,356,75.3,3.8,0.0,True,True,True,True,proteine,90
+arcobaleno olfatto crudo,0.0,27,5.0,0.7,0.0,False,False,False,True,carboidrati,100
+Pesce bianco cotto,0.0,265,37.7,11.6,0.0,True,True,True,True,proteine,90
+walleye luccio grezzo,0.0,148,30.4,1.9,0.0,True,True,True,False,carboidrati,100
+carpa cotta,0.0,275,38.9,12.2,0.0,True,True,True,True,carboidrati,100
+pesce lupo cotto,0.0,293,53.4,7.3,0.0,True,True,True,False,proteine,90
+Snapper cotto,0.0,218,44.7,2.9,0.0,False,True,True,True,frutta,120
+capriate cotte,0.5,58,8.1,2.3,0.0,True,True,True,True,frutta,120
+Acciuga cruda,0.0,37,5.8,1.4,0.0,True,True,False,False,carboidrati,100
+aringa cruda,0.0,291,33.0,16.6,0.0,True,True,True,True,frutta,120
+merluzzo bianco crudo,0.0,189,41.1,1.5,0.0,True,True,True,False,carboidrati,100
+tilapia cruda,0.0,111,23.3,2.0,0.0,True,True,True,True,carboidrati,100
+Melù cotto,0.0,84,16.9,1.2,0.0,False,False,False,False,grassi,15
+Tonno rosso cotto,0.0,407,86.9,4.0,0.0,True,True,True,False,proteine,90
+salmone cotto,0.0,733,78.7,44.0,0.0,True,True,True,True,proteine,90
+chum salmone cotto,0.0,474,79.5,14.9,0.0,True,True,True,True,proteine,90
+American shad cotto,0.0,363,31.3,25.4,0.0,True,True,True,True,frutta,120
+Squalo cotto,1.8,65,5.3,3.9,0.0,False,False,True,False,dolcificanti,5
+trota cotta,0.0,118,16.5,5.3,0.0,True,True,True,True,frutta,120
+Pesce spada crudo,0.0,196,26.7,9.0,0.0,True,True,True,True,proteine,90
+trota iridea cotta,0.0,119,16.9,5.2,0.0,False,True,False,False,frutta,120
+sandwich di pesce con formaggio,35.4,374,15.1,19.6,0.0,True,True,True,True,proteine,90
+meduse secche,0.0,21,3.2,0.8,0.0,True,False,True,True,frutta,120
+muggine crude,0.0,139,23.0,4.5,0.0,True,True,True,True,condimenti,10
+Ippoglosso cotto,0.0,353,71.7,5.1,0.0,False,False,True,False,carboidrati,100
+Lingcod greggio,0.0,213,44.2,2.7,0.0,True,True,True,True,condimenti,10
+arancia ruvida cotta,0.0,30,6.4,0.3,0.0,False,False,False,True,frutta,120
+Cisco grezzo,0.0,77,15.0,1.5,0.0,True,True,True,True,grassi,15
+florida pompano cotto,0.0,186,20.8,10.7,0.0,True,True,True,True,dolcificanti,5
+snapper grezzo,0.0,218,44.7,2.9,0.0,True,True,True,True,carboidrati,100
+panino al pesce,58.7,565,22.6,27.4,0.0,True,True,True,True,proteine,90
+Eglefino greggio,0.0,143,31.5,0.9,0.0,False,False,True,False,carboidrati,100
+persico oceano grezzo,0.0,51,9.8,1.0,0.0,False,False,True,False,carboidrati,100
+Seppie cotte,0.5,45,9.2,0.4,0.0,True,True,True,True,frutta,120
+merluzzo bianco cotto,0.0,189,41.1,1.5,0.0,True,True,True,False,dolcificanti,5
+seatrout grezzo,0.0,248,39.8,8.6,0.0,True,False,True,False,carboidrati,100
+Passera pianuzza cruda,0.0,114,20.2,3.1,0.0,False,False,True,False,frutta,120
+macchia cotta,0.0,79,11.9,3.1,0.0,True,True,True,True,verdura,80
+luccio walleye cotto,0.0,148,30.4,1.9,0.0,False,True,False,False,dolcificanti,5
+persico crudo,0.0,55,11.6,0.6,0.0,False,False,True,True,verdura,80
+semi di zucca sunfish crudo,0.0,43,9.3,0.3,0.0,True,True,True,True,grassi,15
+Sgombro salato,0.0,415,25.2,34.1,0.0,True,True,False,True,carboidrati,100
+sgombro cotto,0.0,231,21.0,15.7,0.0,True,True,False,True,carboidrati,100
+tilapia cotta,0.0,111,22.8,2.3,0.0,True,True,True,True,carboidrati,100
+tamburo grezzo,0.0,236,34.7,9.8,0.0,True,True,True,False,carboidrati,100
+Croaker atlantico fritto,6.6,192,15.8,11.0,0.3,False,False,True,False,frutta,120
+semi di zucca sunfish cotti,0.0,42,9.2,0.3,0.0,False,True,True,True,grassi,15
+pesce lupo crudo,0.0,294,53.6,7.3,0.0,True,True,True,False,proteine,90
+tonno rosso cotto,0.0,276,44.9,9.4,0.0,True,True,True,False,proteine,90
+Scup cotto,0.0,68,12.1,1.8,0.0,False,True,True,True,carboidrati,100
+aringa cotta,0.0,290,32.9,16.6,0.0,True,True,True,False,frutta,120
+pesce azzurro crudo,0.0,186,30.1,6.4,0.0,True,True,True,False,proteine,90
+Testa di pecora cotta,0.0,234,48.4,3.0,0.0,False,False,True,True,frutta,120
+Basso cotto,0.0,91,15.0,2.9,0.0,False,False,True,False,carboidrati,100
+brosmio cotto,0.0,279,58.4,3.2,0.0,False,False,False,False,carboidrati,100
+chinook al salmone crudo,0.0,709,78.9,41.3,0.0,True,True,True,True,proteine,90
+Rockfish greggio,0.0,172,35.1,2.6,0.0,True,True,True,True,carboidrati,100
+tilefish crudi,0.0,371,67.6,8.9,0.0,True,True,True,True,verdura,80
+scup grezzo,0.0,174,31.3,4.5,0.0,True,True,True,False,carboidrati,100
+Sablefish cotto,0.0,755,51.9,59.3,0.0,True,True,True,True,frutta,120
+insalata di tonno,19.3,383,32.9,19.0,0.0,True,True,True,False,proteine,90
+salmone coho cotto,0.0,255,34.7,11.8,0.0,True,True,True,True,proteine,90
+capriate crude,0.2,20,3.1,0.9,0.0,True,True,True,True,condimenti,10
+spigola di mare cruda,0.0,125,23.8,2.6,0.0,False,True,True,True,carboidrati,100
+Salmone rosa cotto,0.0,349,56.0,12.0,0.0,True,True,False,True,proteine,90
+Salmone di sockeye cotto,0.0,493,82.1,17.3,0.0,True,True,True,True,proteine,90
+Pesce bianco crudo,0.0,265,37.8,11.6,0.0,True,True,True,True,proteine,90
+Ippoglosso di terra verde cotto,0.0,760,58.6,56.4,0.0,False,False,True,True,dolcificanti,5
+luccio settentrionale cotto,0.0,350,76.5,2.7,0.0,False,False,False,False,dolcificanti,5
+salmone crudo,0.0,824,80.9,53.1,0.0,True,True,True,True,proteine,90
+rombo chiodato,0.0,388,65.4,12.0,0.0,True,True,True,False,carboidrati,100
+surimi,1.9,28,4.3,0.3,0.0,True,True,True,True,grassi,15
+Salmone al chinook cotto,0.0,711,79.2,41.2,0.0,True,True,True,True,proteine,90
+triglie cotte,0.0,140,23.1,4.5,0.0,True,True,True,True,frutta,120
+chum salmone crudo,0.0,3,0.6,0.1,0.0,True,True,True,True,proteine,90
+butterfish crude,0.0,47,5.5,2.6,0.0,True,True,True,True,frutta,120
+spigola cotta,0.0,125,23.9,2.6,0.0,True,True,True,True,carboidrati,100
+ippoglosso verde greggio,0.0,759,58.6,56.5,0.0,False,False,True,False,carboidrati,100
+Ippoglosso greggio,0.0,371,75.7,5.4,0.0,False,False,True,False,carboidrati,100
+storione cotto,0.0,184,28.2,7.0,0.0,False,True,True,False,carboidrati,100
+filetto di pesce fritto,15.4,211,13.3,11.2,0.5,True,True,True,True,proteine,90
+trota iridea cruda,0.0,111,15.8,4.9,0.0,False,True,False,True,carboidrati,100
+brosmio greggio,0.0,278,58.6,3.2,0.0,False,False,True,False,carboidrati,100
+arcobaleno olfatto cotto,0.0,35,6.4,0.9,0.0,False,False,False,True,dolcificanti,5
+merluzzi crudi,0.0,22,4.1,0.4,0.0,True,True,True,True,proteine,90
+trota cruda,0.0,117,16.4,5.2,0.0,True,True,True,True,carboidrati,100
+squalo crudo,0.0,37,5.9,1.3,0.0,False,False,True,True,frutta,120
+burbot grezzo,0.0,104,22.4,0.9,0.0,True,True,True,True,carboidrati,100
+deltafish cotto,0.0,173,37.7,1.4,0.0,True,True,True,True,carboidrati,100
+gamberi cotti,0.0,25,5.0,0.4,0.0,False,True,False,True,grassi,15
+pesce delfino crudo,0.0,173,37.7,1.4,0.0,True,True,True,False,proteine,90
+persico cotto,0.0,54,11.4,0.5,0.0,False,False,True,False,dolcificanti,5
+Cusk grezzo,0.0,106,23.2,0.8,0.0,True,False,True,True,frutta,120
+tonno rosso crudo,0.0,41,6.6,1.4,0.0,True,True,True,False,proteine,90
+milkfish cotto,0.0,54,7.4,2.4,0.0,False,True,True,True,carboidrati,100
+carpa cruda,0.0,277,38.9,12.2,0.0,True,True,True,True,carboidrati,100
+storione grezzo,0.0,30,4.6,1.1,0.0,True,False,True,False,carboidrati,100
+arancia ruvida cruda,0.0,22,4.6,0.2,0.0,False,False,False,True,frutta,120
+pesce gatto fritto,7.0,199,15.7,11.6,0.6,True,True,True,False,proteine,90
+seppia cruda,0.2,22,4.6,0.2,0.0,True,True,True,True,verdura,80
+basso grezzo,0.0,90,14.9,2.9,0.0,True,False,True,False,carboidrati,100
+balenottera cotta,0.0,109,19.4,3.0,0.0,False,False,False,False,carboidrati,100
+milkfish crude,0.0,42,5.8,1.9,0.0,True,True,True,True,condimenti,10
+anguilla cruda,0.0,375,37.6,23.8,0.0,True,True,True,True,carboidrati,100
+pesce gatto crudo,0.0,189,24.2,9.4,0.0,True,True,True,False,proteine,90
+bastoncini di pesce,6.1,78,3.1,4.5,0.4,True,True,False,True,proteine,90
+salmone coho crudo,0.0,254,33.8,12.2,0.0,True,True,True,True,proteine,90
+merluzzi cotti,0.0,27,5.3,0.6,0.0,True,True,True,True,grassi,15
+coda gialla cotta,0.0,546,86.6,19.6,0.0,False,False,False,False,carboidrati,100
+tonno rosso cotto,0.0,37,8.2,0.2,0.0,True,True,True,False,proteine,90
+argilla cotta,0.0,168,36.8,1.2,0.0,True,True,True,True,frutta,120
+anguilla cotta,0.0,67,6.7,4.2,0.0,True,True,True,True,frutta,120
+Sablefish crudi,0.0,753,51.8,59.1,0.0,True,True,True,True,frutta,120
+pepite di salmone,4.0,60,3.6,3.3,0.0,True,True,True,True,proteine,90
+coda gialla cruda,0.0,546,86.5,19.6,0.0,False,False,False,False,carboidrati,100
+butterfish cotto,0.0,47,5.5,2.6,0.0,True,True,True,True,frutta,120
+caviale,0.6,42,3.9,2.9,0.0,True,True,True,True,proteine,90
+pollock grezzo,0.0,355,75.0,3.8,0.0,True,True,True,True,proteine,90
+Pesce gatto cotto,0.0,206,26.4,10.3,0.0,True,True,False,False,proteine,90
+Melù greggio,0.0,83,16.8,1.2,0.0,True,True,True,False,grassi,15
+salmone rosa crudo,0.0,404,65.2,14.0,0.0,True,True,True,True,proteine,90
+tonno albacora crudo,0.0,31,6.9,0.1,0.0,True,True,True,False,proteine,90
+sgombro greggio,0.0,230,20.8,15.6,0.0,True,True,True,True,carboidrati,100
+rombo grezzo,0.0,388,65.5,12.0,0.0,True,True,True,False,carboidrati,100
+Cusk cotto,0.0,106,23.1,0.8,0.0,True,True,True,True,frutta,120
+Croaker atlantico grezzo,0.0,82,14.0,2.5,0.0,False,False,True,False,carboidrati,100
+sucker cotto,0.0,148,26.6,3.7,0.0,True,True,True,True,carboidrati,100
+macchia grezza,0.0,79,11.8,3.1,0.0,True,True,True,False,carboidrati,100
+a tamburo cotto,0.0,236,34.6,9.7,0.0,True,True,True,False,carboidrati,100
+gamberi crudi,0.0,3,0.6,0.048,0.0,True,True,True,True,grassi,15
+tilefish cotto,0.0,441,73.5,14.1,0.0,True,True,True,True,carboidrati,100
+azzurro cotto,0.0,186,30.1,6.4,0.0,False,False,True,False,dolcificanti,5
+cernia cotta,0.0,238,50.2,2.6,0.0,True,True,False,False,frutta,120
+Testa di pecora cruda,0.0,257,48.1,5.7,0.0,True,False,True,True,frutta,120
+Aringhe tritate,0.0,87,9.8,4.9,0.0,True,True,True,True,frutta,120
+cernia cruda,0.0,238,50.2,2.6,0.0,True,True,True,True,verdura,80
+persico marino cotto,0.0,48,9.3,0.9,0.0,False,False,True,False,dolcificanti,5
+molva cruda,0.0,168,36.7,1.2,0.0,True,True,True,True,verdura,80
+Lingcod cotto,0.0,329,68.4,4.1,0.0,True,True,True,True,frutta,120
+florida pompano cruda,0.0,184,20.7,10.6,0.0,True,True,True,True,carboidrati,100
+Rockfish cotto,0.0,162,33.1,2.4,0.0,True,True,True,True,carboidrati,100
+Seatrout cotto,0.0,247,39.9,8.6,0.0,True,True,True,True,carboidrati,100
+salmone di sockeye crudo,0.0,562,84.4,22.2,0.0,True,True,True,True,proteine,90
+Pesce spada cotto,0.0,182,24.9,8.4,0.0,True,True,True,True,proteine,90
+americano shad grezzo,0.0,362,31.2,25.3,0.0,True,True,True,True,grassi,15
+sardine in scatola sott'olio,0.0,310,36.7,17.1,0.0,True,True,True,True,grassi,15
+Acciuga in scatola nell'olio,0.0,8,1.2,0.4,0.0,True,True,False,False,grassi,15
+Salmone in scatola,0.0,520,79.1,20.3,0.0,True,True,True,True,proteine,90
+sardine in salsa di pomodoro in scatola,0.5,165,18.6,9.3,0.009,False,False,True,True,verdura,80
+Salmone da sockeye in scatola,0.0,563,79.5,24.9,0.0,True,True,True,True,proteine,90
+conserve di tonno,0.0,102,18.9,2.4,0.0,True,True,True,True,proteine,90
+Salmone rosa in scatola,0.0,530,80.9,20.4,0.0,True,True,True,True,proteine,90
+merluzzo bianco in scatola,0.0,328,71.0,2.7,0.0,True,True,True,False,dolcificanti,5
+ostrica orientale in scatola,6.3,110,11.4,4.0,0.0,True,True,True,True,carboidrati,100
+chum salmone in scatola,0.0,520,79.1,20.3,0.0,True,True,True,True,proteine,90
+tonno in scatola nell'olio,0.0,331,47.2,14.4,0.0,True,True,True,False,proteine,90
+Oceani di salmone rosa selvatico,0.0,320,0.0,16.0,0.0,True,True,False,True,proteine,90
+gamberetti in scatola,0.0,128,26.1,1.7,0.0,True,True,True,False,dolcificanti,5
+alaska re granchio crudo,0.0,144,31.5,1.0,0.0,True,True,True,True,verdura,80
+capesante fritte,6.4,64,2.6,3.2,0.0,True,True,True,True,frutta,120
+gamberetti cotti,0.013,7,1.3,0.092,0.0,True,True,False,False,grassi,15
+vongole fritte,1.0,19,1.3,1.0,0.0,True,True,True,True,frutta,120
+alaska granchio re cotto,0.0,130,25.9,2.1,0.0,True,True,True,True,verdura,80
+capesante cotte,0.5,11,2.1,0.058,0.0,True,True,True,True,frutta,120
+calamaro fritto,6.2,140,14.4,6.0,0.0,True,True,True,False,frutta,120
+ostrica cruda,2.5,41,4.7,1.2,0.0,True,True,True,True,carboidrati,100
+abalone,5.1,89,14.5,0.6,0.0,True,True,True,True,frutta,120
+Granchio reale crudo,0.0,25,5.2,0.3,0.0,True,True,True,True,condimenti,10
+Whelk cotto,4.4,78,13.5,0.2,0.0,True,True,True,True,frutta,120
+ostrica cotta,2.5,41,4.7,1.2,0.0,True,True,True,True,carboidrati,100
+ostrica orientale cotta,0.7,8,0.7,0.2,0.0,True,True,True,True,carboidrati,100
+cozze azzurre cotte,14.8,344,47.6,9.0,0.0,True,False,True,True,carboidrati,100
+polpo crudo,0.6,23,4.2,0.3,0.0,True,True,True,False,carboidrati,100
+aragosta spinosa cotta,5.1,233,43.0,3.2,0.0,True,True,True,True,frutta,120
+cozze azzurre crude,5.5,129,17.9,3.4,0.0,False,False,True,True,condimenti,10
+Granchio regina cotto,0.0,98,20.2,1.3,0.0,True,True,False,True,dolcificanti,5
+granchio dunness cotto,1.2,140,28.3,1.6,0.0,True,True,True,True,dolcificanti,5
+granchio bruno crudo,1.2,140,28.4,1.6,0.0,True,True,True,True,condimenti,10
+gamberetti fritti,4.8,52,1.3,3.2,0.1,True,True,True,True,frutta,120
+gamberetti crudi,0.041,4,0.7,0.023,0.0,True,True,True,True,grassi,15
+granchio azzurro cotto,0.0,71,15.2,0.6,0.0,True,True,True,True,dolcificanti,5
+imitazione di gamberi,2.6,29,3.5,0.4,0.0,True,True,True,True,dolcificanti,5
+conchiglia al forno,2.2,165,33.4,1.5,0.0,False,False,False,False,dolcificanti,5
+calamaro crudo,0.9,26,4.4,0.4,0.0,True,False,True,False,carboidrati,100
+capesante crudo,0.5,10,1.8,0.091,0.0,True,True,True,True,carboidrati,100
+aragosta cruda,0.0,116,24.8,1.1,0.0,True,True,True,True,frutta,120
+imitazione di capesante,3.0,28,3.6,0.1,0.0,True,True,True,True,dolcificanti,5
+granchio azzurro crudo,0.018,18,3.8,0.2,0.0,True,True,True,False,dolcificanti,5
+whelk grezzo,2.2,39,6.7,0.1,0.0,True,True,True,True,carboidrati,100
+aragosta spinosa cruda,5.1,234,43.1,3.2,0.0,True,True,True,True,carboidrati,100
+vongole in scatola,9.4,227,38.8,2.5,0.0,True,True,True,True,condimenti,10
+aragosta cotta,0.0,134,28.5,1.3,0.0,True,True,True,True,frutta,120
+fritto di ostrica orientale,1.7,29,1.3,1.8,0.0,True,True,False,True,frutta,120
+vongole crude,8.1,195,33.3,2.2,0.0,True,True,True,True,condimenti,10
+polpo cotto,3.7,139,25.3,1.8,0.0,True,True,True,False,carboidrati,100
+ostrica orientale cruda,0.8,8,0.7,0.2,0.0,True,True,False,True,carboidrati,100
+ostrica fritta,6.7,61,2.1,3.0,0.0,True,True,True,True,frutta,120
+storione affumicato,0.0,49,8.8,1.2,0.0,True,True,True,True,carboidrati,100
+salmone chinook affumicato,0.0,159,24.9,5.9,0.0,True,True,True,True,proteine,90
+Cisco affumicato,0.0,50,4.6,3.4,0.0,True,True,True,True,frutta,120
+Eglefino affumicato,0.0,33,7.1,0.3,0.0,False,False,True,True,carboidrati,100
+Pesce bianco affumicato,0.0,147,31.8,1.3,0.0,True,True,True,True,proteine,90
+filetti di salmone rosso calzino affumicato,0.0,373,65.5,12.3,0.0,True,True,True,False,proteine,90
+eggnog,20.4,224,11.6,10.6,0.0,True,True,True,True,proteine,90
+luce della birra,5.4,96,0.8,0.0,0.0,True,True,True,False,dolcificanti,5
+Birra budweiser,0.9,12,0.1,0.0,0.0,True,True,True,True,condimenti,10
+weizenbier erdinger,0.0,220,0.0,18.0,0.0,True,True,True,True,verdura,80
+birra leggera budweiser,0.4,9,0.066,0.0,0.0,True,False,True,True,frutta,120
+birra,11.7,142,1.5,0.0,0.0,True,True,True,True,verdura,80
+birra radice,52.3,202,0.0,0.0,0.0,True,True,True,True,verdura,80
+Whiskey sour mix,6.3,26,0.051,0.072,0.0,True,True,True,True,condimenti,10
+Whiskey aspro,13.9,158,0.0,0.0,0.0,True,True,True,True,proteine,90
+tequila alba,23.8,232,0.6,0.2,0.0,True,True,True,True,condimenti,10
+"daiquiriCity name (optional, probably does not need a translation)",4.2,112,0.035,0.036,0.001,True,True,True,True,dolcificanti,5
+pina colada,32.0,245,0.6,2.7,0.4,True,True,True,True,grassi,15
+"WhiskeyCity name (optional, probably does not need a translation)",0.1,58,0.0,0.0,0.0,True,True,True,True,condimenti,10
+rum,0.0,49,0.0,0.0,0.0,True,True,True,True,grassi,15
+vodka smirnoff,2.0,13,0.0,0.4,0.0,True,True,True,True,frutta,120
+liquore di caffè,13.8,96,0.041,0.038,0.0,True,False,True,False,condimenti,10
+gin,0.0,53,0.0,0.0,0.0,True,True,True,True,condimenti,10
+vino da dessert dolce,14.1,165,0.2,0.0,0.0,False,False,False,True,dolcificanti,5
+Vino bianco chenina blanc,4.9,118,0.1,0.0,0.0,False,False,True,False,dolcificanti,5
+vino rosso gamay,3.5,115,0.1,0.0,14.4,False,False,True,False,grassi,15
+vendemmia tardiva vino bianco,20.6,172,0.1,0.0,13.1,False,False,True,True,verdura,80
+vino bianco gewurztraminer,3.8,119,0.1,0.0,0.0,False,True,True,True,carboidrati,100
+vino rosso bordeaux,7.4,172,0.1,0.0,0.0,False,True,True,False,grassi,15
+zinfandel vino rosso,4.2,129,0.1,0.0,0.0,False,False,True,False,grassi,15
+muller thurgau vino bianco,5.2,112,0.1,0.0,13.3,False,False,True,True,dolcificanti,5
+Mouvedre vino rosso,3.9,129,0.1,0.0,16.5,False,False,True,False,dolcificanti,5
+vino da tavola,4.0,123,0.1,0.0,0.0,False,False,True,False,carboidrati,100
+vino leggero,1.7,73,0.1,0.0,0.0,False,False,True,False,carboidrati,100
+Vino bianco,3.8,121,0.1,0.0,0.0,False,False,True,False,carboidrati,100
+petite sirah vino rosso,3.9,125,0.1,0.0,15.7,False,True,True,False,grassi,15
+vino non alcolico,0.3,2,0.1,0.0,0.0,False,False,True,False,dolcificanti,5
+pinot nero vino rosso,3.4,121,0.1,0.0,0.0,False,False,True,False,grassi,15
+pinotgris grigio vino bianco,3.0,122,0.1,0.0,0.0,False,False,True,False,grassi,15
+vino bianco riesling,5.5,118,0.1,0.0,0.0,False,False,True,True,verdura,80
+Barbera vino rosso,5.6,170,0.1,0.0,0.0,False,False,True,False,grassi,15
+vino rosso lemberger,3.6,118,0.1,0.0,15.0,False,False,True,False,carboidrati,100
+Merlot vino rosso,3.7,122,0.1,0.0,0.0,False,True,True,False,verdura,80
+vino rosso sangiovese,3.9,126,0.1,0.0,0.0,False,False,True,False,carboidrati,100
+vino bianco sauvignon blanc,3.0,119,0.1,0.0,0.0,False,False,True,True,condimenti,10
+vino rosso syrah,3.8,122,0.1,0.0,0.0,False,False,True,False,verdura,80
+vino rosso carignano,12.0,370,0.4,0.0,0.0,False,False,True,False,carboidrati,100
+vino bianco pinot blanc,2.9,119,0.1,0.0,0.0,False,False,True,False,carboidrati,100
+vino bianco semillone,4.6,121,0.1,0.0,14.9,False,False,False,False,grassi,15
+vino da dessert secco,58.4,760,1.0,0.0,76.5,False,False,False,False,condimenti,10
+vino rosso,3.8,125,0.1,0.0,0.0,False,True,True,False,grassi,15
+vino rosso cabernet sauvignon,5.2,166,0.1,0.0,0.0,False,False,True,True,grassi,15
+muscat vino bianco,7.8,123,0.1,0.0,0.0,False,False,True,False,dolcificanti,5
+vino da cucina,0.3,2,0.028,0.0,0.0,False,False,True,True,carboidrati,100
+Chardonnay vino bianco,4.3,168,0.1,0.0,0.0,False,False,True,True,verdura,80
+vino rosso chiaro,4.4,122,0.1,0.0,15.0,False,False,True,False,carboidrati,100
+sakè di riso,7.4,197,0.7,0.0,0.0,False,False,True,True,carboidrati,100
+Vino bianco bianco fumé,3.3,121,0.1,0.0,15.4,False,False,True,True,condimenti,10
+cabarnet franco vino rosso,3.6,122,0.1,0.0,0.0,False,True,True,False,carboidrati,100
+glassa al cioccolato,13.0,81,0.2,3.6,0.2,True,False,True,True,dolcificanti,5
+Zucchero bianco,5.0,19,0.0,0.0,0.0,False,False,True,True,dolcificanti,5
+Supplente di uova,4.8,115,24.0,0.0,0.0,False,False,True,False,dolcificanti,5
+sciroppo di agave,5.3,21,0.025,0.081,0.01,True,True,True,True,dolcificanti,5
+splenda dolcificante,91.2,336,0.0,0.0,0.0,False,True,False,True,dolcificanti,5
+estratto di vaniglia,0.5,12,0.0,0.069,0.0,False,False,True,False,carboidrati,100
+tuorlo d'uovo essiccato,0.054,27,1.3,2.3,0.0,True,False,True,False,proteine,90
+Zucchero granulato,4.2,16,0.0,0.0,0.0,True,False,True,True,dolcificanti,5
+cioccolato da forno,8.7,145,3.7,15.2,4.8,False,False,False,False,dolcificanti,5
+lievito per panificazione,3.1,18,1.4,0.3,1.4,False,False,True,True,dolcificanti,5
+foundant,26.4,106,0.0,0.009,0.0,True,True,True,True,dolcificanti,5
+zucchero di canna,4.1,16,0.024,0.0,0.0,True,False,True,True,dolcificanti,5
+glassa bianca secca,196.4,768,4.8,0.0,0.0,True,True,True,False,verdura,80
+Zucchero d'acero,10.9,42,0.036,0.061,0.0,False,False,True,True,dolcificanti,5
+dolcificante per fruttosio,4.2,15,0.0,0.0,0.0,True,True,True,True,frutta,120
+dolcificante alla saccarina,89.1,360,0.9,0.0,0.0,False,False,False,True,dolcificanti,5
+bianco d'uovo crudo,0.2,17,3.6,0.063,0.0,True,False,True,True,proteine,90
+zucchero di turbinado,4.6,18,0.0,0.0,0.0,True,True,True,True,dolcificanti,5
+glassa alla vaniglia,313.7,1931,0.0,75.0,0.0,True,False,True,False,verdura,80
+Edulcorante all'aspartame,89.1,365,2.2,0.0,0.0,True,True,True,False,dolcificanti,5
+uova crude,0.4,80,7.0,5.3,0.0,False,True,True,True,condimenti,10
+topping all'ananas,225.8,860,0.3,0.3,1.4,True,True,True,True,frutta,120
+albume d'uovo essiccate,0.3,26,5.8,0.087,0.0,True,True,True,True,proteine,90
+tuorlo d'uovo crudo,0.6,55,2.7,4.5,0.0,True,False,True,True,proteine,90
+bicarbonato di sodio,0.0,0,0.0,0.0,0.0,False,False,True,True,dolcificanti,5
+uovo essiccato,0.047,30,2.4,2.2,0.0,True,True,True,True,proteine,90
+topping alla fragola,13.9,53,0.014,0.096,0.1,True,True,True,True,frutta,120
+"lieviti di pane, secchi",1.6,13,1.6,0.3,1.1,False,False,True,False,carboidrati,100
+pasta di mandorle,108.5,1040,20.4,63.0,10.9,False,False,True,True,carboidrati,100
+crema di tartaro,1.8,8,0.0,0.0,0.01,True,True,True,True,frutta,120
+popover mix secco,120.7,631,17.7,7.3,0.0,True,True,True,True,condimenti,10
+uova di sostituzione in polvere,6.2,126,15.7,3.7,0.0,True,False,True,False,dolcificanti,5
+gelatina in polvere,0.0,17,4.3,0.086,0.0,True,True,True,True,carboidrati,100
+perle di tapioca,134.8,544,0.3,0.093,1.4,True,True,False,False,carboidrati,100
+lievito in polvere,1.3,2,0.0,0.0,0.03,True,True,True,False,verdura,80
+uovo bollito,0.7,93,7.5,6.4,0.0,True,True,True,True,proteine,90
+Farina di miglio,86.9,444,12.8,5.1,4.2,False,False,True,False,carboidrati,100
+farina triticale,95.1,439,17.1,2.4,19.0,True,True,True,False,carboidrati,100
+farina di mais bianca,87.3,414,9.6,4.2,7.3,True,True,True,False,carboidrati,100
+farina di riso bruno,120.8,574,11.4,4.4,7.3,False,False,True,False,carboidrati,100
+Farina di sorgo,93.7,437,9.5,4.0,8.0,True,True,True,False,carboidrati,100
+farina di mais a grani interi,93.8,442,9.9,4.4,8.9,False,True,True,True,carboidrati,100
+farina di mais bianca,124.7,581,11.2,2.7,6.1,True,True,True,False,carboidrati,100
+farina d'orzo,110.3,511,15.5,2.4,14.9,True,True,True,False,carboidrati,100
+Farina di semi di cartamo,13.8,97,10.1,0.7,0.0,False,True,True,True,carboidrati,100
+farina di sesamo,33.3,658,38.5,46.4,0.0,False,False,True,False,carboidrati,100
+farina di frumento (grano) integrale,86.4,408,15.9,3.0,12.8,True,True,True,True,carboidrati,100
+farina di mais giallo,89.9,422,8.1,4.5,8.5,False,False,True,False,carboidrati,100
+farina di mais integrale,89.9,422,8.1,4.5,8.5,True,True,True,True,carboidrati,100
+farina di semi di cotone a basso contenuto di grassi,10.2,94,14.1,0.4,0.0,True,True,True,True,carboidrati,100
+farina di semi di girasole,1.4,13,1.9,0.013,0.2,False,True,True,True,carboidrati,100
+farina di sesamo,7.4,160,4.8,13.6,0.0,False,False,True,False,carboidrati,100
+farina di ghianda,68.3,626,9.4,37.7,0.0,True,True,True,True,carboidrati,100
+farina di riso bianca,126.6,578,9.4,2.2,3.8,True,True,True,False,carboidrati,100
+farina di sesamo a basso contenuto di grassi,10.0,94,14.2,0.5,0.0,True,False,True,True,carboidrati,100
+Farina di patate,133.0,571,11.0,0.5,9.4,False,False,True,True,carboidrati,100
+farina di mais gialla,124.7,581,11.2,2.7,6.1,False,False,True,False,carboidrati,100
+Farina di segala,78.2,364,10.0,1.4,8.2,True,True,True,False,carboidrati,100
+Farina di arrow root,112.8,457,0.4,0.1,4.4,True,True,True,True,carboidrati,100
+farina di ceci,53.2,356,20.6,6.2,9.9,False,True,True,True,carboidrati,100
+farina di frumento,95.4,455,12.9,1.2,3.4,False,False,True,False,carboidrati,100
+amido di mais,116.8,488,0.3,0.03,1.2,False,False,True,True,dolcificanti,5
+farina di carruba,5.3,13,0.3,0.061,2.4,False,False,True,False,carboidrati,100
+farina di grano saraceno,84.7,402,15.1,3.7,12.0,False,False,True,False,carboidrati,100
+torta di noci,63.7,503,6.0,27.1,0.0,True,False,True,True,carboidrati,100
+torta di mele,46.4,331,3.0,15.6,0.0,False,False,True,True,carboidrati,100
+crosta di torta di cialde di vaniglia,88.4,935,6.5,63.7,0.2,True,False,True,True,carboidrati,100
+crosta di torta al cioccolato,117.4,881,11.1,40.8,4.9,True,True,True,True,carboidrati,100
+strudel di mele,29.2,195,2.3,8.0,1.6,True,True,False,True,grassi,15
+torta snack al cioccolato,30.2,200,1.8,8.0,1.6,False,False,True,True,carboidrati,100
+torta fritta alla frutta,54.5,404,3.8,20.6,3.3,True,False,True,True,carboidrati,100
+torta di zucca,40.9,316,7.0,14.4,0.0,True,True,True,True,carboidrati,100
+torta di mais,7.5,35,0.7,0.2,0.2,False,False,True,True,carboidrati,100
+torta snack spugna,26.9,157,1.5,4.8,0.4,True,True,True,True,carboidrati,100
+pasta frolla danese con noci,29.7,280,4.6,16.4,1.3,True,False,True,True,carboidrati,100
+torta alla crema di cioccolato,33.3,301,2.6,19.2,2.0,True,True,True,False,carboidrati,100
+torta angelo cibo,16.2,72,1.7,0.2,0.4,True,True,True,False,carboidrati,100
+torta di meringa al limone,49.7,362,4.8,16.4,0.0,True,False,True,True,carboidrati,100
+pasta frolla con cannella,46.9,349,4.8,16.7,0.0,False,False,True,True,carboidrati,100
+torta di caffè alla cannella,26.6,238,3.9,13.3,1.1,False,False,True,True,carboidrati,100
+cheesecake,20.4,257,4.4,18.0,0.3,True,True,True,True,frutta,120
+torta di frutta,26.5,139,1.2,3.9,1.6,True,False,True,True,carboidrati,100
+crema all'uovo,31.0,293,14.2,12.9,0.0,True,True,True,True,proteine,90
+torta di visone,79.2,477,4.3,17.8,4.3,False,False,True,False,carboidrati,100
+torta gialla con glassa al cioccolato,79.7,546,4.6,25.6,2.2,False,False,True,False,carboidrati,100
+pasticceria danese con frutta,45.1,335,4.8,15.9,0.0,True,False,True,True,frutta,120
+torta bianca con glassa al cocco,70.8,399,4.9,11.5,1.1,True,False,True,False,carboidrati,100
+pasta frolla con formaggio,28.7,353,5.8,24.6,0.0,True,False,True,True,carboidrati,100
+crosta di torta cracker graham,117.7,917,9.3,45.4,3.5,True,False,True,True,carboidrati,100
+torta di mirtilli,49.2,360,4.0,17.5,0.0,False,False,True,False,carboidrati,100
+torta gialla con glassa alla vaniglia,37.6,239,2.2,9.3,0.2,True,False,True,False,carboidrati,100
+crosta di torta,10.9,121,1.5,8.0,0.4,True,False,True,True,carboidrati,100
+torta al cioccolato con glassa al cioccolato,72.9,537,4.8,27.7,3.0,True,True,True,True,carboidrati,100
+torta di caffè al formaggio,33.7,258,5.3,11.6,0.8,True,False,True,True,carboidrati,100
+torta alla crema di vaniglia,41.1,350,6.0,18.1,0.8,True,False,True,True,carboidrati,100
+torta all'ananas,58.1,367,4.0,13.9,0.9,True,True,True,True,carboidrati,100
+torta di pesche,38.5,262,2.2,11.7,0.9,True,False,True,False,carboidrati,100
+torta di caffè alla frutta,25.8,156,2.6,5.1,1.3,True,True,True,True,carboidrati,100
+torta di libbra,14.6,116,1.7,6.0,0.2,False,False,True,True,carboidrati,100
+pane di torta di libbra,28.2,215,3.9,9.6,0.9,True,True,True,True,carboidrati,100
+torta bianca,42.3,264,4.0,9.2,0.6,True,True,True,False,carboidrati,100
+torta al caffè con glassa al cioccolato,48.4,298,4.5,9.7,1.8,True,False,True,False,carboidrati,100
+torta di popcorn,8.0,38,1.0,0.3,0.3,False,False,True,True,carboidrati,100
+torta alla crema di banana,390.2,3190,52.2,161.3,8.3,False,False,True,True,carboidrati,100
+torta di mele al forno mcdonalds,12.3,91,0.9,4.4,0.6,False,False,True,True,carboidrati,100
+pan di spugna,36.4,187,4.6,2.7,0.0,True,True,True,True,condimenti,10
+torta gialla,36.0,245,3.6,9.9,0.5,False,False,True,False,carboidrati,100
+shortcake,13.7,98,1.7,4.0,0.0,True,True,True,True,frutta,120
+Torta di ciliegie,69.3,486,5.0,22.0,0.0,False,False,True,False,carboidrati,100
+torta di mele olandese,61.0,397,3.0,15.8,2.2,False,False,True,True,carboidrati,100
+torta al cioccolato,50.7,352,5.0,14.3,1.5,False,False,True,False,carboidrati,100
+"MarshmallowCity name (optional, probably does not need a translation)",16.3,64,0.4,0.033,0.013,True,True,True,True,grassi,15
+mela da zucchero,18.2,72,1.6,0.2,3.4,True,True,True,True,frutta,120
+caramella,7.8,67,0.1,3.9,0.0,True,True,True,True,carboidrati,100
+caramella alla vaniglia con noci,21.1,123,0.8,3.9,0.3,False,False,False,False,grassi,15
+noccioline ricoperte di cioccolato,2.0,21,0.5,1.3,0.2,True,False,True,True,condimenti,10
+caramello con noci ricoperte di cioccolato,8.5,66,1.3,2.9,0.6,True,False,True,False,grassi,15
+Pan di zenzero,36.4,263,2.9,12.1,0.0,False,False,True,True,condimenti,10
+rolo nestle,0.2,24,0.009,1.0,0.0,True,True,True,True,verdura,80
+Fudge alla vaniglia,23.2,108,0.3,1.5,0.0,True,True,True,True,carboidrati,100
+"halavahCity name (optional, probably does not need a translation)",42.3,328,8.7,15.1,3.2,True,True,True,True,condimenti,10
+pralina,23.2,189,1.3,10.1,1.4,True,True,True,False,verdura,80
+barretta di succo di frutta,15.6,67,0.9,0.089,0.8,True,True,True,True,frutta,120
+frittelle di arachidi,20.2,138,2.1,5.4,0.7,False,True,True,True,grassi,15
+"ButterscotchCity name (optional, probably does not need a translation)",4.8,21,0.079,0.2,0.0,True,True,True,True,frutta,120
+chicchi di caffè al cioccolato,15.6,155,2.1,9.4,1.6,False,False,True,True,condimenti,10
+torrone con mandorle,12.9,56,0.5,0.2,0.5,False,False,True,True,grassi,15
+carruba,14.1,135,2.0,7.8,1.0,False,True,True,True,frutta,120
+Burro d'arachidi,12.4,62,0.6,1.1,0.1,True,True,True,True,grassi,15
+mandorle rivestite di zucchero,2.4,17,0.4,0.6,0.013,True,True,True,True,grassi,15
+Marshmallow al cioccolato,19.0,118,1.1,4.7,0.6,True,True,True,True,condimenti,10
+uva passa ricoperta di cioccolato,68.4,390,4.1,14.8,3.1,True,False,True,True,frutta,120
+gomma da masticare senza zucchero,1.9,5,0.0,0.013,0.078,True,False,True,False,dolcificanti,5
+gomma da masticare,2.9,11,0.0,0.032,0.012,True,False,True,True,carboidrati,100
+sciroppo di cioccolato,25.4,109,0.8,0.4,1.0,True,True,True,True,dolcificanti,5
+sciroppo di cioccolato fondente,12.0,67,0.9,1.7,0.5,False,False,True,False,dolcificanti,5
+ms latte cioccolato mars,29.9,207,1.8,8.9,1.2,True,True,True,True,proteine,90
+cioccolato al latte con mandorle,21.9,216,3.7,14.1,2.5,True,True,True,True,proteine,90
+caramella al cioccolato,13.0,70,0.4,1.8,0.3,True,False,True,False,carboidrati,100
+cioccolato al latte con cereali di riso,0.0,0,0.0,0.0,0.0,True,True,True,True,carboidrati,100
+ms ms cioccolata d'arachidi mars,10.9,93,1.7,4.7,0.7,True,True,False,False,grassi,15
+cioccolato fondente,18.0,165,1.5,9.7,2.2,False,False,True,False,frutta,120
+cioccolato semidolce,107.4,806,7.1,50.4,9.9,False,False,True,False,grassi,15
+dopo otto zecche nestle,6.7,36,0.1,1.0,0.2,True,True,True,True,dolcificanti,5
+cioccolato al latte,4.2,37,0.5,2.1,0.2,True,False,True,True,proteine,90
+cioccolato bianco,17.8,162,1.8,9.6,0.081,False,False,True,True,condimenti,10
+cioccolato,24.8,208,1.6,14.0,2.3,False,False,True,False,condimenti,10
+twix mars,18.8,146,1.4,7.2,0.3,True,True,True,True,verdura,80
+kit kat nestle,7.6,62,0.7,3.3,0.2,True,True,True,True,carboidrati,100
+Snickers mars,35.1,280,4.3,13.6,1.3,True,True,True,True,verdura,80
+lattiginosa mars,41.3,264,2.3,10.0,0.6,True,True,True,False,verdura,80
+barra clif,44.5,235,10.0,4.0,5.0,True,True,True,True,frutta,120
+Gocce di gomma,4.4,18,0.0,0.042,0.0,True,True,True,True,dolcificanti,5
+Skittles wild bery mars,56.3,249,0.1,2.6,0.0,True,True,True,True,verdura,80
+Skittles mars originale,56.3,251,0.1,2.7,0.0,True,True,True,True,proteine,90
+Skittles mars tropicale,56.3,251,0.1,2.7,0.0,True,True,True,True,frutta,120
+cuoio di frutta,12.0,52,0.029,0.4,0.0,True,True,True,True,frutta,120
+Taffy,13.7,60,0.087,0.5,0.0,True,True,True,True,frutta,120
+eisbons mac iver,0.0,23,0.0,0.0,0.0,True,True,True,True,carboidrati,100
+caramelle,7.8,39,0.5,0.8,0.0,True,True,True,True,condimenti,10
+caramelle dure,5.9,24,0.0,0.067,0.0,True,True,True,False,frutta,120
+Gelatine,1.0,4,0.0,0.043,0.083,False,False,True,True,proteine,90
+Gelatine,14.7,56,0.005,0.069,0.2,False,False,True,True,proteine,90
+germe di grano tostato,14.9,115,8.7,3.2,4.5,True,True,True,True,carboidrati,100
+riso croccante bruno,27.5,124,2.3,1.1,2.3,False,False,False,False,carboidrati,100
+fiocchi di crusca asda,0.2,109,0.0,0.6,0.0,False,False,False,False,carboidrati,100
+amaranto cotto,46.0,251,9.3,3.9,5.2,False,False,False,False,carboidrati,100
+triticale,138.5,645,25.1,4.0,0.0,True,True,True,True,grassi,15
+orzo greggio,9.3,42,1.2,0.1,1.9,True,True,True,False,grassi,15
+bulgur secco,37.9,171,6.1,0.7,9.2,True,True,True,True,condimenti,10
+noccioli di cotone tostati,32.6,754,48.6,54.1,8.2,False,True,False,False,dolcificanti,5
+crusca di riso,58.6,373,15.8,24.6,24.8,True,False,True,False,carboidrati,100
+captti roti pane indiano,0.089,491,7.0,2.5,0.0,False,True,True,True,carboidrati,100
+quinoa cotta,39.4,222,8.1,3.6,5.2,False,True,True,False,frutta,120
+Dar vida swiss originale,0.5,116,0.0,3.1,0.0,True,True,True,True,frutta,120
+teff cotto,50.0,255,9.8,1.6,7.1,True,True,True,True,frutta,120
+couscous secco,134.0,650,22.1,1.1,8.7,True,True,True,True,condimenti,10
+weetabix weetabix,0.0,2078,0.0,11.5,0.0,True,True,True,True,grassi,15
+crusca di avena cotta,25.1,88,7.0,1.9,5.7,True,False,False,False,frutta,120
+Grano saraceno cotto,33.5,155,5.7,1.0,4.5,False,False,True,False,carboidrati,100
+Miglio soffiato,16.8,74,2.7,0.7,0.6,False,True,False,False,dolcificanti,5
+crusca di avena cruda,4.9,23,1.3,0.5,1.2,True,False,False,False,carboidrati,100
+olio di popcorn spuntato,5.0,64,0.8,4.8,0.9,False,False,True,False,grassi,15
+kamut cotto,52.4,251,11.1,1.6,6.7,False,False,True,True,frutta,120
+crusca di frumento,37.4,125,9.0,2.5,24.8,True,False,True,True,frutta,120
+popcorn di formaggio,5.7,58,1.0,3.7,1.1,True,True,True,True,proteine,90
+Kelloggs crush all'uvetta,21.2,90,1.9,0.5,0.0,True,True,True,True,carboidrati,100
+couscous cotto,36.5,176,6.0,0.3,2.2,True,True,True,True,condimenti,10
+cheerios multigrain mulini generali,1.0,4,0.038,0.005,0.1,False,True,True,True,grassi,15
+bulgur cotto,33.8,151,5.6,0.4,8.2,True,True,True,True,frutta,120
+popcorn aria scoppiata,6.2,31,1.0,0.4,1.2,True,True,True,True,carboidrati,100
+teff grezzo,141.1,708,25.7,4.6,15.4,True,True,True,False,carboidrati,100
+farro cotto,51.3,246,10.7,1.6,7.6,False,False,True,False,frutta,120
+Miglio greggio,145.7,756,22.0,8.4,17.0,False,True,True,False,grassi,15
+popcorn non popped,20.9,106,3.1,1.2,3.6,True,True,True,True,condimenti,10
+frumento integrale cotto,33.2,150,4.8,1.0,3.9,True,True,True,True,frutta,120
+grano germogliato,45.9,214,8.1,1.4,1.2,True,True,True,True,carboidrati,100
+frumento (grano) intero secco,21.1,96,3.1,0.6,2.7,False,False,True,False,carboidrati,100
+popcorn al caramello,22.4,122,1.1,3.6,1.5,False,False,True,True,carboidrati,100
+frumento soffiato,9.6,44,1.8,0.1,0.5,False,False,True,False,frutta,120
+roggenmischbrot sonnenblumenkerne aldi,0.0,82,0.0,3.1,0.0,True,True,True,True,frutta,120
+germe di frumento,16.1,112,7.2,3.0,4.1,True,True,True,True,frutta,120
+popcorn a microonde,49.8,465,7.3,26.3,8.7,True,True,True,True,condimenti,10
+Cotture di miglio,41.2,207,6.1,1.7,2.3,False,True,True,False,dolcificanti,5
+kamut grezzo,130.9,627,27.3,4.1,16.9,True,True,True,True,frutta,120
+frumento duro,136.6,651,26.3,4.7,0.0,False,False,True,True,frutta,120
+SORGO,143.3,651,21.7,6.3,12.1,True,True,True,True,carboidrati,100
+Frumento bianco,145.7,657,21.7,3.3,23.4,False,False,True,True,frutta,120
+segala,128.2,571,17.5,2.8,25.5,True,True,True,True,frutta,120
+spelta cruda,122.1,588,25.4,4.2,18.6,True,True,True,True,carboidrati,100
+grano saraceno crudo,8.6,41,1.6,0.4,1.2,False,False,True,False,carboidrati,100
+Miele cereali mulini generali,3.0,104,0.0,2.0,0.0,True,True,True,True,dolcificanti,5
+orzo cotto,44.3,193,3.5,0.7,6.0,False,False,True,False,carboidrati,100
+avena,6.6,39,1.7,0.7,1.1,True,True,False,True,verdura,80
+amaranto crudo,6.5,37,1.4,0.7,0.7,False,False,True,True,carboidrati,100
+semolina,121.6,601,21.2,1.8,6.5,True,True,False,False,verdura,80
+quinoa secca,38.5,221,8.5,3.6,4.2,False,False,False,False,frutta,120
+grano tritato,36.2,155,5.2,1.0,5.5,False,False,True,False,carboidrati,100
+coda di cat,1.0,5,0.2,0.0,0.9,False,True,True,True,grassi,15
+Granola bar di arachidi,15.0,116,2.4,5.7,0.7,False,False,True,True,carboidrati,100
+di vaniglia o di bluberry,0.9,49,0.0,1.4,0.0,False,False,True,False,condimenti,10
+noce di cocco granola bar,15.6,150,1.5,9.1,1.8,True,False,True,False,carboidrati,100
+mandorla granola bar,14.9,119,1.8,6.1,1.2,True,True,True,True,carboidrati,100
+barretta di granola con gocce di cioccolato,17.3,105,1.8,3.9,1.1,True,False,True,True,carboidrati,100
+frutta granola bar,18.6,82,1.4,0.2,1.8,True,True,True,True,carboidrati,100
+ranola bar,13.5,99,2.1,4.2,1.1,True,True,True,True,carboidrati,100
+barretta di arachidi,19.0,209,6.2,13.5,1.6,False,False,False,True,grassi,15
+barretta di cereali per il latte,18.0,103,1.6,2.7,0.1,True,True,True,True,proteine,90
+barretta di riso alle mandorle,18.1,128,2.0,5.7,1.0,True,False,True,True,carboidrati,100
+Pizzetti di frutta a guscio,10.3,55,0.3,1.3,0.3,False,False,True,False,frutta,120
+riso frumento cereali bar,16.0,90,2.0,2.0,0.4,False,True,True,False,carboidrati,100
+Barra di riso croccante,20.4,113,1.4,3.8,0.6,True,False,True,True,carboidrati,100
+riso integrale crudo,142.9,685,14.7,5.4,6.5,True,True,True,True,carboidrati,100
+Pilaf di riso cotto,61.1,352,7.0,8.8,1.4,True,True,True,False,carboidrati,100
+riso aromatizzato di manzo crudo,139.1,657,19.8,2.3,2.9,True,True,True,False,carboidrati,100
+riso selvatico cotto,35.0,166,6.5,0.6,3.0,False,False,False,False,carboidrati,100
+riso selvatico crudo,119.8,571,23.6,1.7,9.9,False,False,True,False,carboidrati,100
+congee con gamberi di maiale e calamaro più uova,0.0,178,0.0,0.3,0.0,True,True,True,True,grassi,15
+pasta di riso bianco cotta,43.3,246,5.1,5.7,5.1,False,False,True,False,carboidrati,100
+riso aromatizzato al pollo crudo,127.3,601,17.9,2.2,2.0,True,True,True,False,carboidrati,100
+riso bianco istantaneo crudo,78.2,361,7.4,0.9,1.8,False,False,False,True,carboidrati,100
+patatine fritte di riso,24.1,107,1.8,0.4,0.2,False,False,True,False,carboidrati,100
+riso bianco parboiled crudo,149.6,692,13.9,1.9,3.3,False,False,True,True,carboidrati,100
+riso bianco istantaneo cotto,41.4,193,3.6,0.8,1.0,True,True,False,True,carboidrati,100
+riso pilaf crudo,155.7,732,21.3,2.8,2.4,False,False,True,False,carboidrati,100
+torta di cracker di riso,23.0,111,2.0,1.2,1.2,True,True,True,True,carboidrati,100
+riso bianco parboiled cotto,41.2,194,4.6,0.6,1.4,False,False,True,True,carboidrati,100
+riso bianco evaporato,44.7,199,4.2,0.4,1.2,True,True,True,True,carboidrati,100
+torta di riso marrone,7.3,35,0.7,0.3,0.4,False,False,True,False,carboidrati,100
+riso bianco glutinoso crudo,151.1,685,12.6,1.0,5.2,False,False,True,True,carboidrati,100
+pasta di riso bianco cruda,122.8,600,15.3,4.0,0.0,False,False,True,False,carboidrati,100
+riso bianco glutinoso cotto,36.7,169,3.5,0.3,1.7,False,False,True,True,carboidrati,100
+riso bruno cotto,45.8,218,4.5,1.6,3.5,False,False,True,False,carboidrati,100
+riso aromatizzato alla carne di manzo cotto,54.4,319,7.0,7.9,1.5,True,True,True,False,carboidrati,100
+riso bianco cotto,44.5,205,4.3,0.4,0.6,False,False,True,False,carboidrati,100
+riso aromatizzato al pollo cotto,54.8,317,6.2,8.0,1.6,True,True,True,False,carboidrati,100
+riso bianco crudo,147.9,675,13.2,1.2,2.4,False,False,True,False,carboidrati,100
+imitazione del formaggio,1.1,441,28.3,36.2,0.0,True,True,True,True,proteine,90
+cheshire cheese,1.4,110,6.6,8.7,0.0,True,True,True,True,condimenti,10
+Monterey cheese,0.8,421,27.7,34.2,0.0,True,True,True,True,condimenti,10
+formaggio di edam,0.4,107,7.5,8.3,0.0,True,True,True,True,proteine,90
+Fontina cheese,1.7,420,27.6,33.6,0.0,True,True,False,True,frutta,120
+monterey formaggio a basso contenuto di grassi,0.8,350,31.9,24.4,0.0,True,True,True,True,proteine,90
+colby cheese,2.9,445,26.8,36.3,0.0,True,True,True,True,condimenti,10
+formaggio americano,0.9,93,4.5,7.9,0.0,True,True,True,True,proteine,90
+formaggio azzurro,0.7,106,6.4,8.6,0.0,True,True,True,True,proteine,90
+nettarina,15.8,66,1.6,0.5,2.6,True,True,True,True,frutta,120
+Oro di kiwi,12.8,51,0.8,0.2,1.1,True,True,True,True,frutta,120
+pera spinosa cruda,1.9,8,0.001,0.072,1.0,True,True,True,True,frutta,120
+ananas,11.8,45,0.5,0.1,1.3,True,True,True,True,frutta,120
+"rowanCity name (optional, probably does not need a translation)",54.5,253,5.2,4.6,14.1,True,True,True,True,verdura,80
+Uve da muscadina,0.8,3,0.014,0.056,0.2,True,False,True,True,dolcificanti,5
+heidelbeeren jutro,0.4,17,0.0,0.2,0.0,True,True,True,True,carboidrati,100
+prugne in umido,83.2,316,3.4,0.7,0.0,False,False,True,True,frutta,120
+tangerina,10.1,40,0.6,0.2,1.4,True,True,True,True,frutta,120
+prugne,62.3,237,2.6,0.5,0.0,True,False,True,True,frutta,120
+buccia di limone,0.3,1,0.032,0.002,0.2,False,False,False,False,frutta,120
+banana,34.3,134,1.6,0.5,3.9,True,True,True,True,frutta,120
+Lamponi,1.2,5,0.1,0.034,0.7,True,True,True,False,grassi,15
+albicocca,3.9,17,0.5,0.1,0.7,True,True,True,True,frutta,120
+Guava alla fragola,1.0,4,0.01,0.008,0.3,True,True,True,True,frutta,120
+kiwi verde,10.1,42,0.8,0.4,2.1,True,True,True,True,frutta,120
+fichi,9.6,37,0.4,0.2,1.5,True,True,True,False,frutta,120
+clementina,8.9,35,0.6,0.1,1.3,True,True,False,True,grassi,15
+arancione,21.6,86,1.7,0.2,4.4,False,True,True,True,proteine,90
+Bartlett pera,26.6,112,0.7,0.3,5.5,True,True,True,True,frutta,120
+Ribes bianco rosso,15.5,63,1.6,0.2,4.8,False,False,True,True,proteine,90
+mirtilli,21.4,84,1.1,0.5,3.6,True,True,False,True,grassi,15
+more di gelso,1.5,6,0.2,0.049,0.3,False,False,True,True,dolcificanti,5
+susina di java,0.5,2,0.034,0.029,0.0,True,True,True,True,frutta,120
+purea di prugna secca,11.7,46,0.4,0.02,0.6,False,False,True,False,frutta,120
+salsa di mele,27.5,102,0.4,0.2,2.7,False,False,False,False,condimenti,10
+More di rovo crude,13.8,62,2.0,0.7,7.6,True,True,True,True,condimenti,10
+prugna,7.5,30,0.5,0.2,0.9,True,False,True,True,frutta,120
+uva americana,0.4,2,0.035,0.087,0.09,True,True,True,True,frutta,120
+pesca,14.3,59,1.4,0.4,2.3,True,False,True,True,frutta,120
+Melone di melone,16.1,64,1.0,0.2,1.4,False,True,False,False,frutta,120
+pantano giallo fritto,68.9,399,2.4,12.7,5.4,False,False,False,False,frutta,120
+Rose canine (cinorrodonti),48.5,206,2.0,0.4,30.6,True,True,True,True,frutta,120
+limoni,5.4,17,0.6,0.2,1.6,False,True,True,True,grassi,15
+calce,7.1,20,0.5,0.1,1.9,True,True,True,True,proteine,90
+melograno,26.4,117,2.4,1.6,5.6,True,True,True,False,carboidrati,100
+Uva spina,15.3,66,1.3,0.9,6.5,True,True,True,True,frutta,120
+pera asiatica,13.0,51,0.6,0.3,4.4,False,True,True,True,frutta,120
+"abiyuchCity name (optional, probably does not need a translation)",40.1,157,3.4,0.2,12.1,True,True,True,True,dolcificanti,5
+cornuto melone kiwano,15.8,92,3.7,2.6,0.0,False,True,True,False,frutta,120
+insalata di noci di frutta mcdonalds,43.8,312,4.8,13.3,0.0,True,True,True,True,grassi,15
+pompelmo,13.3,53,1.0,0.2,2.0,True,True,True,True,dolcificanti,5
+cachi giapponesi,31.2,118,1.0,0.3,6.0,False,False,False,False,carboidrati,100
+Lamponi selvatici,18.0,81,1.5,0.4,9.8,False,True,False,False,dolcificanti,5
+mela rosa signora,3.9,18,0.1,0.1,0.0,True,True,True,True,frutta,120
+ciliege maraschino,2.1,8,0.06,0.083,0.2,False,False,True,False,frutta,120
+Ribes nero,17.2,71,1.6,0.5,0.0,True,True,True,True,verdura,80
+plantain cotto,48.0,179,1.2,0.3,3.5,True,True,True,True,grassi,15
+mela granchio,21.9,84,0.4,0.3,0.0,True,True,True,True,frutta,120
+pom potes materne,0.2,19,0.0,0.2,0.0,True,False,True,True,proteine,90
+mela,25.1,95,0.5,0.3,4.4,True,True,True,True,frutta,120
+melone di melone,14.4,60,1.5,0.3,1.6,False,True,False,False,frutta,120
+pera piccante cotta,1.6,7,0.091,0.043,0.0,True,True,True,True,frutta,120
+guava,7.9,37,1.4,0.5,3.0,True,True,True,True,frutta,120
+"More di gelso (nero, verde e bianco)",0.9,4,0.01,0.069,0.2,False,False,True,True,dolcificanti,5
+persimmone giapponese essiccato,25.0,93,0.5,0.2,4.9,False,False,False,False,dolcificanti,5
+anguria,21.6,86,1.7,0.4,1.1,True,True,True,True,frutta,120
+More di rovo,26.7,106,1.0,0.7,10.2,True,True,True,True,frutta,120
+kumquat,3.0,13,0.4,0.2,1.2,True,True,True,True,frutta,120
+buccia d'arancia,1.5,6,0.093,0.017,0.6,False,False,False,True,frutta,120
+porri di mirtillo cotti,5.1,33,3.8,0.7,2.5,False,False,False,True,dolcificanti,5
+frutta a guscio,59.7,227,2.4,0.5,10.8,False,False,True,True,frutta,120
+pera,27.1,101,0.6,0.2,5.5,True,True,True,True,frutta,120
+ciliegie acide,12.5,52,1.0,0.3,1.6,True,True,True,True,proteine,90
+plantain grezzo,57.1,218,2.3,0.6,3.0,True,True,True,True,grassi,15
+"More di rovo, congelate",23.7,97,1.8,0.6,7.6,False,False,False,True,frutta,120
+Ciliegie,1.3,5,0.068,0.056,0.2,True,True,True,True,frutta,120
+plantain fritto,2.6,16,0.023,0.6,0.2,True,True,True,True,frutta,120
+Castagne e marroni,5.7,26,0.9,0.3,2.4,False,True,True,True,frutta,120
+chayote cotto,7.2,35,1.0,0.8,4.5,False,False,False,False,frutta,120
+dippers di mela mcdonalds,8.2,33,0.0,0.0,0.0,True,True,True,True,frutta,120
+pompelmo bianco,19.8,78,1.6,0.2,2.6,False,False,True,False,dolcificanti,5
+cherimoya,41.6,176,3.7,1.6,7.1,True,True,True,True,carboidrati,100
+palle di melone,13.7,57,1.5,0.4,1.2,False,False,False,False,frutta,120
+mela dorata deliziosa,14.8,62,0.3,0.2,2.6,True,False,False,False,frutta,120
+pokeberry germogli crudi,5.9,37,4.2,0.6,2.7,True,True,True,True,condimenti,10
+mirtilli rossi,5.4,21,0.2,0.014,1.6,True,True,True,False,grassi,15
+mela cotogna,14.1,52,0.4,0.012,1.7,True,True,True,True,frutta,120
+chayote crudo,6.0,25,1.1,0.2,2.2,False,False,True,True,frutta,120
+arancione con buccia,24.6,100,2.1,0.5,7.2,False,False,False,True,dolcificanti,5
+strokecherries,51.8,249,4.7,2.6,30.8,True,True,True,True,carboidrati,100
+mango,50.3,202,2.8,1.3,5.4,True,True,True,True,frutta,120
+Susina selvatica,35.3,147,0.7,0.3,9.7,True,True,False,False,verdura,80
+"jeijoaCity name (optional, probably does not need a translation)",37.0,148,1.7,1.0,15.6,True,True,True,True,verdura,80
+ciliege,15.7,74,2.7,1.0,0.0,True,True,True,True,condimenti,10
+pesca,0.0,30,0.0,0.1,0.0,True,False,True,True,frutta,120
+persimmone,8.4,32,0.2,0.1,0.0,True,True,True,True,verdura,80
+Uve,0.9,3,0.045,0.044,0.087,True,True,True,True,proteine,90
+rambutan in scatola,44.7,175,1.4,0.4,1.9,True,True,True,True,carboidrati,100
+fichi in scatola,3.8,14,0.1,0.039,0.6,False,True,True,False,frutta,120
+prugne secche in scatola,65.1,246,2.0,0.5,8.9,False,False,True,False,frutta,120
+ananassi in scatola,7.4,28,0.2,0.05,0.4,False,True,False,False,frutta,120
+prugne secche in scatola,7.0,27,0.2,0.075,0.4,False,False,True,False,frutta,120
+Cavolfiori in scatola,23.8,92,1.5,0.1,1.7,False,True,True,False,dolcificanti,5
+cocktail alla frutta in scatola,28.1,109,1.1,0.053,2.4,True,True,True,False,frutta,120
+ciliegie acide in scatola,48.6,189,1.9,0.3,2.0,False,True,True,True,condimenti,10
+mangosteen in scatola,35.1,143,0.8,1.1,3.5,True,True,True,True,frutta,120
+succo di albicocche,30.1,117,1.5,0.07,3.9,False,False,False,True,dolcificanti,5
+fragole in scatola,59.8,234,1.4,0.7,4.3,True,True,True,True,frutta,120
+pesca in scatola,28.9,110,1.6,0.094,3.3,True,False,True,False,frutta,120
+macedonia di frutta in scatola,32.5,125,1.3,0.008,2.5,True,True,True,True,frutta,120
+Uva spina in scatola,47.3,184,1.6,0.5,6.0,True,True,True,True,frutta,120
+in scatola di pompelmo,22.3,88,1.4,0.2,1.0,False,False,True,False,dolcificanti,5
+pera in scatola,9.8,38,0.3,0.001,1.2,False,True,True,True,frutta,120
+lamponi in scatola,59.8,233,2.1,0.3,8.4,True,True,True,False,dolcificanti,5
+papaya in scatola,21.8,80,0.001,0.2,0.6,True,True,True,True,frutta,120
+uve in scatola,25.2,98,1.2,0.3,1.5,True,True,True,True,dolcificanti,5
+mela essiccata,39.1,145,0.6,0.2,5.1,True,True,False,False,frutta,120
+pesco essiccato,50.8,199,3.0,0.6,7.0,False,False,True,False,frutta,120
+chip di plantain,18.1,150,0.6,8.4,1.0,True,True,True,True,grassi,15
+Uva passa dorata,131.2,498,5.6,0.8,6.6,True,True,True,True,frutta,120
+uva passa seminata,129.5,488,4.2,0.9,11.2,True,True,True,True,frutta,120
+ribes zante essiccato,106.7,408,5.9,0.4,9.8,False,False,True,False,carboidrati,100
+pera essiccata,25.1,94,0.7,0.2,2.7,True,False,True,False,frutta,120
+uva passa,23.8,90,1.0,0.056,1.4,True,True,True,True,frutta,120
+prugne secche,81.5,308,2.7,0.5,9.4,False,False,True,True,frutta,120
+mirtilli rossi secchi,98.8,370,0.053,1.6,6.8,False,False,True,False,grassi,15
+fichi secchi,5.4,21,0.3,0.008,0.8,True,False,True,False,frutta,120
+Longan essiccati,1.3,5,0.027,0.091,0.0,False,True,True,False,grassi,15
+patatine fritte di banana,16.5,147,0.7,9.5,2.2,False,False,True,True,frutta,120
+litchi essiccati,1.8,7,0.01,0.003,0.1,False,False,True,False,dolcificanti,5
+albicocca essiccata,4.4,17,0.2,0.015,0.5,True,True,True,True,frutta,120
+"LonganCity name (optional, probably does not need a translation)",0.5,2,0.009,0.076,0.071,True,True,True,True,verdura,80
+mameyclofen,56.2,217,2.5,0.8,9.5,True,True,True,True,carboidrati,100
+ceragourata cotta,4.3,19,0.7,0.4,1.8,False,False,False,False,frutta,120
+jackfruit,8.1,33,0.6,0.2,0.5,True,True,True,True,frutta,120
+loquat,2.4,9,0.09,0.071,0.3,True,True,True,True,dolcificanti,5
+mamma mela mamey,105.8,431,4.2,4.2,25.4,True,True,True,True,frutta,120
+nance,19.0,82,0.7,1.3,8.4,True,True,True,True,proteine,90
+cocco intero cocco,0.0,3336,0.0,71.5,0.0,False,False,False,False,grassi,15
+pera spinacea,9.9,42,0.8,0.5,3.7,True,False,True,True,frutta,120
+litchi,1.6,6,0.024,0.016,0.1,True,True,True,False,frutta,120
+polpa di naranjilla lulo,7.1,30,0.5,0.3,1.3,False,False,True,False,dolcificanti,5
+carne di cocco essiccata,6.7,187,1.9,18.3,4.6,True,True,False,False,proteine,90
+ceragourata cruda,4.0,17,0.5,0.3,3.8,False,False,True,False,frutta,120
+surinam ciliegia pitanga,0.5,2,0.045,0.059,0.0,True,False,True,True,frutta,120
+Frutti della passione,4.2,17,0.4,0.1,1.9,True,True,True,True,dolcificanti,5
+sapodilla,33.9,141,0.7,1.9,9.0,False,True,False,False,verdura,80
+pummelo,12.0,48,1.0,0.06,1.3,False,True,True,True,carboidrati,100
+carni di cocco,60.5,1405,13.2,133.0,35.7,False,False,False,False,grassi,15
+amarena,37.9,149,2.3,0.7,7.4,True,True,False,True,grassi,15
+papaya,15.7,62,0.7,0.4,2.5,True,True,True,True,frutta,120
+acerola ciliegia,0.4,2,0.079,0.052,0.077,True,True,True,True,frutta,120
+bacche di ohelo,9.6,39,0.5,0.3,0.0,True,True,True,True,dolcificanti,5
+More di rovo,19.1,81,2.2,0.5,7.8,True,True,True,True,frutta,120
+melone di casaba,11.2,48,1.9,0.2,1.5,False,False,False,False,frutta,120
+durian,9.5,51,0.5,1.9,1.3,True,True,True,True,verdura,80
+foglie di coriandolo crude,0.6,4,0.3,0.086,0.4,False,False,True,True,condimenti,10
+Barbaforte/rafano/cren,0.5,3,0.2,0.062,0.063,True,True,True,True,carboidrati,100
+pasilla peperoncino essiccato,3.6,24,0.9,1.1,1.9,False,False,False,False,condimenti,10
+prezzemolo essiccato,0.3,1,0.1,0.096,0.1,True,True,True,False,carboidrati,100
+peperoncino essiccato,8.7,48,2.0,1.4,3.7,False,False,True,True,condimenti,10
+Semi di coriandolo,1.0,5,0.2,0.3,0.8,False,False,False,False,grassi,15
+erbaccia di aneto secca,55.8,253,20.0,4.4,13.6,False,False,False,False,carboidrati,100
+borragine,2.7,19,1.6,0.6,0.0,True,True,True,True,dolcificanti,5
+epazoto,0.094,0,0.059,0.06,0.051,False,False,True,False,carboidrati,100
+erba cipollina essiccata,0.1,1,0.013,0.055,0.041,True,True,False,False,verdura,80
+timo fresco,0.2,1,0.091,0.068,0.1,False,True,False,False,dolcificanti,5
+butterbur,0.5,4,0.1,0.2,0.0,True,True,True,True,frutta,120
+radice di wasabi,30.6,142,6.2,0.8,10.1,True,True,True,True,frutta,120
+Rosmarino essiccato,0.8,4,0.081,0.2,0.5,False,True,True,False,verdura,80
+radice di zenzero,0.4,2,0.068,0.028,0.058,False,False,True,True,grassi,15
+Pepe bianco,1.6,7,0.2,0.0,0.6,False,False,True,True,condimenti,10
+chiodi di garofano macinati,1.4,6,0.1,0.3,0.7,False,False,True,True,dolcificanti,5
+paprika,3.7,19,1.0,0.9,2.4,True,True,True,False,frutta,120
+macis,2.7,25,0.4,1.7,1.1,True,True,True,True,grassi,15
+foglia di alloro,0.4,2,0.086,0.042,0.2,False,True,True,False,grassi,15
+"eppawCity name (optional, probably does not need a translation)",31.7,150,4.6,1.8,0.0,True,True,True,True,proteine,90
+Dragoncello essiccato,0.3,2,0.1,0.047,0.038,True,True,True,False,carboidrati,100
+Macinato di zenzero,1.3,6,0.2,0.043,0.3,False,False,True,True,dolcificanti,5
+Terreno salato,1.0,4,0.074,0.029,0.6,False,True,True,False,dolcificanti,5
+Pepe nero,1.5,6,0.2,0.006,0.6,True,True,True,True,condimenti,10
+menta di lancia fresca,0.5,3,0.2,0.089,0.4,True,False,True,True,frutta,120
+Condimento a base di pollame,2.9,14,0.4,0.3,0.5,False,False,True,True,condimenti,10
+macinato di noce moscata,1.1,12,0.1,0.8,0.5,False,False,True,True,dolcificanti,5
+curry in polvere,3.7,20,0.8,0.9,2.1,True,True,True,True,verdura,80
+menta piperita,0.2,1,0.038,0.004,0.1,True,True,True,True,grassi,15
+sale,0.0,0,0.0,0.0,0.0,True,True,True,True,condimenti,10
+foglie di coriandolo essiccate,0.3,2,0.1,0.098,0.095,False,False,True,False,dolcificanti,5
+Salvia macinata,0.4,2,0.058,0.046,0.3,True,True,True,True,frutta,120
+aglio in polvere,2.3,10,0.5,0.029,0.3,True,True,False,True,grassi,15
+erba di aneto fresca,0.6,4,0.3,0.063,0.2,False,False,False,False,frutta,120
+cardamomo,1.4,6,0.2,0.1,0.6,False,False,True,True,dolcificanti,5
+zafferano,0.5,2,0.071,0.092,0.002,False,True,True,False,frutta,120
+Tutte le spezie macinate,1.4,5,0.1,0.2,0.4,True,True,True,True,condimenti,10
+prezzemolo fresco,0.2,1,0.1,0.078,0.1,True,True,True,True,dolcificanti,5
+origano essiccato,68.9,265,9.0,4.3,42.5,False,False,True,False,verdura,80
+maggiorana secca,1.0,5,0.2,0.1,0.7,False,False,True,False,carboidrati,100
+erba cipollina cruda,0.1,1,0.03,0.088,0.044,True,True,False,False,verdura,80
+Foglie di canna da sparo,4.4,24,1.1,0.6,2.4,True,True,True,True,grassi,15
+Rosmarino fresco,0.1,1,0.005,0.1,0.012,True,True,True,True,verdura,80
+aglio,0.9,4,0.2,0.026,0.064,True,True,False,True,grassi,15
+terra di cannella,2.1,6,0.1,0.044,1.4,True,True,True,True,dolcificanti,5
+chervile essiccato,0.9,5,0.4,0.002,0.2,False,False,True,False,carboidrati,100
+Pepe di caienna,0.2,1,0.039,0.094,0.052,False,False,False,True,condimenti,10
+curcuma,1.4,8,0.2,0.2,0.5,True,True,True,True,frutta,120
+senape,0.3,3,0.2,0.2,0.2,True,True,False,False,condimenti,10
+peperoncino in polvere,1.3,8,0.4,0.4,0.9,True,True,True,True,condimenti,10
+timo essiccato,63.9,276,9.1,7.4,37.0,False,False,True,False,carboidrati,100
+menta di lancia secca,0.3,1,0.094,0.018,0.1,True,False,False,False,verdura,80
+basilico essiccato,0.3,2,0.2,0.027,0.3,False,False,True,False,dolcificanti,5
+tarassaco cotto,6.7,35,2.1,0.6,3.0,False,False,False,False,carboidrati,100
+basilico fresco,0.2,2,0.2,0.089,0.1,False,False,True,True,dolcificanti,5
+aggancia,4.3,29,2.7,0.9,3.9,False,True,False,True,dolcificanti,5
+Barbaforte/rafano/cren,5.1,31,2.6,0.8,0.9,True,True,True,True,carboidrati,100
+polvere di cipolla,1.9,8,0.2,0.024,0.4,True,False,True,False,verdura,80
+tarassaco crudo,5.1,25,1.5,0.4,1.9,False,False,False,False,carboidrati,100
+"yokanCity name (optional, probably does not need a translation)",8.5,36,0.5,0.022,0.0,True,True,True,True,verdura,80
+fave cotte,33.4,187,12.9,0.7,9.2,True,True,True,True,frutta,120
+fagioli francesi crudi,118.0,631,34.6,3.7,46.4,True,True,True,True,proteine,90
+ceci in scatola,57.0,352,17.8,7.0,0.0,False,True,False,False,proteine,90
+fagioli gialli cotti,44.7,255,16.2,1.9,18.4,False,False,False,False,proteine,90
+fagioli munghi cotti,38.7,212,14.2,0.8,15.4,False,True,True,True,proteine,90
+Fagioli bianchi in scatola,55.5,299,19.0,0.8,12.6,False,True,True,True,proteine,90
+fagioli rosa cotti,47.2,252,15.3,0.8,9.0,True,True,True,True,proteine,90
+fagioli rosa crudi,134.8,720,44.0,2.4,26.7,True,True,True,True,proteine,90
+fagioli navy crudi,126.4,701,46.4,3.1,50.8,True,True,True,True,proteine,90
+fagiolini cotti,9.9,44,2.4,0.4,4.0,False,True,False,True,verdura,80
+Cowpeas a occhi neri crudi,27.3,131,4.3,0.5,7.3,False,False,False,True,carboidrati,100
+edamame cotto,13.8,189,18.5,8.1,8.1,False,False,False,False,carboidrati,100
+cowpeas a occhi neri cotti,33.5,160,5.2,0.6,8.3,False,False,False,True,grassi,15
+Fave giacinto cotte,40.2,227,15.8,1.1,0.0,False,False,False,False,frutta,120
+cowpeas in scatola,32.7,185,11.4,1.3,7.9,False,True,True,True,carboidrati,100
+fagioli pinto cotti,44.8,245,15.4,1.1,15.4,False,False,False,True,proteine,90
+fagioli alati cotti,25.7,253,18.3,10.0,0.0,True,True,True,True,proteine,90
+pintofagioli crudi,120.7,670,41.3,2.4,29.9,True,False,True,True,proteine,90
+Tartaruga nera cruda,116.4,624,39.1,1.7,28.5,True,False,True,True,carboidrati,100
+fave crude,87.4,512,39.2,2.3,37.5,True,True,True,True,condimenti,10
+fagioli di lima in scatola,35.9,190,11.9,0.4,11.6,True,False,True,False,proteine,90
+fave di giacinto crude,127.6,722,50.2,3.5,53.8,False,False,True,False,condimenti,10
+Fagioli bianchi crudi,121.7,673,47.2,1.7,30.7,True,True,True,True,proteine,90
+fagiolini in scatola,15.4,66,3.5,0.4,6.6,True,True,True,True,verdura,80
+fagioli navy in scatola,53.6,296,19.7,1.1,13.4,True,True,True,True,proteine,90
+fagioli munghi crudi,129.6,718,49.4,2.4,33.7,True,True,True,True,proteine,90
+adzuki fagioli crudi,123.9,648,39.1,1.0,25.0,True,True,True,False,proteine,90
+Tartaruga nera cotta,45.0,241,15.1,0.6,15.4,True,False,True,False,frutta,120
+lenticchie rosa crude,113.6,662,47.9,4.2,20.7,True,True,True,True,proteine,90
+fagioli gialli crudi,119.0,676,43.1,5.1,49.2,True,True,True,False,proteine,90
+Fagioli bianchi cotti,44.9,249,17.4,0.6,11.3,True,False,True,True,proteine,90
+lenticchie crude,115.4,678,49.5,2.0,58.6,True,True,True,True,proteine,90
+fagioli di mirtillo cotto,43.3,241,16.5,0.8,17.7,False,False,True,True,proteine,90
+ceci crudi,121.3,728,38.6,12.1,34.8,True,False,True,False,proteine,90
+lenticchie cotte,39.9,230,17.9,0.8,15.6,True,True,True,True,proteine,90
+fagioli al forno in scatola,53.7,239,12.1,0.9,10.4,False,False,True,True,proteine,90
+fagioli di mirtillo rosso in scatola,39.3,216,14.4,0.7,16.4,False,False,True,False,proteine,90
+fagioli neri cotti,40.8,227,15.2,0.9,15.0,False,True,False,True,proteine,90
+fagioli di lima cotti,39.3,216,14.7,0.7,13.2,False,False,True,True,proteine,90
+fagioli mungo crudi,122.1,706,52.2,3.4,37.9,True,True,True,True,proteine,90
+piselli piccioni crudi,128.7,703,44.5,3.1,30.8,False,False,True,False,dolcificanti,5
+fave in scatola,31.8,182,14.0,0.6,9.5,False,True,True,False,frutta,120
+fagiolini gialli snap crudi,7.1,31,1.8,0.1,3.4,True,True,True,True,verdura,80
+favette crude,7.0,31,1.8,0.2,2.7,True,True,True,True,frutta,120
+fagiolini gialli in scatola,8.4,36,1.9,0.2,3.6,True,True,False,False,verdura,80
+piselli piccioni cotti,39.1,203,11.4,0.6,11.3,False,False,True,True,dolcificanti,5
+catjang cowpeas crudi,99.6,573,39.8,3.5,17.9,False,False,True,True,proteine,90
+fagioli navy cotti,47.4,255,15.0,1.1,19.1,True,True,True,True,proteine,90
+Fave crude,120.6,672,45.0,3.2,0.0,True,True,True,True,condimenti,10
+cowpeas cotto,14.5,81,5.4,0.4,4.6,False,False,False,False,carboidrati,100
+Fave cotte,37.1,207,13.8,1.0,0.0,True,True,True,True,frutta,120
+fagioli francesi cotti,42.5,228,12.5,1.3,16.6,True,True,True,True,proteine,90
+Lima fave crude,112.8,602,38.2,1.2,33.8,True,False,True,True,frutta,120
+fagioli alati crudi,75.9,744,54.0,29.7,47.1,True,True,True,True,proteine,90
+adzuki fagioli cotti,57.0,294,17.3,0.2,16.8,False,False,False,False,proteine,90
+fagioli neri crudi,121.0,662,41.9,2.8,30.1,True,True,True,True,proteine,90
+catjang cowpeas cotto,34.7,200,13.9,1.2,6.2,False,False,False,True,frutta,120
+fagioli di Lima del bambino cotti,35.0,189,12.0,0.5,10.8,False,False,False,True,proteine,90
+cowpeas crudi,8.9,41,3.1,0.3,3.1,True,True,True,True,frutta,120
+fagioli di shallie in scatola,15.2,74,4.3,0.5,8.3,True,True,True,True,proteine,90
+yardlong fave crude,103.4,579,40.6,2.2,18.4,True,True,True,True,condimenti,10
+fagiolini in scatola,36.4,197,11.0,1.3,11.0,True,True,True,True,verdura,80
+ceci cotti,45.0,269,14.5,4.2,12.5,False,False,False,False,proteine,90
+fagioli di mirtillo rosso crudi,117.1,653,44.9,2.4,48.2,False,False,True,False,proteine,90
+fagioli mungo cotti,33.0,189,13.6,1.0,11.5,False,False,True,True,proteine,90
+Tamarindo,1.3,5,0.057,0.013,0.1,False,True,True,False,dolcificanti,5
+fagiolini gialli cotti,9.9,44,2.4,0.4,4.1,False,True,False,False,verdura,80
+iardalong beans cooted,36.1,202,14.2,0.8,6.5,True,True,True,True,condimenti,10
+bistecca di manzo di pancetta,0.2,146,8.2,12.5,0.0,True,True,True,True,proteine,90
+Argille crude,0.0,912,85.8,60.7,0.0,True,True,True,True,condimenti,10
+bacon,0.2,106,3.3,10.2,0.0,True,True,True,True,proteine,90
+costolette di agnello cotte,0.0,915,53.9,76.0,0.0,True,True,True,False,dolcificanti,5
+stinco d'agnello greggio,0.0,912,84.3,61.2,0.0,True,True,False,False,dolcificanti,5
+scrapple,4.0,60,2.3,3.9,0.052,True,True,True,True,grassi,15
+pepite di pollo,3.0,61,3.2,4.1,0.2,True,True,True,False,proteine,90
+agnello tritato cotto,0.0,886,77.5,61.5,0.0,True,True,False,False,dolcificanti,5
+carni di agnello cotte,0.0,678,63.8,45.0,0.0,True,True,False,False,dolcificanti,5
+estensore di carne,33.7,275,33.5,2.6,15.4,True,True,True,False,proteine,90
+gamba d'agnello cruda,0.0,1043,81.2,77.4,0.0,True,True,False,False,carboidrati,100
+lombo d'agnello cotto,0.0,202,16.1,14.8,0.0,True,True,False,False,dolcificanti,5
+pollo patty,7.7,172,8.9,11.7,0.2,True,True,True,True,proteine,90
+stinco d'agnello arrostito,0.0,605,71.0,33.5,0.0,True,True,False,True,dolcificanti,5
+Polpettone per barbecue,1.5,40,3.6,2.0,0.0,True,True,True,True,verdura,80
+Lombata di agnello cotta,0.0,765,64.5,54.2,0.0,True,True,False,False,dolcificanti,5
+Insalata di pollame,1.0,26,1.5,1.8,0.0,False,False,True,True,carboidrati,100
+agnello macinato crudo,0.0,80,4.7,6.6,0.0,True,True,False,False,dolcificanti,5
+Lombata di agnello cruda,0.0,88,4.6,7.5,0.0,True,True,False,False,dolcificanti,5
+lombata di agnello cruda,0.0,1234,76.8,100.3,0.0,True,True,False,False,dolcificanti,5
+salsiccia patty mcdonalds,0.4,115,4.3,11.2,0.0,True,True,True,True,proteine,90
+foreshank d'agnello cotto,0.0,360,42.0,19.9,0.0,True,True,False,True,dolcificanti,5
+insalata di prosciutto,4.8,97,3.9,7.0,0.0,True,True,False,False,proteine,90
+costola di agnello cruda,0.0,1687,65.9,156.0,0.0,True,True,False,False,dolcificanti,5
+spalla di agnello cruda,0.0,1198,75.2,97.3,0.0,True,True,False,False,dolcificanti,5
+carni di agnello crude,0.0,1102,79.6,84.6,0.0,True,True,False,True,dolcificanti,5
+spalle di agnello cotte,0.0,750,62.5,53.5,0.0,True,True,False,False,dolcificanti,5
+carni di montone cotte,0.027,66,9.5,3.1,0.0,False,False,False,False,carboidrati,100
+Gambe di agnello cotte,0.0,684,67.7,43.7,0.0,True,True,True,True,dolcificanti,5
+bastone di manzo,1.1,110,4.3,9.9,0.0,True,True,True,True,proteine,90
+lombata di vitello cotta,0.0,517,64.1,26.9,0.0,True,True,True,False,dolcificanti,5
+costola di vitello cotta,0.0,444,57.4,22.2,0.0,True,True,True,False,dolcificanti,5
+carne di vitello cotta,0.0,483,62.9,23.8,0.0,True,True,False,False,proteine,90
+costola di manzo arrostita,0.0,238,15.4,19.1,0.0,True,True,True,True,proteine,90
+lombata di vitello cruda,0.0,689,86.5,35.4,0.0,True,True,True,True,verdura,80
+filetto di manzo top loin grigliato,0.8,323,37.0,19.0,0.0,True,True,True,False,proteine,90
+carne di manzo sotto la lama bistecca cotta,0.0,983,140.8,46.7,0.0,True,True,False,False,proteine,90
+beffarda bistecca tenera cruda,0.0,244,42.2,8.3,0.0,True,False,True,True,frutta,120
+manzo macinato cotto,0.0,375,35.5,24.8,0.0,True,True,True,True,proteine,90
+carni bovine macinate crude,0.0,1506,65.1,136.1,0.0,False,False,True,True,carboidrati,100
+manzo diced asda,10.5,48,0.0,0.7,0.0,True,True,True,True,proteine,90
+costola di vitello cruda,0.0,735,85.5,40.9,0.0,True,True,True,True,dolcificanti,5
+vitello macinato crudo,0.0,41,5.5,1.9,0.0,True,True,True,True,dolcificanti,5
+T bistecca cotta,0.0,1049,89.3,74.1,0.0,True,False,True,True,dolcificanti,5
+gamba di vitello rotonda cruda,0.0,531,95.2,14.0,0.0,True,True,False,False,carboidrati,100
+bistecca di manzo di manzo macinata cruda,0.0,1222,123.4,77.3,0.0,True,True,True,True,proteine,90
+bistecca alla griglia con piatto di manzo,0.0,508,47.1,35.6,0.0,True,True,False,False,proteine,90
+vitello macinato cotto,0.0,514,72.9,22.6,0.0,True,True,True,True,dolcificanti,5
+gamba di vitello tondo cotta,0.0,574,98.4,17.2,0.0,True,True,True,False,dolcificanti,5
+bistecca al portinaio cruda,0.0,1170,81.6,91.1,0.0,True,False,False,True,carboidrati,100
+stinco di vitello greggio,0.0,513,86.9,15.8,0.0,True,True,True,False,dolcificanti,5
+petto di vitello cotto,0.0,753,76.3,47.5,0.0,True,True,True,True,dolcificanti,5
+in scatola di carne di manzo salata,0.0,53,5.7,3.1,0.0,True,True,True,False,proteine,90
+costola occhio bistecca grigliata,0.0,680,62.4,47.7,0.0,False,False,False,False,dolcificanti,5
+spalla di vitello cruda,0.0,0,0.0,0.0,0.0,True,True,False,False,dolcificanti,5
+T bistecca ossea cruda,0.0,1052,85.7,76.3,0.0,True,False,True,True,verdura,80
+bistecca di lombata,0.0,324,49.5,14.1,0.0,True,False,True,True,dolcificanti,5
+finta bistecca tenera cotta,0.0,137,21.9,4.9,0.0,True,False,True,True,frutta,120
+carne di manzo cotta,0.0,385,64.8,12.1,0.0,True,True,True,True,proteine,90
+Chuck lama arrosto crudo,0.0,1125,77.8,88.0,0.0,False,False,True,True,carboidrati,100
+bistecca alla spalla di manzo cruda,0.0,349,48.2,17.3,0.0,True,True,False,True,proteine,90
+lama superiore di manzo cotta,0.0,184,21.9,10.0,0.0,True,True,True,True,proteine,90
+carne di manzo cotta,0.006,53,3.8,4.0,0.0,True,True,True,True,proteine,90
+carne di manzo rotonda cruda,0.0,753,100.1,36.0,0.0,True,True,False,False,proteine,90
+bistecca di manzo alla griglia,0.0,155,24.0,5.8,0.0,True,True,False,True,proteine,90
+Chuck occhio bistecca cruda,0.0,856,72.4,62.8,0.0,False,False,False,True,carboidrati,100
+base di manzo rotondo bistecca cotta,0.0,980,155.8,35.1,0.0,True,True,True,True,proteine,90
+bistecca al portinaio cotta,0.0,235,20.4,16.4,0.0,True,False,False,True,dolcificanti,5
+carne bovina sotto lama bistecca cruda,0.0,1235,126.8,80.8,0.0,True,True,False,True,proteine,90
+bistecca di manzo cruda,0.9,617,47.8,46.8,0.0,True,True,True,True,proteine,90
+carne bovina in scatola,0.0,111,9.2,7.9,0.0,True,True,False,True,proteine,90
+manzo prima colazione strisce crude,0.2,92,2.8,8.8,0.0,True,True,True,False,proteine,90
+Brisket di manzo cotto,0.0,589,46.0,43.6,0.0,True,True,True,True,proteine,90
+manzo macinato crudo,0.6,898,66.6,67.6,0.0,True,True,True,True,proteine,90
+carne di manzo tritacarne asda,6.8,55,0.0,3.1,0.0,True,True,True,True,proteine,90
+senza grasso di manzo di pastrami,0.1,9,1.9,0.1,0.0,True,True,True,False,proteine,90
+costola occhio bistecca cruda,0.4,743,62.8,54.5,0.0,False,False,False,True,carboidrati,100
+bistecca di manzo cotta,0.0,374,37.0,24.0,0.0,True,True,True,True,proteine,90
+Chuck lama arrosto cotto,0.0,842,66.1,62.0,0.0,False,True,True,True,carboidrati,100
+carne di manzo salata essiccata,0.06,4,0.9,0.019,0.0,True,True,False,False,proteine,90
+bistecca di manzo cotta,0.0,380,51.8,17.5,0.0,True,True,True,True,proteine,90
+Chuck occhio bistecca grigliata,0.0,853,76.9,60.5,0.0,False,False,False,False,carboidrati,100
+carni bovine crude,0.0,653,87.8,30.7,0.0,False,False,True,True,carboidrati,100
+lombata di vitello cotta,0.0,80,8.5,4.9,0.0,True,True,True,False,dolcificanti,5
+lombata di vitello cruda,0.0,46,5.3,2.6,0.0,True,True,True,True,verdura,80
+spalle di vitello cotte,0.0,435,61.2,19.4,0.0,True,True,True,False,dolcificanti,5
+bistecca di beef loin cruda,0.0,405,32.2,29.8,0.0,False,False,False,True,condimenti,10
+stinco di vitello cotto,0.0,371,61.2,12.0,0.0,True,True,True,True,dolcificanti,5
+Brisket di manzo crudo,0.0,1139,83.6,86.5,0.0,True,True,True,True,proteine,90
+manzo di pastrami,0.3,104,15.5,4.1,0.0,True,True,True,True,proteine,90
+bistecca di manzo cruda,0.0,47,6.0,2.3,0.0,True,True,True,True,proteine,90
+bistecca di manzo cotta,0.0,430,47.7,25.2,0.0,True,True,True,True,proteine,90
+petto di vitello crudo,0.0,943,79.2,66.9,0.0,True,True,True,True,dolcificanti,5
+costola di manzo cruda,0.0,1433,73.8,123.8,0.0,True,True,True,True,proteine,90
+carne di manzo secca,2.2,82,6.6,5.1,0.4,True,True,False,False,proteine,90
+manzo prima colazione strisce cotte,0.2,51,3.5,3.9,0.0,True,True,True,True,proteine,90
+polpettone di maiale,2.6,66,3.3,4.6,0.0,True,True,False,True,dolcificanti,5
+manzo pranzo di carne in gelatina,0.0,31,5.3,0.9,0.0,True,True,True,True,proteine,90
+Padrami di tacchino,0.5,38,4.6,1.8,0.062,True,True,False,False,dolcificanti,5
+salame di maiale,0.2,41,2.3,3.4,0.0,True,True,False,True,dolcificanti,5
+pancetta allo stile canadese cruda,0.5,45,5.9,2.0,0.0,True,True,False,False,carboidrati,100
+pagnotte di miele,2.6,85,9.9,3.6,0.0,True,False,True,False,dolcificanti,5
+salame di carne di maiale,0.076,37,2.1,3.1,0.0,True,True,False,True,proteine,90
+Bologna di maiale di manzo,1.6,92,4.6,7.4,0.0,True,True,False,True,proteine,90
+salame di carne di maiale cotto,0.3,41,2.7,3.2,0.0,True,True,False,True,proteine,90
+prima colazione di maiale strisce crude,0.2,88,2.7,8.4,0.0,True,True,True,False,condimenti,10
+polpettone di sottaceto,3.2,86,4.3,6.1,0.6,True,True,True,False,condimenti,10
+pagnotta di lusso,1.4,39,5.2,1.3,0.0,False,True,True,False,dolcificanti,5
+mortadella,0.5,47,2.5,3.8,0.0,True,True,True,True,carboidrati,100
+Bologna di maiale,0.2,69,4.3,5.6,0.0,True,True,False,False,condimenti,10
+salame di tacchino cotto,0.081,9,1.0,0.5,0.054,True,True,False,False,dolcificanti,5
+manzo salato,0.0,10,0.5,0.9,0.0,True,True,True,False,proteine,90
+pagnotte al pepe,1.3,42,4.9,1.8,0.0,True,False,True,True,condimenti,10
+pranzo carne di manzo,0.0,10,1.8,0.3,0.0,True,True,True,True,proteine,90
+lebano bologna,0.3,98,10.8,6.0,0.0,False,False,True,False,dolcificanti,5
+pollo maiale bologna,1.2,94,2.9,8.6,0.0,True,True,False,False,proteine,90
+Rotolo di tacchino,0.6,40,4.9,1.9,0.0,True,True,False,False,dolcificanti,5
+salame di manzo cotto,0.5,68,3.3,5.8,0.0,True,True,True,True,proteine,90
+yachtwurst cotto,0.8,150,8.3,12.7,0.0,True,True,True,True,carboidrati,100
+salame italiano,0.1,43,2.2,3.7,0.0,True,True,False,False,dolcificanti,5
+Prosciutto di tacchino,0.3,38,5.5,1.6,0.0,True,True,False,False,proteine,90
+Bologna di tacchino,1.3,59,3.2,4.5,0.1,True,True,False,False,carboidrati,100
+petto di tacchino affettato,0.4,17,2.4,0.6,0.0,True,True,False,True,carboidrati,100
+pranzo carne di maiale manzo,0.7,99,3.5,9.0,0.0,True,True,True,True,proteine,90
+Bologna di manzo,1.3,90,3.3,7.8,0.0,True,True,True,False,proteine,90
+pancetta di tacchino cotta,2.5,313,24.3,22.9,0.0,True,True,False,False,frutta,120
+emu cotto macinato,0.0,178,31.0,5.1,0.0,False,False,False,False,dolcificanti,5
+struzzo gamba cruda,0.0,94,19.0,1.5,0.0,False,True,True,False,carboidrati,100
+striscia di struzzo cruda,0.0,108,20.1,2.4,0.0,True,True,True,True,dolcificanti,5
+filetto di emu cotto,0.0,607,123.2,9.1,0.0,False,False,False,False,dolcificanti,5
+Barbabietole da zucchero,0.0,105,18.8,2.7,0.0,False,False,True,True,dolcificanti,5
+emu tamburi cotti,0.0,649,134.7,8.4,0.0,False,False,True,True,dolcificanti,5
+tartaruga verde cruda,0.0,25,5.6,0.1,0.0,True,True,True,True,frutta,120
+bisonte macinato cotto,0.0,448,63.6,21.6,0.0,False,False,False,True,carboidrati,100
+carni di capra crude,0.0,494,93.4,10.5,0.0,False,False,True,False,carboidrati,100
+emu crudo macinato,0.0,157,26.6,4.7,0.0,False,False,True,True,carboidrati,100
+macinato di struzzo grezzo,0.0,180,22.0,9.5,0.0,False,False,True,False,carboidrati,100
+la punta di struzzo cotta,0.0,123,24.2,2.2,0.0,False,True,True,False,dolcificanti,5
+Caribou cotto,0.0,210,38.0,6.4,0.0,False,False,False,True,carboidrati,100
+macinato di struzzo cotto,0.0,163,24.3,6.6,0.0,False,False,True,True,dolcificanti,5
+cotto alla gamba di struzzo,0.0,120,24.7,1.6,0.0,False,False,True,False,dolcificanti,5
+lombo superiore di struzzo cotto,0.0,132,23.9,3.3,0.0,False,True,True,False,dolcificanti,5
+Strich strip cotto,0.0,139,25.0,3.6,0.0,True,True,True,True,frutta,120
+punta di struzzo cruda,0.0,97,18.6,2.0,0.0,False,False,True,False,frutta,120
+struzzo rotondo grezzo,0.0,99,18.7,2.0,0.0,False,False,True,False,carboidrati,100
+bisonte crudo macinato,0.099,124,17.2,6.1,0.0,False,False,True,True,carboidrati,100
+struzzo ventilatore grezzo,0.0,99,18.5,2.3,0.0,True,True,True,True,carboidrati,100
+lombo superiore di struzzo grezzo,0.0,101,18.4,2.5,0.0,True,True,True,False,dolcificanti,5
+cervello di vitello cotto,0.0,461,38.9,32.6,0.0,True,True,True,False,dolcificanti,5
+la lingua di vitello cotta,0.0,515,65.9,25.8,0.0,True,True,True,False,frutta,120
+cuore di manzo cotto,0.057,47,8.1,1.3,0.0,True,True,False,False,proteine,90
+fegato di tacchino cotto,0.0,100,14.3,4.3,0.0,True,True,True,False,dolcificanti,5
+timo di vitello cotto,0.0,35,6.4,0.9,0.0,True,True,False,False,dolcificanti,5
+cervello di manzo cotto,0.0,688,44.1,55.6,0.0,True,True,True,False,proteine,90
+pancreas di manzo cotto,0.0,602,60.2,38.2,0.0,True,True,True,True,proteine,90
+Trippa di manzo cotta,1.7,80,10.0,3.4,0.0,True,True,True,False,proteine,90
+di pollo cotto,0.0,223,44.1,3.9,0.0,True,True,True,False,proteine,90
+pancreas di maiale cotto,0.0,537,69.8,26.5,0.0,True,True,True,True,dolcificanti,5
+lingua di manzo cotta,0.0,80,5.5,6.3,0.0,True,True,True,True,proteine,90
+Cuore d'agnello cotto,3.7,353,47.7,15.1,0.0,True,True,False,False,dolcificanti,5
+milza di manzo cotta,0.0,447,77.3,12.9,0.0,True,True,True,False,proteine,90
+reni di vitello cotti,0.0,300,48.4,10.4,0.0,True,True,False,False,dolcificanti,5
+Cuore di pollo cotto,0.1,268,38.3,11.5,0.0,True,True,True,False,proteine,90
+Lingue di agnello cotte,0.0,701,55.0,51.7,0.0,True,True,False,True,dolcificanti,5
+Cuore di vitello cotto,0.3,368,57.7,13.4,0.0,True,True,False,True,dolcificanti,5
+fegato di pollo cotto,0.5,76,11.3,2.8,0.0,True,True,True,True,proteine,90
+pancreas d'agnello cotto,0.0,541,52.7,34.9,0.0,True,True,True,True,dolcificanti,5
+milza di vitello cotta,0.0,445,83.1,10.0,0.0,True,True,False,False,dolcificanti,5
+fegato d'agnello cotto,8.5,739,102.7,29.6,0.0,True,True,False,False,dolcificanti,5
+Gzzard di tacchino cotto,0.0,70,11.9,2.1,0.0,True,True,True,False,dolcificanti,5
+lampadina milza cotta,0.0,460,78.1,14.1,0.0,False,False,True,False,frutta,120
+Cuore di tacchino cotto,0.0,35,5.0,1.5,0.0,True,True,False,False,dolcificanti,5
+fegato di manzo cotto,3.5,130,19.8,3.6,0.0,True,True,True,True,proteine,90
+Polmoni d'agnello cotti,0.0,431,75.7,11.8,0.0,True,True,False,False,dolcificanti,5
+cervello di maiale cotto,0.0,527,46.4,36.3,0.0,True,True,False,False,dolcificanti,5
+fegato d'oca,5.9,125,15.4,4.0,0.0,True,True,True,False,frutta,120
+rognoni di maiale cotti,0.0,211,35.6,6.6,0.0,True,True,False,True,dolcificanti,5
+cervello d'agnello cotto,0.0,503,43.5,35.3,0.0,True,True,False,False,dolcificanti,5
+Cuore di maiale cotto,0.6,215,34.2,7.3,0.0,True,True,False,True,dolcificanti,5
+reni d'agnello cotti,2.5,349,60.3,9.2,0.0,True,True,False,False,dolcificanti,5
+polmoni di manzo cotti,0.0,364,61.8,11.2,0.0,True,True,True,True,proteine,90
+pancreas di vitello cotto,0.0,614,69.8,35.0,0.0,True,True,True,True,dolcificanti,5
+fegato di maiale cotto,13.3,584,92.1,15.6,0.0,True,True,False,True,dolcificanti,5
+reni di manzo cotti,0.0,45,7.7,1.3,0.0,True,True,True,True,proteine,90
+Gelsomini di tacchino cotti,0.0,164,25.1,6.3,0.0,True,True,False,True,dolcificanti,5
+fegato di anatra crudo,1.6,60,8.2,2.0,0.0,True,True,True,True,dolcificanti,5
+fegato di vitello cotto,3.0,154,22.7,5.0,0.0,True,True,True,True,dolcificanti,5
+Polmoni di maiale cotti,0.0,297,49.8,9.3,0.0,True,True,False,True,dolcificanti,5
+polmoni di vitello cotti,0.0,312,56.2,7.9,0.0,True,True,False,False,dolcificanti,5
+timo di manzo cotto,0.0,1215,83.2,95.2,0.0,True,True,False,False,proteine,90
+prosciutto,1.0,46,4.6,2.5,0.4,True,True,False,True,proteine,90
+carne di maiale cotta,0.0,283,14.1,14.1,0.0,True,True,False,False,proteine,90
+pancetta arrostita,0.1,43,3.0,3.3,0.0,True,True,False,True,carboidrati,100
+maiale top loin arrosti crudi,0.0,3644,468.4,182.8,0.0,True,True,False,False,grassi,15
+lama di maiale rotolo grezzo,0.0,76,4.7,6.2,0.0,True,True,False,True,grassi,15
+spalle di maiale crude,0.0,2399,204.2,174.9,0.0,True,True,True,False,condimenti,10
+Ribs di maiale cotto,0.0,703,51.4,53.6,0.0,True,True,False,True,dolcificanti,5
+stomaco di maiale cotto,0.029,44,6.1,2.1,0.0,True,True,False,True,dolcificanti,5
+prosciutto affumicato al miele cotto,4.0,67,9.9,1.3,0.0,True,True,False,True,proteine,90
+boston butt bistecca cruda,0.0,844,79.0,56.1,0.0,True,True,True,True,verdura,80
+braciole di maiale cotto,0.0,140,23.3,4.5,0.0,True,True,False,False,dolcificanti,5
+country country country costole crude,0.0,242,24.8,15.1,0.0,True,True,True,True,condimenti,10
+patatie di prosciutto,1.1,205,8.3,18.3,0.0,True,True,False,False,proteine,90
+piedi di maiale cotti,0.0,67,6.2,4.5,0.0,True,True,False,False,dolcificanti,5
+macinato di maiale cotto,0.0,930,80.4,65.0,0.0,True,True,False,True,dolcificanti,5
+cotolette di lonza al centro di maiale cotto,0.0,328,40.2,17.4,0.0,True,True,True,True,dolcificanti,5
+carne di maiale cap bistecca cotta,0.0,307,53.5,8.6,0.0,True,True,False,False,proteine,90
+lama di maiale costolette crude,0.0,376,55.8,15.4,0.0,True,True,True,False,condimenti,10
+Barbabietole da zucchero,0.0,606,104.3,17.8,0.0,False,False,True,True,dolcificanti,5
+lombo di maiale costolette crude,0.0,1090,205.5,23.3,0.0,True,True,True,False,condimenti,10
+cappuccio di maiale bistecca cruda,0.0,284,50.0,7.8,0.0,True,True,False,False,condimenti,10
+carcassa di maiale cruda,0.0,1706,63.1,159.1,0.0,True,True,False,True,carboidrati,100
+Splean di maiale cotto,0.0,446,84.3,9.6,0.0,True,True,False,False,dolcificanti,5
+prosciutto tritato,1.2,50,4.6,2.9,0.0,True,True,False,True,proteine,90
+pancetta centro lonza cruda,0.0,338,41.2,18.0,0.0,True,True,True,True,frutta,120
+braciole di lama di maiale cotte,1.1,265,32.4,14.6,0.0,True,True,False,True,dolcificanti,5
+bistecca boston cotta,0.0,494,46.4,32.7,0.0,True,True,True,True,frutta,120
+carne di maiale cruda,0.0,179,2.6,18.6,0.0,True,True,False,False,proteine,90
+lombo di maiale costolette crude,0.0,287,39.9,12.8,0.0,True,True,True,False,condimenti,10
+bistecca di maiale brasata,0.087,694,68.2,44.7,0.0,True,True,False,True,dolcificanti,5
+bistecche di maiale boston cotte,0.0,438,43.2,28.1,0.0,True,True,True,True,proteine,90
+pancetta cotta,0.068,43,3.5,3.1,0.0,True,True,False,True,frutta,120
+Hocks di maiale sottaceto,0.0,48,5.4,3.0,0.0,True,True,False,True,condimenti,10
+arrosto di maiale boston cotto,0.0,705,60.5,49.4,0.0,True,True,False,False,dolcificanti,5
+bacon alla griglia in stile canadese,0.3,43,5.7,2.0,0.0,False,True,False,True,proteine,90
+bistecca di prosciutto,0.0,70,11.1,2.4,0.0,True,True,False,True,proteine,90
+grasso di maiale,0.0,3683,13.2,402.3,0.0,True,True,False,True,grassi,15
+pancetta al forno,0.1,44,2.9,3.5,0.0,True,True,False,True,dolcificanti,5
+carne di maiale braccio picnic crudo,0.0,5298,513.6,343.4,0.0,True,True,False,False,proteine,90
+sale di maiale crudo,0.0,212,1.4,22.8,0.0,True,True,True,True,condimenti,10
+picnic al braccio di maiale cotto,0.0,5292,560.3,322.7,0.0,True,True,False,False,dolcificanti,5
+cotolette di lombo di maiale cotto,0.0,270,39.4,11.2,0.0,True,True,True,False,dolcificanti,5
+crudo di maiale macinato,0.0,329,21.1,26.5,0.0,True,True,False,True,dolcificanti,5
+spalla di maiale cruda,0.0,1070,77.9,81.6,0.0,True,True,False,False,condimenti,10
+Chitterlings di maiale cotto,0.0,66,3.5,5.8,0.0,True,True,False,True,dolcificanti,5
+prima colazione di maiale strisce cotte,0.1,52,3.3,4.1,0.0,True,True,True,False,dolcificanti,5
+Rotolo di lama di maiale arrosto,1.4,1079,65.0,88.3,0.0,True,True,False,True,dolcificanti,5
+coda di maiale cotta,0.0,1089,46.8,98.5,0.0,True,True,False,True,dolcificanti,5
+arrosti di costole di maiale al centro crudi,0.0,275,44.0,9.7,0.0,True,True,True,True,grassi,15
+arrosti di costole di maiale arrosto,0.0,1942,211.3,114.9,0.0,True,True,True,True,dolcificanti,5
+prosciutto macinato,0.4,55,3.4,4.3,0.0,True,True,False,True,proteine,90
+prosciutto torrefatto,0.6,316,28.7,21.3,0.0,True,True,False,True,proteine,90
+lombo di maiale crudo,0.0,232,23.1,14.7,0.0,True,True,True,True,dolcificanti,5
+spalle di maiale arrostite,0.0,2564,202.0,188.9,0.0,True,True,False,True,grassi,15
+pancia di maiale crudo,0.0,2350,42.4,240.5,0.0,True,True,False,True,dolcificanti,5
+prosciutto crudo,0.046,266,23.8,18.2,0.0,True,True,False,True,proteine,90
+prosciutto extra magro,0.6,45,5.1,2.3,0.0,True,True,True,True,proteine,90
+piedi di maiale sottaceti,0.029,635,52.8,45.5,0.0,True,True,False,False,dolcificanti,5
+spalla di maiale cotta,0.0,394,31.4,28.9,0.0,True,True,False,False,dolcificanti,5
+arrosti di lonza arrosto,0.0,1628,224.3,74.8,0.0,False,False,True,False,dolcificanti,5
+pelle di maiale,0.0,154,17.3,8.9,0.0,True,True,False,True,dolcificanti,5
+costolette di maiale country style cotte,0.0,235,22.8,15.2,0.0,True,True,True,True,dolcificanti,5
+bistecca con lama di maiale cruda,0.6,664,67.6,43.7,0.0,True,True,False,True,dolcificanti,5
+Barbabietole di maiale cotte,0.0,153,22.7,6.2,0.0,True,True,True,True,dolcificanti,5
+lombo di maiale cotto,0.0,213,24.2,12.1,0.0,True,True,False,False,dolcificanti,5
+orecchie di maiale cotte,0.2,184,17.7,12.0,0.0,True,True,False,True,dolcificanti,5
+Lingua di maiale cotta,0.0,626,55.7,43.0,0.0,True,True,False,True,frutta,120
+Ribs di maiale crudi,0.0,3593,200.6,303.5,0.0,True,True,True,True,proteine,90
+prosciutto patties grigliato,1.0,205,8.0,18.5,0.0,True,True,False,True,proteine,90
+pelle di pollo arrostita,0.0,508,22.8,45.6,0.0,True,True,True,False,proteine,90
+petto di tacchino crudo,0.0,3554,495.6,158.9,0.0,True,True,True,True,carboidrati,100
+crudo di tacchino macinato,0.0,169,22.4,8.7,0.0,True,True,True,True,carboidrati,100
+ala di pollo cotta,0.0,52,4.8,3.5,0.0,True,True,True,False,proteine,90
+arrosto di tacchino,4.1,209,28.8,7.8,0.0,True,True,False,True,carboidrati,100
+fagiano di carne cruda,0.0,1448,181.6,74.3,0.0,True,True,False,False,proteine,90
+pollo all'indietro crudo,0.0,188,8.3,17.0,0.0,True,True,True,True,proteine,90
+pollo alla schiena cotto,0.0,93,8.0,6.5,0.0,True,True,True,False,proteine,90
+Cosce di pollo fritte,13.8,431,34.4,25.5,0.5,True,True,True,True,proteine,90
+Piedi di pollo cotti,0.9,975,88.0,66.2,0.0,True,True,True,False,proteine,90
+Bistecca di tacchino fritta,10.9,179,9.1,10.8,0.0,True,True,False,False,frutta,120
+carne di taco di tacchino cotta,5.5,271,30.7,13.9,0.0,True,True,False,False,proteine,90
+coscia di pollo cruda,0.6,736,56.3,54.9,0.0,True,True,True,True,proteine,90
+carne di pollo cruda,0.0,1978,171.1,138.6,0.0,True,True,True,False,proteine,90
+collo di pollo cotto,0.0,94,7.5,6.9,0.0,True,True,True,False,proteine,90
+pollo fritto drumstick,6.0,193,15.8,11.3,0.2,True,True,True,True,proteine,90
+uovo di quaglia,0.08,14,1.2,1.0,0.0,True,False,True,True,proteine,90
+carne di anatra cotta,0.0,472,26.6,39.7,0.0,True,True,False,False,proteine,90
+ala di pollo arrostita,0.0,216,20.2,14.3,0.0,True,True,True,False,proteine,90
+carne di quaglia cotta,0.0,1028,113.7,63.9,0.0,True,True,False,False,proteine,90
+carne d'oca cotta,0.0,427,35.2,30.7,0.0,True,True,False,False,proteine,90
+petto di pollo cotto,0.0,114,17.3,4.5,0.0,True,True,True,True,proteine,90
+collo di pollo crudo,0.0,149,7.0,13.1,0.0,True,True,True,True,proteine,90
+Uovo d'anatra,1.0,130,9.0,9.6,0.0,True,True,False,True,proteine,90
+fagiano al seno crudo,0.0,484,88.7,11.8,0.0,False,False,True,False,frutta,120
+carne di anatra cruda,0.0,5123,145.7,498.8,0.0,True,True,False,False,proteine,90
+carne squab cruda,0.0,585,36.8,47.4,0.0,True,True,True,True,proteine,90
+bastoncini di pollo crudi,0.1,211,23.4,12.4,0.0,True,True,True,False,proteine,90
+carni di tacchino arrostite,0.031,284,42.8,11.1,0.0,True,True,False,False,carboidrati,100
+petto di pollo crudo,0.0,299,36.3,16.1,0.0,True,True,True,True,proteine,90
+pollo macinato cotto,0.0,474,58.4,27.4,0.0,True,True,True,False,proteine,90
+ala di tacchino cotta,0.0,426,50.9,23.1,0.0,True,True,False,False,dolcificanti,5
+carne d'oca cruda,0.0,6077,259.8,550.7,0.0,True,True,False,False,proteine,90
+petto di tacchino arrostito,0.0,3266,496.1,128.0,0.0,True,True,False,True,carboidrati,100
+strisce di pollo fajita,0.2,13,1.7,0.5,0.0,True,True,True,False,proteine,90
+Pollo croccante strips tyson,0.0,145,0.0,6.0,0.0,True,True,True,True,proteine,90
+cioccolato budino grasso gratis,23.6,105,2.2,0.3,0.3,False,False,True,True,grassi,15
+budino di tapioca,23.9,143,2.1,4.3,0.0,True,True,True,True,carboidrati,100
+tapioca pudding senza grassi,23.9,105,1.6,0.4,0.0,True,True,False,False,grassi,15
+budino di riso,20.8,122,3.6,2.4,0.3,False,False,True,True,carboidrati,100
+budino di mais,42.4,328,11.1,12.6,3.0,False,False,True,True,grassi,15
+budino al cioccolato,34.5,213,3.1,6.9,0.0,False,False,True,True,carboidrati,100
+budino al limone,30.2,173,4.1,4.4,0.0,False,False,True,True,frutta,120
+budino alla vaniglia,33.9,195,2.2,5.7,0.0,False,False,True,True,carboidrati,100
+profeel proteiinirahka valio,19.3,140,175.0,0.4,0.0,False,True,True,False,frutta,120
+cottage formaggio crema,0.7,20,2.2,0.9,0.0,True,True,True,True,proteine,90
+zaziki milfina,0.0,51,0.0,4.4,0.0,True,True,True,False,grassi,15
+cottage formaggio a basso contenuto di grassi,6.1,163,28.0,2.3,0.0,True,True,True,True,proteine,90
+ricotta formaggio non grasso,9.7,104,15.0,0.4,0.0,True,True,True,True,proteine,90
+yogurt vaniglia a basso contenuto di grassi,33.8,208,12.1,3.1,0.0,True,True,False,True,proteine,90
+classique yogurt plain 2 liberte,1.7,30,3.3,1.2,0.0,True,True,True,True,proteine,90
+yoplait leggero yogurt alla fragola yoplait,0.074,79,0.0,0.0,0.0,True,True,True,True,frutta,120
+yogurt alla vaniglia,23.5,145,8.4,2.1,0.0,True,True,False,True,proteine,90
+yogurt al cioccolato,35.3,168,5.3,0.0,1.8,True,False,False,True,proteine,90
+yogurt parfait,23.6,125,5.0,1.5,1.6,True,True,True,True,proteine,90
+yogurt,7.0,92,5.2,4.9,0.0,True,True,True,True,proteine,90
+yogurt al cioccolato congelato,37.6,221,5.2,6.3,4.0,True,False,False,True,proteine,90
+yogurt congelato,37.6,221,5.2,6.3,0.0,True,True,False,True,proteine,90
+yogurt a basso contenuto di grassi,17.2,154,12.9,3.8,0.0,True,False,False,True,proteine,90
+yogurt alla vaniglia oikos,0.0,120,0.0,1.8,0.0,True,True,False,True,proteine,90
+yogurt alla frutta,28.0,149,6.0,1.7,0.0,True,True,True,True,proteine,90
+danone basso grasso alsafi,0.089,88,0.0,1.7,0.0,False,False,True,False,grassi,15
+frutta n yogurt parfait mcdonalds,30.9,156,4.1,1.9,1.5,True,True,True,True,proteine,90
+tripla zero yogurt greco dannon oikos,22.5,120,0.038,0.0,0.0,True,True,True,True,proteine,90
+yogurt greco,6.1,100,17.3,0.7,0.0,True,True,True,True,proteine,90
+cioccolato rasberry proteina mini proteinfx,0.0,102,0.0,2.9,0.0,True,True,True,True,proteine,90
+Gushers frutta Gushers,0.2,360,0.0,6.0,0.0,True,True,True,True,frutta,120
+uova fritte,0.4,90,6.3,6.8,0.0,False,False,True,False,frutta,120
+glucerna abbott,120.9,1010,0.0,35.6,12.8,True,True,False,True,carboidrati,100
+bevande sportive,7.2,26,0.0,0.0,0.0,True,True,True,True,dolcificanti,5
+Cookie di proteine del burro di arachidi syntha 6,5.0,200,0.0,6.0,0.0,True,False,True,True,grassi,15
+hanfprotein pulver rohkostqualitat veganz,14.2,107,0.0,3.1,0.0,True,True,True,True,proteine,90
+frullato ad alta proteina cremoso cioccolato slimfast,2.1,110,12.0,3.5,0.0,True,True,True,True,proteine,90
+uovo grande,0.0,138,0.0,9.3,0.0,True,True,True,True,proteine,90
+"mirtilli rossi, congelati",16.1,66,1.5,0.3,7.0,False,True,True,False,grassi,15
+bevanda di malto,19.1,88,0.5,0.3,0.0,False,True,True,True,dolcificanti,5
+cioccolato in polvere per il latte,19.9,88,1.0,0.5,1.0,True,True,True,True,proteine,90
+succo di frutta vegetale,2.2,9,0.071,0.017,0.0,True,True,True,True,frutta,120
+cacao in polvere non zuccherato,3.1,12,1.1,0.7,1.8,True,False,True,True,condimenti,10
+latte di cocco,0.8,35,0.3,3.6,0.3,True,True,True,True,proteine,90
+cacao in polvere,5.9,28,0.5,0.3,0.3,True,False,True,True,condimenti,10
+bevanda di riso,22.0,113,0.7,2.3,0.7,True,True,True,True,carboidrati,100
+acqua di cocco,8.9,46,1.7,0.5,2.6,True,True,False,True,grassi,15
+caramello med caffè freddo ciambelle zucca,0.0,268,0.0,9.0,0.0,False,False,True,True,frutta,120
+caffè istantaneo con acqua decaffeinata,0.8,4,0.2,0.0,0.0,True,True,False,True,frutta,120
+polvere di caffè istantaneo,75.4,353,12.2,0.5,0.0,False,True,False,False,dolcificanti,5
+decaffeinato in polvere di caffè istantaneo,1.4,6,0.2,0.069,0.0,True,True,True,True,dolcificanti,5
+Cappuccio istantaneo in polvere,11.2,53,0.4,0.7,0.2,True,True,True,True,carboidrati,100
+decaffeinizzato di caffè,0.0,0,0.2,0.0,0.0,True,True,True,False,frutta,120
+espresso decaffeinato,0.5,3,0.065,0.011,0.0,False,True,True,False,condimenti,10
+caffè istantaneo con acqua,0.6,4,0.2,0.0,0.0,True,True,False,True,frutta,120
+caffè,0.0,2,0.3,0.069,0.0,True,True,True,True,frutta,120
+espresso,0.5,3,0.021,0.086,0.0,True,True,True,True,condimenti,10
+proteine del siero di latte in polvere vaniglia eas,0.0,108,0.0,1.7,0.0,True,True,True,True,proteine,90
+energy drink zucchero gratis rosso toro,1.8,13,0.6,0.2,0.0,False,False,True,True,dolcificanti,5
+powerade coca cola,2.3,9,0.0,0.009,0.0,True,True,True,True,frutta,120
+amp energia pepsi,29.0,110,0.6,0.2,0.0,True,True,True,True,proteine,90
+gatorade g2 pepsi,0.6,2,0.069,0.052,0.0,True,True,True,True,carboidrati,100
+amp energia senza zucchero pepsi,2.5,5,0.0,0.0,0.0,False,False,True,False,dolcificanti,5
+energy drink rosso toro,26.4,111,1.2,0.0,0.0,True,True,True,True,condimenti,10
+powerade zero ion4 coca cola,0.0,0,0.0,0.0,0.0,True,True,True,True,carboidrati,100
+Coca cola a pieno carico,29.0,110,0.6,0.2,0.0,True,True,True,False,carboidrati,100
+succo di frutta della passione viola,35.7,148,1.7,0.4,0.5,True,True,False,False,dolcificanti,5
+succo di melograno,32.7,134,0.4,0.7,0.2,False,True,True,False,carboidrati,100
+succo di albicocca di mirtillo rosso,39.7,157,0.5,0.0,0.2,False,False,False,True,frutta,120
+succo di ananas,32.2,133,0.9,0.3,0.5,False,False,False,False,frutta,120
+succo di frutta della passione giallo,33.6,126,1.0,0.1,0.5,True,True,False,False,dolcificanti,5
+succo di albicocca arancione,31.8,128,0.8,0.3,0.3,False,False,False,True,frutta,120
+succo di mandarino,24.9,106,1.2,0.5,0.5,False,False,False,False,frutta,120
+succo d'arancia,20.8,90,1.4,0.4,0.4,False,False,False,True,frutta,120
+succo di pompelmo,22.7,96,1.2,0.2,0.0,False,False,False,False,dolcificanti,5
+succo di pompelmo di ananas,29.0,118,0.5,0.3,0.3,True,False,False,True,frutta,120
+nettare di tamarindo,37.0,143,0.2,0.3,1.3,False,False,True,False,dolcificanti,5
+succo di mela,28.0,114,0.2,0.3,0.5,False,False,False,False,frutta,120
+limeade,34.1,128,0.0,0.0,0.0,True,True,True,True,frutta,120
+guava nettare,40.8,158,0.2,0.2,2.5,True,True,True,True,frutta,120
+succo di pompelmo arancione,25.4,106,1.5,0.2,0.2,False,False,False,True,dolcificanti,5
+sainsbury di succo d'arancia,0.0,14,0.0,0.088,0.0,False,False,False,True,frutta,120
+succo di mela di mirtillo rosso,38.8,154,0.0,0.3,0.0,False,False,False,False,frutta,120
+succo d'arancia d'ananas,29.5,125,3.3,0.0,0.3,False,False,False,True,frutta,120
+nettare di pera,39.4,150,0.3,0.062,1.5,True,False,True,True,frutta,120
+Succo di more,19.5,95,0.8,1.5,0.3,False,True,False,True,condimenti,10
+succo di limone,16.6,54,0.9,0.6,0.7,False,False,False,False,frutta,120
+Succo d'uva di mirtillo rosso,34.3,137,0.5,0.2,0.2,False,False,False,False,frutta,120
+succo di agrumi,28.3,114,0.8,0.057,0.2,False,False,False,True,grassi,15
+succo di prugna secca,44.7,182,1.6,0.006,2.6,False,False,False,False,frutta,120
+guanabana nettare,37.5,148,0.3,0.4,0.3,True,True,True,True,frutta,120
+succo di frutta,26.3,108,0.3,0.1,0.2,True,True,True,False,frutta,120
+horchata,3.3,15,0.1,0.2,0.0,True,True,True,True,frutta,120
+punch di frutta,24.4,98,0.2,0.4,0.0,True,True,True,True,frutta,120
+nettare di albicocche,35.7,139,0.9,0.2,1.5,True,True,True,True,frutta,120
+"arancionsaft jaCity name (optional, probably does not need a translation)",1.4,86,0.0,0.0,0.0,True,True,True,True,dolcificanti,5
+fruchtcocktail granini,1.0,102,0.0,0.4,0.0,True,True,True,True,frutta,120
+nettare di pesche,29.7,125,0.5,1.3,0.2,True,False,True,True,frutta,120
+Succo d'ananas d'arancia,3.6,15,0.1,0.08,0.032,False,False,False,True,frutta,120
+Succo di mirtillo rosso,24.4,92,0.8,0.3,0.2,False,False,False,False,dolcificanti,5
+succo di pompelmo bianco,22.7,96,1.2,0.2,0.2,False,False,False,False,dolcificanti,5
+nettare di mango,32.9,128,0.3,0.2,0.8,False,True,True,True,frutta,120
+acerola succo di ciliegia,11.6,56,1.0,0.7,0.7,False,False,False,True,frutta,120
+concentrato di succo di mela,86.5,350,1.1,0.8,0.8,True,True,False,False,frutta,120
+papaya nettare,36.3,143,0.4,0.4,1.5,True,True,True,True,frutta,120
+Martinelli di succo di mela,0.0,122,0.0,0.0,0.0,False,False,False,False,frutta,120
+succo di lime,20.4,61,1.0,0.2,1.0,False,False,False,False,frutta,120
+Succo d'uva,37.4,152,0.9,0.3,0.5,False,True,True,True,frutta,120
+acqua dannon,0.0,0,0.0,0.0,0.0,True,True,True,True,frutta,120
+acqua di rubinetto,0.0,0,0.0,0.0,0.0,False,False,True,False,carboidrati,100
+acqua di mare,0.0,0,0.0,0.0,0.0,True,True,False,True,frutta,120
+acqua aromatizzata alla frutta,13.0,52,0.0,0.0,0.0,False,False,True,False,frutta,120
+acqua,0.0,0,0.0,0.0,0.0,True,True,True,True,frutta,120
+cola light coca cola,0.0,0,0.0,0.0,0.0,True,True,True,True,frutta,120
+limone lime soda,38.4,151,0.3,0.0,0.0,True,True,True,True,frutta,120
+acqua tonica,29.6,114,0.0,0.0,0.0,True,True,True,True,frutta,120
+limonata a basso contenuto calorico,1.6,7,0.092,0.0,0.0,False,False,True,False,carboidrati,100
+ginger ale,17.5,68,0.0,0.0,0.0,True,True,True,True,condimenti,10
+gelato tè sapore di limone nestle,22.3,88,0.0,0.0,0.0,False,False,False,True,frutta,120
+sprite coca cola,20.3,80,0.1,0.063,0.0,True,True,True,True,frutta,120
+cola coca cola,38.9,151,0.0,0.0,0.0,True,True,True,True,condimenti,10
+cola,19.1,74,0.1,0.07,0.0,True,True,True,True,condimenti,10
+Crema soda,65.7,252,0.0,0.0,0.0,True,True,True,True,condimenti,10
+randello soda,0.0,0,0.0,0.0,0.0,True,True,True,True,condimenti,10
+limonata rosa,21.6,86,0.1,0.3,0.2,True,True,False,True,carboidrati,100
+uva soda,41.7,160,0.0,0.0,0.0,True,True,True,True,frutta,120
+cola senza caffeina coca cola,38.9,151,0.0,0.0,0.0,True,True,False,False,frutta,120
+limonata bianca,20.8,80,0.1,0.003,0.0,True,True,True,False,carboidrati,100
+cioccolata soda,52.6,207,0.0,0.0,0.0,True,True,True,True,condimenti,10
+Lipton al tè dolce,35.0,130,0.0,0.0,0.0,False,False,True,False,dolcificanti,5
+tè di ibisco,14.8,74,0.9,1.3,0.6,False,False,False,True,condimenti,10
+tè al limone istantaneo,0.3,2,0.1,0.0,0.0,False,False,False,True,frutta,120
+pesca tè santal,0.0,116,0.0,0.0,0.0,True,False,True,True,frutta,120
+tè al limone istantaneo addolcito,22.3,91,0.071,0.2,0.3,False,False,False,False,frutta,120
+tè con latte e zucchero yorkshire,0.4,15,0.0,0.5,0.0,True,True,True,True,proteine,90
+tè mirtillo muffin tekanne,0.4,4,0.0,0.2,0.0,True,True,True,True,carboidrati,100
+tè alla camomilla,0.4,2,0.0,0.0,0.0,False,False,False,False,carboidrati,100
+tè nero,0.7,2,0.0,0.0,0.0,False,False,True,True,verdura,80
+Tè alle erbe,0.4,2,0.0,0.0,0.0,True,False,True,True,proteine,90
+Succo di pomodoro di vongola,18.2,80,1.0,0.3,0.7,True,True,True,False,verdura,80
+succo di pomodoro,8.6,41,2.1,0.7,1.0,False,False,True,False,verdura,80
+Succo di verdure,11.1,53,1.5,0.2,1.9,True,True,True,True,verdura,80
+succo di pomodoro di verdure,11.1,53,1.5,0.2,1.9,False,False,True,True,verdura,80
+succo di carota,18.6,80,1.9,0.3,1.6,False,False,False,True,verdura,80
+ghianda secca,15.2,144,2.3,8.9,0.0,True,True,False,True,verdura,80
+Semi di fieno greco,6.5,36,2.6,0.7,2.7,False,True,True,False,grassi,15
+nocciolina mcdonalds,4.6,181,7.9,15.0,0.0,True,True,True,True,condimenti,10
+Faggio essiccato,10.1,173,1.9,15.0,0.0,False,False,True,False,frutta,120
+semi di nocciola cruda,13.1,61,1.7,0.3,0.0,False,True,False,False,grassi,15
+Semi di cumino,0.9,8,0.4,0.5,0.2,True,True,True,True,grassi,15
+Pili dadi secchi,4.8,863,13.0,95.5,0.0,False,False,False,False,dolcificanti,5
+Nocciole arrostite,5.3,194,4.5,18.7,2.8,False,True,True,True,verdura,80
+Lupini cotti,15.4,193,25.8,4.8,4.6,False,True,False,False,grassi,15
+Nocciole sbollentate,4.8,178,3.9,17.3,3.1,True,True,True,True,dolcificanti,5
+Brazilnuts essiccati,0.6,33,0.7,3.3,0.4,False,False,True,True,condimenti,10
+semi di girasole tostati a secco,1.9,47,1.5,4.0,0.9,True,True,True,True,grassi,15
+noci di ginkgo in scatola,34.3,172,3.5,2.5,14.4,True,False,True,True,grassi,15
+arachidi cotte,38.3,572,24.3,39.6,15.8,False,False,False,True,grassi,15
+semi di zucca essiccati,13.8,721,39.0,63.3,7.7,True,True,True,True,grassi,15
+Noci di anacardi crude,8.5,156,5.2,12.4,0.9,False,False,False,False,grassi,15
+semi di girasole essiccati,9.2,269,9.6,23.7,4.0,False,True,True,False,grassi,15
+semi di loto essiccati,20.6,106,4.9,0.6,0.0,False,False,True,False,grassi,15
+butternuts essiccati,14.5,734,29.9,68.4,5.6,True,False,True,True,frutta,120
+semi di sesamo essiccati,2.1,52,1.6,4.5,1.1,False,False,True,False,grassi,15
+semi di frutta a guscio,8.8,57,2.2,1.7,1.6,True,True,True,False,grassi,15
+pinoli pinyon essiccati,0.01,1,0.083,0.073,0.005,True,True,True,True,grassi,15
+pinoli essiccati,17.7,909,18.5,92.3,5.0,False,True,False,False,grassi,15
+Semi di lino,3.0,55,1.9,4.3,2.8,False,True,True,True,grassi,15
+Semi di cartamo essiccati,9.7,146,4.6,10.9,0.0,False,False,False,False,grassi,15
+pistacchi crudi,33.8,691,24.9,55.8,12.7,False,True,True,True,frutta,120
+arachidi crude,23.5,828,37.7,71.9,12.4,False,False,True,True,grassi,15
+Semi di papavero,2.5,46,1.6,3.7,1.7,False,False,False,False,grassi,15
+valencia noccioline crude,30.5,832,36.6,69.5,12.7,False,False,True,True,condimenti,10
+arachidi spagnole,23.1,832,38.2,72.4,13.9,True,True,True,True,grassi,15
+Semi di aneto,3.6,20,1.1,1.0,1.4,True,True,True,True,grassi,15
+Semi di camelina,3.3,22,1.3,1.0,2.5,True,True,True,True,grassi,15
+acorna cruda,11.5,110,1.7,6.8,0.0,True,True,False,True,frutta,120
+Mandorle arrostite,5.3,182,6.4,16.6,3.2,False,True,True,True,grassi,15
+semi di loto crudi,4.9,25,1.2,0.1,0.0,False,True,True,False,grassi,15
+Castagne e marroni cotti,7.9,37,0.6,0.4,0.0,False,False,True,True,frutta,120
+Semi di erba medica,0.002,1,0.1,0.075,0.015,True,True,True,True,grassi,15
+arachidi virginia arrostite,6.0,173,7.8,14.6,2.7,True,True,True,True,grassi,15
+nocciole crude,12.5,471,11.2,45.6,7.3,True,True,True,True,condimenti,10
+Semi di anice,1.1,7,0.4,0.3,0.3,True,True,True,True,grassi,15
+noci di macadamia arrostite,4.0,215,2.3,22.8,2.4,True,True,True,True,grassi,15
+studentenfutter alnatura,13.2,139,3.1,7.8,0.031,True,True,True,True,frutta,120
+semi di zucca tostati,1.2,46,2.4,3.9,0.5,True,True,True,True,grassi,15
+castagne d'acqua crude,29.7,120,1.7,0.1,3.7,True,True,True,True,frutta,120
+Castagne e marroni tostati,7.9,37,0.5,0.3,0.8,False,True,True,True,dolcificanti,5
+noci di ginkgo crude,10.6,52,1.2,0.5,0.0,False,False,True,True,grassi,15
+mandorle crude,0.3,9,0.3,0.7,0.2,True,True,True,True,grassi,15
+arachidi arrostite,4.6,180,8.4,15.8,2.8,False,True,False,True,grassi,15
+semi di girasole tostati,27.6,829,23.1,76.1,15.4,True,True,True,True,grassi,15
+Semi di sisimbrio,43.1,235,9.0,3.4,0.0,False,False,True,False,grassi,15
+semi di albero di pane secchi,127.0,587,13.8,2.7,23.8,True,True,True,False,carboidrati,100
+pecan crudi,15.1,753,10.0,78.4,10.5,True,False,True,True,frutta,120
+semi di chia essiccati,11.9,138,4.7,8.7,9.7,False,False,False,False,grassi,15
+castagne giapponesi arrostite,12.8,57,0.8,0.2,0.0,False,True,False,False,carboidrati,100
+semi di sesamo tostati,2.1,45,1.4,3.8,1.1,True,True,True,False,grassi,15
+Noci di anacardi arrostite,9.0,174,5.1,14.3,1.0,True,True,False,True,grassi,15
+Lupini crudi,72.7,668,65.1,17.5,34.0,False,True,True,False,grassi,15
+semi di senape macinati,0.6,10,0.5,0.7,0.2,False,True,False,True,grassi,15
+noci miste arrostite,7.6,178,5.2,15.4,2.7,True,True,False,True,grassi,15
+salat mix alestro,2.4,61,0.0,5.2,0.0,True,True,True,True,frutta,120
+castagne crude,66.0,309,3.5,3.3,11.7,True,True,True,True,condimenti,10
+pistacchi arrostiti,8.5,172,6.3,13.7,3.1,False,True,True,True,carboidrati,100
+noce,0.7,33,0.8,3.3,0.3,True,True,True,True,proteine,90
+Semi di sedano,2.7,25,1.2,1.6,0.8,False,False,False,False,verdura,80
+Hickorynuts essiccati,21.9,788,15.3,77.2,7.7,True,True,True,True,condimenti,10
+arachidi spagnole arrostite,25.7,851,41.2,72.1,13.1,True,True,True,True,grassi,15
+semi di woca essiccati,22.6,102,2.2,0.3,5.4,True,True,False,False,grassi,15
+pecan torrefatti,3.9,215,2.8,22.6,2.9,False,False,True,True,verdura,80
+Semi di finocchio,1.0,7,0.3,0.3,0.8,True,True,True,True,grassi,15
+castagne cinesi arrostite,14.8,68,1.3,0.3,0.0,False,False,True,True,frutta,120
+Semi di anguria essiccati,16.5,602,30.6,51.2,0.0,True,True,True,True,frutta,120
+noci di macadamia crude,0.7,38,0.4,4.0,0.5,True,False,True,True,grassi,15
+pectina,45.2,163,0.2,0.2,4.3,True,False,True,True,frutta,120
+noce nero essiccato,0.5,31,1.2,3.0,0.3,False,True,True,True,verdura,80
+in scatola di castagne d'acqua,17.2,70,1.2,0.015,3.5,False,True,True,False,frutta,120
+noci di ginkgo essiccate,20.5,98,2.9,0.6,0.0,False,False,True,False,grassi,15
+arachidi virginia crude,24.1,822,36.8,71.2,12.4,True,True,True,True,grassi,15
+valencia noccioline arrostite,4.9,177,8.1,15.4,2.7,False,False,False,True,verdura,80
+nesfit dieta cereali nestle,0.0,75,0.0,0.0,0.0,False,True,True,True,grassi,15
+Grano saraceno cotto,37.9,182,4.4,1.2,2.1,False,False,True,False,carboidrati,100
+Fiocchi di amaranto,27.0,134,5.9,2.7,3.6,False,False,True,True,carboidrati,100
+ranola,32.3,293,8.2,14.6,5.3,True,True,True,True,dolcificanti,5
+muesli con frutta a guscio,45.7,231,4.3,3.4,5.8,False,False,True,False,frutta,120
+muesli master crumble,4.5,124,2.4,2.4,0.0,True,True,True,True,condimenti,10
+fiocchi di crusca,32.2,131,4.0,0.8,7.3,True,False,True,False,carboidrati,100
+Cereali da frutta a guscio,46.2,245,4.0,5.9,3.6,False,True,True,True,frutta,120
+Fiocchi di mais,24.6,108,1.7,0.3,0.8,False,False,True,False,carboidrati,100
+Grano saraceno secco,7.7,36,0.7,0.2,0.4,False,False,True,False,carboidrati,100
+margarina con yogurt,0.073,88,0.058,9.8,0.0,True,True,True,True,proteine,90
+burro di semi di girasole,3.7,99,2.8,8.8,0.9,True,True,True,True,grassi,15
+olio di nocciola,0.0,120,0.0,13.6,0.0,False,False,False,False,grassi,15
+olio di pesce menhaden,0.0,1966,0.0,218.0,0.0,True,True,True,True,proteine,90
+olio di pesce di fegato di merluzzo,0.0,123,0.0,13.6,0.0,True,True,True,False,proteine,90
+Olio di sardina,0.0,123,0.0,13.6,0.0,True,True,True,False,grassi,15
+olio di cupu assu,0.0,120,0.0,13.6,0.0,False,False,True,False,grassi,15
+lardo,0.0,115,0.0,12.8,0.0,True,True,True,False,grassi,15
+burro di sesamo,3.8,94,2.9,8.1,0.9,True,False,True,True,grassi,15
+spread di margarina,0.1,59,0.082,6.7,0.0,True,True,True,True,grassi,15
+olio vegetale di strutto,0.0,115,0.0,12.8,0.0,False,False,True,False,grassi,15
+accorciamento,0.0,113,0.0,12.8,0.0,False,False,True,True,dolcificanti,5
+spalmatura di olio vegetale,0.1,75,0.007,8.4,0.0,False,False,True,False,grassi,15
+olio di semi di cotone,0.0,120,0.0,13.6,0.0,False,True,False,False,grassi,15
+olio vegetale spalmato senza grassi,0.4,6,0.2,0.5,0.0,False,False,False,False,grassi,15
+margarina di soia,0.0,88,0.0,9.9,0.0,False,False,False,True,grassi,15
+margarina con sale,0.017,100,0.031,11.3,0.0,True,True,True,True,grassi,15
+margarina,0.018,102,0.037,11.5,0.0,True,True,True,True,grassi,15
+olio di pesce di salmone,0.0,123,0.0,13.6,0.0,True,True,True,True,proteine,90
+olio di burro di noce moscata,0.0,1927,0.0,218.0,0.0,True,False,True,True,grassi,15
+burro di mandorle,3.0,98,3.4,8.9,1.6,True,False,True,True,grassi,15
+acido crema shoprite,1.0,60,0.0,5.0,0.0,False,False,True,True,carboidrati,100
+olio di burro di ucuhuba,0.0,120,0.0,13.6,0.0,True,False,True,True,grassi,15
+grasso di pollo,0.0,115,0.0,12.8,0.0,True,True,True,False,proteine,90
+olio di pesce aringa,0.0,123,0.0,13.6,0.0,True,True,True,False,proteine,90
+grasso di pancetta,0.0,39,0.0,4.3,0.0,True,True,False,True,grassi,15
+Grasso di tacchino,0.0,45,0.0,5.0,0.0,True,True,False,False,grassi,15
+sego di manzo,0.0,115,0.0,12.8,0.0,True,True,True,False,proteine,90
+grasso d'oca,0.0,45,0.0,5.0,0.0,True,True,True,False,grassi,15
+grasso di anatra,0.0,44,0.0,5.0,0.0,True,True,False,False,grassi,15
+sego di montone,0.0,45,0.0,5.0,0.0,False,True,True,False,dolcificanti,5
+olio di semi di uva,0.0,120,0.0,13.6,0.0,False,True,True,True,frutta,120
+Olio di karité,0.0,1927,0.0,218.0,0.0,False,False,False,False,grassi,15
+olio di mandorle,0.0,120,0.0,13.6,0.0,False,False,False,False,grassi,15
+olio di girasole,0.0,120,0.0,13.6,0.0,False,False,True,False,grassi,15
+Burro di anacardi,4.4,94,2.8,7.9,0.3,True,False,False,True,grassi,15
+olio di canola,0.0,124,0.0,14.0,0.0,False,False,False,False,grassi,15
+olio di babassu,0.0,1927,0.0,218.0,0.0,False,False,False,False,grassi,15
+olio di semi di tè,0.0,120,0.0,13.6,0.0,False,False,True,False,grassi,15
+olio di avocado,0.0,124,0.0,14.0,0.0,True,True,False,True,grassi,15
+olio di palma vegetale,0.0,117,0.0,13.6,0.0,False,False,False,False,grassi,15
+olio di cocco,0.0,117,0.0,13.6,0.0,False,False,False,False,grassi,15
+olio di cartamo,0.0,120,0.0,13.6,0.0,False,False,False,False,grassi,15
+olio vegetale,0.0,120,0.0,13.6,0.0,False,False,True,False,grassi,15
+olio di kernel di albicocche,0.0,40,0.0,4.5,0.0,True,True,True,True,grassi,15
+olio di arachidi,0.0,119,0.0,13.5,0.0,False,False,False,False,grassi,15
+olio di papavero,0.0,120,0.0,13.6,0.0,False,False,False,False,grassi,15
+olio di semi di lino,0.0,120,0.086,13.6,0.0,False,False,True,False,grassi,15
+olio di semi di pomodoro,0.0,1927,0.0,218.0,0.0,False,False,True,False,verdura,80
+olio di germe di frumento,0.0,120,0.0,13.6,0.0,True,False,True,True,grassi,15
+olio di sesamo,0.0,40,0.0,4.5,0.0,False,False,True,False,grassi,15
+olio di mais granola,0.0,124,0.0,14.0,0.0,False,False,True,False,carboidrati,100
+olio di burro di cacao,0.0,120,0.0,13.6,0.0,True,False,True,True,grassi,15
+olio d'oliva,0.0,119,0.0,13.5,0.0,False,True,True,False,grassi,15
+olio di palmisti,0.0,40,0.0,4.5,0.0,False,False,False,False,grassi,15
+olio di senape,0.0,124,0.0,14.0,0.0,False,False,True,False,grassi,15
+olio di crusca di riso,0.0,120,0.0,13.6,0.0,False,False,True,False,carboidrati,100
+verdure maccheroni secche,62.9,308,11.0,0.9,3.6,False,True,True,True,verdura,80
+noodles di chow mein,37.5,257,5.9,9.9,1.5,True,True,True,True,condimenti,10
+tagliatelle cinesi,111.9,456,0.2,0.094,0.7,False,True,False,False,dolcificanti,5
+maccheroni di verdure cotti,35.7,172,6.1,0.1,5.8,False,False,True,True,dolcificanti,5
+pasta di mais secca,83.2,375,7.8,2.2,11.6,False,False,True,False,carboidrati,100
+tagliatelle d'uovo secche,27.1,146,5.4,1.7,1.3,True,False,True,True,proteine,90
+spaghetti di grano intero secchi,21.2,98,4.1,0.4,0.0,False,False,True,False,carboidrati,100
+tagliatelle di soba giapponesi asciutte,21.1,95,4.1,0.2,0.0,False,True,False,True,dolcificanti,5
+tagliatelle di riso secche,23.6,103,1.0,0.2,0.5,False,True,True,False,carboidrati,100
+Spaghetti di spinaci secchi,21.2,105,3.8,0.4,3.0,False,False,True,False,carboidrati,100
+tagliatelle d'uovo cotte,20.1,110,3.6,1.7,1.0,True,True,True,True,proteine,90
+noodles cotto in frantumi giapponesi,48.5,231,7.0,0.3,0.0,False,False,False,True,condimenti,10
+maccheroni di grano intero secchi,78.8,365,15.4,1.5,8.7,False,False,True,True,carboidrati,100
+pasta marinara e salsa di manzo macinata,4.1,41,2.5,1.6,0.5,True,True,True,True,carboidrati,100
+maccheroni crudi,78.4,390,13.7,1.6,3.4,True,True,True,True,frutta,120
+spaghetti secchi,21.1,105,3.7,0.4,0.9,True,True,True,True,carboidrati,100
+fusilli cucina,3.4,100,0.0,0.4,0.0,True,True,False,False,verdura,80
+giapponese anime tagliatelle asciutte,21.0,101,3.2,0.2,1.2,True,True,False,True,dolcificanti,5
+pasta cotta,57.3,301,11.8,2.4,0.0,False,True,True,False,carboidrati,100
+maccheroni cotti,43.2,221,8.1,1.3,2.5,False,False,True,True,frutta,120
+Spaghetti all'uovo di spinaci secchi,26.7,145,5.6,1.7,2.6,True,False,True,True,carboidrati,100
+tagliatelle di soba giapponese cotte,24.4,113,5.8,0.1,0.0,False,False,False,False,dolcificanti,5
+tagliatelle di riso cotte,42.3,190,3.2,0.4,1.8,False,True,True,False,carboidrati,100
+maccheroni di grano integrale cotti,37.2,174,7.5,0.8,3.9,True,True,True,True,carboidrati,100
+spaghetti cotti,71.0,363,13.3,2.1,4.1,False,False,True,True,carboidrati,100
+spaghetti di grano integrale cotti,37.2,174,7.5,0.8,6.3,True,True,True,True,carboidrati,100
+cialde,24.7,218,5.9,10.6,0.0,True,True,True,True,grassi,15
+guscio di taco al forno,8.3,61,0.8,2.7,0.9,False,False,False,False,dolcificanti,5
+pasta sfoglia,112.0,1367,18.1,94.3,3.7,True,True,True,True,carboidrati,100
+muffin ai mirtilli,30.2,214,2.6,9.2,0.6,False,True,True,True,carboidrati,100
+molliche di pane,77.7,427,14.4,5.7,4.9,True,True,True,True,carboidrati,100
+rotolo caldo di cannella mcdonalds,15.0,113,2.0,5.1,0.5,False,False,True,True,condimenti,10
+muffin di mais,33.7,201,3.9,5.5,2.2,True,True,True,True,carboidrati,100
+tortilla,98.4,467,14.3,1.9,4.7,True,True,True,True,carboidrati,100
+crostini stagionati,25.4,186,4.3,7.3,2.0,False,True,False,False,frutta,120
+cialde di latticello,16.0,102,2.4,3.1,0.9,True,True,True,True,dolcificanti,5
+tortilla di farina,24.1,146,3.9,3.7,1.2,False,False,True,False,carboidrati,100
+ciambella smaltata,6.2,55,0.8,3.0,0.3,False,False,True,False,frutta,120
+tortilla di mais,10.7,52,1.4,0.7,1.5,False,False,True,False,carboidrati,100
+muffin,23.6,169,3.9,6.5,1.5,True,True,True,True,carboidrati,100
+crostini,5.9,33,1.0,0.5,0.4,True,True,True,False,frutta,120
+ciambella con ripieno di gelatina,33.2,289,5.0,15.9,0.8,True,True,True,True,dolcificanti,5
+Rotoli di cannella dolci,42.2,309,5.1,13.6,2.0,False,False,False,True,dolcificanti,5
+muffin di crusca d'avena,8.2,46,1.2,1.3,0.8,True,True,True,False,carboidrati,100
+ciambella cruller francese,24.4,169,1.3,7.5,0.5,True,False,True,True,frutta,120
+frittelle,10.8,86,2.4,3.7,0.0,True,True,True,True,frutta,120
+ciambella al cioccolato,34.4,250,2.7,11.9,1.3,False,False,True,False,dolcificanti,5
+involtini di formaggio dolce,28.8,238,4.7,12.1,0.8,True,False,True,True,proteine,90
+"eclairCity name (optional, probably does not need a translation)",11.2,234,4.4,19.2,0.4,True,True,True,True,carboidrati,100
+ciambella con ripieno di crema,25.5,307,5.4,20.8,0.7,False,False,True,True,dolcificanti,5
+pasta di frutta tostapane,37.1,209,2.4,5.6,0.5,False,False,True,False,carboidrati,100
+ciambella,22.9,192,2.3,10.3,0.7,True,True,True,True,grassi,15
+frittelle di frumento integrale,12.9,92,3.7,2.9,1.2,True,True,True,True,frutta,120
+keikitos,22.3,196,2.9,10.6,0.5,True,True,True,True,grassi,15
+zwieback,5.2,30,0.7,0.7,0.2,True,True,True,True,frutta,120
+ciambella ricoperta di cioccolato,9.2,81,0.9,4.5,0.3,True,False,True,True,dolcificanti,5
+waffle tostato,16.3,103,2.4,3.2,0.8,True,True,True,True,carboidrati,100
+Pasta tostapane alla cannella,34.1,206,2.6,7.1,0.5,False,False,True,False,carboidrati,100
+pane di crusca di frumento,17.2,89,3.2,1.2,1.4,True,False,True,True,carboidrati,100
+Pane bianco,14.3,77,2.6,1.0,0.8,True,False,True,True,carboidrati,100
+pane di crusca d'avena,11.9,71,3.1,1.3,1.4,True,False,True,True,carboidrati,100
+pane integrale pane nature proprie,0.0,50,0.0,1.0,0.0,True,True,True,True,carboidrati,100
+pane ricco di proteine dr zaks,15.3,152,0.0,3.0,0.0,False,False,True,True,carboidrati,100
+pane di frumento,13.8,79,3.1,1.3,1.2,True,True,True,True,carboidrati,100
+pane uovo tostato,19.5,117,3.9,2.4,0.9,True,True,True,True,carboidrati,100
+burro toastbrot ja,2.0,66,0.0,0.9,0.0,True,True,True,True,grassi,15
+pane di vienna tostato,18.0,93,3.8,0.6,0.9,True,True,True,True,carboidrati,100
+pane di vienna,18.1,92,3.8,0.6,0.8,True,True,True,True,carboidrati,100
+pane proteico,8.3,47,2.3,0.4,0.6,True,True,True,True,carboidrati,100
+pane alla banana,31.1,186,2.5,6.0,0.6,False,False,True,True,carboidrati,100
+pane di crusca di riso,11.7,66,2.4,1.2,1.3,True,True,True,True,carboidrati,100
+pane meraviglie in fibra bianca,18.0,95,3.5,1.0,1.5,True,True,True,True,carboidrati,100
+focaccia,20.4,142,5.0,4.5,1.0,True,True,False,True,frutta,120
+pane di crusca di avena tostato,11.8,70,3.1,1.3,1.3,True,False,True,True,carboidrati,100
+Pane di segale,15.5,83,2.7,1.1,1.9,True,True,True,True,carboidrati,100
+pane di germe di frumento,13.5,73,2.7,0.8,0.6,True,True,True,True,carboidrati,100
+proteine pane tostato,8.2,46,2.2,0.4,0.6,True,True,True,True,carboidrati,100
+farina d'avena,13.1,73,2.3,1.2,1.1,True,True,True,False,carboidrati,100
+arepa,36.4,215,5.4,5.3,2.5,True,True,True,True,dolcificanti,5
+pane all'uvetta tostato,16.5,86,2.5,1.4,1.4,True,True,True,True,carboidrati,100
+pane di grano frantumato,14.0,74,2.5,1.1,1.6,False,False,True,False,carboidrati,100
+pane all'aglio,17.9,151,3.6,7.1,1.1,True,True,True,True,carboidrati,100
+pane di segale tostato,15.4,82,2.7,1.0,1.9,True,True,True,True,carboidrati,100
+pane integrale,23.6,128,3.9,2.5,2.8,True,True,True,True,carboidrati,100
+pane integrale tostato,23.7,128,3.9,2.5,2.8,True,True,True,True,carboidrati,100
+pane pan dulce,35.5,231,5.9,7.3,1.4,True,True,True,True,carboidrati,100
+pane di crusca di riso tostato,11.8,66,2.4,1.3,1.3,True,True,True,True,carboidrati,100
+pita pane integrale di frumento,15.4,74,2.7,0.7,2.1,True,True,True,True,carboidrati,100
+pane di germe di grano tostato,13.6,73,2.7,0.8,0.6,True,True,True,True,carboidrati,100
+pane di pompernichel,12.4,65,2.3,0.8,1.7,True,True,True,True,carboidrati,100
+patatine fritte,73.4,502,10.2,18.6,0.0,True,True,True,True,frutta,120
+pane bianco tostato,15.4,83,2.5,1.1,0.7,False,False,True,True,carboidrati,100
+pane piki,20.2,109,2.5,2.0,2.6,True,True,True,True,carboidrati,100
+pane di grano tostato,13.4,75,3.1,1.0,1.1,True,False,True,True,carboidrati,100
+pane pita,33.4,165,5.5,0.7,1.3,True,True,True,True,carboidrati,100
+Pane di patate,15.1,85,4.0,1.0,2.0,True,True,True,True,carboidrati,100
+pane all'uovo,19.1,115,3.8,2.4,0.9,True,True,True,True,carboidrati,100
+pane d'avena tostato,13.2,73,2.3,1.2,1.1,True,True,True,True,carboidrati,100
+pane al formaggio,21.5,196,5.0,10.0,1.0,True,True,True,True,carboidrati,100
+pane di pomernichel tostato,15.1,80,2.8,1.0,2.1,True,True,True,True,carboidrati,100
+Pane all'uvetta,16.7,88,2.5,1.4,1.4,True,True,True,True,carboidrati,100
+rotolo di pompernichel,14.8,77,3.0,0.8,1.5,False,True,True,True,dolcificanti,5
+Bagel all'uvetta alla cannella,14.4,71,2.5,0.4,0.6,False,True,True,True,dolcificanti,5
+muffin inglese,25.5,127,5.0,1.1,2.6,True,True,True,True,carboidrati,100
+Rotolo di segale,22.8,123,4.4,1.5,2.1,False,True,True,True,carboidrati,100
+grano integrale muffin inglese,26.7,134,5.8,1.4,4.4,True,True,True,True,carboidrati,100
+rotolo della cena grano integrale,14.3,74,2.4,1.3,2.1,True,True,True,True,carboidrati,100
+Rotolo per la cena,12.9,76,2.4,1.8,1.1,False,True,True,True,frutta,120
+rotolo di hotdog,21.1,117,4.1,1.6,0.8,False,False,False,True,condimenti,10
+"bagelCity name (optional, probably does not need a translation)",47.9,245,10.0,1.5,4.0,True,True,True,True,grassi,15
+bagel di crusca d'avena,36.8,176,7.4,0.8,2.5,True,False,True,True,grassi,15
+pain au chocolat de la boulangerie,0.0,235,0.0,12.0,0.0,True,True,True,False,condimenti,10
+bagel d'uovo,13.8,72,2.8,0.5,0.6,True,False,True,True,proteine,90
+muffin tostato inglese,27.4,140,5.4,1.1,1.5,False,False,True,False,carboidrati,100
+muffin di grano integrale tostato,26.9,135,5.9,1.4,4.5,True,True,True,True,carboidrati,100
+biscotto,45.0,357,7.1,16.5,1.5,False,True,True,True,carboidrati,100
+Rotolo di francese,19.1,105,3.3,1.6,1.2,True,True,False,True,condimenti,10
+Rotolo di farina d'avena,13.3,78,3.1,1.5,1.4,False,True,True,True,carboidrati,100
+pecan shortbread cookies,8.2,76,0.7,4.6,0.3,True,True,True,True,frutta,120
+Biscotti alla farina d'avena,17.2,113,1.6,4.5,0.7,False,False,True,True,carboidrati,100
+Ostie al cioccolato,81.1,485,7.4,15.9,3.8,False,False,True,True,frutta,120
+ostie vaniglia a basso contenuto di grassi,58.9,353,4.0,12.2,1.5,True,True,True,True,grassi,15
+cioccolata biscotti mcdonalds,18.7,136,1.6,6.4,0.6,True,True,True,True,condimenti,10
+Cookies di gingersnap,5.4,29,0.4,0.7,0.2,True,True,True,True,condimenti,10
+biscotti barbacci mulino bianco,0.8,54,0.4,2.6,0.0,False,False,True,True,dolcificanti,5
+Biscotto con gocce di cioccolato,9.3,63,0.5,2.8,0.3,False,False,True,False,carboidrati,100
+"brownieCity name (optional, probably does not need a translation)",38.3,243,2.9,9.8,1.3,True,True,True,True,dolcificanti,5
+Biscotti a pasta corta,5.2,40,0.5,1.9,0.1,False,False,True,True,carboidrati,100
+Biscotti all'avena con uvetta,10.3,65,1.0,2.4,0.0,False,False,False,False,dolcificanti,5
+biscotti panini al burro di arachidi,9.2,67,1.2,3.0,0.3,True,False,False,True,grassi,15
+Biscotti allo zucchero,10.2,72,0.8,3.2,0.1,False,False,True,True,dolcificanti,5
+Graham cracker ricoperti di cioccolato,9.3,68,0.8,3.2,0.4,False,False,True,True,carboidrati,100
+Biscotti all'uvetta,10.2,60,0.6,2.0,0.2,False,True,True,True,dolcificanti,5
+Ostie alla vaniglia,4.3,28,0.3,1.2,0.1,False,False,False,False,verdura,80
+"Graham crackersCity name (optional, probably does not need a translation)",64.5,355,5.8,8.5,2.4,True,True,True,True,carboidrati,100
+Biscotti al burro di arachidi,11.8,95,1.8,4.8,0.0,True,False,False,True,grassi,15
+biscotto alla vaniglia,10.8,72,0.7,3.0,0.2,False,False,True,False,carboidrati,100
+ostie da zucchero con ripieno di crema,7.1,51,0.4,2.3,0.2,True,False,True,True,dolcificanti,5
+Sbuffi di formaggio,18.6,197,2.1,12.8,0.6,True,True,True,True,proteine,90
+crackers di salina,2.2,13,0.3,0.3,0.022,True,True,True,True,carboidrati,100
+trail mix,13.5,139,4.1,8.8,0.0,True,True,True,True,grassi,15
+coni di mais,17.8,144,1.6,7.6,0.3,False,False,True,True,condimenti,10
+Pretzel al cioccolato,7.8,50,0.8,1.8,0.0,True,True,True,True,condimenti,10
+Bastoncini di toast francese,8.9,73,1.3,3.8,0.3,False,False,True,False,dolcificanti,5
+crackers,9.8,82,1.1,4.2,0.4,True,True,True,True,carboidrati,100
+bastoncini di sesamo,4.7,54,1.1,3.7,0.3,False,False,False,False,carboidrati,100
+cracker di formaggio,4.2,34,0.8,1.6,0.2,True,True,True,True,carboidrati,100
+miscela di cracker di riso orientale,14.6,143,4.9,7.2,3.7,False,True,True,True,carboidrati,100
+grissini,17.1,103,3.0,2.4,0.8,True,True,True,False,dolcificanti,5
+crackers di latte,7.7,50,0.8,1.7,0.2,True,True,True,True,carboidrati,100
+matzo crackers grano integrale,22.1,98,3.7,0.4,3.3,True,True,True,True,carboidrati,100
+matzo crackers con uovo,22.0,109,3.4,0.6,0.8,True,True,True,True,carboidrati,100
+ranola bits,3.3,23,0.4,0.9,0.3,True,True,True,True,grassi,15
+crackers frumento integrale,19.5,120,3.0,4.0,2.9,True,True,True,True,carboidrati,100
+mix di sentieri tropicali,91.8,619,8.8,23.9,0.0,False,True,False,True,dolcificanti,5
+Pretzel morbidi,79.8,389,9.4,3.6,2.0,True,True,True,True,condimenti,10
+conchiglia di tostada di mais,7.9,58,0.8,2.9,0.7,False,False,False,False,dolcificanti,5
+matzo crackers,23.4,111,2.8,0.4,0.8,True,True,True,True,carboidrati,100
+croccante di sesamo,0.9,9,0.2,0.6,0.1,True,False,True,True,carboidrati,100
+mix trail con patatine al cioccolato,65.6,707,20.7,46.6,0.0,False,True,True,True,frutta,120
+farina di cracker,93.0,440,10.7,2.0,3.0,True,True,True,True,carboidrati,100
+riso soffiato,34.1,153,2.4,0.2,0.6,False,False,False,False,carboidrati,100
+filinchen gutena,0.5,19,0.4,0.2,0.0,True,True,True,True,frutta,120
+crackers toast melba,23.0,117,3.6,1.0,1.9,True,True,True,True,carboidrati,100
+matzo crackers con cipolla d'uovo,21.6,109,2.8,1.1,1.4,True,True,True,True,carboidrati,100
+Mais/granturco,20.3,126,2.4,4.4,2.0,True,True,True,True,condimenti,10
+fiches di bagel,116.1,789,21.6,26.5,7.2,True,True,True,True,frutta,120
+pretzel,24.1,115,3.0,0.9,1.0,True,True,True,True,condimenti,10
+patate crude,37.2,164,4.3,0.2,4.7,True,True,True,True,frutta,120
+gatto di patate fatto in casa,4.0,202,0.0,9.4,0.0,False,False,False,True,frutta,120
+patate al forno,36.6,161,4.3,0.2,3.8,False,True,True,True,frutta,120
+Bastoncini di patate,19.2,188,2.4,12.4,1.2,False,False,False,True,dolcificanti,5
+patate cotte,12.1,52,1.1,0.006,1.2,True,True,True,True,frutta,120
+sainsbury di patate vivaldi,0.0,23,0.0,0.1,0.0,False,False,True,True,condimenti,10
+Zuppa di prosciutto di patate,13.4,192,6.5,12.5,1.4,True,True,True,True,proteine,90
+patate russet crude,66.7,292,7.9,0.3,4.8,True,True,True,True,frutta,120
+patate russet al forno,64.1,290,7.9,0.4,6.9,False,True,True,True,frutta,120
+patatine fritte,2.2,13,0.2,0.4,0.2,True,True,True,True,frutta,120
+Scaloppini di patate,26.4,216,7.0,9.0,4.7,False,False,True,False,dolcificanti,5
+patatine fritte,1.9,11,0.2,0.4,0.2,True,True,True,True,frutta,120
+purè di patate,35.5,215,4.0,6.8,3.1,True,True,True,True,condimenti,10
+purè di patate con latte e burro,35.3,237,3.9,8.9,3.2,True,True,True,True,proteine,90
+patate rosse crude,33.9,149,4.0,0.3,3.6,True,True,True,True,proteine,90
+frittelle di patate,6.1,59,1.3,3.2,0.7,True,True,True,True,frutta,120
+Sbuffi di patate,35.5,243,2.6,11.0,3.2,True,True,True,True,proteine,90
+patate rosse cotte,16.7,74,2.0,0.1,1.5,True,False,True,True,proteine,90
+patate in scatola,29.7,132,3.6,0.3,4.2,True,True,True,True,frutta,120
+buccia di patata cruda,4.7,22,1.0,0.099,1.0,False,False,False,False,carboidrati,100
+patatine fritte,0.7,4,0.099,0.1,0.099,True,True,True,True,frutta,120
+hash brown patatine,15.3,144,1.4,9.0,1.4,True,True,True,True,proteine,90
+patatine fritte,0.0,130,0.0,2.0,0.0,True,True,True,True,frutta,120
+Patatine fritte di mais,17.2,162,1.9,10.0,1.2,False,False,True,True,frutta,120
+Nacho formaggio tortilla chips basso grasso,18.5,90,2.4,1.0,1.8,True,False,True,True,carboidrati,100
+Barbecue con patatine di mais,111.3,1036,13.9,64.7,10.3,False,False,True,True,condimenti,10
+Chicchi di mais non salati,50.5,490,5.8,29.4,3.9,False,False,False,True,condimenti,10
+patatine fritte senza grassi,190.1,860,21.9,1.4,17.0,False,False,False,False,grassi,15
+peperoncino dolce bollitore patatine al forno,2.1,99,2.0,2.2,0.0,False,False,False,True,condimenti,10
+Chips di taro,1.6,11,0.049,0.6,0.2,False,False,True,False,grassi,15
+patatine fritte con grassi ridotti,113.7,801,12.1,35.4,10.0,False,False,False,True,grassi,15
+snack alla cipolla,19.5,150,2.3,6.8,1.2,False,False,True,False,verdura,80
+formaggio a patatine fritte,98.1,843,14.5,46.2,8.8,True,True,True,True,proteine,90
+fiches di yuca cassava,1.2,9,0.054,0.4,0.002,True,False,False,True,frutta,120
+tortilla chips basso grasso,22.6,117,3.1,1.6,1.5,True,False,True,True,carboidrati,100
+Ranch sapore tortilla chips,124.2,992,14.2,48.8,7.9,True,False,True,True,carboidrati,100
+Patatine fritte,15.9,161,2.1,10.4,1.4,True,True,True,True,frutta,120
+tortilla chips,20.3,142,2.1,6.2,1.6,True,True,True,True,carboidrati,100
+Patatine fritte,15.9,149,0.8,9.1,2.5,True,True,True,True,frutta,120
+patatine di tortilla al formaggio di nacho,18.2,156,2.2,8.2,1.5,True,False,True,True,carboidrati,100
+Chicchi di ortaggi,17.1,134,1.5,6.6,1.3,False,True,True,True,condimenti,10
+Taco sapore tortilla patatine,143.2,1090,17.9,54.9,12.0,False,False,True,False,carboidrati,100
+Barbecue con patatine fritte,104.5,970,15.2,64.2,8.7,True,True,True,True,frutta,120
+Pita chips,20.5,137,3.5,4.6,1.1,True,True,True,True,carboidrati,100
+patatine fritte panna acida e cipolla,102.0,1051,16.0,67.1,10.3,True,False,True,True,verdura,80
+adobo affresco,53.6,780,5.8,60.2,3.7,False,False,False,False,carboidrati,100
+peperoncino salsa di peperoncino rosso,0.6,3,0.1,0.089,0.1,False,False,False,False,condimenti,10
+cremosa salsa ranch mcdonalds,1.0,132,0.3,14.7,0.0,True,True,True,True,condimenti,10
+fetsup,4.5,19,0.2,0.066,0.053,True,True,True,True,frutta,120
+peperoncino salsa verde,0.8,3,0.1,0.032,0.3,False,False,False,True,condimenti,10
+aceto di vino rosso,0.011,3,0.055,0.0,0.0,False,False,False,False,condimenti,10
+Salsa di pesce,0.7,6,0.9,0.013,0.0,True,True,True,True,proteine,90
+coleslaw medicazione ridotto grasso,6.8,56,0.0,3.4,0.045,False,False,True,True,grassi,15
+condimenti aciduli,0.6,21,0.4,2.0,0.0,False,False,True,True,condimenti,10
+salsa di guava cotta,22.6,86,0.8,0.3,8.6,False,False,False,False,condimenti,10
+salsa pizza,21.8,136,5.5,2.9,5.0,True,True,True,True,carboidrati,100
+salsa agrodolce mcdonalds,11.0,48,0.2,0.3,0.0,False,False,True,True,condimenti,10
+sciroppo di nance,0.8,4,0.028,0.002,0.3,True,True,True,True,dolcificanti,5
+condimento francese ridotto grasso,4.7,37,0.072,2.2,0.2,False,False,False,False,condimenti,10
+Condimento di pepe,0.5,76,0.2,8.2,0.0,False,False,True,False,condimenti,10
+sciroppo di sorgo,15.7,61,0.0,0.0,0.0,True,True,True,True,dolcificanti,5
+ranch vestire grasso gratis,3.7,17,0.039,0.3,0.088,False,False,False,True,grassi,15
+Cesare condimento a basso contenuto calorico,2.8,17,0.028,0.7,0.053,False,False,True,False,condimenti,10
+Dolce condimento acidulo,0.6,2,0.082,0.0,0.0,False,False,True,True,condimenti,10
+maionese imitazione grasso libero,2.5,13,0.043,0.4,0.3,True,False,True,True,condimenti,10
+sofrito,11.2,488,26.4,37.5,3.5,True,True,True,False,frutta,120
+Sugo di tacchino istantaneo,3.9,27,0.8,1.0,0.3,True,True,False,False,condimenti,10
+salsa teriyaki,2.8,16,1.1,0.015,0.016,False,True,True,False,condimenti,10
+salsa di pomodoro,13.0,59,2.9,0.7,3.7,False,False,True,False,verdura,80
+kraft salsa barbecue,6.5,28,0.1,0.053,0.032,True,True,True,True,condimenti,10
+salsa di mirtilli rossi addolcita,107.8,418,0.6,0.4,2.8,False,False,False,False,condimenti,10
+Coleslaw medicazione,3.8,62,0.1,5.3,0.024,True,True,True,True,dolcificanti,5
+sugo di cipolla secco,16.2,77,2.2,0.7,1.4,True,True,True,False,verdura,80
+sciroppo di mais leggero,16.9,62,0.0,0.09,0.0,False,False,True,True,dolcificanti,5
+Condimento di pomodoro di pancetta,0.3,49,0.3,5.3,0.04,True,True,True,False,verdura,80
+sciroppo di pancake,13.9,53,0.0,0.075,0.0,True,True,True,True,dolcificanti,5
+Aceto balsamico,2.7,14,0.041,0.0,0.0,False,False,False,True,condimenti,10
+ranch medicazione ridotto grasso,3.2,29,0.2,1.9,0.2,False,False,False,True,grassi,15
+Salsa barbecue mcdonalds,10.3,46,0.4,0.3,0.4,True,True,True,True,condimenti,10
+condimento di olio di aceto,0.4,72,0.0,8.0,0.0,False,False,False,True,grassi,15
+Condimento di semi di papavero,4.0,66,0.2,5.5,0.03,False,False,True,False,grassi,15
+condimento di senape al miele,3.5,70,0.1,6.1,0.057,True,False,True,False,condimenti,10
+francese vestire grasso gratis,5.1,21,0.01,0.024,0.4,False,False,False,True,grassi,15
+aceto,0.089,3,0.0,0.0,0.0,False,True,False,True,condimenti,10
+spray dressing,1.3,13,0.07,0.9,0.075,True,True,True,True,condimenti,10
+Senza senape senza grassi,5.8,25,0.2,0.2,0.2,False,False,False,False,condimenti,10
+Sugo di funghi,13.0,119,3.0,6.4,1.0,True,True,True,False,condimenti,10
+Salsa bianca,22.9,368,9.6,26.6,0.5,True,True,True,False,condimenti,10
+salsa di pasta marinara,19.9,129,3.7,3.9,4.8,False,False,True,False,carboidrati,100
+salsa di pomodoro con funghi,20.7,86,3.6,0.3,3.7,False,False,False,False,verdura,80
+sugo di maiale in polvere,4.3,25,0.6,0.6,0.2,True,True,True,True,condimenti,10
+sugo di manzo,11.2,123,8.7,5.5,0.9,True,True,True,False,proteine,90
+green goddess dressing,1.1,64,0.3,6.5,0.094,True,True,True,True,condimenti,10
+salsa con questo,27.9,358,7.9,23.8,1.8,False,False,False,False,condimenti,10
+salsa cocktail,4.2,19,0.2,0.2,0.3,True,True,True,True,condimenti,10
+salsa worcestershire,3.3,13,0.0,0.0,0.0,True,True,True,True,condimenti,10
+Salsa barbecue,6.9,29,0.1,0.1,0.2,True,True,True,True,condimenti,10
+salsa di pomodoro con cipolle,24.4,103,3.8,0.5,4.4,False,False,True,False,verdura,80
+sugo bruno secco,3.6,22,0.6,0.6,0.1,True,True,True,False,condimenti,10
+blue cheese condimento leggero,2.1,14,0.3,0.4,0.0,False,False,True,True,condimenti,10
+salsa di pomodoro spagnola,17.7,81,3.5,0.7,3.4,False,False,True,False,verdura,80
+Salsa di ostriche,2.0,9,0.2,0.066,0.024,False,False,False,False,condimenti,10
+Salsa di formaggio,0.8,30,1.5,2.2,0.071,True,False,True,True,proteine,90
+salsa di hoisina,7.1,35,0.5,0.5,0.4,False,False,False,False,condimenti,10
+Dessert di sottaceti,5.3,20,0.097,0.061,0.2,False,True,False,False,dolcificanti,5
+salsa di pomodoro con formaggio alle erbe,25.0,144,5.2,4.7,5.4,True,False,True,True,verdura,80
+Condimento francese,2.5,73,0.1,7.2,0.0,False,False,True,False,condimenti,10
+Maionese Hellmanns,0.087,15,0.0,1.7,0.0,True,True,True,True,condimenti,10
+sciroppo d'acero canadese,19.1,76,0.0,0.0,0.0,False,False,True,True,dolcificanti,5
+Sciroppo d'acero,13.4,52,0.09,0.047,0.0,False,True,True,True,dolcificanti,5
+Barbecue salsa tori occhio,6.4,27,0.1,0.1,0.2,False,False,True,True,condimenti,10
+Ranch dressing,0.9,65,0.2,6.7,0.0,True,True,True,True,condimenti,10
+ketchup mp di pomodoro,0.2,15,0.0,0.0,0.0,False,False,True,True,verdura,80
+luce maionese,1.4,36,0.032,3.3,0.0,True,False,False,False,condimenti,10
+condimento di maionese,0.066,103,0.0,11.7,0.0,True,False,True,False,condimenti,10
+sciroppo di malto,15.0,67,1.3,0.0,0.0,False,False,True,False,dolcificanti,5
+sugo secco,14.5,86,3.3,2.0,0.0,True,True,True,False,condimenti,10
+arancia di mirtillo rosso,127.1,490,0.8,0.3,0.0,False,False,False,True,frutta,120
+condimento cesareo,0.5,80,0.3,8.5,0.036,False,False,False,True,condimenti,10
+condimento italiano,1.8,35,0.032,3.1,0.0,False,True,False,False,condimenti,10
+salsa marrone istantanea,4.0,25,0.6,0.8,0.2,False,False,False,False,condimenti,10
+condimento di formaggio roquefort,0.4,15,0.8,1.1,0.0,True,False,True,True,proteine,90
+condimento di formaggio azzurro,0.7,71,0.2,7.7,0.045,True,False,True,True,proteine,90
+Salsa d'anatra,19.7,80,0.1,0.063,0.2,True,True,False,False,condimenti,10
+au jus,5.9,38,2.8,0.5,0.0,True,True,True,True,grassi,15
+sciroppo di mais scuro,15.5,57,0.0,0.0,0.0,True,False,True,True,dolcificanti,5
+latticello luce di condimento,3.2,30,0.2,1.9,0.2,True,True,True,True,condimenti,10
+Aceto di sidro,0.1,3,0.0,0.0,0.0,False,False,False,True,condimenti,10
+salsa tartara,2.0,32,0.2,2.5,0.078,True,True,True,True,condimenti,10
+salsa piccante al pepe,0.031,1,0.024,0.018,0.071,False,True,True,False,condimenti,10
+salsa di peperoncino di pomodoro,1.2,6,0.2,0.095,0.4,False,False,False,False,verdura,80
+Sugo di tacchino secco,4.6,26,0.7,0.5,0.0,True,True,True,False,condimenti,10
+Salsa di salsa,1.2,5,0.3,0.039,0.3,True,False,True,True,condimenti,10
+salsa di bistecca,3.7,16,0.2,0.004,0.3,False,False,False,False,condimenti,10
+melassa,14.9,58,0.0,0.068,0.0,True,True,True,True,frutta,120
+Italian medicazione grasso gratis,1.2,7,0.1,0.1,0.077,False,True,False,True,grassi,15
+salsa di prugne,8.1,35,0.2,0.2,0.1,False,False,True,False,condimenti,10
+chow mein mescolare cibi maestri,0.0,26,0.0,0.2,0.0,True,True,False,True,carboidrati,100
+sugo di manzo istantaneo,4.1,25,0.7,0.6,0.3,True,True,True,False,proteine,90
+rafano,0.6,2,0.003,0.085,0.2,False,True,True,True,grassi,15
+granadina,13.4,54,0.0,0.0,0.0,True,True,True,True,verdura,80
+salsa tabasco,0.006,1,0.045,0.002,0.013,True,True,True,True,condimenti,10
+Salsa acida dolce,6.7,26,0.02,0.084,0.065,False,False,False,False,condimenti,10
+salsa verde,1.0,6,0.2,0.1,0.3,False,False,True,True,condimenti,10
+miso,5.1,40,2.6,1.2,1.1,False,False,True,False,dolcificanti,5
+Soia germogliata cotta,6.1,76,8.0,4.2,0.8,True,True,False,True,condimenti,10
+farina di soia torrefatta,28.6,375,29.6,18.6,8.2,False,True,True,False,carboidrati,100
+farina di soia a basso contenuto di grassi,30.7,330,40.0,7.8,14.1,True,True,True,True,carboidrati,100
+soia verde cotta,9.9,127,11.1,5.8,3.8,False,False,False,False,condimenti,10
+azumaya tofu vitasoy,9.1,316,32.8,16.6,2.4,False,False,True,True,proteine,90
+Proteine della soia isolate,2.1,96,22.8,1.0,1.6,True,True,True,True,condimenti,10
+tofu yogurt,41.8,246,9.2,4.7,0.5,True,True,True,True,proteine,90
+bacon senza carne,9.1,446,15.4,42.5,3.7,True,True,False,False,proteine,90
+pollo fritto senza carne,11.1,304,27.7,16.6,5.6,True,True,True,False,proteine,90
+latte di soia,8.4,109,7.1,4.8,1.0,True,True,True,True,proteine,90
+soy vermicelli,115.2,463,0.1,0.1,5.5,False,False,True,True,verdura,80
+tofu fritto,1.2,35,2.4,2.6,0.5,True,True,True,True,proteine,90
+"tempehCity name (optional, probably does not need a translation)",15.6,320,30.8,17.9,0.0,True,True,True,True,proteine,90
+"koyadofuCity name (optional, probably does not need a translation)",1.7,81,8.9,5.2,1.2,True,True,True,True,frutta,120
+polpettone senza carne,4.5,110,11.8,5.0,2.6,True,True,False,False,proteine,90
+Soia vanille joghurt alpro,1.0,21,0.3,0.6,0.0,True,True,True,True,condimenti,10
+Formaggio di soia cagliata,15.5,340,28.1,18.2,0.0,True,False,False,True,proteine,90
+Salsa di soia,0.8,8,1.3,0.054,0.1,False,False,False,False,condimenti,10
+Tostatura a secco di soia,30.4,419,36.8,20.1,7.5,False,False,False,False,condimenti,10
+Olio di soia,0.0,120,0.0,13.6,0.0,False,False,False,False,grassi,15
+pollo senza carne,6.1,376,39.7,21.4,6.0,True,True,False,False,proteine,90
+Soia cotta,17.1,296,28.6,15.4,10.3,False,True,False,False,condimenti,10
+Latte di soia non grasso,10.1,68,6.0,0.046,0.5,True,False,True,True,proteine,90
+farina di soia,1.8,23,1.8,1.1,0.5,False,True,True,False,carboidrati,100
+Olio di lecitina di soia,0.0,104,0.0,13.6,0.0,False,False,False,False,grassi,15
+tofu crudo,4.7,188,20.0,11.9,0.7,False,False,True,True,proteine,90
+Patatine fritte di soia,15.0,109,7.5,2.1,1.0,False,False,False,False,condimenti,10
+soia verde cruda,28.3,376,33.2,17.4,10.8,False,False,False,True,condimenti,10
+concentrato di proteine della soia,7.2,93,18.0,0.1,1.6,True,False,True,True,condimenti,10
+margarina di soia,0.043,34,0.052,3.8,0.0,False,False,False,True,grassi,15
+cioccolato latte di soia non grasso,20.7,107,6.0,0.046,0.5,True,False,True,True,proteine,90
+okara,15.3,93,3.9,2.1,0.0,True,True,True,True,frutta,120
+polpette senza carne,11.5,284,30.2,13.0,6.6,True,True,False,False,proteine,90
+latticello di soia vanigliato,15.3,131,7.9,4.3,1.5,True,True,True,True,condimenti,10
+farina di soia cruda,49.0,414,54.8,2.9,0.0,False,False,True,False,carboidrati,100
+latte di soia a basso contenuto di grassi,17.5,104,4.0,1.5,1.9,True,False,False,True,proteine,90
+soia germogliata cruda,6.7,85,9.2,4.7,0.8,True,True,False,True,condimenti,10
+soia cruda,56.1,830,67.9,37.1,17.3,False,False,False,False,condimenti,10
+tempeh cotto,2.6,55,5.1,3.2,0.0,True,True,True,True,proteine,90
+vaniglia latte di soia leggero,9.4,83,6.4,2.1,1.5,True,False,True,True,proteine,90
+latte di soia al cioccolato,24.2,153,5.5,3.7,1.0,True,False,True,True,proteine,90
+olio di soia,0.0,120,0.0,13.6,0.0,False,False,False,False,grassi,15
+natto,11.5,169,14.2,8.8,4.3,True,True,True,False,frutta,120
+crisantemo grezzo,1.5,12,1.7,0.3,1.5,False,False,True,False,carboidrati,100
+zucca cotta,25.5,100,1.2,0.6,5.2,True,True,True,True,frutta,120
+cavolfiore crudo,0.6,3,0.2,0.081,0.3,False,False,True,True,verdura,80
+cavolo rosso crudo,12.5,53,2.4,0.3,3.6,False,False,True,False,verdura,80
+broccoli raab crudi,1.1,9,1.3,0.2,1.1,True,True,False,True,verdura,80
+Napa cavolo cotto,2.4,13,1.2,0.2,0.0,False,False,False,False,verdura,80
+kelp,0.5,2,0.07,0.067,0.018,True,True,True,True,grassi,15
+scalogni crudi,4.2,18,0.6,0.061,0.8,True,True,True,True,verdura,80
+germogli di bambù crudi,9.4,49,4.7,0.5,4.0,True,True,True,True,dolcificanti,5
+juta cotta,6.3,32,3.2,0.2,1.7,False,False,True,False,frutta,120
+lattuga rossa,0.6,4,0.4,0.08,0.3,True,False,True,False,verdura,80
+Broccoli cotti,20.1,98,6.7,1.1,9.2,False,False,False,True,verdura,80
+romanesco crudo,3.9,20,1.9,0.2,2.0,False,False,False,False,dolcificanti,5
+melanzane crude,26.9,115,4.5,0.8,13.7,True,True,True,True,frutta,120
+porri crudi,12.6,54,1.3,0.3,1.6,False,False,True,False,condimenti,10
+limonegrass citronella,1.2,5,0.038,0.076,0.0,True,True,True,True,frutta,120
+zucca cotta,12.0,49,1.8,0.2,2.7,True,True,True,True,frutta,120
+sedano cotto,1.5,7,0.3,0.098,0.6,False,False,False,False,verdura,80
+Serrano pepe,0.4,2,0.1,0.075,0.2,False,False,False,True,condimenti,10
+nopale crude,2.9,14,1.1,0.063,1.9,True,True,True,True,condimenti,10
+Foglie di patate dolci cotte,4.7,22,1.4,0.2,1.2,False,False,False,True,dolcificanti,5
+melanzane cotte,8.1,33,0.8,0.2,2.5,True,True,True,True,frutta,120
+asparagi cotti,0.6,3,0.4,0.074,0.3,False,True,False,False,carboidrati,100
+rutabaga cotto,16.4,72,2.2,0.4,4.3,False,False,False,False,carboidrati,100
+parsnips crudi,30.6,128,2.0,0.5,8.3,True,True,True,True,verdura,80
+sottaceti aciduli,3.5,17,0.5,0.3,1.9,True,False,False,True,carboidrati,100
+rape cotte,6.3,29,1.6,0.3,5.0,True,True,True,True,frutta,120
+jerusalem carciofi,26.2,110,3.0,0.047,2.4,True,True,False,True,condimenti,10
+colled grezza,2.0,12,1.1,0.2,1.4,True,True,True,True,frutta,120
+crisantemo cotto,4.3,20,1.6,0.036,2.3,False,False,False,False,frutta,120
+ravanello orientale essiccato,73.5,314,9.2,0.8,27.7,False,False,False,True,dolcificanti,5
+Tomatillos,7.7,42,1.3,1.3,2.5,True,True,True,True,carboidrati,100
+taro germogli crudi,2.0,9,0.8,0.069,0.0,True,True,True,True,dolcificanti,5
+zucca di acorna cruda,44.9,172,3.4,0.4,6.5,False,False,True,True,frutta,120
+porri essiccati,2.4,10,0.5,0.026,0.3,True,True,True,True,dolcificanti,5
+cavolo crudo,16.2,70,3.6,0.3,7.0,False,False,True,False,verdura,80
+peperoni rossi dolci cotti,4.5,19,0.7,0.1,0.9,False,False,True,True,condimenti,10
+peperoni rossi dolci crudi,9.0,46,1.5,0.4,3.1,False,False,True,False,condimenti,10
+cetriolo sbucciato,2.9,16,0.8,0.2,0.9,False,False,False,False,dolcificanti,5
+purslane crude,1.5,9,0.9,0.2,0.0,True,True,True,True,grassi,15
+cipolle di piselli cotte,15.5,81,4.6,0.4,4.0,False,False,True,True,dolcificanti,5
+pomodoro cotto,4.9,22,1.2,0.1,0.9,False,False,True,False,verdura,80
+Germogli di taro cotti,4.5,20,1.0,0.1,0.0,True,True,True,True,dolcificanti,5
+scots cavolo crudo,5.6,28,1.9,0.4,1.1,True,True,True,True,verdura,80
+carciofo crudo,13.5,60,4.2,0.2,6.9,False,False,False,False,carboidrati,100
+germogli di fagioli navy crudi,13.6,70,6.4,0.7,0.0,True,True,True,True,proteine,90
+sottaceti dolci,33.8,146,0.9,0.7,1.6,False,False,False,False,dolcificanti,5
+ravanello orientale cotto,5.0,25,1.0,0.4,2.4,False,False,False,True,dolcificanti,5
+foglie di patata dolce crude,3.1,15,0.9,0.2,1.9,False,False,True,False,carboidrati,100
+"irishmossCity name (optional, probably does not need a translation)",0.6,2,0.037,0.049,0.082,True,True,True,True,frutta,120
+foglie di drumstick cotte,4.7,25,2.2,0.4,0.8,True,True,True,True,frutta,120
+zucca invernale cruda,10.0,39,1.1,0.2,1.7,True,True,True,True,verdura,80
+zucca cruda,7.5,30,1.2,0.1,0.6,True,True,True,True,frutta,120
+Ortaggi a radice e tubero,1.4,7,0.5,0.096,1.2,True,False,True,True,frutta,120
+spinaci cotti,6.8,41,5.3,0.5,4.3,True,True,True,True,verdura,80
+ravanelli sottaceti,7.8,42,1.7,0.5,3.3,False,False,False,False,dolcificanti,5
+Cipolla dolce,25.0,106,2.6,0.3,3.0,False,True,True,False,verdura,80
+Salsifica cotto,20.7,92,3.7,0.2,4.2,False,False,False,False,frutta,120
+Semi di ravanello germogliati,1.4,16,1.4,1.0,0.0,True,True,True,True,grassi,15
+rape crude,11.8,51,1.6,0.2,3.3,True,True,True,True,condimenti,10
+radice di burdack cruda,20.5,85,1.8,0.2,3.9,True,True,True,True,carboidrati,100
+Cavoli rossi cotti,11.8,49,2.6,0.2,4.4,False,False,True,False,dolcificanti,5
+juta cruda,1.6,10,1.3,0.046,0.0,False,True,True,False,frutta,120
+peperoncino essiccato a caldo,0.3,2,0.054,0.054,0.1,False,False,True,True,condimenti,10
+salsify grezza,24.7,109,4.4,0.3,4.4,True,True,False,False,frutta,120
+crookenck squash grezzo,4.9,24,1.3,0.3,1.3,True,True,True,True,grassi,15
+zucca indiana cotta,7.6,38,0.7,0.4,3.5,True,True,True,True,frutta,120
+poi,65.4,269,0.9,0.3,1.0,True,True,True,True,grassi,15
+fiore di sesbania cotto,5.3,22,1.2,0.007,0.0,False,False,False,False,dolcificanti,5
+zucca di ghianda cotta,29.9,115,2.3,0.3,9.0,True,True,True,True,verdura,80
+cavolfiore cotto,5.1,29,2.3,0.6,2.9,False,False,False,False,verdura,80
+zucca di pollo cotta,6.8,34,1.9,0.7,2.0,True,True,True,False,proteine,90
+Alga lavera,0.1,1,0.2,0.012,0.09,False,False,True,False,carboidrati,100
+Igname di montagna cotto,29.0,119,2.5,0.1,0.0,True,True,True,True,dolcificanti,5
+fiori di zucca crudi,1.1,5,0.3,0.084,0.0,True,True,True,False,frutta,120
+Senape verde cruda,2.6,15,1.6,0.2,1.8,True,False,False,False,condimenti,10
+punta di freccia,2.4,12,0.6,0.084,0.0,True,True,True,True,frutta,120
+Cavoli giapponesi,8.5,45,2.4,0.2,4.7,False,False,False,False,dolcificanti,5
+Germogli di fagiolo mungo cotti,4.5,24,2.5,0.1,1.0,False,True,True,True,dolcificanti,5
+zucca di capesante cotta,5.9,29,1.9,0.3,3.4,True,True,True,True,frutta,120
+foglie di zucca cotte,2.4,15,1.9,0.2,1.9,True,True,True,True,frutta,120
+Pepe ungherese,1.8,8,0.2,0.1,0.3,True,True,True,True,condimenti,10
+Patate dolci cotte,23.6,103,2.3,0.2,3.8,True,False,True,True,dolcificanti,5
+cavolo cinese pe tsai crudo,2.5,12,0.9,0.2,0.9,False,False,True,False,verdura,80
+taro greggio,27.5,116,1.6,0.2,4.3,False,True,True,False,grassi,15
+Jicama di semi di patata,11.5,49,0.9,0.1,6.4,False,True,True,True,carboidrati,100
+Olive,0.5,10,0.09,0.9,0.1,True,True,False,True,proteine,90
+verdure di senape cotte,6.3,36,3.6,0.7,2.8,True,True,True,True,condimenti,10
+fiori di zucca cotti,4.4,20,1.5,0.1,1.2,False,True,True,True,frutta,120
+felce arborea cotta,15.3,57,0.4,0.096,5.3,True,True,False,True,frutta,120
+granturco giallo crudo,123.3,606,15.6,7.9,12.1,False,False,False,False,dolcificanti,5
+indive,1.7,9,0.6,0.1,1.6,True,True,True,True,frutta,120
+"wakameCity name (optional, probably does not need a translation)",7.3,36,2.4,0.5,0.4,True,True,True,True,frutta,120
+taro tahitiano crudo,8.6,55,3.5,1.2,0.0,False,False,True,False,frutta,120
+broccoli crudi,6.0,31,2.6,0.3,2.4,True,False,True,True,verdura,80
+peperoni verdi dolci crudi,6.9,30,1.3,0.3,2.5,False,False,False,False,condimenti,10
+cavolo cinese pak choi cotto,3.0,20,2.7,0.3,1.7,False,False,True,False,verdura,80
+agar,0.3,1,0.053,0.058,0.027,True,True,True,True,grassi,15
+crescione,0.4,4,0.8,0.006,0.2,False,False,True,False,frutta,120
+Barbabietole da zucchero cotte,7.9,39,3.7,0.3,4.2,True,True,True,True,dolcificanti,5
+zucca invernale cotta,18.1,76,1.8,0.7,5.7,True,True,True,True,frutta,120
+nuovo zeloe spinaci crudi,1.4,8,0.8,0.1,0.8,True,False,True,True,verdura,80
+"okraCity name (optional, probably does not need a translation)",0.9,4,0.2,0.082,0.4,True,True,True,True,frutta,120
+yautia tannier,31.9,132,2.0,0.5,2.0,True,True,True,False,frutta,120
+spinaci di senape cotti,5.0,29,3.1,0.4,3.6,False,True,True,True,verdura,80
+rabarbaro cotto,74.9,278,0.9,0.1,4.8,False,False,True,False,frutta,120
+bietole crude,13.0,58,2.2,0.2,3.8,True,True,True,True,condimenti,10
+cialde a tamburo crude,8.5,37,2.1,0.2,3.2,True,True,True,True,condimenti,10
+zucchine bambino,0.3,2,0.3,0.089,0.1,True,True,True,True,carboidrati,100
+cipolla cruda,3.7,16,0.4,0.048,0.7,False,True,True,False,verdura,80
+Romanesco cotto,7.7,39,3.7,0.4,4.0,False,False,False,False,dolcificanti,5
+zucca di butternutt cruda,23.4,90,2.0,0.2,4.0,True,True,True,True,frutta,120
+foglie di amaranto,1.1,6,0.7,0.075,0.0,False,False,False,True,grassi,15
+rape verdi crudi,3.9,18,0.8,0.2,1.8,True,True,True,True,carboidrati,100
+spaghetti zucca cruda,7.0,31,0.6,0.6,1.5,True,True,True,True,carboidrati,100
+alga secca,9.2,52,3.1,0.3,7.3,False,False,True,False,carboidrati,100
+igname cotto,37.4,158,2.0,0.2,5.3,True,True,True,True,carboidrati,100
+granturco essiccato,18.8,119,4.1,3.0,5.8,False,False,True,False,verdura,80
+cetriolo,5.4,23,1.0,0.2,0.8,True,True,True,False,frutta,120
+"arrowrootCity name (optional, probably does not need a translation)",16.1,78,5.1,0.2,1.6,True,True,True,True,verdura,80
+cardo crudo,7.2,30,1.2,0.2,2.8,False,False,True,True,carboidrati,100
+Germogli di bambù cotti,2.3,14,1.8,0.3,1.2,False,True,True,True,dolcificanti,5
+zucca d'estate cruda,8.7,42,3.1,0.5,2.9,True,True,True,True,verdura,80
+patate dolci crude,26.2,112,2.0,0.002,3.9,True,True,True,True,dolcificanti,5
+Pomodoro verde,9.3,42,2.2,0.4,2.0,False,False,True,True,verdura,80
+Barbabietole verdi crude,1.6,8,0.8,0.078,1.4,False,False,True,True,carboidrati,100
+cavolo verza cotto,9.2,41,3.1,0.2,4.8,False,False,True,False,verdura,80
+cicoria witloof,2.1,9,0.5,0.031,1.6,True,True,True,True,frutta,120
+rape cotte,7.9,34,1.1,0.1,3.1,True,True,True,True,frutta,120
+Pomodori secchi,1.1,5,0.3,0.053,0.2,False,False,True,False,dolcificanti,5
+radicchio,2.9,15,0.9,0.2,0.6,True,True,True,True,frutta,120
+Ortaggi misti cotti,23.8,118,5.2,0.3,8.0,False,True,True,True,grassi,15
+pomodoro giallo,6.3,32,2.1,0.6,1.5,False,False,False,False,verdura,80
+cardo cotto,6.4,26,0.9,0.1,2.0,False,False,True,False,carboidrati,100
+spinaci crudi,1.1,7,0.9,0.1,0.7,True,True,True,True,verdura,80
+cavolo crudo,0.9,7,0.6,0.3,0.9,False,False,True,False,verdura,80
+Baccelli di tamburo cotti,9.7,42,2.5,0.2,5.0,False,False,True,False,dolcificanti,5
+Kohlrabi crudo,16.4,72,4.5,0.3,9.5,False,False,True,False,carboidrati,100
+Cavoletti di lenticchie,17.0,82,6.9,0.4,0.0,False,False,False,True,proteine,90
+carote crude,5.8,25,0.6,0.1,1.7,True,True,True,True,carboidrati,100
+peperoni rossi,4.0,18,0.8,0.2,0.7,False,True,True,True,condimenti,10
+finocchio,17.1,73,2.9,0.5,7.3,True,True,True,True,frutta,120
+Mais dolce bianco,13.9,63,2.4,0.9,2.0,False,False,False,False,dolcificanti,5
+sedaniaco crudo,14.4,66,2.3,0.5,2.8,False,False,False,False,carboidrati,100
+zucca hubbard cruda,10.1,46,2.3,0.6,4.5,True,True,True,True,verdura,80
+Cavoletti di Bruxelles cotti,1.5,8,0.5,0.1,0.5,True,True,True,True,dolcificanti,5
+carote cotte,3.8,16,0.3,0.092,1.4,True,True,True,True,carboidrati,100
+agnelli quarti crudi,0.069,0,0.08,0.067,0.046,False,False,False,False,dolcificanti,5
+radice di loto cotta,1.4,6,0.1,0.056,0.3,False,False,True,True,dolcificanti,5
+piselli spaccati crudi,118.9,672,48.4,2.3,50.2,False,True,True,False,grassi,15
+scots cavolo cotto,7.3,36,2.5,0.5,0.0,False,True,True,True,verdura,80
+Mais cotto,21.6,99,3.5,1.5,2.5,False,False,False,False,dolcificanti,5
+ravanello crudo,0.2,1,0.042,0.026,0.002,False,False,True,False,verdura,80
+ortiche pungenti,6.7,37,2.4,0.007,6.1,True,True,False,True,grassi,15
+carote del bambino,1.2,5,0.031,0.053,0.4,False,False,True,True,carboidrati,100
+Peperoni dolci gialli,11.8,50,1.9,0.4,1.7,False,False,False,False,condimenti,10
+foglie di taro crude,1.9,12,1.4,0.2,1.0,False,False,True,True,grassi,15
+granturco greggio,26.7,123,4.7,1.9,2.9,True,True,True,True,dolcificanti,5
+roselle,6.4,28,0.5,0.4,0.0,True,True,True,True,verdura,80
+foglie di drumstick crude,1.7,13,2.0,0.3,0.4,True,True,True,True,condimenti,10
+zucca di capesante cruda,5.0,23,1.6,0.3,1.6,True,True,True,True,frutta,120
+Barbaforte/rafano/cren,15.8,65,1.3,0.2,1.4,True,True,True,True,carboidrati,100
+cavoletti di Bruxelles crudi,1.7,8,0.6,0.077,0.7,True,True,True,True,condimenti,10
+cavolo cotto,6.3,42,3.5,1.4,4.7,False,False,True,False,verdura,80
+pupusas con frijoles,39.7,289,7.0,11.4,7.3,True,True,True,True,frutta,120
+Cavoli mostarda,7.2,36,1.4,0.1,4.0,False,False,True,False,frutta,120
+zucca cruda,4.1,19,1.1,0.2,1.0,True,True,True,True,frutta,120
+zucca al burro cotta,21.0,80,1.8,0.2,6.4,True,False,True,True,grassi,15
+Barbabietole da zucchero cotte,35.1,146,3.5,0.2,3.0,True,True,True,True,dolcificanti,5
+"cassavaCity name (optional, probably does not need a translation)",78.4,330,2.8,0.6,3.7,True,True,True,True,frutta,120
+carote di piselli cotte,16.2,77,4.9,0.7,5.0,False,False,True,True,carboidrati,100
+lattuga romana,1.5,8,0.6,0.1,1.0,False,False,True,False,verdura,80
+igname greggio,41.8,177,2.3,0.3,6.2,True,True,True,True,grassi,15
+sottaceti di chowchow,65.3,296,3.7,2.2,3.7,False,False,False,False,dolcificanti,5
+rape di prateria crude,4.5,20,0.3,0.029,1.0,True,False,True,True,grassi,15
+cavolo verza cruda,4.3,19,1.4,0.017,2.2,False,False,True,False,verdura,80
+sedano crudo,1.2,6,0.3,0.045,0.6,False,False,False,False,verdura,80
+sedani-rapa,9.1,42,1.5,0.3,0.0,False,False,False,False,grassi,15
+spinaci di senape crudi,5.9,33,3.3,0.5,4.2,True,False,True,True,verdura,80
+zucchine crude,8.1,44,3.1,0.8,2.6,True,True,True,True,condimenti,10
+okra cotto,7.2,35,3.0,0.3,4.0,False,False,False,False,frutta,120
+ravanello di ghiacciolo bianco,2.6,14,1.1,0.1,1.4,False,False,False,True,dolcificanti,5
+Pomodoro aranciato,3.5,18,1.3,0.2,1.0,False,False,True,True,frutta,120
+foglie di zucca crude,0.9,7,1.2,0.2,0.0,False,True,True,True,condimenti,10
+spaghetti di zucca cotti,10.0,42,1.0,0.4,2.2,False,False,True,True,carboidrati,100
+Mais bianco cotto,22.4,100,3.4,1.5,2.8,False,False,False,False,dolcificanti,5
+carciofo cotto,14.3,64,3.5,0.4,10.3,False,False,False,False,carboidrati,100
+avocado,23.0,432,5.4,39.6,18.1,True,True,True,True,grassi,15
+Fattorie di fagiolini wellsley,1.7,8,0.3,0.0,0.087,True,True,True,True,verdura,80
+quarti di agnello cotti,9.0,58,5.8,1.3,3.8,True,True,False,True,dolcificanti,5
+Piselli cotti,25.0,134,8.6,0.4,8.8,False,False,True,True,grassi,15
+Barbabietole da zucchero cotte,5.0,22,0.8,0.085,1.0,True,True,True,True,dolcificanti,5
+scalogni secchi,0.7,3,0.1,0.013,0.1,True,True,True,False,frutta,120
+lattuga verde,4.3,23,2.0,0.2,2.0,False,True,True,False,verdura,80
+Kohlrabi cotti,11.0,48,3.0,0.2,1.8,False,True,True,True,dolcificanti,5
+kanpyo essiccato,35.1,139,4.6,0.3,5.3,False,False,True,False,verdura,80
+rape di prateria bollite,4.2,18,0.2,0.086,1.0,True,True,True,True,dolcificanti,5
+Rab di broccoli cotti,2.7,21,3.3,0.4,2.4,False,False,False,True,verdura,80
+zucca d'estate cotta,9.9,49,2.7,1.0,2.9,True,True,True,True,frutta,120
+taro cotto,45.7,187,0.7,0.1,6.7,False,False,True,False,carboidrati,100
+scalogno di cipolla primaverile,1.5,6,0.4,0.077,0.5,True,False,True,False,verdura,80
+zucca hubbard cotta,12.3,57,2.8,0.7,5.5,True,True,True,True,verdura,80
+Pepe di gialapeno,0.9,4,0.1,0.002,0.4,False,False,False,False,condimenti,10
+nuovo zeloe spinaci cotti,3.8,22,2.3,0.3,2.5,True,False,True,True,verdura,80
+fiore di sesbania crudo,0.2,1,0.012,0.095,0.0,False,False,True,True,dolcificanti,5
+Spirulina essiccata,1.7,20,4.0,0.5,0.3,True,True,True,True,carboidrati,100
+cavolo cinese pe tsai cotto,2.9,17,1.8,0.2,2.0,False,False,False,False,verdura,80
+zucchine cotte,4.8,27,2.1,0.6,1.8,True,True,True,True,frutta,120
+olive verdi in salamoia,0.1,4,0.073,0.4,0.057,False,True,False,True,carboidrati,100
+radice di loto cruda,19.8,85,3.0,0.1,5.6,False,False,True,True,carboidrati,100
+Foglie di uva,2.4,13,0.8,0.3,1.5,True,True,True,True,frutta,120
+cetriolo sottaceto di aneto,3.7,17,0.9,0.2,1.6,False,False,False,False,condimenti,10
+Cavolo puzzolente,1.8,11,1.5,0.1,1.2,False,False,True,False,verdura,80
+Pepe di banana,1.8,9,0.5,0.1,1.1,False,False,True,True,frutta,120
+ravanello orientale crudo,13.9,61,2.0,0.3,5.4,False,False,False,True,dolcificanti,5
+purslane cotte,4.1,21,1.7,0.2,0.0,True,True,True,True,frutta,120
+rabarbaro greggio,2.3,11,0.5,0.1,0.9,False,False,True,False,dolcificanti,5
+Cavolo paludoso,3.6,20,2.0,0.2,1.9,False,False,False,False,verdura,80
+Germogli di fagiolo mungo crudi,1.2,6,0.6,0.044,0.4,True,True,True,True,dolcificanti,5
+cipolla cotta,1.5,7,0.2,0.034,0.2,False,False,True,False,verdura,80
+swiss bietola cruda,1.3,7,0.6,0.042,0.6,True,True,True,True,verdura,80
+piselli crudi,21.0,117,7.9,0.6,7.4,False,True,True,False,grassi,15
+Cavoli cotti,8.3,35,1.9,0.019,2.9,False,False,False,False,frutta,120
+foglie di taro cotte,5.6,35,3.9,0.6,2.9,False,False,True,True,dolcificanti,5
+porri cotti,9.4,38,1.0,0.2,1.2,False,False,False,False,grassi,15
+piselli spaccati cotti,40.2,227,16.3,0.8,16.3,False,True,False,True,dolcificanti,5
+giallo mais dolce,14.2,58,4.1,0.4,1.5,False,False,False,False,dolcificanti,5
+asparagi crudi,0.5,2,0.3,0.037,0.3,True,True,True,False,carboidrati,100
+cotto a collare,10.7,63,5.1,1.4,7.6,False,False,False,False,dolcificanti,5
+bietola bianca cotta,7.2,35,3.3,0.1,3.7,True,True,False,False,verdura,80
+Nopale cotte,4.9,22,2.0,0.003,3.0,True,True,True,True,frutta,120
+taro tahitiano cotto,9.4,60,5.7,0.9,0.0,False,False,True,False,frutta,120
+cavolo cinese pak choi crude,1.5,9,1.1,0.1,0.7,False,False,True,True,verdura,80
+peperoncino verde,4.3,18,0.9,0.097,0.7,False,False,True,True,condimenti,10
+igname di montagna greggio,22.2,91,1.8,0.1,3.4,False,True,True,False,dolcificanti,5
+pastinaca cotta,27.2,114,2.1,0.5,6.4,True,False,False,False,verdura,80
+stufato di pomodoro,16.1,97,2.4,3.3,2.1,False,False,True,False,verdura,80
+peperoni verdi dolci cotti,4.5,19,0.7,0.1,0.9,False,False,False,False,condimenti,10
+Mais bianco crudo,31.6,143,5.3,2.0,4.5,False,False,False,True,dolcificanti,5
+rutabaga cruda,66.5,286,8.3,1.2,17.8,True,True,False,True,carboidrati,100
+peperoni jalapeno in scatola,6.4,37,1.3,1.3,3.5,False,False,True,True,condimenti,10
+zucca in scatola,19.8,83,2.7,0.7,7.1,True,True,True,True,frutta,120
+cipolle di piselli in scatola,10.3,61,3.9,0.5,2.8,False,False,True,True,dolcificanti,5
+purè di patate dolce in scatola,59.1,258,5.0,0.5,4.3,False,False,True,False,dolcificanti,5
+Hominy in scatola,23.5,119,2.4,1.5,4.1,True,True,True,False,dolcificanti,5
+purea di pomodoro in scatola,22.5,95,4.1,0.5,4.8,False,False,True,False,verdura,80
+pomodori secchi in scatola sott'olio,0.7,6,0.2,0.4,0.2,False,False,False,False,grassi,15
+verdure miste in scatola,17.5,88,3.5,0.6,9.3,True,True,True,True,verdura,80
+funghi di paglia in scatola,0.3,2,0.2,0.09,0.1,False,False,True,False,dolcificanti,5
+capperi in scatola,0.4,2,0.2,0.089,0.3,True,True,True,False,carboidrati,100
+peperoni rossi in scatola,3.7,15,0.7,0.058,0.9,False,True,True,False,condimenti,10
+carote in scatola,24.4,104,2.6,0.6,8.2,True,True,True,True,carboidrati,100
+pomodori in scatola di succo di pomodoro,9.6,41,1.9,0.3,2.4,False,False,True,True,verdura,80
+asparagi in scatola,10.2,62,7.4,0.7,4.1,True,True,True,False,carboidrati,100
+peperoni rossi dolci in scatola,5.5,25,1.1,0.4,1.7,False,True,True,False,condimenti,10
+cipolle in scatola,2.5,12,0.5,0.084,0.8,True,True,True,True,carboidrati,100
+rape in scatola,4.0,27,2.0,0.4,1.9,True,True,True,True,carboidrati,100
+cuori di palma,1.5,9,0.8,0.2,0.8,False,False,False,False,frutta,120
+spinaci in scatola,6.8,44,4.9,0.9,3.7,True,True,True,True,verdura,80
+in scatola di patate dolci,133.5,568,6.3,1.3,16.0,False,False,True,True,dolcificanti,5
+mais in scatola,11.1,49,1.6,0.6,1.4,False,True,True,False,dolcificanti,5
+carote di piselli in scatola,21.6,97,5.5,0.7,8.4,False,False,True,True,carboidrati,100
+zucca di coccodrillo in scatola,6.2,27,1.3,0.1,2.9,True,True,True,True,grassi,15
+pomodori in scatola,17.6,77,4.0,0.7,4.6,False,True,True,False,dolcificanti,5
+pimento in scatola,9.8,44,2.1,0.6,3.6,False,False,True,True,condimenti,10
+peperoni verdi dolci in scatola,5.5,25,1.1,0.4,1.7,False,False,False,False,condimenti,10
+piselli in scatola,9.5,57,3.5,0.8,0.0,False,True,True,True,dolcificanti,5
+peperoncino in scatola,6.4,29,1.0,0.4,2.4,True,True,True,True,condimenti,10
+peperoni verdi in scatola,3.7,15,0.7,0.074,0.9,False,False,False,False,condimenti,10
+foglie di uva in scatola,3.3,20,1.2,0.6,2.8,False,True,True,True,frutta,120
+crauti in scatola,6.1,27,1.3,0.2,4.1,False,True,True,False,frutta,120
+Barbabietole in scatola,16.2,69,2.0,0.2,3.0,False,False,True,True,carboidrati,100
+pomodori stufati in scatola,15.8,66,2.3,0.5,2.6,False,False,True,False,dolcificanti,5
+pasta di pomodoro in scatola,49.5,215,11.3,1.2,10.7,False,False,True,False,carboidrati,100
+pancetta ranch insalata mcdonalds,19.4,389,28.1,20.1,3.2,True,True,True,True,condimenti,10
+insalata di cesare con pollo alla griglia mcdonalds,11.3,201,29.1,5.6,3.3,True,True,True,True,proteine,90
+insalata di cesare mcdonalds,9.1,94,6.8,4.4,3.4,True,False,True,True,dolcificanti,5
+insalata di verdure,4.4,22,1.7,0.054,0.0,False,True,True,True,verdura,80
+insalata di verdure con pollo,2.5,70,11.6,1.5,0.0,True,True,True,False,proteine,90
+Insalata di patate,27.9,358,6.7,20.5,3.3,False,False,True,False,frutta,120
+taco insalata taco campana,80.5,906,35.7,48.9,16.0,False,True,True,True,carboidrati,100
+lattuga iceberg,1.7,8,0.5,0.045,0.7,True,True,True,False,verdura,80
+cornsalad,2.0,12,1.1,0.2,0.0,True,True,True,True,carboidrati,100
+Insalata di patate con uova,40.5,393,4.9,23.5,3.3,False,False,True,False,dolcificanti,5
+insalata laterale mcdonalds,3.7,17,0.9,0.2,1.4,True,True,True,True,condimenti,10
+insalata di cesare con pollo croccante mcdonalds,19.2,349,25.7,16.4,3.4,True,True,True,True,proteine,90
+insalata di mele con noci,25.6,191,3.5,8.2,3.6,False,False,False,False,grassi,15
+insalata di verdure con uova di formaggio,3.2,68,5.8,3.9,0.0,True,False,True,True,proteine,90
+celtuce,0.3,1,0.071,0.088,0.1,True,True,True,True,frutta,120
+rucola,0.7,5,0.5,0.1,0.3,True,True,True,True,verdura,80
+insalata di verdure con gamberi,4.4,71,9.7,1.7,0.0,False,True,True,True,grassi,15
+"ColeslawCity name (optional, probably does not need a translation)",28.4,292,1.8,18.9,3.6,True,True,True,True,frutta,120
+funghi shiitake cotti,2.6,10,0.3,0.007,0.4,False,True,False,True,frutta,120
+shiitake funghi crudi,1.3,6,0.4,0.039,0.5,False,True,True,True,frutta,120
+funghi crimini,0.3,1,0.2,0.018,0.064,False,True,True,False,carboidrati,100
+funghi crudi,2.3,15,2.2,0.2,0.7,True,True,True,False,frutta,120
+funghi portabella grigliati,5.4,35,4.0,0.7,2.7,False,False,False,False,carboidrati,100
+funghi maitake,0.072,0,0.016,0.017,0.041,False,True,False,False,dolcificanti,5
+funghi shiitake essiccati,2.7,11,0.3,0.061,0.4,False,False,False,False,carboidrati,100
+funghi canterelle,0.4,2,0.033,0.063,0.2,True,True,True,True,frutta,120
+nube orecchio fungo essiccato,20.4,80,2.6,0.2,19.6,False,False,True,False,carboidrati,100
+funghi cotti,8.3,44,3.4,0.7,3.4,False,True,False,False,dolcificanti,5
+pepeao essiccato,19.4,72,1.2,0.1,0.0,False,False,True,False,condimenti,10
+tartufi,5.4,61,0.7,4.1,0.3,True,True,True,True,frutta,120
+orecchio degli ebrei,6.7,25,0.5,0.095,0.0,False,False,False,False,carboidrati,100
+funghi enoki,0.2,1,0.062,0.099,0.089,True,True,True,True,frutta,120
+funghi morel,0.7,4,0.4,0.07,0.4,True,True,True,True,dolcificanti,5
+funghi portabella crudi,3.3,19,1.8,0.3,1.1,False,False,True,False,frutta,120
+Funghi d'ostrica,0.9,5,0.5,0.035,0.3,True,True,True,False,carboidrati,100

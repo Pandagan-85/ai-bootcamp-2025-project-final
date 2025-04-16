@@ -1,23 +1,34 @@
-# main.py
-
+#  main.py
 import os
-import argparse
+import argparse  # Importa argparse
 import time
 from pprint import pprint
 from dotenv import load_dotenv
 
-# Importa componenti dal progetto
+#  Importa componenti dal progetto
 from model_schema import UserPreferences, GraphState
-from loaders import load_ingredients, load_recipes
+from loaders import load_ingredients
 from workflow import create_workflow
 
-# --- Configurazione ---
+#  --- Configurazione ---
 DATA_DIR = "data"
 INGREDIENTS_FILE = os.path.join(DATA_DIR, "ingredients.csv")
 RECIPES_FILE = os.path.join(DATA_DIR, "recipes.csv")
 
 
-def run_recipe_generation(target_cho: float, vegan: bool, vegetarian: bool, gluten_free: bool, lactose_free: bool, max_recipes: int = None):
+def run_recipe_generation(
+    target_cho: float,
+    vegan: bool,
+    vegetarian: bool,
+    gluten_free: bool,
+    lactose_free: bool,
+    max_recipes: int = None,
+    streamlit_output: bool = False,  # Nuovo parametro
+    streamlit_write=None,  # Nuovo parametro per Streamlit write
+    streamlit_info=None,  # Nuovo parametro per Streamlit info
+    streamlit_error=None,  # Nuovo parametro per Streamlit error
+    img_dict=None,
+) -> str:  # La funzione ora restituisce la stringa di output
     """
     Funzione principale che orchestra il processo di generazione delle ricette.
 
@@ -27,74 +38,93 @@ def run_recipe_generation(target_cho: float, vegan: bool, vegetarian: bool, glut
         vegetarian: Flag per ricette vegetariane
         gluten_free: Flag per ricette senza glutine
         lactose_free: Flag per ricette senza lattosio
-        max_recipes: Numero massimo di ricette da elaborare (per limitare il tempo di esecuzione)
+        max_recipes: Numero massimo di ricette da elaborare
+        streamlit_output: Se True, formatta l'output per Streamlit
+        streamlit_write: Funzione st.write di Streamlit (opzionale)
+        streamlit_info: Funzione st.info di Streamlit (opzionale)
+        streamlit_error: Funzione st.error di Streamlit (opzionale)
+        img_dict: Dictionary with HTML for icons (optional)
+
+    Returns:
+        L'output formattato (stringa Markdown)
     """
     start_time = time.time()
-    print("--- Avvio Sistema Generazione Ricette ---")
+    if not streamlit_output:
+        print("--- Avvio Sistema Generazione Ricette ---")
 
-    # 1. Carica Chiave API da .env
-    print("Caricamento variabili d'ambiente...")
+    #  1. Carica Chiave API da .env
+    if not streamlit_output:
+        print("Caricamento variabili d'ambiente...")
     load_dotenv()
     if not os.getenv("OPENAI_API_KEY"):
-        print("\nERRORE CRITICO: La variabile d'ambiente OPENAI_API_KEY non è impostata.")
-        print("Assicurati di avere un file .env nella directory principale con OPENAI_API_KEY='tua_chiave'")
-        return  # Interrompe l'esecuzione
+        error_message = "\nERRORE CRITICO: La variabile d'ambiente OPENAI_API_KEY non è impostata.\nAssicurati di avere un file .env nella directory principale con OPENAI_API_KEY='tua_chiave'"
+        if streamlit_output and streamlit_error:
+            streamlit_error(error_message)
+        else:
+            print(error_message)
+        return ""  # Restituisce una stringa vuota per indicare errore
 
-    # 2. Crea Oggetto Preferenze Utente
+    #  2. Crea Oggetto Preferenze Utente
     user_preferences = UserPreferences(
         target_cho=target_cho,
         vegan=vegan,
-        # Nota: se vegan è True, vegetarian dovrebbe esserlo implicitamente, ma lo teniamo separato come da input
         vegetarian=vegetarian,
         gluten_free=gluten_free,
-        lactose_free=lactose_free
+        lactose_free=lactose_free,
     )
-    print("\nPreferenze Utente Impostate:")
-    pprint(user_preferences.dict())
+    if not streamlit_output:
+        print("\nPreferenze Utente Impostate:")
+        pprint(user_preferences.dict())
 
-    # 3. Carica i Dataset
-    print(f"\nCaricamento ingredienti da: {INGREDIENTS_FILE}")
+    #  3. Carica i Dataset
+    if not streamlit_output:
+        print(f"\nCaricamento ingredienti da: {INGREDIENTS_FILE}")
     ingredient_database = load_ingredients(INGREDIENTS_FILE)
     if not ingredient_database:
-        print(
-            f"ERRORE: Impossibile caricare il database degli ingredienti. Verifica il file {INGREDIENTS_FILE}.")
-        return
+        error_message = f"ERRORE: Impossibile caricare il database degli ingredienti. Verifica il file {INGREDIENTS_FILE}."
+        if streamlit_output and streamlit_error:
+            streamlit_error(error_message)
+        else:
+            print(error_message)
+        return ""
 
-    # 4. Crea il Workflow (Grafo LangGraph)
-    print("\nCreazione e compilazione del workflow LangGraph...")
-    app = create_workflow()  # La funzione create_workflow compila già il grafo
+    #  4. Crea il Workflow (Grafo LangGraph)
+    if not streamlit_output:
+        print("\nCreazione e compilazione del workflow LangGraph...")
+    app = create_workflow()
 
-    # 5. Prepara lo Stato Iniziale per il Grafo
-    # Deve contenere tutte le chiavi definite in GraphState
+    #  5. Prepara lo Stato Iniziale per il Grafo
     initial_state = GraphState(
         user_preferences=user_preferences,
         available_ingredients=ingredient_database,
-        initial_recipes=[],            # Non utilizziamo più ricette iniziali
-        generated_recipes=[],          # Inizialmente vuoto
-        final_verified_recipes=[],     # Inizialmente vuoto
-        error_message=None,            # Nessun errore all'inizio
-        final_output=None              # Nessun output all'inizio
+        initial_recipes=[],
+        generated_recipes=[],
+        final_verified_recipes=[],
+        error_message=None,
+        final_output=None,
+        img_dict=img_dict,
     )
-    print("\nStato iniziale preparato per l'esecuzione del grafo.")
-    # pprint(initial_state) # Decommenta per debug dello stato iniziale
+    if not streamlit_output:
+        print("\nStato iniziale preparato per l'esecuzione del grafo.")
 
-    # 6. Esegui il Workflow
-    print("\n--- ESECUZIONE WORKFLOW ---")
-    # L'esecuzione passa lo stato iniziale attraverso i nodi e le decisioni
-    # fino a raggiungere lo stato finale (END)
+    #  6. Esegui il Workflow
+    if not streamlit_output:
+        print("\n--- ESECUZIONE WORKFLOW ---")
     final_state = app.invoke(initial_state)
-    print("--- WORKFLOW COMPLETATO ---")
+    if not streamlit_output:
+        print("--- WORKFLOW COMPLETATO ---")
 
-    # 7. Mostra i Risultati
-    print("\n--- RISULTATO FINALE ---")
+    #  7. Mostra i Risultati
+    if not streamlit_output:
+        print("\n--- RISULTATO FINALE ---")
+
+    output_string = ""  # Inizializza la stringa di output
+
     if final_state and isinstance(final_state, dict):
         if 'final_output' in final_state and final_state['final_output']:
-            print(final_state['final_output'])
+            output_string = final_state['final_output']
         else:
-            # Genera un output alternativo se l'output non è stato salvato correttamente
-            print(
-                "Non è stato possibile recuperare l'output formattato. Ecco le ricette trovate:")
-            # Stampa le ricette verificate direttamente
+            output_string = "Non è stato possibile recuperare l'output formattato. Ecco le ricette trovate:\n"
             if 'final_verified_recipes' in final_state and final_state['final_verified_recipes']:
                 recipes = final_state['final_verified_recipes']
                 preferences = final_state['user_preferences']
@@ -111,12 +141,11 @@ def run_recipe_generation(target_cho: float, vegan: bool, vegetarian: bool, glut
                 prefs_string = ", ".join(
                     prefs_list) if prefs_list else "Nessuna preferenza specifica"
 
-                print(
-                    f"\nEcco {len(recipes)} proposte di ricette che soddisfano i tuoi criteri (Target CHO: ~{preferences.target_cho:.1f}g, {prefs_string}):\n")
+                output_string += f"\nEcco {len(recipes)} proposte di ricette che soddisfano i tuoi criteri (Target CHO: ~{preferences.target_cho:.1f}g, {prefs_string}):\n\n"
 
                 for i, recipe in enumerate(recipes):
-                    print(f"**{i+1}. {recipe.name}**")
-                    print(f"* CHO Totali: {recipe.total_cho:.1f}g")
+                    output_string += f"**{i+1}. {recipe.name}**\n"
+                    output_string += f"* CHO Totali: {recipe.total_cho:.1f}g\n"
 
                     recipe_flags = []
                     if recipe.is_vegan:
@@ -129,42 +158,49 @@ def run_recipe_generation(target_cho: float, vegan: bool, vegetarian: bool, glut
                         recipe_flags.append("Senza Lattosio")
                     flags_string = ", ".join(
                         recipe_flags) if recipe_flags else "Standard"
-                    print(f"* Caratteristiche: {flags_string}")
+                    output_string += f"* Caratteristiche: {flags_string}\n\n"
 
-                    print("* Ingredienti:")
+                    output_string += "* Ingredienti:\n"
                     for ing in recipe.ingredients:
-                        print(
-                            f"    * {ing.name}: {ing.quantity_g:.1f}g (CHO: {ing.cho_contribution:.1f}g)")
-                    print()
+                        output_string += f"    * {ing.name}: {ing.quantity_g:.1f}g (CHO: {ing.cho_contribution:.1f}g)\n"
+                    output_string += "\n"
             else:
-                print("Nessuna ricetta verificata trovata.")
+                output_string += "Nessuna ricetta verificata trovata.\n"
 
-            # Stampa il messaggio di errore se presente
             if 'error_message' in final_state and final_state['error_message']:
-                print(f"Errore: {final_state['error_message']}")
+                output_string += f"Errore: {final_state['error_message']}\n"
     else:
-        print("Errore: lo stato finale non è stato restituito correttamente.")
+        output_string = "Errore: lo stato finale non è stato restituito correttamente.\n"
 
-    # Statistiche di esecuzione
+    #  Statistiche di esecuzione
     end_time = time.time()
     total_time = end_time - start_time
     minutes = int(total_time // 60)
     seconds = int(total_time % 60)
 
-    # Statistiche sulla quantità di ricette
     num_generated = len(final_state.get('generated_recipes', []))
     num_verified = len(final_state.get('final_verified_recipes', []))
 
-    print(f"\n--- Statistiche Esecuzione ---")
-    print(f"Tempo totale: {minutes} minuti e {seconds} secondi")
-    print(f"Ricette generate: {num_generated}")
-    print(f"Ricette verificate e selezionate: {num_verified}")
-    print("--- Esecuzione Terminata ---")
+    if not streamlit_output:
+        print(f"\n--- Statistiche Esecuzione ---")
+        print(f"Tempo totale: {minutes} minuti e {seconds} secondi")
+        print(f"Ricette generate: {num_generated}")
+        print(f"Ricette verificate e selezionate: {num_verified}")
+        print("--- Esecuzione Terminata ---")
+    else:
+        if streamlit_info:
+            streamlit_info(
+                f"Tempo totale: {minutes} minuti e {seconds} secondi")
+        if streamlit_write:
+            streamlit_write(f"Ricette generate: {num_generated}")
+            streamlit_write(
+                f"Ricette verificate e selezionate: {num_verified}")
+
+    return output_string
 
 
-# --- Punto di Ingresso dello Script ---
 if __name__ == "__main__":
-    # Configurazione Argomenti Command-Line (Alternativa all'hardcoding)
+    #  Configurazione Argomenti Command-Line
     parser = argparse.ArgumentParser(
         description="Genera ricette basate su CHO e preferenze dietetiche.")
     parser.add_argument("target_cho", type=float,
@@ -178,20 +214,18 @@ if __name__ == "__main__":
     parser.add_argument("--lactose_free", action="store_true",
                         help="Filtra per ricette senza lattosio")
     parser.add_argument("--max_recipes", type=int, default=None,
-                        help="Numero massimo di ricette da elaborare (opzionale, per limitare il tempo di esecuzione)")
+                        help="Numero massimo di ricette da elaborare (opzionale)")
 
     args = parser.parse_args()
 
-    # Esempio di chiamata diretta (se non si usano argomenti da linea di comando)
-    # run_recipe_generation(target_cho=80, vegan=True, vegetarian=True, gluten_free=False, lactose_free=True)
-
-    # Chiamata con argomenti da linea di comando
-    run_recipe_generation(
+    #  Esecuzione da riga di comando
+    output = run_recipe_generation(
         target_cho=args.target_cho,
         vegan=args.vegan,
-        # Una ricetta vegana è anche vegetariana
         vegetarian=args.vegetarian or args.vegan,
         gluten_free=args.gluten_free,
         lactose_free=args.lactose_free,
-        max_recipes=args.max_recipes
+        max_recipes=args.max_recipes,
+        streamlit_output=False  # Indica che non è Streamlit
     )
+    print(output)  # Stampa l'output sulla console
