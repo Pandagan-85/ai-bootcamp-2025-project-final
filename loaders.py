@@ -1,7 +1,6 @@
-# loaders.py
-
-import pandas as pd
 from typing import List, Dict
+import pandas as pd
+
 from model_schema import IngredientInfo, Recipe, RecipeIngredient
 
 

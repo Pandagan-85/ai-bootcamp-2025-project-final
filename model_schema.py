@@ -1,7 +1,6 @@
-# model_schema.py
-
-from pydantic import BaseModel, Field
 from typing import List, Dict, Optional, TypedDict
+from pydantic import BaseModel, Field
+
 
 # --- Input Utente ---
 

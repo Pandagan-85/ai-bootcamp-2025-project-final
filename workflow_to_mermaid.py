@@ -1,12 +1,7 @@
-# workflow_to_mermaid.py
-#
-# Script per generare un diagramma Mermaid del workflow di generazione ricette
-# Utilizza le funzionalità native di LangGraph per generare un diagramma aggiornato
-
 import os
 import sys
 import io
-from typing import Dict, Any, Tuple, List, Optional
+
 from workflow import create_workflow
 
 

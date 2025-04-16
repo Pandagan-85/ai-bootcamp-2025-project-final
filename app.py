@@ -1,10 +1,10 @@
-# Modified app.py
-import streamlit as st
-from main import run_recipe_generation
 import time
 import os
 from PIL import Image
 import base64
+import streamlit as st
+from main import run_recipe_generation
+
 
 # Create a proper path to access static files in Streamlit
 

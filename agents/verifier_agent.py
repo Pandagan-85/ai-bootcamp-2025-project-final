@@ -1,9 +1,7 @@
-# agents/verifier_agent.py
-
 from typing import List, Dict
 from copy import deepcopy
-from model_schema import GraphState, FinalRecipeOption, UserPreferences, CalculatedIngredient, RecipeIngredient
-# Usa la versione per FinalRecipeOption
+from model_schema import GraphState, FinalRecipeOption, UserPreferences, RecipeIngredient
+
 from utils import check_final_recipe_dietary_match, calculate_ingredient_cho_contribution
 
 

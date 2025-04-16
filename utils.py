@@ -1,10 +1,6 @@
-# utils.py
-
 from typing import List, Dict
 # Importa le classi da model_schema se necessario per type hinting
 from model_schema import RecipeIngredient, IngredientInfo, CalculatedIngredient, Recipe, FinalRecipeOption, UserPreferences
-from langchain_openai import ChatOpenAI
-from concurrent.futures import ThreadPoolExecutor
 
 
 def calculate_total_cho(

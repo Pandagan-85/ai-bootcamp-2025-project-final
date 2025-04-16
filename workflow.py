@@ -1,7 +1,7 @@
-# workflow.py
+from typing import Literal
 
 from langgraph.graph import StateGraph, END
-from typing import Literal
+
 
 # Importa lo schema dello stato e le funzioni dei nodi
 from model_schema import GraphState

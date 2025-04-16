@@ -12,8 +12,8 @@ from langchain_core.output_parsers import StrOutputParser
 from pydantic import BaseModel, Field as PydanticField, ValidationError
 from pydantic.config import ConfigDict
 
-from model_schema import IngredientInfo, FinalRecipeOption, CalculatedIngredient, RecipeIngredient, UserPreferences, GraphState
-from utils import calculate_total_cho, calculate_ingredient_cho_contribution
+from model_schema import IngredientInfo, FinalRecipeOption, RecipeIngredient, UserPreferences, GraphState
+from utils import calculate_ingredient_cho_contribution
 
 
 class GeneratedRecipeOutput(BaseModel):
@@ -224,7 +224,7 @@ def generate_single_recipe(preferences: UserPreferences, ingredient_data: Dict[s
                         continue
                     else:
                         print(
-                            f"Thread: Troppi tentativi con ingredienti non validi. Ricetta scartata.")
+                            "Thread: Troppi tentativi con ingredienti non validi. Ricetta scartata.")
                         return None
 
                 # Ricostruisci la lista di ingredienti come RecipeIngredient
@@ -291,8 +291,8 @@ def generate_recipes_agent(state: GraphState) -> GraphState:
     ingredient_data: Dict[str, IngredientInfo] = state['available_ingredients']
 
     # Configura il numero di ricette da generare (più di quelle necessarie per compensare possibili fallimenti)
-    # Miriamo a generare 6 ricette per averne poi almeno 3 valide dopo la verifica
-    target_recipes = 6
+    # Miriamo a generare 8 ricette per averne poi almeno 3 valide dopo la verifica
+    target_recipes = 8  # Aumentiamo da 6 a 8 per avere più possibilità
 
     # Recupera la chiave API di OpenAI
     api_key = os.getenv("OPENAI_API_KEY")
@@ -305,11 +305,11 @@ def generate_recipes_agent(state: GraphState) -> GraphState:
     # Inizializza il modello LLM
     model_name = "gpt-3.5-turbo"  # O un altro modello adatto
     print(f"Utilizzo modello {model_name} per la generazione delle ricette")
-    # Aumenta la temperatura per più creatività
-    llm = ChatOpenAI(temperature=0.7, model_name=model_name,
+    # Aumenta la temperatura per più creatività e diversità
+    llm = ChatOpenAI(temperature=0.8, model_name=model_name,
                      openai_api_key=api_key)
 
-    # PROMPT MIGLIORATO con enfasi sul range CHO e sulla distribuzione bilanciata
+    # PROMPT MIGLIORATO con enfasi sul range CHO, distribuzione bilanciata e diversità
     system_prompt = """
 Sei un esperto chef e nutrizionista specializzato nella creazione di ricette bilanciate e personalizzate. Il tuo compito è creare ricette originali che soddisfino precise esigenze nutrizionali e dietetiche.
 
@@ -320,6 +320,7 @@ ISTRUZIONI IMPORTANTI:
 - ATTENZIONE: Puoi usare ESCLUSIVAMENTE gli ingredienti che ti fornirò alla fine del prompt. Questi sono gli unici ingredienti disponibili come se fossero gli unici nella dispensa.
 - Specifica le quantità ESATTE in grammi per ogni ingrediente.
 - Segui rigorosamente le preferenze dietetiche indicate.
+- IMPORTANTE: Questa è la ricetta #{recipe_index}. Crea una ricetta COMPLETAMENTE DIVERSA dalle precedenti. Il nome, il tipo di piatto, gli ingredienti principali e lo stile di cucina DEVONO essere diversi da qualsiasi altra ricetta nella sessione.
 
 STRATEGIA PER RAGGIUNGERE IL TARGET CHO:
 1. Seleziona una combinazione di ingredienti ad alto, medio e basso contenuto di CHO.
@@ -336,6 +337,13 @@ RICETTE BILANCIATE:
 - Includi una proteina, un carboidrato, verdure/frutta, e grassi sani.
 - Quantità ragionevoli: 70-120g di cereali (pasta, riso), 100-200g di proteine, 100-200g di verdure.
 - Un singolo ingrediente NON dovrebbe contribuire più del 70% dei CHO totali.
+
+DIVERSITÀ DELLE RICETTE:
+- Se stai creando la ricetta #1: scegli liberamente un tipo di piatto.
+- Se stai creando la ricetta #2: scegli un tipo di piatto COMPLETAMENTE DIVERSO dalla ricetta #1 (es. se #1 era un primo, fai un secondo o un piatto unico).
+- Se stai creando la ricetta #3 o successive: scegli un tipo di piatto diverso dalle precedenti, con cucina di origine diversa (es. mediterranea, asiatica, sudamericana).
+- NON ripetere gli stessi ingredienti principali delle ricette precedenti.
+- VARIA le tecniche di cottura tra le diverse ricette (cottura al forno, saltato in padella, bollitura, ecc).
 
 FORMATO JSON RICHIESTO:
 ```json
@@ -364,6 +372,7 @@ ASSICURATI CHE:
 - Le quantità siano numeri realistici in grammi.
 - I valori booleani riflettano accuratamente le proprietà della ricetta.
 - Le istruzioni siano chiare e complete.
+- Il nome e il tipo di piatto deve essere DIVERSO dalle ricette precedenti.
 """
 
     human_prompt = """
@@ -386,6 +395,12 @@ IMPORTANTE: Usa ESCLUSIVAMENTE questi ingredienti (sono gli unici disponibili ne
 Crea una ricetta bilanciata, gustosa e originale che soddisfi ESATTAMENTE il target CHO richiesto.
 Calcola attentamente i CHO totali prima di finalizzare e assicurati che rientrino nel range {target_cho}g ±5g.
 Fornisci l'output esclusivamente in formato JSON come specificato, senza commenti aggiuntivi.
+
+IMPORTANTE: Questa è la ricetta #{recipe_index}. Assicurati che sia COMPLETAMENTE DIVERSA dalle ricette precedenti nel nome, concetto e stile del piatto.
+Se stai creando:
+- Ricetta #1-2: Scegli liberamente.
+- Ricetta #3-4: Scegli un tipo di cucina e un metodo di cottura diversi dai precedenti.
+- Ricetta #5+: Crea un piatto di un'altra cultura culinaria (mediterranea, asiatica, americana, ecc.) non ancora utilizzata.
 """
 
     prompt = ChatPromptTemplate.from_messages([
@@ -405,6 +420,8 @@ Fornisci l'output esclusivamente in formato JSON come specificato, senza comment
 
     # Generazione parallela delle ricette
     generated_recipes = []
+    recipe_names = set()  # Mantiene traccia dei nomi delle ricette già generate
+
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         # Prepara i futures per tutte le ricette da generare
         futures = [
@@ -422,21 +439,103 @@ Fornisci l'output esclusivamente in formato JSON come specificato, senza comment
             try:
                 result = future.result()
                 if result:  # Se abbiamo un risultato valido (non None)
-                    generated_recipes.append(result)
-                    print(
-                        f"Ricetta '{result.name}' aggiunta alla lista di ricette generate.")
+                    # Verifica che la ricetta sia unica controllando il nome
+                    if result.name not in recipe_names:
+                        recipe_names.add(result.name)
+                        generated_recipes.append(result)
+                        print(
+                            f"Ricetta '{result.name}' aggiunta alla lista di ricette generate.")
+                    else:
+                        print(
+                            f"Ricetta '{result.name}' scartata perché duplicata.")
             except Exception as exc:
                 print(
                     f"La generazione di una ricetta ha generato un'eccezione: {exc}")
 
+    # Se abbiamo generato meno ricette del necessario, tenta di generarne altre
+    # con una temperatura più alta per aumentare la diversità
+    if len(generated_recipes) < 3:
+        # Genera almeno 2 ricette aggiuntive
+        remaining_to_generate = max(3 - len(generated_recipes), 2)
+        print(
+            f"Generazione di {remaining_to_generate} ricette aggiuntive con più diversità...")
+
+        # Usa una temperatura più alta per maggiore creatività
+        llm_diverse = ChatOpenAI(temperature=0.95, model_name=model_name,
+                                 openai_api_key=api_key)
+
+        # Modifichiamo leggermente il prompt per enfatizzare ancora di più la diversità
+        diverse_system_prompt = system_prompt + \
+            "\n\nNOTA SPECIALE: È ASSOLUTAMENTE ESSENZIALE che questa ricetta sia COMPLETAMENTE DIVERSA dalle precedenti. Scegli una cucina etnica, un metodo di cottura e ingredienti principali DIFFERENTI."
+
+        diverse_prompt = ChatPromptTemplate.from_messages([
+            ("system", diverse_system_prompt),
+            ("human", human_prompt)
+        ])
+
+        generator_chain_diverse = diverse_prompt | llm_diverse | StrOutputParser()
+
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            additional_futures = [
+                executor.submit(
+                    generate_single_recipe,
+                    preferences,
+                    ingredient_data,
+                    generator_chain_diverse,
+                    i + target_recipes  # Usiamo indici diversi per forzare maggiore varietà
+                ) for i in range(remaining_to_generate)
+            ]
+
+            for future in additional_futures:
+                try:
+                    result = future.result()
+                    if result and result.name not in recipe_names:  # Verifica unicità
+                        recipe_names.add(result.name)
+                        generated_recipes.append(result)
+                        print(
+                            f"Ricetta aggiuntiva '{result.name}' aggiunta alla lista.")
+                except Exception as exc:
+                    print(
+                        f"La generazione di una ricetta aggiuntiva ha generato un'eccezione: {exc}")
+
+    # Se abbiamo ancora dei duplicati, forzalo a verificare la diversità degli ingredienti
+    final_recipes = []
+    ingredient_sets = []
+
+    for recipe in generated_recipes:
+        # Crea un set degli ingredienti principali (escludendo ingredienti di base o condimenti)
+        main_ingredients = set([ing.name for ing in recipe.ingredients
+                               # Consideriamo solo ingredienti con contributo CHO significativo
+                                if ing.cho_contribution > 5.0])
+
+        # Verifica se questa combinazione di ingredienti principali è già stata usata
+        is_unique = True
+        for existing_ingredients in ingredient_sets:
+            # Se più del 60% degli ingredienti principali si sovrappongono, consideriamo la ricetta come simile
+            if len(main_ingredients.intersection(existing_ingredients)) / len(main_ingredients) > 0.6:
+                is_unique = False
+                print(
+                    f"Ricetta '{recipe.name}' scartata perché usa ingredienti principali simili ad altra ricetta.")
+                break
+
+        if is_unique:
+            ingredient_sets.append(main_ingredients)
+            final_recipes.append(recipe)
+
+    # Assicuriamoci di mantenere almeno 3 ricette se possibile
+    if len(final_recipes) < 3 and len(generated_recipes) >= 3:
+        # Se abbiamo scartato troppe ricette, teniamo le prime 3 delle ricette generate originariamente
+        print("Mantenimento di almeno 3 ricette, anche se alcune hanno ingredienti simili.")
+        final_recipes = generated_recipes[:3]
+
     print(
-        f"--- Generazione completata. Ricette generate: {len(generated_recipes)}/{target_recipes} ---")
+        f"--- Generazione completata. Ricette uniche generate: {len(final_recipes)}/{target_recipes} ---")
 
     # Aggiorna lo stato
-    state['generated_recipes'] = generated_recipes
+    state['generated_recipes'] = final_recipes
 
     # Gestione errori
-    if not generated_recipes:
+    if not final_recipes:
         state['error_message'] = "Nessuna ricetta è stata generata con successo."
     else:
         # Rimuovi errori precedenti se almeno una ricetta è stata generata con successo
