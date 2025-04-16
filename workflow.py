@@ -5,7 +5,7 @@ from typing import Literal
 
 # Importa lo schema dello stato e le funzioni dei nodi
 from model_schema import GraphState
-from agents.retriever_agent import initial_recipe_retriever
+
 from agents.generator_agent import generate_recipes_agent
 from agents.verifier_agent import verifier_agent
 from agents.formatter_agent import format_output_agent
