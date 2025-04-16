@@ -60,19 +60,6 @@ def run_recipe_generation(target_cho: float, vegan: bool, vegetarian: bool, glut
             f"ERRORE: Impossibile caricare il database degli ingredienti. Verifica il file {INGREDIENTS_FILE}.")
         return
 
-    print(f"\nCaricamento ricette da: {RECIPES_FILE}")
-    recipe_database = load_recipes(RECIPES_FILE)
-    if not recipe_database:
-        print(
-            f"Attenzione: Nessuna ricetta caricata da {RECIPES_FILE}. Il sistema potrebbe non funzionare correttamente.")
-        # Non terminiamo qui, il workflow potrebbe gestire lo stato vuoto, ma è un avviso importante.
-
-    # Limita il numero di ricette se specificato
-    if max_recipes and len(recipe_database) > max_recipes:
-        print(
-            f"Limitazione a {max_recipes} ricette per questa esecuzione (su {len(recipe_database)} totali)")
-        recipe_database = recipe_database[:max_recipes]
-
     # 4. Crea il Workflow (Grafo LangGraph)
     print("\nCreazione e compilazione del workflow LangGraph...")
     app = create_workflow()  # La funzione create_workflow compila già il grafo
@@ -82,11 +69,11 @@ def run_recipe_generation(target_cho: float, vegan: bool, vegetarian: bool, glut
     initial_state = GraphState(
         user_preferences=user_preferences,
         available_ingredients=ingredient_database,
-        initial_recipes=recipe_database,  # Passiamo l'intero DB, il primo nodo filtrerà
-        processed_recipes=[],           # Inizialmente vuoto
-        final_verified_recipes=[],      # Inizialmente vuoto
-        error_message=None,             # Nessun errore all'inizio
-        final_output=None               # Nessun output all'inizio
+        initial_recipes=[],            # Non utilizziamo più ricette iniziali
+        generated_recipes=[],          # Inizialmente vuoto
+        final_verified_recipes=[],     # Inizialmente vuoto
+        error_message=None,            # Nessun errore all'inizio
+        final_output=None              # Nessun output all'inizio
     )
     print("\nStato iniziale preparato per l'esecuzione del grafo.")
     # pprint(initial_state) # Decommenta per debug dello stato iniziale
@@ -165,15 +152,13 @@ def run_recipe_generation(target_cho: float, vegan: bool, vegetarian: bool, glut
     seconds = int(total_time % 60)
 
     # Statistiche sulla quantità di ricette
-    num_initial = len(recipe_database)
-    num_processed = len(final_state.get('processed_recipes', []))
+    num_generated = len(final_state.get('generated_recipes', []))
     num_verified = len(final_state.get('final_verified_recipes', []))
 
     print(f"\n--- Statistiche Esecuzione ---")
     print(f"Tempo totale: {minutes} minuti e {seconds} secondi")
-    print(f"Ricette iniziali: {num_initial}")
-    print(f"Ricette processate: {num_processed}")
-    print(f"Ricette verificate: {num_verified}")
+    print(f"Ricette generate: {num_generated}")
+    print(f"Ricette verificate e selezionate: {num_verified}")
     print("--- Esecuzione Terminata ---")
 
 
@@ -198,7 +183,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Esempio di chiamata diretta (se non si usano argomenti da linea di comando)
-    # run_recipe_generation(target_cho=80, vegan=True, vegetarian=True, gluten_free=False, lactose_free=True, max_recipes=20)
+    # run_recipe_generation(target_cho=80, vegan=True, vegetarian=True, gluten_free=False, lactose_free=True)
 
     # Chiamata con argomenti da linea di comando
     run_recipe_generation(

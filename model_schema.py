@@ -19,6 +19,11 @@ class UserPreferences(BaseModel):
 class IngredientInfo(BaseModel):
     name: str
     cho_per_100g: float
+    calories_per_100g: Optional[float] = None
+    protein_per_100g: Optional[float] = None
+    fat_per_100g: Optional[float] = None
+    fiber_per_100g: Optional[float] = None
+    food_group: Optional[str] = None
     is_vegan: bool
     is_vegetarian: bool
     is_gluten_free: bool
@@ -46,17 +51,27 @@ class CalculatedIngredient(BaseModel):
     name: str
     quantity_g: float
     cho_contribution: float  # CHO apportato da questo ingrediente specifico
+    calories_contribution: Optional[float] = None
+    protein_contribution_g: Optional[float] = None
+    fat_contribution_g: Optional[float] = None
+    fiber_contribution_g: Optional[float] = None
 
 
 class FinalRecipeOption(BaseModel):
     name: str
     ingredients: List[CalculatedIngredient]
     total_cho: float
+    total_calories: Optional[float] = None
+    total_protein_g: Optional[float] = None
+    total_fat_g: Optional[float] = None
+    total_fiber_g: Optional[float] = None
     # Aggiungiamo i flag per chiarezza nell'output finale
     is_vegan: bool
     is_vegetarian: bool
     is_gluten_free: bool
     is_lactose_free: bool
+    instructions: Optional[List[str]] = None
+    description: Optional[str] = None
 
 
 # --- Stato del Grafo LangGraph ---
@@ -68,9 +83,11 @@ class GraphState(TypedDict):
     user_preferences: UserPreferences
     # Dizionario per accesso rapido
     available_ingredients: Dict[str, IngredientInfo]
-    initial_recipes: List[Recipe]  # Ricette recuperate inizialmente
-    # Ricette modificate e analizzate
-    processed_recipes: List[FinalRecipeOption]
+    # Ricette recuperate inizialmente (opzionale nel nuovo flusso)
+    initial_recipes: List[Recipe]
+    # Ricette generate (nuovo nel flusso aggiornato)
+    generated_recipes: List[FinalRecipeOption]
     # Ricette finali dopo verifica
     final_verified_recipes: List[FinalRecipeOption]
     error_message: Optional[str]  # Per gestire eventuali errori nel flusso
+    final_output: Optional[str]   # Output formattato finale
