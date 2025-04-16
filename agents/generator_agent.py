@@ -1,6 +1,5 @@
-# agents/generator_agent.py
-
 import json
+import random
 import os
 import time
 from typing import List, Dict, Any, Optional
@@ -79,7 +78,8 @@ def extract_json_from_llm_response(response_str: str) -> dict:
 def generate_single_recipe(preferences: UserPreferences, ingredient_data: Dict[str, IngredientInfo],
                            generator_chain, recipe_index: int) -> Optional[FinalRecipeOption]:
     """
-    Genera una singola ricetta usando l'LLM e restituisce la ricetta come FinalRecipeOption.
+    Genera una singola ricetta usando l'LLM e restituisce la ricetta come FinalRecipeOption,
+    verificando la coerenza dei flag dietetici.
     """
     print(f"Thread: Generazione ricetta #{recipe_index+1}")
 
@@ -99,8 +99,8 @@ def generate_single_recipe(preferences: UserPreferences, ingredient_data: Dict[s
 
     # Prepara la lista degli ingredienti per il prompt
     # Include solo ingredienti che rispettano le preferenze dietetiche
-    valid_ingredients = []
-    relevant_ingredients = []
+    valid_ingredients_names = []  # Lista di nomi validi per il check finale
+    relevant_ingredients_prompt = []  # Lista per il prompt LLM
 
     for name, info in ingredient_data.items():
         # Filtro basato su preferenze dietetiche
@@ -110,176 +110,237 @@ def generate_single_recipe(preferences: UserPreferences, ingredient_data: Dict[s
            (preferences.lactose_free and not info.is_lactose_free):
             continue
 
-        # Aggiungi questo ingrediente alla lista degli ingredienti validi
-        valid_ingredients.append(name)
+        # Aggiungi questo ingrediente alla lista dei nomi validi
+        valid_ingredients_names.append(name)
 
-        # Includi solo ingredienti con CHO definito
+        # Costruisci descrizione per il prompt LLM (includi solo quelli con CHO definito)
         if info.cho_per_100g is not None:
-            # Crea descrizione dell'ingrediente con informazioni nutrizionali disponibili
             ing_desc = f"{name} (CHO: {info.cho_per_100g}g per 100g"
-
-            if hasattr(info, 'calories_per_100g') and info.calories_per_100g is not None:
-                ing_desc += f", Calorie: {info.calories_per_100g} kcal"
+            # Aggiungi altri dati nutrizionali se disponibili
             if hasattr(info, 'protein_per_100g') and info.protein_per_100g is not None:
                 ing_desc += f", Proteine: {info.protein_per_100g}g"
-            if hasattr(info, 'fat_per_100g') and info.fat_per_100g is not None:
-                ing_desc += f", Grassi: {info.fat_per_100g}g"
-            if hasattr(info, 'fiber_per_100g') and info.fiber_per_100g is not None:
-                ing_desc += f", Fibre: {info.fiber_per_100g}g"
-            if hasattr(info, 'food_group') and info.food_group is not None:
-                ing_desc += f", Gruppo: {info.food_group}"
-
+            # Aggiungi altri... (Calorie, Grassi, Fibre, Gruppo)
             ing_desc += ")"
-            relevant_ingredients.append(ing_desc)
+            relevant_ingredients_prompt.append(ing_desc)
 
-    # Crea una lista semplice di nomi di ingredienti validi
-    valid_ingredients_list = ", ".join(valid_ingredients)
+    # Lista semplice di nomi validi per il prompt
+    valid_ingredients_list_prompt = ", ".join(valid_ingredients_names)
 
-    # Limita il numero di ingredienti per non superare i limiti del prompt
-    max_ingredients = 100
-    if len(relevant_ingredients) > max_ingredients:
-        # Campiona in modo casuale, ma assicurati di avere una varietà di gruppi alimentari
-        import random
-        # Per risultati deterministici ma diversi per ogni ricetta
+    # Limita il numero di ingredienti nel prompt
+    max_ingredients_prompt = 100
+    if len(relevant_ingredients_prompt) > max_ingredients_prompt:
+        # Seed per riproducibilità per questa specifica ricetta
         random.seed(recipe_index)
-        relevant_ingredients = random.sample(
-            relevant_ingredients, max_ingredients)
+        relevant_ingredients_prompt = random.sample(
+            relevant_ingredients_prompt, max_ingredients_prompt)
 
-    # Prepara la lista di esempi di ingredienti ad alto contenuto di CHO
+    ingredients_list_string_prompt = "\n".join(
+        [f"- {ing}" for ing in relevant_ingredients_prompt])
+
+    # Prepara esempi di ingredienti CHO (logica esistente)
     high_cho_ingredients = []
     medium_cho_ingredients = []
+    for name in valid_ingredients_names:  # Usa solo nomi validi
+        info = ingredient_data[name]
+        if info.cho_per_100g is not None:
+            if info.cho_per_100g > 50:
+                high_cho_ingredients.append(
+                    f"{name} ({info.cho_per_100g}g CHO per 100g)")
+            elif info.cho_per_100g > 20:
+                medium_cho_ingredients.append(
+                    f"{name} ({info.cho_per_100g}g CHO per 100g)")
+    high_cho_examples = ", ".join(random.sample(
+        high_cho_ingredients, min(len(high_cho_ingredients), 10)))
+    medium_cho_examples = ", ".join(random.sample(
+        medium_cho_ingredients, min(len(medium_cho_ingredients), 10)))
 
-    for name, info in ingredient_data.items():
-        if not (preferences.vegan and not info.is_vegan) and \
-           not (preferences.vegetarian and not info.is_vegetarian) and \
-           not (preferences.gluten_free and not info.is_gluten_free) and \
-           not (preferences.lactose_free and not info.is_lactose_free):
-
-            if info.cho_per_100g is not None:
-                if info.cho_per_100g > 50:  # Ingredienti ad alto contenuto di CHO
-                    high_cho_ingredients.append(
-                        f"{name} ({info.cho_per_100g}g CHO per 100g)")
-                elif info.cho_per_100g > 20:  # Ingredienti a medio contenuto di CHO
-                    medium_cho_ingredients.append(
-                        f"{name} ({info.cho_per_100g}g CHO per 100g)")
-
-    # Limita gli esempi a 10 per ciascuna categoria
-    if len(high_cho_ingredients) > 10:
-        high_cho_ingredients = high_cho_ingredients[:10]
-    if len(medium_cho_ingredients) > 10:
-        medium_cho_ingredients = medium_cho_ingredients[:10]
-
-    high_cho_examples = ", ".join(high_cho_ingredients)
-    medium_cho_examples = ", ".join(medium_cho_ingredients)
-
-    ingredients_list_string = "\n".join(
-        [f"- {ing}" for ing in relevant_ingredients])
-
-    # Implementa un semplice meccanismo di retry con backoff
+    # Implementa retry (logica esistente)
     max_retries = 2
     retry_delay = 1  # secondi
 
     for attempt in range(max_retries + 1):
         try:
-            # Esegui la chain per generare la ricetta
+            # Esegui la chain LLM
             response_str = generator_chain.invoke({
                 "target_cho": preferences.target_cho,
                 "recipe_index": recipe_index + 1,
                 "dietary_preferences": dietary_preferences_string,
-                "ingredients_list": ingredients_list_string,
+                "ingredients_list": ingredients_list_string_prompt,  # Lista per il prompt
                 "high_cho_examples": high_cho_examples,
                 "medium_cho_examples": medium_cho_examples,
-                "valid_ingredients": valid_ingredients_list
+                "valid_ingredients": valid_ingredients_list_prompt  # Lista nomi per il prompt
             })
 
             # Estrai e valida il JSON
             try:
                 llm_output = extract_json_from_llm_response(response_str)
-                # Gestisci il caso in cui sia restituito solo un errore
                 if "error" in llm_output and len(llm_output) == 1:
                     print(
                         f"Thread: Errore dall'LLM per ricetta #{recipe_index+1}: {llm_output['error']}")
-                    return None  # Salta questa ricetta
+                    return None
 
-                # Valida con Pydantic
                 validated_output = GeneratedRecipeOutput.model_validate(
                     llm_output)
 
                 if validated_output.error:
                     print(
                         f"Thread: Errore dall'LLM per ricetta #{recipe_index+1}: {validated_output.error}")
-                    return None  # Salta questa ricetta
+                    return None
 
-                # Verifica che tutti gli ingredienti siano nella lista degli ingredienti validi
+                # --- INIZIO CHECK/CORREZIONE FLAG DIETETICI ---
+                calculated_is_vegan = True
+                calculated_is_vegetarian = True
+                # Potenzialmente anche per GF/LF
+                # calculated_is_gluten_free = True
+                # calculated_is_lactose_free = True
+
+                actual_ingredient_names = [
+                    ing.get("name") for ing in validated_output.ingredients if ing.get("name")]
+
+                for ing_name in actual_ingredient_names:
+                    if ing_name in ingredient_data:
+                        info = ingredient_data[ing_name]
+                        if not info.is_vegan:
+                            calculated_is_vegan = False
+                        if not info.is_vegetarian:
+                            calculated_is_vegetarian = False
+                            calculated_is_vegan = False  # Se non è vegetariano, non è vegano
+                            # break # Potresti uscire qui se non ti servono gli altri check GF/LF
+                        # Aggiungi check per GF/LF se vuoi verificarli
+                        # if not info.is_gluten_free:
+                        #     calculated_is_gluten_free = False
+                        # if not info.is_lactose_free:
+                        #     calculated_is_lactose_free = False
+                    else:
+                        print(
+                            f"ATTENZIONE: Ingrediente '{ing_name}' generato dall'LLM per ricetta '{validated_output.recipe_name}' ma non trovato nel database durante il check dei flag! La ricetta sarà considerata non conforme.")
+                        calculated_is_vegan = False
+                        calculated_is_vegetarian = False
+                        # calculated_is_gluten_free = False # Se sconosciuto, assumi non conforme
+                        # calculated_is_lactose_free = False # Se sconosciuto, assumi non conforme
+                        break  # Esce dal loop se un ingrediente è sconosciuto
+
+                # Confronta e correggi (se necessario) i flag V/VG
+                corrected_is_vegan = calculated_is_vegan
+                corrected_is_vegetarian = calculated_is_vegetarian
+
+                if validated_output.is_vegan != calculated_is_vegan:
+                    print(
+                        f"Info: Correggendo flag 'is_vegan' per ricetta '{validated_output.recipe_name}'. LLM: {validated_output.is_vegan}, Calcolato: {calculated_is_vegan}.")
+
+                if validated_output.is_vegetarian != calculated_is_vegetarian:
+                    print(
+                        f"Info: Correggendo flag 'is_vegetarian' per ricetta '{validated_output.recipe_name}'. LLM: {validated_output.is_vegetarian}, Calcolato: {calculated_is_vegetarian}.")
+
+                # Per GF/LF per ora manteniamo quelli dell'LLM, ma potresti aggiungere logica simile:
+                corrected_is_gluten_free = validated_output.is_gluten_free
+                corrected_is_lactose_free = validated_output.is_lactose_free
+                # --- FINE CHECK/CORREZIONE FLAG DIETETICI ---
+
+                # Verifica che tutti gli ingredienti USATI siano nella lista dei NOMI VALIDI
+                # (quelli che rispettano le preferenze iniziali)
                 invalid_ingredients = []
+                current_recipe_ingredients = []  # Lista temporanea per RecipeIngredient
                 for ing in validated_output.ingredients:
-                    if ing["name"] not in valid_ingredients:
-                        invalid_ingredients.append(ing["name"])
+                    ing_name_check = ing.get("name")
+                    if not ing_name_check:
+                        print(
+                            f"Warning: Ingrediente senza nome nella ricetta '{validated_output.recipe_name}'.")
+                        continue
+                    if ing_name_check not in valid_ingredients_names:  # Confronta con la lista nomi creata all'inizio
+                        invalid_ingredients.append(ing_name_check)
+                    # Crea l'oggetto RecipeIngredient se il nome è valido
+                    else:
+                        try:
+                            quantity = float(ing["quantity_g"])
+                            current_recipe_ingredients.append(RecipeIngredient(
+                                name=ing_name_check, quantity_g=quantity))
+                        except (KeyError, ValueError, TypeError) as e:
+                            print(
+                                f"Warning: Errore nel formato quantità per ingrediente {ing} nella ricetta '{validated_output.recipe_name}': {e}. Ingrediente saltato.")
+                            # Potresti voler considerare la ricetta invalida se un ingrediente ha formato errato
+                            invalid_ingredients.append(
+                                f"{ing_name_check} (formato quantità errato)")
 
                 if invalid_ingredients:
+                    reason = "ingredienti non validi/permessi" if any(
+                        name not in valid_ingredients_names for name in invalid_ingredients) else "formato ingredienti errato"
                     print(
-                        f"Thread: Ricetta #{recipe_index+1} contiene ingredienti non validi: {', '.join(invalid_ingredients)}. Retry.")
+                        f"Thread: Ricetta #{recipe_index+1} '{validated_output.recipe_name}' contiene {reason}: {', '.join(invalid_ingredients)}. Retry.")
                     if attempt < max_retries:
                         time.sleep(retry_delay * (attempt + 1))
                         continue
                     else:
                         print(
-                            "Thread: Troppi tentativi con ingredienti non validi. Ricetta scartata.")
+                            f"Thread: Troppi tentativi con {reason}. Ricetta '{validated_output.recipe_name}' scartata.")
                         return None
 
-                # Ricostruisci la lista di ingredienti come RecipeIngredient
-                recipe_ingredients = [
-                    RecipeIngredient(
-                        name=ing["name"],
-                        quantity_g=float(ing["quantity_g"])
-                    )
-                    for ing in validated_output.ingredients
-                ]
+                # Se siamo qui, gli ingredienti sono validi e formattati
+                recipe_ingredients_pydantic = current_recipe_ingredients
 
-                # Calcola il contributo CHO e altre informazioni nutrizionali per ogni ingrediente
+                # Calcola contributi nutrizionali
                 calculated_ingredients = calculate_ingredient_cho_contribution(
-                    recipe_ingredients, ingredient_data
+                    recipe_ingredients_pydantic, ingredient_data
                 )
 
-                # Calcola i totali nutrizionali
-                total_cho = round(
-                    sum(ing.cho_contribution for ing in calculated_ingredients), 2)
+                # Calcola totali nutrizionali
+                total_cho = round(sum(
+                    ing.cho_contribution for ing in calculated_ingredients if ing.cho_contribution is not None), 2)
+                total_calories = round(sum(ing.calories_contribution for ing in calculated_ingredients if ing.calories_contribution is not None), 2) if any(
+                    ing.calories_contribution is not None for ing in calculated_ingredients) else None
+                total_protein = round(sum(ing.protein_contribution_g for ing in calculated_ingredients if ing.protein_contribution_g is not None), 2) if any(
+                    ing.protein_contribution_g is not None for ing in calculated_ingredients) else None
+                total_fat = round(sum(ing.fat_contribution_g for ing in calculated_ingredients if ing.fat_contribution_g is not None), 2) if any(
+                    ing.fat_contribution_g is not None for ing in calculated_ingredients) else None
+                total_fiber = round(sum(ing.fiber_contribution_g for ing in calculated_ingredients if ing.fiber_contribution_g is not None), 2) if any(
+                    ing.fiber_contribution_g is not None for ing in calculated_ingredients) else None
 
-                # Costruisci la ricetta finale
+                # Costruisci l'oggetto FinalRecipeOption con i flag corretti
                 final_recipe = FinalRecipeOption(
                     name=validated_output.recipe_name,
                     description=validated_output.description,
                     ingredients=calculated_ingredients,
                     total_cho=total_cho,
-                    is_vegan=validated_output.is_vegan,
-                    is_vegetarian=validated_output.is_vegetarian,
-                    is_gluten_free=validated_output.is_gluten_free,
-                    is_lactose_free=validated_output.is_lactose_free,
+                    total_calories=total_calories,
+                    total_protein_g=total_protein,
+                    total_fat_g=total_fat,
+                    total_fiber_g=total_fiber,
+                    is_vegan=corrected_is_vegan,  # Usa il flag corretto
+                    is_vegetarian=corrected_is_vegetarian,  # Usa il flag corretto
+                    # Usa il flag (potenzialmente corretto)
+                    is_gluten_free=corrected_is_gluten_free,
+                    # Usa il flag (potenzialmente corretto)
+                    is_lactose_free=corrected_is_lactose_free,
                     instructions=validated_output.instructions
                 )
 
                 print(
-                    f"Thread: Ricetta #{recipe_index+1} '{final_recipe.name}' generata con successo (CHO: {total_cho}g).")
-                return final_recipe
+                    f"Thread: Ricetta #{recipe_index+1} '{final_recipe.name}' generata con successo (CHO: {total_cho}g). Flag dietetici verificati.")
+                return final_recipe  # Successo, esci dal loop retry
 
             except (json.JSONDecodeError, ValidationError, KeyError, ValueError) as json_error:
                 if attempt < max_retries:
                     print(
-                        f"Thread: Errore parsing/validazione JSON per ricetta #{recipe_index+1}. Retry {attempt+1}/{max_retries}")
+                        f"Thread: Errore parsing/validazione JSON per ricetta #{recipe_index+1}. Errore: {json_error}. Response: '{response_str}'. Retry {attempt+1}/{max_retries}")
                     time.sleep(retry_delay * (attempt + 1))
-                    continue
+                    continue  # Prova di nuovo
                 print(
-                    f"Thread: Errore parsing/validazione JSON per ricetta #{recipe_index+1}: {json_error}")
-                return None
+                    f"Thread: Errore parsing/validazione JSON definitivo per ricetta #{recipe_index+1}: {json_error}")
+                return None  # Fallimento dopo retries
 
         except Exception as e:
+            # Gestisce errori API o altri imprevisti
             if attempt < max_retries:
                 print(
-                    f"Thread: Errore API per ricetta #{recipe_index+1}. Retry {attempt+1}/{max_retries}")
+                    f"Thread: Errore API/imprevisto per ricetta #{recipe_index+1}: {e}. Retry {attempt+1}/{max_retries}")
                 time.sleep(retry_delay * (attempt + 1))
-                continue
-            print(f"Thread: Errore API per ricetta #{recipe_index+1}: {e}")
-            return None
+                continue  # Prova di nuovo
+            print(
+                f"Thread: Errore API/imprevisto definitivo per ricetta #{recipe_index+1}: {e}")
+            return None  # Fallimento dopo retries
+
+    # Se esce dal loop senza successo (non dovrebbe succedere con il return dentro, ma per sicurezza)
+    return None
 
 
 def generate_recipes_agent(state: GraphState) -> GraphState:
@@ -320,6 +381,7 @@ ISTRUZIONI IMPORTANTI:
 - ATTENZIONE: Puoi usare ESCLUSIVAMENTE gli ingredienti che ti fornirò alla fine del prompt. Questi sono gli unici ingredienti disponibili come se fossero gli unici nella dispensa.
 - Specifica le quantità ESATTE in grammi per ogni ingrediente.
 - Segui rigorosamente le preferenze dietetiche indicate.
+- IMPORTANTE: Quando un utente NON indica nessuna preferenza dietetica, ma solo i grammi di cho e soprattutto con CHO inferiori a 30gr, tenta di includere ingredienti animali (es. carne magra, pollame, pesce, uova, formaggi magri) , se aiutano a creare una ricetta bilanciata, saporita e a raggiungere il target CHO. Punta a una buona varietà includendo una fonte proteica adeguata.
 - IMPORTANTE: Questa è la ricetta #{recipe_index}. Crea una ricetta COMPLETAMENTE DIVERSA dalle precedenti. Il nome, il tipo di piatto, gli ingredienti principali e lo stile di cucina DEVONO essere diversi da qualsiasi altra ricetta nella sessione.
 
 STRATEGIA PER RAGGIUNGERE IL TARGET CHO:
@@ -334,7 +396,7 @@ ESEMPI DI INGREDIENTI E LORO CONTENUTO CHO:
 
 RICETTE BILANCIATE:
 - Usa almeno 4-5 ingredienti per un piatto completo.
-- Includi una proteina, un carboidrato, verdure/frutta, e grassi sani.
+- Includi sempre una fonte proteica primaria (carne, pesce, pollame, uova, legumi, tofu, latticini proteici), una fonte di carboidrati, verdure/frutta e grassi sani, compatibilmente con le preferenze dietetiche.
 - Quantità ragionevoli: 70-120g di cereali (pasta, riso), 100-200g di proteine, 100-200g di verdure.
 - Un singolo ingrediente NON dovrebbe contribuire più del 70% dei CHO totali.
 
@@ -384,6 +446,7 @@ TARGET NUTRIZIONALE:
 
 PREFERENZE DIETETICHE:
 {dietary_preferences}
+(Ricorda se l'utente non ne specifica nessuna, sei incoraggiato a includere ingredienti animali (es. carne magra, pollame, pesce, uova, formaggi magri)
 
 INGREDIENTI DISPONIBILI DETTAGLIATI (con valori nutrizionali per 100g):
 {ingredients_list}
@@ -413,7 +476,7 @@ Se stai creando:
 
     # Configurazione per generazione parallela
     # Limita a 3 worker per non superare rate limit API
-    max_workers = min(3, target_recipes)
+    max_workers = min(6, target_recipes)
 
     print(
         f"Avvio generazione di {target_recipes} ricette con {max_workers} worker paralleli...")
@@ -512,11 +575,14 @@ Se stai creando:
         is_unique = True
         for existing_ingredients in ingredient_sets:
             # Se più del 60% degli ingredienti principali si sovrappongono, consideriamo la ricetta come simile
-            if len(main_ingredients.intersection(existing_ingredients)) / len(main_ingredients) > 0.6:
-                is_unique = False
-                print(
-                    f"Ricetta '{recipe.name}' scartata perché usa ingredienti principali simili ad altra ricetta.")
-                break
+            if main_ingredients:  # Verifica che main_ingredients non sia vuoto
+                overlap_ratio = len(main_ingredients.intersection(
+                    existing_ingredients)) / len(main_ingredients)
+                if overlap_ratio > 0.6:
+                    is_unique = False
+                    print(
+                        f"Ricetta '{recipe.name}' scartata perché usa ingredienti principali simili ad altra ricetta.")
+                    break
 
         if is_unique:
             ingredient_sets.append(main_ingredients)

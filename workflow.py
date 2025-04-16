@@ -9,6 +9,7 @@ from model_schema import GraphState
 from agents.generator_agent import generate_recipes_agent
 from agents.verifier_agent import verifier_agent
 from agents.formatter_agent import format_output_agent
+from agents.hybrid_verifier_agent import hybrid_verifier_agent
 
 # --- Funzioni Decisionali per il Routing Condizionale ---
 
@@ -53,6 +54,10 @@ def create_workflow() -> StateGraph:
 
     print("Aggiunta nodo: verify_recipes")
     workflow.add_node("verify_recipes", verifier_agent)
+
+    # testo agente ibrido
+    # print("Aggiunta nodo: verify_recipes")
+    # workflow.add_node("verify_recipes", hybrid_verifier_agent)
 
     print("Aggiunta nodo: format_output")
     workflow.add_node("format_output", format_output_agent)

@@ -123,19 +123,19 @@ col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     vegan = image_checkbox("Vegano", vegan_img_path,
-                           key="vegan", text_below=True)
+                           key="vegan", text_below=True, value=False)
 
 with col2:
     vegetarian = image_checkbox(
-        "Vegetariano", vegetarian_img_path, key="vegetarian", text_below=True)
+        "Vegetariano", vegetarian_img_path, key="vegetarian", text_below=True, value=False)
 
 with col3:
     gluten_free = image_checkbox(
-        "Senza Glutine", gluten_free_img_path, key="gluten_free", text_below=True)
+        "Senza Glutine", gluten_free_img_path, key="gluten_free", text_below=True, value=False)
 
 with col4:
     lactose_free = image_checkbox(
-        "Senza Lattosio", lactose_free_img_path, key="lactose_free", text_below=True)
+        "Senza Lattosio", lactose_free_img_path, key="lactose_free", text_below=True, value=False)
 
 if st.button("Genera Ricette"):
     # Show loading gif while generation is in progress

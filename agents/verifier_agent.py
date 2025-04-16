@@ -177,7 +177,7 @@ def adjust_recipe_cho(recipe: FinalRecipeOption, target_cho: float, ingredient_d
 
 def balance_cho_distribution(recipe: FinalRecipeOption, ingredient_data: Dict) -> FinalRecipeOption:
     """
-    Bilancia la distribuzione dei CHO tra gli ingredienti, per evitare che un 
+    Bilancia la distribuzione dei CHO tra gli ingredienti, per evitare che un
     singolo ingrediente fornisca una percentuale troppo alta del totale.
 
     Args:
@@ -426,15 +426,17 @@ def verifier_agent(state: GraphState) -> GraphState:
     print(
         f"Filtrate {len(filtered_recipes)}/{len(generated_recipes)} ricette con ingredienti validi.")
 
-    # Se non ci sono ricette valide dopo il filtraggio
-    if not filtered_recipes:
-        state['final_verified_recipes'] = []
-        state['error_message'] = "Nessuna ricetta contiene ingredienti validi."
-        return state
+    # NUOVO: Salva le ricette originali per riferimento
+    original_recipes = {}
+    for recipe in filtered_recipes:
+        original_recipes[recipe.name] = recipe
 
     # Fase 1: Prova a bilanciare le ricette che hanno un ingrediente troppo dominante
     balanced_recipes = []
     for recipe in filtered_recipes:
+        # Salva il nome originale prima del bilanciamento
+        original_name = recipe.name
+
         # Identifica ricette con ingredienti dominanti (>90% dei CHO)
         has_dominant_ingredient = False
         if recipe.total_cho > 0:
@@ -448,15 +450,40 @@ def verifier_agent(state: GraphState) -> GraphState:
             balanced_recipe = balance_cho_distribution(recipe, ingredient_data)
             print(
                 f"Ricetta '{recipe.name}' BILANCIATA per redistribuire i CHO più equamente.")
+
+            # Aggiungi anche la versione bilanciata al dizionario originale
+            original_recipes[balanced_recipe.name] = recipe
+
             balanced_recipes.append(balanced_recipe)
         else:
             balanced_recipes.append(recipe)
 
-    # Fase 2: Prova ad aggiustare TUTTE le ricette per avvicinarsi al target CHO
+    # Fase 2: Prova ad aggiustare le ricette per avvicinarsi al target CHO
     adjusted_recipes = []
     for recipe in balanced_recipes:
-        # Se è già nel range, non modificare
-        if min_cho <= recipe.total_cho <= max_cho:
+        # Trova il nome base della ricetta (rimuovendo eventuali suffissi come "(Bilanciata)")
+        base_name = recipe.name.split(" (")[0]
+
+        # Cerca la ricetta originale
+        original_recipe = None
+        for orig_name, orig_recipe in original_recipes.items():
+            if orig_name.split(" (")[0] == base_name:
+                original_recipe = orig_recipe
+                break
+
+        # Se non troviamo l'originale, usa questa come riferimento
+        if not original_recipe:
+            original_recipe = recipe
+
+        # MODIFICATO: Limita l'aggiustamento CHO a +/-50% del valore originale
+        original_cho = original_recipe.total_cho
+        # Non meno del 50% dell'originale
+        min_allowed_cho = max(min_cho, original_cho * 0.5)
+        # Non più del 150% dell'originale
+        max_allowed_cho = min(max_cho, original_cho * 1.5)
+
+        # Se è già nel range personalizzato, non modificare
+        if min_allowed_cho <= recipe.total_cho <= max_allowed_cho:
             adjusted_recipes.append(recipe)
             continue
 
@@ -476,8 +503,17 @@ def verifier_agent(state: GraphState) -> GraphState:
                 f"Ricetta '{recipe.name}' SCARTATA: CHO ({recipe.total_cho}g) fuori range ({min_cho}-{max_cho}g).")
             continue
 
-        # 2. Verifica Dieta
-        diet_ok = check_final_recipe_dietary_match(recipe, preferences)
+        # 2. Verifica Dieta - MODIFICATO: considera solo le preferenze specificate dall'utente
+        diet_ok = True
+        if preferences.vegan and not recipe.is_vegan:
+            diet_ok = False
+        if preferences.vegetarian and not recipe.is_vegetarian:
+            diet_ok = False
+        if preferences.gluten_free and not recipe.is_gluten_free:
+            diet_ok = False
+        if preferences.lactose_free and not recipe.is_lactose_free:
+            diet_ok = False
+
         if not diet_ok:
             # Costruisci un messaggio di log più specifico
             prefs_str = []
@@ -499,7 +535,8 @@ def verifier_agent(state: GraphState) -> GraphState:
                 f"Ricetta '{recipe.name}' SCARTATA: Troppo semplice (solo {len(recipe.ingredients)} ingredienti).")
             continue
 
-        # Verifica meno restrittiva sul bilanciamento dei CHO (soglia alzata al 90%)
+        # MODIFICATO: Non scartare ricette in base a ingredienti con CHO pari a 0
+        # Solo verifica se sono troppo sbilanciati
         is_unbalanced = False
         if recipe.total_cho > 0:  # Evita divisione per zero
             for ing in recipe.ingredients:
@@ -512,18 +549,6 @@ def verifier_agent(state: GraphState) -> GraphState:
         if is_unbalanced:
             continue
 
-        # 4. NUOVO: Verifica finale che tutti gli ingredienti abbiano contributi CHO validi
-        has_zero_cho = False
-        for ing in recipe.ingredients:
-            if ing.quantity_g > 20 and ing.cho_contribution == 0:
-                print(
-                    f"Ricetta '{recipe.name}' SCARTATA: L'ingrediente '{ing.name}' ha un contributo CHO pari a 0 ma una quantità di {ing.quantity_g}g.")
-                has_zero_cho = True
-                break
-
-        if has_zero_cho:
-            continue
-
         # Se tutti i check sono OK, aggiungi alla lista di ricette valide
         print(
             f"Ricetta '{recipe.name}' VERIFICATA (CHO: {recipe.total_cho}g, Dieta OK, Ingredienti: {len(recipe.ingredients)}).")
@@ -532,8 +557,10 @@ def verifier_agent(state: GraphState) -> GraphState:
     print(
         f"Ricette che hanno passato tutte le verifiche: {len(valid_recipes)}")
 
-    # Selezione delle migliori ricette (massimo 3)
+    # NUOVO: Assicurati che le ricette selezionate siano diverse
     verified_recipes = []
+    recipe_types = set()  # Per tenere traccia dei tipi di ricette
+    main_ingredients = set()  # Per tenere traccia degli ingredienti principali
 
     if valid_recipes:
         # Ordina le ricette in base alla vicinanza al target CHO
@@ -547,9 +574,38 @@ def verifier_agent(state: GraphState) -> GraphState:
                     valid_recipes[i], valid_recipes[i +
                                                     1] = valid_recipes[i+1], valid_recipes[i]
 
-        # Prendi al massimo 3 ricette
-        verified_recipes = valid_recipes[:min(
-            exact_recipes_required, len(valid_recipes))]
+        # Seleziona ricette diverse
+        for recipe in valid_recipes:
+            # Estrai il tipo di ricetta dal nome (es. "Pasta", "Insalata", ecc.)
+            recipe_type = recipe.name.split()[0].lower()
+
+            # Trova l'ingrediente principale (quello con il maggior contributo di CHO)
+            main_ingredient = ""
+            if recipe.ingredients:
+                main_ingredient = max(
+                    recipe.ingredients, key=lambda ing: ing.cho_contribution).name
+
+            # Se abbiamo già una ricetta di questo tipo o con questo ingrediente principale, salta
+            if (recipe_type in recipe_types) or (main_ingredient in main_ingredients and main_ingredient):
+                continue
+
+            # Altrimenti aggiungi questa ricetta
+            recipe_types.add(recipe_type)
+            if main_ingredient:
+                main_ingredients.add(main_ingredient)
+            verified_recipes.append(recipe)
+
+            # Se abbiamo raggiunto il numero richiesto, termina
+            if len(verified_recipes) >= exact_recipes_required:
+                break
+
+        # Se non abbiamo abbastanza ricette diverse, prendi le migliori comunque
+        if len(verified_recipes) < exact_recipes_required:
+            for recipe in valid_recipes:
+                if recipe not in verified_recipes:
+                    verified_recipes.append(recipe)
+                    if len(verified_recipes) >= exact_recipes_required:
+                        break
 
         print(
             f"Selezionate {len(verified_recipes)} ricette ottimali su {len(valid_recipes)} valide.")
