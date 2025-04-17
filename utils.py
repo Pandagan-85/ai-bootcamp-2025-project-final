@@ -112,16 +112,70 @@ def calculate_ingredient_cho_contribution(
 
     # Crea un dizionario case-insensitive per il matching
     lowercase_to_original = {
-        name.lower(): name for name in ingredient_data.keys()}
+        normalize_name(name): name for name in ingredient_data.keys()}
 
     for ing in ingredients:
         # Cerca l'ingrediente (ignorando case) nel dizionario
-        ingredient_key = ing.name
-        if ing.name.lower() in lowercase_to_original:
-            ingredient_key = lowercase_to_original[ing.name.lower()]
+        ingredient_key = None
 
-        info = ingredient_data.get(ingredient_key)
-        if info:
+        # Match diretto per nome esatto
+        if ing.name in ingredient_data:
+            ingredient_key = ing.name
+        # Match case-insensitive
+        elif normalize_name(ing.name) in lowercase_to_original:
+            ingredient_key = lowercase_to_original[normalize_name(ing.name)]
+
+        # Se non trovato, prova sinonimi comuni
+        if not ingredient_key:
+            common_synonyms = {
+                "polpo": "polipo",
+                "pomodoro": "pomodori",
+                "pomodori": "pomodoro",
+                "ceci": "cece",
+                "olive": "oliva",
+                "olive nere": "olive",
+                "rucola": "rughetta",
+            }
+
+            normalized_name = normalize_name(ing.name)
+            if normalized_name in common_synonyms:
+                synonym = common_synonyms[normalized_name]
+                if synonym in ingredient_data:
+                    ingredient_key = synonym
+                elif synonym in lowercase_to_original:
+                    ingredient_key = lowercase_to_original[synonym]
+
+        # Se ancora non trovato, prova variazioni singolare/plurale
+        if not ingredient_key:
+            normalized_name = normalize_name(ing.name)
+
+            # Singolare → Plurale
+            plural_form = None
+            if normalized_name.endswith('o'):
+                # es. pomodoro → pomodori
+                plural_form = normalized_name[:-1] + 'i'
+            elif normalized_name.endswith('a'):
+                plural_form = normalized_name[:-1] + 'e'  # es. carota → carote
+
+            if plural_form and plural_form in lowercase_to_original:
+                ingredient_key = lowercase_to_original[plural_form]
+
+            # Plurale → Singolare
+            if not ingredient_key and (normalized_name.endswith('i') or normalized_name.endswith('e')):
+                singular_form = None
+                if normalized_name.endswith('i'):
+                    # es. pomodori → pomodoro
+                    singular_form = normalized_name[:-1] + 'o'
+                elif normalized_name.endswith('e'):
+                    # es. carote → carota
+                    singular_form = normalized_name[:-1] + 'a'
+
+                if singular_form and singular_form in lowercase_to_original:
+                    ingredient_key = lowercase_to_original[singular_form]
+
+        # Procedi con il calcolo se l'ingrediente è stato trovato
+        if ingredient_key and ingredient_key in ingredient_data:
+            info = ingredient_data[ingredient_key]
             cho_per_100g = info.cho_per_100g if info.cho_per_100g is not None else 0.0
             cho_contribution = (cho_per_100g / 100.0) * ing.quantity_g
 
@@ -158,7 +212,9 @@ def calculate_ingredient_cho_contribution(
                     is_vegan=info.is_vegan,
                     is_vegetarian=info.is_vegetarian,
                     is_gluten_free=info.is_gluten_free,
-                    is_lactose_free=info.is_lactose_free
+                    is_lactose_free=info.is_lactose_free,
+                    # Aggiungi nome originale per il debug
+                    original_llm_name=ing.name
                 )
             )
         else:
@@ -169,7 +225,8 @@ def calculate_ingredient_cho_contribution(
                 CalculatedIngredient(
                     name=f"{ing.name} (Info Mancanti!)",
                     quantity_g=ing.quantity_g,
-                    cho_contribution=0.0
+                    cho_contribution=0.0,
+                    original_llm_name=ing.name
                 )
             )
 

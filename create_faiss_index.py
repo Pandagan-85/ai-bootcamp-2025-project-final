@@ -1,4 +1,4 @@
-# create_faiss_index.py
+# create_consistent_faiss_index.py
 import os
 import time
 import pickle
@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import faiss
 from sentence_transformers import SentenceTransformer
+from utils import normalize_name
 
 # --- Configurazione ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -13,42 +14,38 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 INGREDIENTS_CSV_PATH = os.path.join(DATA_DIR, "ingredients.csv")
 FAISS_INDEX_PATH = os.path.join(DATA_DIR, "ingredients.index")
 NAME_MAPPING_PATH = os.path.join(DATA_DIR, "ingredient_names.pkl")
+ENHANCED_MAPPING_PATH = os.path.join(DATA_DIR, "enhanced_ingredients.txt")
 
 # Usa lo stesso modello definito altrove
 EMBEDDING_MODEL_NAME = 'paraphrase-multilingual-mpnet-base-v2'
 
-# --- Funzioni Ausiliarie ---
 
-
-def normalize_name(name: str) -> str:
-    """Normalizza il nome per il matching (minuscolo, rimuove eccesso spazi)."""
-    if not isinstance(name, str):
-        return ""
-    name = name.lower().strip()
-    name = name.replace("  ", " ")  # Rimuove doppi spazi
-    return name
-
-
-def prepare_ingredient_data_enhanced(filepath: str) -> list[str]:
-    """Carica e arricchisce i nomi degli ingredienti con sinonimi e varianti."""
+def prepare_consistent_ingredient_data(filepath: str) -> list[str]:
+    """Carica e arricchisce i nomi degli ingredienti garantendo coerenza case-sensitive."""
     try:
         print(f"Caricamento nomi da: {filepath}")
-        # Assumi UTF-8 o prova 'latin-1'
         df = pd.read_csv(filepath, encoding='utf-8')
         df.columns = df.columns.str.strip()
+
         if 'name' not in df.columns:
             raise ValueError("Colonna 'name' non trovata nel CSV.")
 
-        # Pulisci e ottieni nomi base
-        base_names = df['name'].astype(str).str.strip().str.lower()
-        base_names = base_names[base_names != ''].unique().tolist()
-        print(f"Trovati {len(base_names)} nomi base di ingredienti.")
+        # Estrai i nomi base e normalizzali per coerenza
+        base_names = []
+        for name in df['name']:
+            if isinstance(name, str) and name.strip():
+                # Assicurati che tutti i nomi siano coerenti: tutti minuscoli
+                normalized_name = normalize_name(name)
+                base_names.append(normalized_name)
+
+        base_names = sorted(list(set(base_names)))  # Rimuovi duplicati
+        print(
+            f"Trovati {len(base_names)} nomi base di ingredienti (normalizzati).")
 
         # Crea varianti linguistiche (singolare/plurale, diminutivi comuni)
-        enhanced_names = []
-        for name in base_names:
-            enhanced_names.append(name)
+        enhanced_names = list(base_names)  # Copia per iniziare
 
+        for name in base_names:
             # Aggiungi singolare/plurale
             if name.endswith('e'):
                 # e.g., "peperone" -> "peperoni"
@@ -91,24 +88,26 @@ def prepare_ingredient_data_enhanced(filepath: str) -> list[str]:
                 'rosmarino': ['rosmarino fresco'],
                 'timo': ['timo fresco'],
                 'origano': ['origano secco', 'origano fresco'],
-                'formaggio halloumi': ['halloumi']
+                'formaggio halloumi': ['halloumi'],
+                'polipo': ['polpo'],       # Aggiunti sinonimi specifici
+                'polpo': ['polipo'],
+                'rucola': ['rughetta']
             }
 
             if name in common_synonyms:
-                enhanced_names.extend(common_synonyms[name])
+                for synonym in common_synonyms[name]:
+                    enhanced_names.append(normalize_name(synonym))
 
         # Rimuovi duplicati e ordina
         unique_enhanced_names = sorted(list(set(enhanced_names)))
         print(
             f"Dataset arricchito: {len(base_names)} nomi base → {len(unique_enhanced_names)} nomi totali")
 
-        # Salva anche la versione arricchita in un file separato per riferimento
-        enhanced_mapping_path = os.path.join(
-            DATA_DIR, "enhanced_ingredients.txt")
-        with open(enhanced_mapping_path, 'w', encoding='utf-8') as f:
+        # Salva la versione arricchita in un file separato
+        with open(ENHANCED_MAPPING_PATH, 'w', encoding='utf-8') as f:
             for name in unique_enhanced_names:
                 f.write(name + '\n')
-        print(f"Lista arricchita salvata in: {enhanced_mapping_path}")
+        print(f"Lista arricchita salvata in: {ENHANCED_MAPPING_PATH}")
 
         return unique_enhanced_names
 
@@ -116,15 +115,15 @@ def prepare_ingredient_data_enhanced(filepath: str) -> list[str]:
         print(f"Errore durante la preparazione dei dati: {e}")
         raise
 
-
 # --- Script Principale ---
 
-if __name__ == "__main__":
-    print("--- Avvio Creazione Indice FAISS Migliorato ---")
 
-    # 1. Carica Nomi Ingredienti Arricchiti
+if __name__ == "__main__":
+    print("--- Avvio Creazione Indice FAISS Coerente ---")
+
+    # 1. Normalizza i nomi del CSV e ottieni nomi arricchiti
     try:
-        ingredient_names = prepare_ingredient_data_enhanced(
+        ingredient_names = prepare_consistent_ingredient_data(
             INGREDIENTS_CSV_PATH)
         if not ingredient_names:
             print("Nessun nome di ingrediente trovato. Impossibile creare l'indice.")
@@ -156,10 +155,8 @@ if __name__ == "__main__":
             ingredient_names,
             convert_to_numpy=True,
             show_progress_bar=True,
-            # IMPORTANTE: Normalizza per usare IndexFlatIP (Cosine Similarity)
             normalize_embeddings=True
         )
-        # Assicurati che siano float32 (preferito da FAISS)
         embeddings = embeddings.astype('float32')
         end_time = time.time()
         print(f"Embeddings calcolati in {end_time - start_time:.2f} secondi.")
@@ -170,12 +167,9 @@ if __name__ == "__main__":
 
     # 4. Crea e Popola Indice FAISS
     try:
-        dimension = embeddings.shape[1]  # Dimensione degli embedding
+        dimension = embeddings.shape[1]
         print(
             f"Creazione indice FAISS (IndexFlatIP) con dimensione {dimension}...")
-        # IndexFlatIP calcola il prodotto scalare. Poiché abbiamo normalizzato
-        # gli embedding (norma L2 = 1), il prodotto scalare è equivalente
-        # alla similarità cosenus. Valori più alti indicano maggiore similarità.
         index = faiss.IndexFlatIP(dimension)
         index.add(embeddings)
         print(f"Indice creato e popolato con {index.ntotal} vettori.")
@@ -190,7 +184,6 @@ if __name__ == "__main__":
 
         print(f"Salvataggio mapping nomi in: {NAME_MAPPING_PATH}")
         with open(NAME_MAPPING_PATH, 'wb') as f:
-            # Salva la lista di nomi nello stesso ordine
             pickle.dump(ingredient_names, f)
 
         print("--- Indice FAISS e Mapping Nomi Creati con Successo! ---")
@@ -199,13 +192,12 @@ if __name__ == "__main__":
         print(f"Errore durante il salvataggio dei file: {e}")
         exit()
 
-    # 6. Verifica Rapidamente la Qualità dell'Indice
+    # 6. Test rapido dell'indice
     try:
         print("\n--- Test Rapido dell'Indice Creato ---")
-        # Test alcuni ingredienti problematici
         test_ingredients = [
-            "gamberi", "peperoni", "couscous", "feta", "olive nere",
-            "basilico", "carote", "halloumi", "coriandolo"
+            "polpo", "polipo", "pomodoro", "pomodori", "ceci", "olive nere",
+            "rucola", "rughetta", "pesce spada", "salmone"
         ]
 
         for test_ing in test_ingredients:
@@ -215,7 +207,7 @@ if __name__ == "__main__":
                 normalize_embeddings=True
             ).astype('float32')
 
-            D, I = index.search(test_emb, 3)  # Ottieni i top 3 match
+            D, I = index.search(test_emb, 3)
 
             print(f"\nTest ingrediente: '{test_ing}'")
             for i in range(3):
@@ -227,6 +219,5 @@ if __name__ == "__main__":
 
     except Exception as e:
         print(f"Errore durante il test dell'indice: {e}")
-        # Non terminiamo il programma qui in quanto il test è opzionale
 
-    print("\n--- Processo Completato ---")
+    print("\n--- Processo di creazione indice FAISS coerente completato ---")

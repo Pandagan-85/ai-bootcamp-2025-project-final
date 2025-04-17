@@ -42,7 +42,7 @@ def adjust_recipe_cho(recipe: FinalRecipeOption, target_cho: float, ingredient_d
      ingredient_data per ottenere cho_per_100g, etc.)
     """
     # Se siamo già nel target, non fare nulla
-    if abs(recipe.total_cho - target_cho) < 8.0:
+    if abs(recipe.total_cho - target_cho) < 3.0:
         return recipe
 
     adjusted_recipe = deepcopy(recipe)
@@ -85,8 +85,8 @@ def adjust_recipe_cho(recipe: FinalRecipeOption, target_cho: float, ingredient_d
     if adjusted_recipe.total_cho > 0:
         scaling_factor = target_cho / adjusted_recipe.total_cho
         # ... (logica min/max scale come prima) ...
-        scaling_factor = max(0.4 if abs(cho_diff) > 25 and adjusted_recipe.total_cho > target_cho else 0.5,
-                             min(4.0 if abs(cho_diff) > 40 and adjusted_recipe.total_cho < target_cho else 3.0, scaling_factor))
+        scaling_factor = max(0.5 if abs(cho_diff) > 20 and adjusted_recipe.total_cho > target_cho else 0.6,
+                             min(3.0 if abs(cho_diff) > 20 and adjusted_recipe.total_cho < target_cho else 2.0, scaling_factor))
 
         new_recipe_ingredients_list = []
         for ing in adjusted_recipe.ingredients:
@@ -169,10 +169,11 @@ def verifier_agent(state: GraphState) -> GraphState:
         return state
 
     target_cho = preferences.target_cho
-    cho_tolerance = 25.0
-    exact_recipes_required = 2  # Numero desiderato
-    # Soglia ingrediente dominante (per scarto finale)
-    max_cho_dominance = 0.99
+    # cho_tolerance = 10.0  # Tolleranza CHO (es. +/- 10g)
+    cho_tolerance = 0.15  # 15% di tolleranza
+    exact_recipes_required = 6  # Numero desiderato
+    # Soglia ingrediente dominante/≤ (per scarto finale)
+    max_cho_dominance = 0.9
 
     if not generated_recipes:
         print("Nessuna ricetta valida generata da verificare.")

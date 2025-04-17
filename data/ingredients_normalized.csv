@@ -66,7 +66,7 @@ Tempeh,9.4,193.0,19.0,11.0,9.3,True,True,True,True,100.0,Proteine
 Seitan,14.0,370.0,75.0,2.0,1.9,True,True,False,True,100.0,Proteine
 Agnello,0.0,294.0,25.0,21.0,0.0,False,False,True,True,120.0,Proteine
 Gamberi,0.0,99.0,24.0,0.3,0.0,False,False,True,True,100.0,Proteine
-Formaggio parmigiano,3.2,431.0,33.0,28.0,0.0,False,True,True,False,30.0,Latticini
+Parmigiano,3.2,431.0,33.0,28.0,0.0,False,True,True,False,30.0,Latticini
 Mozzarella,2.2,280.0,18.0,22.0,0.0,False,True,True,False,100.0,Latticini
 Yogurt greco,3.9,97.0,9.0,5.0,0.0,False,True,True,False,150.0,Latticini 
 Ricotta,3.0,174.0,11.4,13.0,0.0,False,True,True,False,100.0,Latticini
@@ -196,11 +196,11 @@ Vongole,5.0,74.0,10.0,1.0,0.0,False,False,True,True,100.0,Proteine
 Calamari,3.1,92.0,15.6,1.4,0.0,False,False,True,True,120.0,Proteine
 Polpo,2.2,82.0,14.9,1.0,0.0,False,False,True,True,120.0,Proteine
 Capesante,2.5,111.0,20.5,0.8,0.0,False,False,True,True,100.0,Proteine
-Formaggio feta,4.1,264.0,14.2,21.3,0.0,False,True,True,False,40.0,Latticini
+Feta,4.1,264.0,14.2,21.3,0.0,False,True,True,False,40.0,Latticini
 Formaggio di capra (fresco),0.1,264.0,18.5,21.0,0.0,False,True,True,False,30.0,Latticini
-Formaggio cheddar,1.3,404.0,24.9,33.3,0.0,False,True,True,False,30.0,Latticini
-Formaggio emmental,0.1,380.0,28.8,29.7,0.0,False,True,True,False,30.0,Latticini
-Formaggio gorgonzola,0.1,350.0,19.0,30.0,0.0,False,True,True,False,30.0,Latticini
+Cheddar,1.3,404.0,24.9,33.3,0.0,False,True,True,False,30.0,Latticini
+Emmental,0.1,380.0,28.8,29.7,0.0,False,True,True,False,30.0,Latticini
+Gorgonzola,0.1,350.0,19.0,30.0,0.0,False,True,True,False,30.0,Latticini
 Formaggio spalmabile (light),5.0,150.0,10.0,9.0,0.0,False,True,True,False,30.0,Latticini
 Fiocchi di latte,3.4,98.0,11.1,4.3,0.0,False,True,True,False,100.0,Latticini
 Panna da cucina (uht),3.3,215.0,2.4,21.0,0.0,False,True,True,False,30.0,Latticini
@@ -279,8 +279,8 @@ Coniglio,0.0,173.0,33.0,3.5,0.0,False,False,True,True,120.0,Proteine
 Aringa,0.0,203.0,18.0,14.0,0.0,False,False,True,True,100.0,Proteine
 Acciughe (fresche),0.0,131.0,20.4,4.8,0.0,False,False,True,True,80.0,Proteine
 Lumache (cotte),2.0,90.0,16.0,1.0,0.0,False,False,True,True,100.0,Proteine
-Formaggio halloumi,1.9,321.0,22.0,25.0,0.0,False,True,True,False,50.0,Latticini
-Formaggio paneer,4.0,296.0,18.0,22.0,0.0,False,True,True,False,50.0,Latticini
+Halloumi,1.9,321.0,22.0,25.0,0.0,False,True,True,False,50.0,Latticini
+Paneer,4.0,296.0,18.0,22.0,0.0,False,True,True,False,50.0,Latticini
 Proteine vegetali testurizzate (tvp secche),34.0,327.0,52.0,1.0,18.0,True,True,True,True,25.0,Proteine
 Lupini (cotti e salati),9.9,119.0,15.6,2.9,4.8,True,True,True,True,80.0,Legumi
 Kefir (latte intero),4.0,64.0,3.3,3.5,0.0,False,True,True,False,200.0,Bevande
@@ -311,3 +311,9 @@ Dado vegetale,30.0,200.0,10.0,5.0,2.0,True,True,True,True,5.0,Condimenti
 Pane azzimo,69.0,325.0,9.0,1.5,3.5,True,True,False,True,50.0,Carboidrati
 Latte,4.8,64.0,3.3,3.6,0.0,False,True,True,False,250.0,Latticini
 Besciamella,6.0,120.0,2.5,8.5,0.0,False,True,True,False,50.0,Condimenti
+Gamberi,0.5,99,20.1,1.7,0,false,false,true,true
+Mango,15.0,60,0.8,0.4,1.6,true,true,true,true
+Mirtilli,14.5,57,0.7,0.3,2.4,true,true,true,true
+Scalogno,16.8,72,2.5,0.1,3.2,true,true,true,true
+Feta,1.2,264,14.2,21.3,0,false,true,true,false
+Basilico,2.7,23,3.1,0.6,1.6,true,true,true,true

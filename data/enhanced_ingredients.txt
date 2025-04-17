@@ -252,7 +252,7 @@ limone
 limoni
 liquore (amaro)
 lumache (cotte)
-lupini (cotti e  salati)
+lupini (cotti e salati)
 lychee
 lychei
 macinato di manzi
@@ -381,6 +381,7 @@ platani
 platano
 polenta istantanea
 polenta istantanee
+polipo
 polpi
 polpo
 pomodori
@@ -428,6 +429,7 @@ riso jasmini
 riso venere (nero)
 rucola
 rucole
+rughetta
 salame
 salami
 sale

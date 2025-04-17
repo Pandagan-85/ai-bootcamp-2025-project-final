@@ -117,7 +117,7 @@ Lenticchie rosse,20.0,116.0,9.0,0.4,7.9,True,True,True,True,70.0,Legumi
 Lenticchie verdi,19.5,127.0,9.1,0.6,10.7,True,True,True,True,70.0,Legumi
 Fagiolini,7.0,31.0,1.8,0.2,3.4,True,True,True,True,100.0,Verdura
 Cavolfiore,3.0,25.0,1.9,0.3,2.0,True,True,True,True,150.0,Verdura
-Cavoletti di bruxelles,9.0,43.0,3.4,0.3,3.8,True,True,True,True,100.0,Verdura
+Cavoletti di Bruxelles,9.0,43.0,3.4,0.3,3.8,True,True,True,True,100.0,Verdura
 Cavolo riccio,8.8,49.0,4.3,0.9,3.6,True,True,True,True,80.0,Verdura
 Biete,3.7,19.0,1.8,0.2,1.6,True,True,True,True,100.0,Verdura
 Rucola,3.7,25.0,2.6,0.7,1.6,True,True,True,True,50.0,Verdura
@@ -135,8 +135,8 @@ Olive nere,6.3,115.0,0.8,10.7,3.2,True,True,True,True,30.0,Grassi
 Cuori di carciofo (conserva),5.1,35.0,2.0,0.2,5.0,True,True,True,True,100.0,Verdura
 Germogli di soia,4.0,52.0,5.5,2.0,1.1,True,True,True,True,50.0,Verdura
 Germogli di bambù,5.2,27.0,2.6,0.3,2.2,True,True,True,True,100.0,Verdura
-Alghe nori,5.8,35.0,5.8,0.3,0.0,True,True,True,True,3.0,Verdura
-Alghe wakame,50.0,45.0,18.0,2.0,35.0,True,True,True,True,5.0,Verdura
+Alghe Nori,5.8,35.0,5.8,0.3,0.0,True,True,True,True,3.0,Verdura
+Alghe Wakame,50.0,45.0,18.0,2.0,35.0,True,True,True,True,5.0,Verdura
 Lamponi,11.9,52.0,1.2,0.7,6.5,True,True,True,True,80.0,Frutta
 More,10.2,43.0,1.4,0.5,5.3,True,True,True,True,80.0,Frutta
 Pompelmo,10.7,42.0,0.8,0.1,1.6,True,True,True,True,200.0,Frutta
@@ -164,10 +164,10 @@ Amaranto,65.3,371.0,13.6,7.0,6.7,True,True,True,True,50.0,Carboidrati
 Grano saraceno,71.5,343.0,13.3,3.4,10.0,True,True,True,True,60.0,Carboidrati
 Miglio,72.9,378.0,11.0,4.2,8.5,True,True,True,True,50.0,Carboidrati
 Bulgur,75.9,342.0,12.3,1.3,12.5,True,True,False,True,60.0,Carboidrati
-Riso basmati,79.9,365.0,7.1,0.7,1.3,True,True,True,True,70.0,Carboidrati
-Riso jasmine,81.0,357.0,6.7,0.4,0.9,True,True,True,True,70.0,Carboidrati
-Riso venere (nero),75.0,356.0,9.9,3.4,4.8,True,True,True,True,70.0,Carboidrati
-Riso arborio,79.0,354.0,7.0,0.5,2.8,True,True,True,True,70.0,Carboidrati
+Riso Basmati,79.9,365.0,7.1,0.7,1.3,True,True,True,True,70.0,Carboidrati
+Riso Jasmine,81.0,357.0,6.7,0.4,0.9,True,True,True,True,70.0,Carboidrati
+Riso Venere (Nero),75.0,356.0,9.9,3.4,4.8,True,True,True,True,70.0,Carboidrati
+Riso Arborio,79.0,354.0,7.0,0.5,2.8,True,True,True,True,70.0,Carboidrati
 Pasta integrale,64.0,340.0,13.0,2.5,8.0,True,True,False,True,80.0,Carboidrati
 Pasta all'uovo,68.0,368.0,13.0,3.0,2.5,False,True,False,True,80.0,Carboidrati
 Grissini,75.0,410.0,11.0,9.0,3.0,True,True,False,True,30.0,Carboidrati
@@ -196,14 +196,14 @@ Vongole,5.0,74.0,10.0,1.0,0.0,False,False,True,True,100.0,Proteine
 Calamari,3.1,92.0,15.6,1.4,0.0,False,False,True,True,120.0,Proteine
 Polpo,2.2,82.0,14.9,1.0,0.0,False,False,True,True,120.0,Proteine
 Capesante,2.5,111.0,20.5,0.8,0.0,False,False,True,True,100.0,Proteine
-Formaggio feta,4.1,264.0,14.2,21.3,0.0,False,True,True,False,40.0,Latticini
+Formaggio Feta,4.1,264.0,14.2,21.3,0.0,False,True,True,False,40.0,Latticini
 Formaggio di capra (fresco),0.1,264.0,18.5,21.0,0.0,False,True,True,False,30.0,Latticini
-Formaggio cheddar,1.3,404.0,24.9,33.3,0.0,False,True,True,False,30.0,Latticini
-Formaggio emmental,0.1,380.0,28.8,29.7,0.0,False,True,True,False,30.0,Latticini
-Formaggio gorgonzola,0.1,350.0,19.0,30.0,0.0,False,True,True,False,30.0,Latticini
+Formaggio Cheddar,1.3,404.0,24.9,33.3,0.0,False,True,True,False,30.0,Latticini
+Formaggio Emmental,0.1,380.0,28.8,29.7,0.0,False,True,True,False,30.0,Latticini
+Formaggio Gorgonzola,0.1,350.0,19.0,30.0,0.0,False,True,True,False,30.0,Latticini
 Formaggio spalmabile (light),5.0,150.0,10.0,9.0,0.0,False,True,True,False,30.0,Latticini
 Fiocchi di latte,3.4,98.0,11.1,4.3,0.0,False,True,True,False,100.0,Latticini
-Panna da cucina (uht),3.3,215.0,2.4,21.0,0.0,False,True,True,False,30.0,Latticini
+Panna da cucina (UHT),3.3,215.0,2.4,21.0,0.0,False,True,True,False,30.0,Latticini
 Panna montata (zuccherata),15.0,300.0,2.0,25.0,0.0,False,True,True,False,20.0,Latticini
 Latte di avena,6.5,48.0,0.3,1.5,0.8,True,True,False,True,250.0,Bevande
 Latte di riso,9.0,47.0,0.3,1.0,0.3,True,True,True,True,250.0,Bevande
@@ -223,14 +223,14 @@ Burro di mandorle,21.7,614.0,21.2,55.8,11.8,True,True,True,True,20.0,Grassi
 Crema di nocciole (senza zucchero),15.0,650.0,14.0,62.0,9.0,True,True,True,True,20.0,Grassi
 Aceto di mele,0.9,21.0,0.0,0.0,0.0,True,True,True,True,15.0,Condimenti
 Aceto di vino bianco,0.0,19.0,0.0,0.0,0.0,True,True,True,True,15.0,Condimenti
-Salsa worcestershire,9.6,78.0,0.0,0.0,0.0,False,False,False,True,5.0,Condimenti
-Salsa tabasco,1.6,12.0,0.8,0.6,1.3,True,True,True,True,5.0,Condimenti
-Salsa sriracha,22.0,100.0,2.0,2.0,2.0,True,True,True,True,5.0,Condimenti
+Salsa Worcestershire,9.6,78.0,0.0,0.0,0.0,False,False,False,True,5.0,Condimenti
+Salsa Tabasco,1.6,12.0,0.8,0.6,1.3,True,True,True,True,5.0,Condimenti
+Salsa Sriracha,22.0,100.0,2.0,2.0,2.0,True,True,True,True,5.0,Condimenti
 Concentrato di pomodoro,25.8,82.0,4.3,0.5,5.9,True,True,True,True,15.0,Condimenti
 Capperi (sotto sale),5.0,23.0,2.4,0.9,3.2,True,True,True,True,5.0,Condimenti
 Pasta d'acciughe,0.0,210.0,29.0,9.7,0.0,False,False,True,True,5.0,Condimenti
 Maionese vegana,2.0,600.0,0.5,65.0,0.0,True,True,True,True,15.0,Condimenti
-Senape di digione,5.0,143.0,8.0,11.0,4.0,True,True,True,True,10.0,Condimenti
+Senape di Digione,5.0,143.0,8.0,11.0,4.0,True,True,True,True,10.0,Condimenti
 Rafano,11.3,48.0,1.2,0.7,3.3,True,True,True,True,5.0,Condimenti
 Sale,0.0,0.0,0.0,0.0,0.0,True,True,True,True,1.0,Condimenti
 Pasta di ceci,45.0,340.0,21.0,4.5,6.0,True,True,True,True,80.0,Carboidrati
@@ -260,29 +260,29 @@ Liquore (amaro),25.0,250.0,0.0,0.0,0.0,True,True,True,True,30.0,Bevande
 Brodo vegetale,1.0,5.0,0.3,0.1,0.1,True,True,True,True,250.0,Bevande
 Brodo di pollo,0.5,7.0,0.9,0.3,0.0,False,False,True,True,250.0,Bevande
 Lievito alimentare in scaglie,38.0,344.0,51.0,4.0,22.0,True,True,True,True,5.0,Condimenti
-Amido di mais (maizena),88.0,381.0,0.3,0.1,0.9,True,True,True,True,10.0,Carboidrati
+Amido di mais (Maizena),88.0,381.0,0.3,0.1,0.9,True,True,True,True,10.0,Carboidrati
 Fecola di patate,83.0,357.0,0.6,0.1,0.0,True,True,True,True,10.0,Carboidrati
 Gelatina in fogli,0.0,335.0,86.0,0.1,0.0,False,False,True,True,2.0,Altro
 Agar agar,81.0,306.0,6.0,0.3,7.7,True,True,True,True,2.0,Altro
 Platano,31.9,122.0,1.3,0.4,2.3,True,True,True,True,100.0,Frutta
 Lychee,16.5,66.0,0.8,0.4,1.3,True,True,True,True,100.0,Frutta
-Cachi (persimmon),18.6,70.0,0.6,0.2,3.6,True,True,True,True,150.0,Frutta
+Cachi (Persimmon),18.6,70.0,0.6,0.2,3.6,True,True,True,True,150.0,Frutta
 Mirtilli rossi (freschi),12.2,46.0,0.4,0.1,4.6,True,True,True,True,50.0,Frutta
 Rabarbaro,4.5,21.0,0.9,0.2,1.8,True,True,True,True,100.0,Verdura
-Okra (gombo),7.5,33.0,1.9,0.2,3.2,True,True,True,True,100.0,Verdura
+Okra (Gombo),7.5,33.0,1.9,0.2,3.2,True,True,True,True,100.0,Verdura
 Crescione,1.3,11.0,2.3,0.1,0.5,True,True,True,True,50.0,Verdura
 Cavolo rapa,6.2,27.0,1.7,0.1,3.6,True,True,True,True,100.0,Verdura
-Cicoria belga (indivia),4.0,17.0,0.9,0.1,1.0,True,True,True,True,80.0,Verdura
+Cicoria belga (Indivia),4.0,17.0,0.9,0.1,1.0,True,True,True,True,80.0,Verdura
 Anatra (petto senza pelle),0.0,140.0,28.0,2.5,0.0,False,False,True,True,120.0,Proteine
 Vitello (lombata),0.0,172.0,29.0,5.6,0.0,False,False,True,True,120.0,Proteine
 Coniglio,0.0,173.0,33.0,3.5,0.0,False,False,True,True,120.0,Proteine
 Aringa,0.0,203.0,18.0,14.0,0.0,False,False,True,True,100.0,Proteine
 Acciughe (fresche),0.0,131.0,20.4,4.8,0.0,False,False,True,True,80.0,Proteine
 Lumache (cotte),2.0,90.0,16.0,1.0,0.0,False,False,True,True,100.0,Proteine
-Formaggio halloumi,1.9,321.0,22.0,25.0,0.0,False,True,True,False,50.0,Latticini
-Formaggio paneer,4.0,296.0,18.0,22.0,0.0,False,True,True,False,50.0,Latticini
-Proteine vegetali testurizzate (tvp secche),34.0,327.0,52.0,1.0,18.0,True,True,True,True,25.0,Proteine
-Lupini (cotti e salati),9.9,119.0,15.6,2.9,4.8,True,True,True,True,80.0,Legumi
+Formaggio Halloumi,1.9,321.0,22.0,25.0,0.0,False,True,True,False,50.0,Latticini
+Formaggio Paneer,4.0,296.0,18.0,22.0,0.0,False,True,True,False,50.0,Latticini
+Proteine vegetali testurizzate (TVP secche),34.0,327.0,52.0,1.0,18.0,True,True,True,True,25.0,Proteine
+Lupini (cotti e  salati),9.9,119.0,15.6,2.9,4.8,True,True,True,True,80.0,Legumi
 Kefir (latte intero),4.0,64.0,3.3,3.5,0.0,False,True,True,False,200.0,Bevande
 Latticello,4.8,40.0,3.3,0.9,0.0,False,True,True,False,200.0,Bevande
 Panna acida,3.0,198.0,2.4,19.4,0.0,False,True,True,False,30.0,Latticini
@@ -304,10 +304,11 @@ Marzapane,48.0,450.0,10.0,26.0,5.0,True,True,True,True,20.0,Dolci
 Halva (base sesamo),54.0,516.0,12.0,28.0,6.0,True,True,True,True,30.0,Dolci
 Cioccolato fondente (85%),30.0,604.0,12.0,46.0,11.0,True,True,True,True,25.0,Dolci
 Pangrattato,72.0,395.0,13.0,5.0,4.0,True,True,False,True,15.0,Carboidrati
-Crostoni (croutons),68.0,407.0,14.0,7.0,5.0,True,True,False,True,15.0,Carboidrati
+Crostoni (Croutons),68.0,407.0,14.0,7.0,5.0,True,True,False,True,15.0,Carboidrati
 Tortilla di mais,44.0,218.0,5.0,2.7,4.5,True,True,True,True,30.0,Carboidrati
 Tortilla di frumento,46.0,300.0,8.0,6.0,3.0,True,True,False,True,40.0,Carboidrati
 Dado vegetale,30.0,200.0,10.0,5.0,2.0,True,True,True,True,5.0,Condimenti
+Latte di soia,8.0,60.0,3.0,1.8,0.6,True,True,True,True,250.0,Bevande
 Pane azzimo,69.0,325.0,9.0,1.5,3.5,True,True,False,True,50.0,Carboidrati
 Latte,4.8,64.0,3.3,3.6,0.0,False,True,True,False,250.0,Latticini
 Besciamella,6.0,120.0,2.5,8.5,0.0,False,True,True,False,50.0,Condimenti
