@@ -37,110 +37,239 @@ from utils import calculate_ingredient_cho_contribution
 
 def adjust_recipe_cho(recipe: FinalRecipeOption, target_cho: float, ingredient_data: Dict[str, IngredientInfo]) -> FinalRecipeOption:
     """
-    Aggiusta le quantità degli ingredienti per raggiungere il target CHO desiderato.
-    (Implementazione come fornita precedentemente, assicurati che usi correttamente
-     ingredient_data per ottenere cho_per_100g, etc.)
+    Aggiusta le quantità degli ingredienti per raggiungere il target CHO desiderato,
+    con limiti di scaling più aggressivi e logica graduale.
     """
-    # Se siamo già nel target, non fare nulla
-    if abs(recipe.total_cho - target_cho) < 8.0:
+    # Verifica iniziale e copia (come prima)
+    if recipe.total_cho is None:
+        print(
+            f"Warning adjust_cho: Ricetta '{recipe.name}' ha total_cho=None. Impossibile aggiustare.")
+        return recipe  # Non fare nulla se manca il CHO iniziale
+
+    # Se siamo già molto vicini al target, non fare nulla
+    if abs(recipe.total_cho - target_cho) < 5.0:  # Soglia di non intervento ridotta
+        # print(f"Debug adjust_cho: CHO ({recipe.total_cho:.1f}g) già vicino al target ({target_cho:.1f}g). Nessun aggiustamento.")
         return recipe
 
     adjusted_recipe = deepcopy(recipe)
+    initial_cho = adjusted_recipe.total_cho  # Salva CHO iniziale per confronto
 
-    # Identifica ingredienti ricchi di CHO (dal DB!)
+    # Identifica ingredienti ricchi di CHO (logica come prima)
     cho_rich_ingredients = []
-    for ing in adjusted_recipe.ingredients:
-        # Usa il nome (che ora è quello corretto del DB) per accedere a ingredient_data
-        if ing.name in ingredient_data and ingredient_data[ing.name].cho_per_100g > 0:
-            # Usa il contributo già calcolato se disponibile, altrimenti ricalcola se serve
-            cho_contribution = ing.cho_contribution if ing.cho_contribution is not None else 0
-            # Applica logica per identificare "ricchi" (es. >5% del totale CHO)
-            if cho_contribution > 0:
-                if adjusted_recipe.total_cho < 30 or (cho_contribution / adjusted_recipe.total_cho) > 0.05:
-                    # Assicurati che l'oggetto ing qui abbia i dati necessari o recuperali
-                    # Assumendo ing abbia i dati o li passi
+    # ... (la tua logica esistente per popolare cho_rich_ingredients) ...
+    # Esempio di logica (assicurati che sia robusta):
+    if adjusted_recipe.total_cho > 0:  # Evita divisione per zero
+        for ing in adjusted_recipe.ingredients:
+            # Considera ingredienti con almeno 5g CHO/100g
+            if ing.name in ingredient_data and ingredient_data[ing.name].cho_per_100g > 5:
+                # Usa contributo già calcolato se disponibile e valido
+                cho_contribution = ing.cho_contribution if ing.cho_contribution is not None and ing.cho_contribution > 0 else 0
+                # Considera "ricco" se contribuisce >5% o se CHO totale è basso
+                if cho_contribution > 0 and (adjusted_recipe.total_cho < 30 or (cho_contribution / adjusted_recipe.total_cho) > 0.05):
                     cho_rich_ingredients.append(ing)
 
-    # Se non ci sono, cerca potenziali nel DB (come prima)
+    # Se non trovati, prova fallback (come prima, es. > 5g CHO/100g)
     if not cho_rich_ingredients:
-        potential_ingredients = []
-        for ing in adjusted_recipe.ingredients:
-            if ing.name in ingredient_data and ingredient_data[ing.name].cho_per_100g > 5:
-                potential_ingredients.append(ing)
+        potential_ingredients = [
+            ing for ing in adjusted_recipe.ingredients
+            if ing.name in ingredient_data and ingredient_data[ing.name].cho_per_100g > 5
+        ]
         if potential_ingredients:
             cho_rich_ingredients = potential_ingredients
 
     if not cho_rich_ingredients:
-        # print(f"Debug adjust_cho: No CHO-rich ingredients found for {recipe.name}")
-        return recipe  # Non possiamo aggiustare
+        print(
+            f"Debug adjust_cho: No CHO-rich ingredients identified for '{recipe.name}' to scale.")
+        return recipe  # Non possiamo aggiustare se non sappiamo cosa scalare
 
-    # Ordina per contributo (assicurati che ing.cho_contribution sia valido)
+    # Ordina per contributo (come prima)
     cho_rich_ingredients.sort(
         key=lambda x: x.cho_contribution if x.cho_contribution is not None else 0, reverse=True)
+    # print(f"Debug adjust_cho: Identified {len(cho_rich_ingredients)} CHO-rich ingredients for '{recipe.name}': {[ing.name for ing in cho_rich_ingredients]}")
 
     # Calcola differenza CHO (come prima)
     cho_diff = target_cho - adjusted_recipe.total_cho
+    print(
+        f"Debug adjust_cho: Recipe '{recipe.name}' - Initial CHO: {initial_cho:.1f}g, Target: {target_cho:.1f}g, Diff: {cho_diff:.1f}g")
 
-    # Calcola e applica scaling factor (logica come prima)
-    if adjusted_recipe.total_cho > 0:
-        scaling_factor = target_cho / adjusted_recipe.total_cho
-        # ... (logica min/max scale come prima) ...
-        scaling_factor = max(0.4 if abs(cho_diff) > 25 and adjusted_recipe.total_cho > target_cho else 0.5,
-                             min(4.0 if abs(cho_diff) > 40 and adjusted_recipe.total_cho < target_cho else 3.0, scaling_factor))
+    # --- INIZIO BLOCCO MODIFICATO: Calcolo e Applicazione Scaling Factor ---
+    scaling_factor = 1.0  # Default a nessun cambiamento
 
+    if adjusted_recipe.total_cho > 0:  # Evita divisione per zero
+        # Calcolo base del fattore di scala ideale
+        ideal_scaling_factor = target_cho / adjusted_recipe.total_cho
+
+        # Definisci i limiti minimi e massimi per lo scaling
+        min_scale = 0.3  # Limite inferiore più permissivo (riduzione maggiore)
+        # Limite superiore MOLTO aggressivo per differenze > 100g
+        max_scale_very_high_diff = 7.0
+        max_scale_high_diff = 6.0  # Limite superiore aggressivo per differenze > 60g
+        max_scale_med_diff = 4.5  # Limite superiore moderato per differenze > 30g
+        max_scale_low_diff = 3.0  # Limite superiore leggero per differenze < 30g
+
+        # Applica i limiti basati sulla differenza CHO e sulla direzione (aumentare/ridurre)
+        if cho_diff < 0:  # Dobbiamo RIDURRE i CHO (total_cho > target_cho)
+            # Determina limite inferiore in base all'entità della differenza
+            if abs(cho_diff) > 60:
+                effective_min_scale = min_scale  # Molto basso per grandi riduzioni
+            elif abs(cho_diff) > 30:
+                effective_min_scale = 0.4
+            else:
+                effective_min_scale = 0.5  # Riduzione meno aggressiva per differenze minori
+            # Applica il limite inferiore
+            scaling_factor = max(effective_min_scale, ideal_scaling_factor)
+            # Assicurati che non superi 1.0 (non vogliamo aumentare se dobbiamo ridurre)
+            scaling_factor = min(scaling_factor, 1.0)
+            print(
+                f"DEBUG adjust_cho (Riduzione): Diff={cho_diff:.1f}g, IdealScale={ideal_scaling_factor:.2f}, EffectiveMinScale={effective_min_scale:.2f}, FinalScale={scaling_factor:.2f}")
+
+        elif cho_diff > 0:  # Dobbiamo AUMENTARE i CHO (total_cho < target_cho)
+            # Determina il limite massimo in base all'entità della differenza
+            if abs(cho_diff) > 100:  # Differenza molto grande
+                effective_max_scale = max_scale_very_high_diff
+                print(
+                    f"DEBUG adjust_cho (Aumento >100g): Applico max_scale {effective_max_scale}")
+            elif abs(cho_diff) > 60:  # Differenza grande
+                effective_max_scale = max_scale_high_diff
+                print(
+                    f"DEBUG adjust_cho (Aumento >60g): Applico max_scale {effective_max_scale}")
+            elif abs(cho_diff) > 30:  # Differenza media
+                effective_max_scale = max_scale_med_diff
+                print(
+                    f"DEBUG adjust_cho (Aumento >30g): Applico max_scale {effective_max_scale}")
+            else:  # Differenza minore
+                effective_max_scale = max_scale_low_diff
+                print(
+                    f"DEBUG adjust_cho (Aumento <30g): Applico max_scale {effective_max_scale}")
+
+            # Applica il limite superiore
+            scaling_factor = min(effective_max_scale, ideal_scaling_factor)
+            # Assicurati che sia almeno 1.0 (non vogliamo ridurre se dobbiamo aumentare)
+            scaling_factor = max(scaling_factor, 1.0)
+            print(
+                f"DEBUG adjust_cho (Aumento): Diff={cho_diff:.1f}g, IdealScale={ideal_scaling_factor:.2f}, EffectiveMaxScale={effective_max_scale:.2f}, FinalScale={scaling_factor:.2f}")
+
+        else:  # cho_diff è 0 (improbabile data la verifica iniziale, ma per sicurezza)
+            scaling_factor = 1.0
+            print("DEBUG adjust_cho: Diff=0, nessun scaling necessario.")
+
+        # Applica lo scaling agli ingredienti ricchi di CHO
         new_recipe_ingredients_list = []
+        adjusted_ingredient_names = []  # Per log
         for ing in adjusted_recipe.ingredients:
             new_quantity = ing.quantity_g
-            # Applica scaling solo se è ricco di CHO e il nome è valido
+            # Applica scaling solo se è ricco di CHO e il nome è valido nel DB
             if ing in cho_rich_ingredients and ing.name in ingredient_data:
-                new_quantity = ing.quantity_g * scaling_factor
-                # Aggiungi limiti min/max quantità qui se necessario (es. max 300g)
-                # Esempio limiti
-                new_quantity = max(5.0, min(300.0, new_quantity))
+                original_quantity = ing.quantity_g
+                scaled_quantity = original_quantity * scaling_factor
+
+                # Applica limiti MIN/MAX ASSOLUTI alla quantità finale
+                # Considera se 300g è sufficiente o serve aumentarlo a 350g
+                MAX_SINGLE_INGREDIENT_G = 300.0
+                MIN_SINGLE_INGREDIENT_G = 5.0  # Evita quantità troppo piccole
+                new_quantity = max(MIN_SINGLE_INGREDIENT_G, min(
+                    MAX_SINGLE_INGREDIENT_G, scaled_quantity))
+
+                # Log se la quantità è cambiata significativamente
+                if abs(new_quantity - original_quantity) > 0.1:
+                    adjusted_ingredient_names.append(
+                        f"{ing.name} ({original_quantity:.1f}g -> {new_quantity:.1f}g)")
 
             new_recipe_ingredients_list.append(
-                RecipeIngredient(name=ing.name, quantity_g=new_quantity))
+                RecipeIngredient(name=ing.name, quantity_g=round(
+                    new_quantity, 1))  # Arrotonda a 1 decimale
+            )
 
-        # Ricalcola tutto dopo scaling
+        if adjusted_ingredient_names:
+            print(
+                f"DEBUG adjust_cho: Ingredienti scalati ({len(adjusted_ingredient_names)}): {'; '.join(adjusted_ingredient_names)}")
+        elif scaling_factor != 1.0:
+            print(
+                f"DEBUG adjust_cho: Scaling factor ({scaling_factor:.2f}) applicato, ma nessun ingrediente CHO-rich modificato significativamente.")
+        else:
+            print(f"DEBUG adjust_cho: Nessun scaling applicato (scaling_factor=1.0).")
+
+        # Ricalcola tutto dopo scaling (come prima)
         updated_ingredients = calculate_ingredient_cho_contribution(
             new_recipe_ingredients_list, ingredient_data)
         adjusted_recipe.ingredients = updated_ingredients
         adjusted_recipe.total_cho = round(sum(
             ing.cho_contribution for ing in updated_ingredients if ing.cho_contribution is not None), 2)
+        print(
+            f"DEBUG adjust_cho: CHO dopo scaling: {adjusted_recipe.total_cho:.1f}g")
 
+    else:  # Caso adjusted_recipe.total_cho <= 0
+        print(
+            f"Warning adjust_cho: CHO iniziale non positivo ({adjusted_recipe.total_cho}g) per '{recipe.name}'. Impossibile scalare.")
+        # Non fare nulla se CHO iniziale non è valido per lo scaling
+    # --- FINE BLOCCO MODIFICATO ---
+
+    # --- INIZIO BLOCCO AGGIUSTAMENTO FINE (Mantieni la tua logica esistente) ---
     # Aggiustamento fine (logica come prima, assicurati usi nomi DB corretti)
-    if abs(adjusted_recipe.total_cho - target_cho) > 5.0 and cho_rich_ingredients:
+    # Ricalcola la differenza *dopo* lo scaling
+    current_cho_diff_after_scaling = target_cho - adjusted_recipe.total_cho
+    fine_tuning_threshold = 5.0  # Soglia per attivare l'aggiustamento fine
+
+    if abs(current_cho_diff_after_scaling) > fine_tuning_threshold and cho_rich_ingredients:
+        print(
+            f"DEBUG adjust_cho: Tentativo aggiustamento fine (Diff: {current_cho_diff_after_scaling:.1f}g)")
         # Trova l'ingrediente principale (già ordinati)
         main_ingredient_obj = cho_rich_ingredients[0]
         main_ing_name = main_ingredient_obj.name
 
-        if main_ing_name in ingredient_data and ingredient_data[main_ing_name].cho_per_100g > 0:
+        if main_ing_name in ingredient_data and ingredient_data[main_ing_name].cho_per_100g is not None and ingredient_data[main_ing_name].cho_per_100g > 0:
             cho_per_100g = ingredient_data[main_ing_name].cho_per_100g
-            current_cho_diff = target_cho - adjusted_recipe.total_cho
-            gram_diff = (current_cho_diff / cho_per_100g) * 100.0
+            # Calcola la modifica in grammi necessaria per l'ingrediente principale
+            gram_diff = (current_cho_diff_after_scaling / cho_per_100g) * 100.0
+            print(
+                f"DEBUG adjust_cho (Fine): Modifica '{main_ing_name}' di {gram_diff:.1f}g (CHO/100g: {cho_per_100g})")
 
             # Modifica solo l'ingrediente principale nella lista
             fine_tuned_ingredients_list = []
             found = False
+            main_ing_original_qty = 0
+            main_ing_final_qty = 0
             for ing in adjusted_recipe.ingredients:
                 new_quantity = ing.quantity_g
                 if ing.name == main_ing_name and not found:
-                    new_quantity = ing.quantity_g + gram_diff
-                    new_quantity = max(
-                        10.0, min(300.0, new_quantity))  # Limiti
-                    found = True  # Modifica solo la prima occorrenza se ci fossero duplicati
+                    main_ing_original_qty = ing.quantity_g
+                    adjusted_quantity = main_ing_original_qty + gram_diff
+                    # Applica limiti MIN/MAX anche qui
+                    MAX_SINGLE_INGREDIENT_G = 300.0
+                    # Minimo più alto per aggiustamento fine? Valuta.
+                    MIN_SINGLE_INGREDIENT_G = 10.0
+                    new_quantity = max(MIN_SINGLE_INGREDIENT_G, min(
+                        MAX_SINGLE_INGREDIENT_G, adjusted_quantity))
+                    main_ing_final_qty = new_quantity
+                    found = True  # Modifica solo la prima occorrenza
                 fine_tuned_ingredients_list.append(
-                    RecipeIngredient(name=ing.name, quantity_g=new_quantity))
+                    RecipeIngredient(name=ing.name, quantity_g=round(
+                        new_quantity, 1))  # Arrotonda
+                )
 
-            # Ricalcola di nuovo
-            updated_ingredients_final = calculate_ingredient_cho_contribution(
-                fine_tuned_ingredients_list, ingredient_data)
-            adjusted_recipe.ingredients = updated_ingredients_final
-            adjusted_recipe.total_cho = round(sum(
-                ing.cho_contribution for ing in updated_ingredients_final if ing.cho_contribution is not None), 2)
+            if found:
+                print(
+                    f"DEBUG adjust_cho (Fine): Quantità '{main_ing_name}' cambiata da {main_ing_original_qty:.1f}g a {main_ing_final_qty:.1f}g.")
+                # Ricalcola di nuovo
+                updated_ingredients_final = calculate_ingredient_cho_contribution(
+                    fine_tuned_ingredients_list, ingredient_data)
+                adjusted_recipe.ingredients = updated_ingredients_final
+                adjusted_recipe.total_cho = round(sum(
+                    ing.cho_contribution for ing in updated_ingredients_final if ing.cho_contribution is not None), 2)
+                print(
+                    f"DEBUG adjust_cho: CHO dopo aggiustamento fine: {adjusted_recipe.total_cho:.1f}g")
+            else:
+                print(
+                    f"DEBUG adjust_cho (Fine): Ingrediente principale '{main_ing_name}' non trovato/modificato.")
+        else:
+            print(
+                f"DEBUG adjust_cho (Fine): Impossibile aggiustare '{main_ing_name}' (manca info CHO o CHO <= 0).")
 
-    # Aggiungi "(Aggiustata)" al nome (come prima)
-    if abs(recipe.total_cho - adjusted_recipe.total_cho) > 0.1:  # Se c'è stata una modifica
+    # --- FINE BLOCCO AGGIUSTAMENTO FINE ---
+
+    # --- AGGIORNAMENTO NOME/DESCRIZIONE (Come prima) ---
+    # Aggiungi "(Aggiustata)" al nome se CHO è cambiato significativamente
+    if abs(initial_cho - adjusted_recipe.total_cho) > 1.0:  # Se c'è stata una modifica > 1g
         if "Aggiustata" not in adjusted_recipe.name:  # Evita doppi suffissi
             adjusted_recipe.name = f"{adjusted_recipe.name} (Aggiustata)"
         # Aggiorna descrizione (come prima)

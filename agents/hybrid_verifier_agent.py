@@ -310,7 +310,7 @@ Restituisci SOLO i numeri delle 3 ricette più diverse in formato JSON.
 """
 
     # Chiama l'LLM
-    model_name = "gpt-3.5-turbo"  # o il modello che preferisci
+    model_name = "gpt-4-turbo"  # o il modello che preferisci
     api_key = os.getenv("OPENAI_API_KEY")
     llm = ChatOpenAI(temperature=0, model_name=model_name,
                      openai_api_key=api_key)
