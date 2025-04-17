@@ -1,15 +1,32 @@
 """
-Agente di verifica delle ricette per il sistema di generazione ricette.
+Agente di verifica e ottimizzazione delle ricette generate.
 
-Questo modulo contiene funzioni per la verifica e l'ottimizzazione delle ricette generate.
-Le funzioni principali includono:
-1. Validazione degli ingredienti
-2. Aggiustamento del contenuto di carboidrati (CHO)
-3. Bilanciamento della distribuzione dei carboidrati tra gli ingredienti
-4. Verifica finale delle ricette rispetto alle preferenze utente
+Questo modulo implementa il nodo 'verifier_agent' del workflow, responsabile
+dell'analisi, filtraggio e aggiustamento delle ricette proposte dal generatore.
+NON esegue più il bilanciamento della distribuzione dei CHO tra gli ingredienti.
 
-Queste funzioni sono utilizzate per elaborare le ricette generate e garantire
-che soddisfino al meglio i criteri dell'utente.
+Le operazioni principali svolte includono:
+1.  **Validazione Ingredienti:** Verifica che tutti gli ingredienti di una ricetta
+    siano presenti nel database (`ingredient_data`). Le ricette con ingredienti
+    sconosciuti vengono scartate (`validate_recipe_ingredients`).
+2.  **Aggiustamento CHO:** Tenta di modificare le quantità degli ingredienti
+    (`adjust_recipe_cho`) per portare il contenuto totale di carboidrati (CHO)
+    della ricetta entro un range accettabile rispetto al target dell'utente.
+    Questo passaggio viene applicato alle ricette che non rientrano già in un
+    range di tolleranza predefinito rispetto al loro valore originale.
+3.  **Verifica Finale Multi-criterio:** Applica una serie di controlli finali
+    sulle ricette (originali o aggiustate) per scartare quelle che non
+    soddisfano i requisiti stringenti:
+    - Range di CHO finale (target ± tolleranza).
+    - Conformità alle preferenze dietetiche specificate dall'utente (vegan, vegetarian, gluten-free, lactose-free).
+    - Criteri di 'qualità' (es. numero minimo di ingredienti > 2, quantità massime per singolo ingrediente < 300g).
+    - Controllo (meno restrittivo) su ingredienti singoli con contributo CHO eccessivamente dominante (>98%).
+
+L'agente riceve le ricette generate (`generated_recipes`), applica queste fasi
+di verifica e selezione, e restituisce una lista finale (`final_verified_recipes`)
+contenente le ricette che hanno superato tutti i controlli, pronte per la
+formattazione finale. Gestisce anche la diversificazione delle ricette selezionate
+e imposta messaggi di errore se non vengono trovate abbastanza ricette valide.
 """
 from typing import List, Dict
 from copy import deepcopy
@@ -212,225 +229,6 @@ def adjust_recipe_cho(recipe: FinalRecipeOption, target_cho: float, ingredient_d
     return adjusted_recipe
 
 
-def balance_cho_distribution(recipe: FinalRecipeOption, ingredient_data: Dict) -> FinalRecipeOption:
-    """
-    Bilancia la distribuzione dei CHO tra gli ingredienti di una ricetta.
-
-    Questa funzione analizza se la ricetta ha un ingrediente dominante che fornisce una
-    percentuale troppo alta del totale dei carboidrati. Se trovato, redistribuisce i carboidrati
-    tra più ingredienti per creare una ricetta più bilanciata.
-
-    Args:
-        recipe: La ricetta da bilanciare
-        ingredient_data: Dizionario con informazioni nutrizionali degli ingredienti
-
-    Returns:
-        FinalRecipeOption: La ricetta modificata con distribuzione di CHO più bilanciata
-        o la ricetta originale se non è necessario bilanciarla
-
-    Algoritmo:
-    1. Identifica se esiste un ingrediente dominante (>90% dei CHO totali)
-    2. Se non ci sono altri ingredienti con CHO, cerca potenziali ingredienti da aggiungere
-    3. Riduce la quantità dell'ingrediente dominante e aumenta quella degli altri ingredienti
-    4. Verifica se il bilanciamento ha migliorato la distribuzione
-    """
-    # Soglia massima accettabile per un singolo ingrediente
-    MAX_CHO_PERCENTAGE = 0.96  # 90%
-
-    # Verifica se c'è un ingrediente dominante
-    dominant_ingredient = None
-    for ing in recipe.ingredients:
-        if recipe.total_cho > 0 and (ing.cho_contribution / recipe.total_cho) > MAX_CHO_PERCENTAGE:
-            dominant_ingredient = ing
-            break
-
-    # Se non c'è un ingrediente dominante, non serve bilanciare
-    if not dominant_ingredient:
-        return recipe
-
-    # Crea una copia della ricetta
-    balanced_recipe = deepcopy(recipe)
-
-    # Identifica altri ingredienti con carboidrati o potenziali da aggiungere
-    other_cho_ingredients = []
-    for ing in balanced_recipe.ingredients:
-        if ing != dominant_ingredient and ing.name in ingredient_data:
-            info = ingredient_data[ing.name]
-            if info.cho_per_100g > 0:
-                other_cho_ingredients.append(ing)
-
-    # Se non ci sono altri ingredienti con CHO, cerca tra tutti quelli disponibili
-    if not other_cho_ingredients:
-        potential_ingredients = []
-        for name, info in ingredient_data.items():
-            # Verifica che non sia già presente e che abbia CHO
-            if info.cho_per_100g > 0 and not any(ing.name == name for ing in balanced_recipe.ingredients):
-                potential_ingredients.append({
-                    "name": name,
-                    "cho_per_100g": info.cho_per_100g
-                })
-
-        # Ordina per contenuto di CHO decrescente
-        potential_ingredients.sort(
-            key=lambda x: x["cho_per_100g"], reverse=True)
-
-        # Prendiamo i primi 3 ingredienti con più CHO
-        for i in range(min(3, len(potential_ingredients))):
-            # Aggiungi un nuovo ingrediente con una quantità base di 30g
-            new_ing = RecipeIngredient(
-                name=potential_ingredients[i]["name"],
-                quantity_g=30.0
-            )
-            recipe_ingredients = [
-                RecipeIngredient(
-                    name=ing.name,
-                    quantity_g=ing.quantity_g
-                ) for ing in balanced_recipe.ingredients
-            ]
-            recipe_ingredients.append(new_ing)
-
-            # Ricalcola i contributi nutrizionali
-            updated_ingredients = calculate_ingredient_cho_contribution(
-                recipe_ingredients, ingredient_data)
-
-            # Aggiorna gli ingredienti della ricetta
-            balanced_recipe.ingredients = updated_ingredients
-
-            # Ricalcola il CHO totale
-            balanced_recipe.total_cho = round(
-                sum(ing.cho_contribution for ing in updated_ingredients), 2)
-
-            # Aggiungi all'elenco degli altri ingredienti CHO
-            for ing in balanced_recipe.ingredients:
-                if ing.name == potential_ingredients[i]["name"]:
-                    other_cho_ingredients.append(ing)
-                    break
-
-    # Se ancora non abbiamo altri ingredienti CHO, dobbiamo accettare la ricetta com'è
-    if not other_cho_ingredients:
-        return recipe
-
-    # Ottieni l'ingrediente dominante aggiornato (potrebbe essere cambiato dopo le aggiunte)
-    for ing in balanced_recipe.ingredients:
-        if ing.name == dominant_ingredient.name:
-            dominant_ingredient = ing
-            break
-
-    # Calcola quanto CHO dobbiamo spostare dal dominante agli altri
-    current_percentage = dominant_ingredient.cho_contribution / balanced_recipe.total_cho
-    target_percentage = MAX_CHO_PERCENTAGE
-    cho_to_redistribute = dominant_ingredient.cho_contribution - \
-        (balanced_recipe.total_cho * target_percentage)
-
-    # Se non c'è niente da redistribuire, restituisci la ricetta (potrebbe essere cambiata)
-    if cho_to_redistribute <= 0:
-        return balanced_recipe
-
-    # Riduci la quantità dell'ingrediente dominante
-    if dominant_ingredient.name in ingredient_data:
-        cho_per_100g = ingredient_data[dominant_ingredient.name].cho_per_100g
-        if cho_per_100g > 0:
-            # Quanto dobbiamo ridurre in grammi?
-            grams_to_reduce = (cho_to_redistribute / cho_per_100g) * 100.0
-
-            # Assicurati di non ridurre troppo (max 40%)
-            max_reduction = dominant_ingredient.quantity_g * 0.4
-            grams_to_reduce = min(grams_to_reduce, max_reduction)
-
-            # Applica la riduzione all'ingrediente dominante
-            new_dominant_quantity = dominant_ingredient.quantity_g - grams_to_reduce
-
-            # Aggiorna l'ingrediente dominante
-            recipe_ingredients = [
-                RecipeIngredient(
-                    name=ing.name,
-                    quantity_g=new_dominant_quantity if ing.name == dominant_ingredient.name else ing.quantity_g
-                ) for ing in balanced_recipe.ingredients
-            ]
-
-            # Ricalcola i contributi
-            updated_ingredients = calculate_ingredient_cho_contribution(
-                recipe_ingredients, ingredient_data)
-            balanced_recipe.ingredients = updated_ingredients
-            balanced_recipe.total_cho = round(
-                sum(ing.cho_contribution for ing in updated_ingredients), 2)
-
-            # Aggiorna il riferimento all'ingrediente dominante
-            for ing in balanced_recipe.ingredients:
-                if ing.name == dominant_ingredient.name:
-                    dominant_ingredient = ing
-                    break
-
-            # Distribuisci il CHO agli altri ingredienti
-            cho_redistributed = 0.0
-
-            # Calcola quanto CHO è stato rimosso dalla riduzione
-            cho_removed = cho_to_redistribute - \
-                (dominant_ingredient.cho_contribution -
-                 (balanced_recipe.total_cho * target_percentage))
-
-            # Distribuisci equamente il CHO rimosso tra gli altri ingredienti
-            if other_cho_ingredients and cho_removed > 0:
-                cho_per_ingredient = cho_removed / len(other_cho_ingredients)
-
-                for target_ing in other_cho_ingredients:
-                    if target_ing.name in ingredient_data:
-                        target_cho_per_100g = ingredient_data[target_ing.name].cho_per_100g
-                        if target_cho_per_100g > 0:
-                            # Quanto dobbiamo aumentare in grammi?
-                            grams_to_add = (
-                                cho_per_ingredient / target_cho_per_100g) * 100.0
-
-                            # Limite di aumento (max 100%)
-                            max_increase = target_ing.quantity_g * 1.0
-                            grams_to_add = min(grams_to_add, max_increase)
-
-                            # Nuova quantità
-                            new_quantity = target_ing.quantity_g + grams_to_add
-                            # NUOVO: Limita a 300g massimo
-                            new_quantity = min(300.0, new_quantity)
-
-                            # Aggiorna l'ingrediente
-                            for i, ing in enumerate(balanced_recipe.ingredients):
-                                if ing.name == target_ing.name:
-                                    recipe_ingredient = RecipeIngredient(
-                                        name=ing.name,
-                                        quantity_g=new_quantity
-                                    )
-                                    break
-
-                # Ricalcola tutto
-                recipe_ingredients = [
-                    RecipeIngredient(
-                        name=ing.name,
-                        quantity_g=ing.quantity_g
-                    ) for ing in balanced_recipe.ingredients
-                ]
-
-                updated_ingredients = calculate_ingredient_cho_contribution(
-                    recipe_ingredients, ingredient_data)
-                balanced_recipe.ingredients = updated_ingredients
-                balanced_recipe.total_cho = round(
-                    sum(ing.cho_contribution for ing in updated_ingredients), 2)
-
-    # Verifica se abbiamo effettivamente migliorato il bilanciamento
-    max_percentage = 0.0
-    for ing in balanced_recipe.ingredients:
-        if balanced_recipe.total_cho > 0:
-            percentage = ing.cho_contribution / balanced_recipe.total_cho
-            max_percentage = max(max_percentage, percentage)
-
-    # Aggiorna il nome e la descrizione per indicare il bilanciamento
-    if recipe.name != balanced_recipe.name or max_percentage < current_percentage:
-        if "Bilanciata" not in balanced_recipe.name:
-            balanced_recipe.name = f"{balanced_recipe.name} (Bilanciata)"
-
-        if balanced_recipe.description and "bilanciata" not in balanced_recipe.description.lower():
-            balanced_recipe.description = f"{balanced_recipe.description} Ricetta con distribuzione di carboidrati bilanciata."
-
-    return balanced_recipe
-
-
 def verifier_agent(state: GraphState) -> GraphState:
     """
     Node Function: Verifica le ricette generate rispetto ai criteri finali.
@@ -482,30 +280,16 @@ def verifier_agent(state: GraphState) -> GraphState:
 
     # Fase 1: Prova a bilanciare le ricette che hanno un ingrediente troppo dominante
     balanced_recipes = []
+    print("Fase 1: Preparazione ricette per aggiustamento CHO (Bilanciamento distribuzione CHO rimosso).")
     for recipe in filtered_recipes:
-        # Salva il nome originale prima del bilanciamento
+        # Aggiungiamo direttamente la ricetta filtrata alla lista per la prossima fase
+        balanced_recipes.append(recipe)
+        # Manteniamo il salvataggio del nome originale se serve per dopo (non sembra usato qui)
         original_name = recipe.name
-
-        # Identifica ricette con ingredienti dominanti (>90% dei CHO)
-        has_dominant_ingredient = False
-        if recipe.total_cho > 0:
-            for ing in recipe.ingredients:
-                if (ing.cho_contribution / recipe.total_cho) > max_cho_dominance:
-                    has_dominant_ingredient = True
-                    break
-
-        if has_dominant_ingredient:
-            # Prova a bilanciare la distribuzione dei CHO
-            balanced_recipe = balance_cho_distribution(recipe, ingredient_data)
-            print(
-                f"Ricetta '{recipe.name}' BILANCIATA per redistribuire i CHO più equamente.")
-
-            # Aggiungi anche la versione bilanciata al dizionario originale
-            original_recipes[balanced_recipe.name] = recipe
-
-            balanced_recipes.append(balanced_recipe)
-        else:
-            balanced_recipes.append(recipe)
+        if recipe.name not in original_recipes:  # Assicurati che l'originale sia mappato
+            original_recipes[recipe.name] = recipe
+    print(
+        f"Ricette pronte per la Fase 2 (Aggiustamento CHO): {len(balanced_recipes)}")
 
     # Fase 2: Prova ad aggiustare le ricette per avvicinarsi al target CHO
     adjusted_recipes = []
