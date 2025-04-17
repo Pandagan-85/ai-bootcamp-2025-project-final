@@ -116,7 +116,7 @@ Edamame,9.9,121.0,12.0,5.0,5.2,True,True,True,True,100.0,Legumi
 Lenticchie rosse,20.0,116.0,9.0,0.4,7.9,True,True,True,True,70.0,Legumi
 Lenticchie verdi,19.5,127.0,9.1,0.6,10.7,True,True,True,True,70.0,Legumi
 Fagiolini,7.0,31.0,1.8,0.2,3.4,True,True,True,True,100.0,Verdura
-Cavolfiore,5.0,25.0,1.9,0.3,2.0,True,True,True,True,150.0,Verdura
+Cavolfiore,3.0,25.0,1.9,0.3,2.0,True,True,True,True,150.0,Verdura
 Cavoletti di Bruxelles,9.0,43.0,3.4,0.3,3.8,True,True,True,True,100.0,Verdura
 Cavolo riccio,8.8,49.0,4.3,0.9,3.6,True,True,True,True,80.0,Verdura
 Biete,3.7,19.0,1.8,0.2,1.6,True,True,True,True,100.0,Verdura
@@ -137,7 +137,6 @@ Germogli di soia,4.0,52.0,5.5,2.0,1.1,True,True,True,True,50.0,Verdura
 Germogli di bambù,5.2,27.0,2.6,0.3,2.2,True,True,True,True,100.0,Verdura
 Alghe Nori,5.8,35.0,5.8,0.3,0.0,True,True,True,True,3.0,Verdura
 Alghe Wakame,50.0,45.0,18.0,2.0,35.0,True,True,True,True,5.0,Verdura
-Alghe Kombu,61.0,160.0,8.0,1.0,30.0,True,True,True,True,5.0,Verdura
 Lamponi,11.9,52.0,1.2,0.7,6.5,True,True,True,True,80.0,Frutta
 More,10.2,43.0,1.4,0.5,5.3,True,True,True,True,80.0,Frutta
 Pompelmo,10.7,42.0,0.8,0.1,1.6,True,True,True,True,200.0,Frutta
@@ -150,7 +149,7 @@ Papaya,10.8,43.0,0.5,0.3,1.7,True,True,True,True,150.0,Frutta
 Frutto della passione,23.4,97.0,2.2,0.7,10.4,True,True,True,True,50.0,Frutta
 Guava,14.3,68.0,2.6,1.0,5.4,True,True,True,True,100.0,Frutta
 Fichi,19.2,74.0,0.8,0.3,2.9,True,True,True,True,50.0,Frutta
-Datteri (Medjool),75.0,277.0,1.8,0.2,6.7,True,True,True,True,25.0,Frutta
+Datteri,75.0,277.0,1.8,0.2,6.7,True,True,True,True,25.0,Frutta
 Uvetta sultanina,79.2,299.0,3.1,0.5,3.7,True,True,True,True,30.0,Frutta
 Fichi secchi,63.9,249.0,3.3,0.9,9.8,True,True,True,True,40.0,Frutta
 Prugne secche,63.9,240.0,2.2,0.4,7.1,True,True,True,True,40.0,Frutta
@@ -171,15 +170,13 @@ Riso Venere (Nero),75.0,356.0,9.9,3.4,4.8,True,True,True,True,70.0,Carboidrati
 Riso Arborio,79.0,354.0,7.0,0.5,2.8,True,True,True,True,70.0,Carboidrati
 Pasta integrale,64.0,340.0,13.0,2.5,8.0,True,True,False,True,80.0,Carboidrati
 Pasta all'uovo,68.0,368.0,13.0,3.0,2.5,False,True,False,True,80.0,Carboidrati
-Crackers integrali,65.0,420.0,10.0,15.0,8.0,True,True,False,True,30.0,Carboidrati
 Grissini,75.0,410.0,11.0,9.0,3.0,True,True,False,True,30.0,Carboidrati
 Pane bianco,50.0,265.0,9.0,3.2,2.7,True,True,False,True,50.0,Carboidrati
 Fette biscottate,72.0,410.0,11.0,7.0,4.0,True,True,False,True,20.0,Carboidrati
 Corn flakes,84.0,357.0,7.0,0.4,3.0,True,True,False,True,30.0,Carboidrati
-Muesli (senza zucchero aggiunto),60.0,350.0,12.0,8.0,10.0,True,True,False,True,40.0,Carboidrati
 Polenta istantanea,78.0,359.0,8.0,1.5,3.0,True,True,True,True,50.0,Carboidrati
-Coscia di pollo (con pelle),0.0,215.0,25.0,12.0,0.0,False,False,True,True,150.0,Proteine
-Macinato di manzo (magro),0.0,250.0,26.0,15.0,0.0,False,False,True,True,100.0,Proteine
+Coscia di pollo,0.0,215.0,25.0,12.0,0.0,False,False,True,True,150.0,Proteine
+Macinato di manzo,0.0,250.0,26.0,15.0,0.0,False,False,True,True,100.0,Proteine
 Bistecca di maiale,0.0,231.0,26.0,13.0,0.0,False,False,True,True,150.0,Proteine
 Prosciutto cotto,1.5,145.0,21.0,6.0,0.0,False,False,True,True,50.0,Proteine
 Prosciutto crudo,0.5,250.0,26.0,16.0,0.0,False,False,True,True,50.0,Proteine
@@ -244,7 +241,6 @@ Xilitolo,99.0,240.0,0.0,0.0,0.0,True,True,True,True,10.0,Dolcificanti
 Cioccolato al latte,59.4,535.0,7.7,30.0,3.4,False,True,True,False,25.0,Dolci
 Cioccolato bianco,59.0,539.0,5.9,32.0,0.0,False,True,True,False,25.0,Dolci
 Caramelle dure,98.0,380.0,0.0,0.0,0.0,True,True,True,True,10.0,Dolci
-Gomme da masticare (senza zucchero),70.0,170.0,0.0,0.0,0.0,True,True,True,True,2.0,Dolci
 Biscotti secchi (tipo frollini),70.0,480.0,7.0,20.0,2.0,False,True,False,False,20.0,Dolci
 Gelato alla crema,24.0,210.0,4.0,11.0,0.7,False,True,True,False,80.0,Dolci
 Sorbetto al limone,30.0,130.0,0.5,0.1,0.5,True,True,True,True,80.0,Dolci
@@ -303,9 +299,7 @@ Paprika (spezia),54.0,282.0,14.0,13.0,35.0,True,True,True,True,2.0,Condimenti
 Cumino (semi),44.2,375.0,17.8,22.3,10.5,True,True,True,True,2.0,Condimenti
 Cannella (polvere),80.6,247.0,4.0,1.2,53.1,True,True,True,True,2.0,Condimenti
 Estratto di vaniglia,12.7,288.0,0.1,0.1,0.0,True,True,True,True,5.0,Condimenti
-Lievito di birra (fresco),4.0,105.0,8.0,1.0,0.0,True,True,False,True,5.0,Altro
-Lievito di birra (secco),40.0,325.0,40.0,8.0,20.0,True,True,False,True,2.0,Altro
-Marshmallow,80.0,318.0,1.8,0.2,0.0,False,False,True,True,10.0,Dolci
+Lievito di birra,40.0,325.0,40.0,8.0,20.0,True,True,False,True,2.0,Altro
 Marzapane,48.0,450.0,10.0,26.0,5.0,True,True,True,True,20.0,Dolci
 Halva (base sesamo),54.0,516.0,12.0,28.0,6.0,True,True,True,True,30.0,Dolci
 Cioccolato fondente (85%),30.0,604.0,12.0,46.0,11.0,True,True,True,True,25.0,Dolci
@@ -313,7 +307,8 @@ Pangrattato,72.0,395.0,13.0,5.0,4.0,True,True,False,True,15.0,Carboidrati
 Crostoni (Croutons),68.0,407.0,14.0,7.0,5.0,True,True,False,True,15.0,Carboidrati
 Tortilla di mais,44.0,218.0,5.0,2.7,4.5,True,True,True,True,30.0,Carboidrati
 Tortilla di frumento,46.0,300.0,8.0,6.0,3.0,True,True,False,True,40.0,Carboidrati
-Dado vegetale (polvere),30.0,200.0,10.0,5.0,2.0,True,True,True,True,5.0,Condimenti
-Acqua di cocco,3.7,19.0,0.7,0.2,1.1,True,True,True,True,250.0,Bevande
-Kombucha,5.0,20.0,0.0,0.0,0.0,True,True,True,True,200.0,Bevande
-Latte di soia (zuccherato),8.0,60.0,3.0,1.8,0.6,True,True,True,True,250.0,Bevande
+Dado vegetale,30.0,200.0,10.0,5.0,2.0,True,True,True,True,5.0,Condimenti
+Latte di soia,8.0,60.0,3.0,1.8,0.6,True,True,True,True,250.0,Bevande
+Pane azzimo,69.0,325.0,9.0,1.5,3.5,True,True,False,True,50.0,Carboidrati
+Latte,4.8,64.0,3.3,3.6,0.0,False,True,True,False,250.0,Latticini
+Besciamella,6.0,120.0,2.5,8.5,0.0,False,True,True,False,50.0,Condimenti
