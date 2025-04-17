@@ -116,13 +116,44 @@ def generate_single_recipe(
 
     for name in all_db_names:
         info = ingredient_data[name]
+        normalized_name = normalize_func(name)  # Aggiungi questa linea
+
+        # Aggiungi questo blocco di debug
+        if normalize_func(name) == "polpo" or name.lower() == "polpo":
+            print(f"DEBUG - Trovato 'polpo' nel database come '{name}'")
+            print(f"DEBUG - Flag ingrediente: vegan={info.is_vegan}, vegetarian={info.is_vegetarian}, "
+                  f"gluten_free={info.is_gluten_free}, lactose_free={info.is_lactose_free}")
+            print(f"DEBUG - Preferenze utente: vegan={preferences.vegan}, vegetarian={preferences.vegetarian}, "
+                  f"gluten_free={preferences.gluten_free}, lactose_free={preferences.lactose_free}")
+            # Stampa esplicitamente la condizione che determina se l'ingrediente viene filtrato
+            filter_condition = ((preferences.vegan and not info.is_vegan) or
+                                (preferences.vegetarian and not info.is_vegetarian) or
+                                (preferences.gluten_free and not info.is_gluten_free) or
+                                (preferences.lactose_free and not info.is_lactose_free))
+            print(f"DEBUG - Condizione di filtro: {filter_condition}")
+            # Per vedere quali condizioni specifiche sono vere
+            if preferences.vegan and not info.is_vegan:
+                print(
+                    "DEBUG - Filtrato perché l'utente richiede vegano ma l'ingrediente non lo è")
+            if preferences.vegetarian and not info.is_vegetarian:
+                print(
+                    "DEBUG - Filtrato perché l'utente richiede vegetariano ma l'ingrediente non lo è")
+            if preferences.gluten_free and not info.is_gluten_free:
+                print(
+                    "DEBUG - Filtrato perché l'utente richiede senza glutine ma l'ingrediente non lo è")
+            if preferences.lactose_free and not info.is_lactose_free:
+                print(
+                    "DEBUG - Filtrato perché l'utente richiede senza lattosio ma l'ingrediente non lo è")
+
         # Filtro dietetico
         if (preferences.vegan and not info.is_vegan) or \
            (preferences.vegetarian and not info.is_vegetarian) or \
            (preferences.gluten_free and not info.is_gluten_free) or \
            (preferences.lactose_free and not info.is_lactose_free):
             continue
+
         valid_ingredients_names_for_prompt.append(name)
+        # CORRETTO: Aggiungi il nome originale, non quello normalizzato
         valid_db_keys_for_check.add(name)
 
     if not valid_ingredients_names_for_prompt:
@@ -160,9 +191,9 @@ def generate_single_recipe(
                 medium_cho_ingredients.append(
                     f"{name} ({info.cho_per_100g}g CHO)")
     high_cho_examples = ", ".join(random.sample(
-        high_cho_ingredients, min(len(high_cho_ingredients), 10)))
+        high_cho_ingredients, min(len(high_cho_ingredients), 10))) if high_cho_ingredients else ""
     medium_cho_examples = ", ".join(random.sample(
-        medium_cho_ingredients, min(len(medium_cho_ingredients), 10)))
+        medium_cho_ingredients, min(len(medium_cho_ingredients), 10))) if medium_cho_ingredients else ""
 
     # ----- SEZIONE 2: GENERAZIONE RICETTA CON RETRY (come prima) -----
     max_retries = 2
@@ -236,8 +267,33 @@ def generate_single_recipe(
                         matched_db_name, match_score = match_result
                         # Trovato nel DB via FAISS
 
-                        if matched_db_name not in valid_db_keys_for_check:
-                            detail = f"'{ing_name_llm}' matchato FAISS a '{matched_db_name}' (Score:{match_score:.2f}) ma non rispetta preferenze."
+                        # Trova il nome originale nel database con case sensitivity corretta
+                        original_db_name = None
+                        for db_name in all_db_names:
+                            if normalize_func(db_name).lower() == matched_db_name.lower():
+                                original_db_name = db_name
+                                break
+
+                        if not original_db_name:
+                            detail = f"'{ing_name_llm}' matchato FAISS a '{matched_db_name}' ma non trovato con case originale."
+                            print(f"Warning: {detail}")
+                            invalid_ingredient_details.append(detail)
+                            continue
+
+                        # Ora usa original_db_name (con la capitalizzazione corretta) per accedere al database
+                        info = ingredient_data.get(original_db_name)
+                        if info is None:
+                            detail = f"'{ing_name_llm}' matchato FAISS a '{original_db_name}' ma info non trovate nel database."
+                            print(f"Warning: {detail}")
+                            invalid_ingredient_details.append(detail)
+                            continue
+
+                        # Verifica preferenze dietetiche (se necessario)
+                        if ((preferences.vegan and not info.is_vegan) or
+                            (preferences.vegetarian and not info.is_vegetarian) or
+                            (preferences.gluten_free and not info.is_gluten_free) or
+                                (preferences.lactose_free and not info.is_lactose_free)):
+                            detail = f"'{ing_name_llm}' matchato FAISS a '{original_db_name}' ma non rispetta preferenze dietetiche."
                             print(f"Warning: {detail}")
                             invalid_ingredient_details.append(detail)
                             continue
@@ -289,6 +345,9 @@ def generate_single_recipe(
                 # Ricalcola flag dietetici (come prima)
                 calculated_is_vegan = True
                 calculated_is_vegetarian = True
+                calculated_is_gluten_free = True
+                calculated_is_lactose_free = True
+
                 for db_name in actual_matched_db_names:
                     try:
                         info = ingredient_data[db_name]
@@ -296,19 +355,23 @@ def generate_single_recipe(
                             calculated_is_vegan = False
                         if not info.is_vegetarian:
                             calculated_is_vegetarian = False
-                        if not calculated_is_vegetarian:
-                            calculated_is_vegan = False
-                            break  # Ottimizzazione
+                        if not info.is_gluten_free:
+                            calculated_is_gluten_free = False
+                        if not info.is_lactose_free:
+                            calculated_is_lactose_free = False
                     except KeyError:
                         print(
                             f"Errore interno: Nome ingrediente FAISS '{db_name}' non trovato in data durante ricalcolo flag.")
                         calculated_is_vegan = False
                         calculated_is_vegetarian = False
+                        calculated_is_gluten_free = False
+                        calculated_is_lactose_free = False
                         break
+
                 corrected_is_vegan = calculated_is_vegan
                 corrected_is_vegetarian = calculated_is_vegetarian
-                corrected_is_gluten_free = validated_output.is_gluten_free  # O calcola
-                corrected_is_lactose_free = validated_output.is_lactose_free  # O calcola
+                corrected_is_gluten_free = calculated_is_gluten_free
+                corrected_is_lactose_free = calculated_is_lactose_free
 
                 # ----- SEZIONE 6: CALCOLO CONTRIBUTI NUTRIZIONALI (come prima) -----
                 calculated_ingredients_list = calculate_ingredient_cho_contribution(

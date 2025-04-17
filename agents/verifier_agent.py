@@ -160,8 +160,7 @@ def verifier_agent(state: GraphState) -> GraphState:
     generated_recipes: List[FinalRecipeOption] = state.get(
         'generated_recipes', [])
     # Estrai il dizionario ingredienti dal pacchetto
-    ingredients_package = state.get('available_ingredients_data', {})
-    ingredient_data = ingredients_package.get("data", {})
+    ingredient_data = state.get('available_ingredients_data', {})
 
     if not ingredient_data:
         state['error_message'] = "Dati ingredienti mancanti per la verifica finale."

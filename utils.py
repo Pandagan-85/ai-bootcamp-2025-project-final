@@ -109,9 +109,18 @@ def calculate_ingredient_cho_contribution(
 ) -> List[CalculatedIngredient]:
     """Calcola i contributi nutrizionali per una lista di ingredienti."""
     calculated_list = []
+
+    # Crea un dizionario case-insensitive per il matching
+    lowercase_to_original = {
+        name.lower(): name for name in ingredient_data.keys()}
+
     for ing in ingredients:
-        # Cerca l'ingrediente (con nome DB) nel dizionario
-        info = ingredient_data.get(ing.name)
+        # Cerca l'ingrediente (ignorando case) nel dizionario
+        ingredient_key = ing.name
+        if ing.name.lower() in lowercase_to_original:
+            ingredient_key = lowercase_to_original[ing.name.lower()]
+
+        info = ingredient_data.get(ingredient_key)
         if info:
             cho_per_100g = info.cho_per_100g if info.cho_per_100g is not None else 0.0
             cho_contribution = (cho_per_100g / 100.0) * ing.quantity_g
@@ -126,11 +135,10 @@ def calculate_ingredient_cho_contribution(
             fiber = (info.fiber_g_per_100g / 100.0) * \
                 ing.quantity_g if info.fiber_g_per_100g is not None else None
 
-            # MODIFICA QUI: Assicurati di passare esplicitamente quantity_grams come ing.quantity_g
             calculated_list.append(
                 CalculatedIngredient(
                     name=ing.name,
-                    quantity_g=ing.quantity_g,  # ← Assicurati che questo sia presente e corretto
+                    quantity_g=ing.quantity_g,
                     cho_per_100g=cho_per_100g,
                     cho_contribution=round(cho_contribution, 2),
                     # Aggiungi valori nutrizionali calcolati
@@ -154,14 +162,13 @@ def calculate_ingredient_cho_contribution(
                 )
             )
         else:
-            # Questo non dovrebbe succedere se gli ingredienti sono validati prima
             print(
                 f"Attenzione (utils): Info ingrediente '{ing.name}' non trovate durante calcolo CHO.")
-            # Aggiungi un placeholder o salta l'ingrediente
+            # Aggiungi un placeholder
             calculated_list.append(
                 CalculatedIngredient(
                     name=f"{ing.name} (Info Mancanti!)",
-                    quantity_g=ing.quantity_g,  # ← Assicurati che questo sia presente anche qui
+                    quantity_g=ing.quantity_g,
                     cho_contribution=0.0
                 )
             )
