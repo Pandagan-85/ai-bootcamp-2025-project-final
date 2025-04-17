@@ -1,3 +1,11 @@
+"""
+Definizione del flusso di lavoro per la generazione di ricette.
+
+Questo modulo definisce il grafo di esecuzione (workflow) utilizzando LangGraph
+per orchestrare i vari agenti coinvolti nella generazione di ricette personalizzate.
+Il workflow è strutturato come un grafo diretto con nodi (agenti) e archi (transizioni)
+che definiscono il flusso di esecuzione.
+"""
 from typing import Literal
 
 from langgraph.graph import StateGraph, END
@@ -16,8 +24,24 @@ from agents.hybrid_verifier_agent import hybrid_verifier_agent
 
 def decide_after_generation(state: GraphState) -> Literal["verify_recipes", "format_output"]:
     """
-    Decide se procedere con la verifica o andare all'output
-    se non sono state generate ricette o c'è un errore grave.
+    Funzione decisionale che determina il percorso da seguire dopo la generazione delle ricette.
+
+    Questa funzione prende decisioni in base allo stato attuale del grafo:
+    - Se ci sono errori critici (relativi all'LLM o all'API Key), va direttamente all'output
+    - Se non sono state generate ricette, va direttamente all'output
+    - Altrimenti, procede con la verifica delle ricette
+
+    Args:
+        state: Lo stato attuale del grafo (GraphState)
+
+    Returns:
+        Una stringa che indica il nodo successivo da eseguire:
+        - "verify_recipes": per procedere con la verifica delle ricette
+        - "format_output": per saltare la verifica e passare direttamente all'output
+
+    Note:
+        - Assicura che ci sia un messaggio di errore appropriato se non sono state generate ricette
+        - Il percorso scelto viene registrato nel log per il debug
     """
     print("--- DECISIONE: Dopo Generazione Ricette ---")
     # Controlla errori specifici della fase di generazione o se la lista è vuota
@@ -42,6 +66,12 @@ def decide_after_generation(state: GraphState) -> Literal["verify_recipes", "for
 def create_workflow() -> StateGraph:
     """
     Crea e configura il grafo LangGraph per il processo di generazione ricette.
+
+    Questo metodo definisce:
+    1. I nodi del grafo (agenti che elaborano lo stato)
+    2. Il punto di ingresso (da dove inizia l'esecuzione)
+    3. Le connessioni condizionali (decisioni basate sullo stato)
+    4. Le connessioni dirette (transizioni semplici)
     """
     print("--- Creazione Grafo Workflow ---")
     # Inizializza il grafo con lo stato definito
@@ -55,7 +85,7 @@ def create_workflow() -> StateGraph:
     print("Aggiunta nodo: verify_recipes")
     workflow.add_node("verify_recipes", verifier_agent)
 
-    # testo agente ibrido
+    # Nota: hybdrid_verifier_agent è un'alternativa a verifier_agent che stavo testando per avere un approccio ibrido di agente Python e LLM
     # print("Aggiunta nodo: verify_recipes")
     # workflow.add_node("verify_recipes", hybrid_verifier_agent)
 

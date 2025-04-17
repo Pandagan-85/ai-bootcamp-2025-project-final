@@ -1,3 +1,16 @@
+"""
+Agente di verifica delle ricette per il sistema di generazione ricette.
+
+Questo modulo contiene funzioni per la verifica e l'ottimizzazione delle ricette generate.
+Le funzioni principali includono:
+1. Validazione degli ingredienti
+2. Aggiustamento del contenuto di carboidrati (CHO)
+3. Bilanciamento della distribuzione dei carboidrati tra gli ingredienti
+4. Verifica finale delle ricette rispetto alle preferenze utente
+
+Queste funzioni sono utilizzate per elaborare le ricette generate e garantire
+che soddisfino al meglio i criteri dell'utente.
+"""
 from typing import List, Dict
 from copy import deepcopy
 from model_schema import GraphState, FinalRecipeOption, UserPreferences, RecipeIngredient
@@ -9,12 +22,19 @@ def validate_recipe_ingredients(recipe: FinalRecipeOption, ingredient_data: Dict
     """
     Verifica che tutti gli ingredienti nella ricetta esistano nel database degli ingredienti.
 
+    Questa funzione controlla che ogni ingrediente nella ricetta sia presente nel dizionario
+    ingredient_data, che contiene le informazioni nutrizionali degli ingredienti.
+
     Args:
         recipe: La ricetta da verificare
         ingredient_data: Dizionario con informazioni sugli ingredienti
 
     Returns:
-        True se tutti gli ingredienti sono validi, False altrimenti
+        bool: True se tutti gli ingredienti sono validi, False altrimenti
+
+    Note:
+        - Un ingrediente è considerato non valido se il suo nome non è presente come chiave in ingredient_data
+        - La funzione registra quali ingredienti sono risultati non validi per facilitare il debug
     """
     invalid_ingredients = []
 
@@ -33,7 +53,14 @@ def validate_recipe_ingredients(recipe: FinalRecipeOption, ingredient_data: Dict
 def adjust_recipe_cho(recipe: FinalRecipeOption, target_cho: float, ingredient_data: Dict) -> FinalRecipeOption:
     """
     Aggiusta le quantità degli ingredienti per raggiungere il target CHO desiderato.
-    Versione aggressiva che aggiusta anche ricette con CHO molto lontani dal target.
+
+    Questa funzione analizza una ricetta e modifica le quantità degli ingredienti
+    per avvicinare il suo contenuto totale di carboidrati al target specificato.
+    L'aggiustamento viene fatto in modo intelligente, cercando di preservare le
+    proporzioni della ricetta e bilanciare i cambiamenti.
+
+    Implementa una versione "aggressiva" che può aggiustare anche ricette con
+    CHO molto lontani dal target.
 
     Args:
         recipe: La ricetta da modificare
@@ -41,7 +68,15 @@ def adjust_recipe_cho(recipe: FinalRecipeOption, target_cho: float, ingredient_d
         ingredient_data: Dizionario con informazioni nutrizionali degli ingredienti
 
     Returns:
-        La ricetta modificata con quantità aggiustate
+        FinalRecipeOption: La ricetta modificata con quantità aggiustate o la ricetta
+        originale se non sono necessarie modifiche o non è possibile aggiustarla
+
+    Algoritmo:
+    1. Se la ricetta è già vicina al target (±3g), la restituisce inalterata
+    2. Identifica gli ingredienti ricchi di CHO che possono essere modificati
+    3. Applica un fattore di scala globale o mirato in base alla differenza
+    4. Aggiusta con precisione l'ingrediente principale se necessario
+    5. Aggiorna il nome della ricetta per indicare che è stata modificata
     """
     # Se siamo già nel target, non fare nulla
     if abs(recipe.total_cho - target_cho) < 3.0:
@@ -177,15 +212,25 @@ def adjust_recipe_cho(recipe: FinalRecipeOption, target_cho: float, ingredient_d
 
 def balance_cho_distribution(recipe: FinalRecipeOption, ingredient_data: Dict) -> FinalRecipeOption:
     """
-    Bilancia la distribuzione dei CHO tra gli ingredienti, per evitare che un
-    singolo ingrediente fornisca una percentuale troppo alta del totale.
+    Bilancia la distribuzione dei CHO tra gli ingredienti di una ricetta.
+
+    Questa funzione analizza se la ricetta ha un ingrediente dominante che fornisce una
+    percentuale troppo alta del totale dei carboidrati. Se trovato, redistribuisce i carboidrati
+    tra più ingredienti per creare una ricetta più bilanciata.
 
     Args:
         recipe: La ricetta da bilanciare
         ingredient_data: Dizionario con informazioni nutrizionali degli ingredienti
 
     Returns:
-        La ricetta modificata con distribuzione di CHO più bilanciata
+        FinalRecipeOption: La ricetta modificata con distribuzione di CHO più bilanciata
+        o la ricetta originale se non è necessario bilanciarla
+
+    Algoritmo:
+    1. Identifica se esiste un ingrediente dominante (>90% dei CHO totali)
+    2. Se non ci sono altri ingredienti con CHO, cerca potenziali ingredienti da aggiungere
+    3. Riduce la quantità dell'ingrediente dominante e aumenta quella degli altri ingredienti
+    4. Verifica se il bilanciamento ha migliorato la distribuzione
     """
     # Soglia massima accettabile per un singolo ingrediente
     MAX_CHO_PERCENTAGE = 0.9  # 90%

@@ -1,3 +1,8 @@
+"""
+Funzioni di caricamento dati per il sistema di generazione ricette.
+
+Questo modulo contiene le funzioni necessarie per caricare i dataset di ingredienti e ricette dai file CSV. Queste funzioni gestiscono la lettura, il parsing e la conversione dei dati nei modelli Pydantic appropriati.
+"""
 from typing import List, Dict
 import pandas as pd
 
@@ -7,7 +12,25 @@ from model_schema import IngredientInfo, Recipe, RecipeIngredient
 def load_ingredients(filepath: str) -> Dict[str, IngredientInfo]:
     """
     Carica il dataset degli ingredienti da un file CSV.
-    Assume colonne: name, cho_per_100g, is_vegan, is_vegetarian, is_gluten_free, is_lactose_free
+
+    Questa funzione legge un file CSV contenente informazioni sugli ingredienti
+    e le converte in un dizionario di oggetti IngredientInfo, dove la chiave è
+    il nome dell'ingrediente.
+
+    Args:
+        filepath: Percorso al file CSV degli ingredienti.
+
+    Returns:
+        Dict[str, IngredientInfo]: Dizionario dove la chiave è il nome dell'ingrediente
+        e il valore è un oggetto IngredientInfo con tutte le informazioni nutrizionali.
+
+    Note:
+        - Formato atteso del CSV:
+          name,cho_per_100g,is_vegan,is_vegetarian,is_gluten_free,is_lactose_free
+        - I nomi degli ingredienti vengono ripuliti da spazi extra
+        - I valori booleani vengono convertiti da vari formati (stringa, numero) a bool
+        - Il dizionario risultante è utile per accessi rapidi in O(1) per nome
+        - Gestisce errori di file non trovato o formato errato
     """
     try:
         df = pd.read_csv(filepath)
@@ -41,12 +64,31 @@ def load_ingredients(filepath: str) -> Dict[str, IngredientInfo]:
         print(f"Errore durante il caricamento degli ingredienti: {e}")
         return {}
 
+# Probabilmente con la nuova struttura non la usermo più
+
 
 def load_recipes(filepath: str) -> List[Recipe]:
     """
     Carica il dataset delle ricette da un file CSV.
-    Assume colonne: name, ingredients_json, is_vegan_recipe, is_vegetarian_recipe, is_gluten_free_recipe, is_lactose_free_recipe
-    dove ingredients_json è una stringa JSON tipo '[{"name": "Pasta", "quantity_g": 100}, ...]'
+
+    Questa funzione legge un file CSV contenente informazioni sulle ricette,
+    inclusi gli ingredienti in formato JSON, e le converte in una lista
+    di oggetti Recipe.
+
+    Args:
+        filepath: Percorso al file CSV delle ricette.
+
+    Returns:
+        List[Recipe]: Lista di oggetti Recipe caricati dal file.
+
+    Note:
+        - Formato atteso del CSV:
+          name,ingredients_json,is_vegan_recipe,is_vegetarian_recipe,is_gluten_free_recipe,is_lactose_free_recipe
+        - La colonna ingredients_json deve contenere una stringa JSON nel formato:
+          '[{"name": "Ingrediente1", "quantity_g": 100}, {"name": "Ingrediente2", "quantity_g": 50}]'
+        - I nomi delle ricette vengono ripuliti da spazi extra
+        - I valori booleani vengono convertiti da vari formati a bool
+        - La funzione gestisce errori di JSON malformato, colonne mancanti o valori errati
     """
     try:
         df = pd.read_csv(filepath)

@@ -1,3 +1,22 @@
+"""
+Agente di generazione delle ricette per il sistema di generazione ricette.
+
+Questo modulo implementa la generazione di ricette personalizzate utilizzando modelli LLM.
+È responsabile della creazione di ricette originali che rispettano le preferenze dell'utente in termini di contenuto di carboidrati e restrizioni dietetiche.
+
+Il modulo include:
+- Funzioni per generare ricette tramite LLM OpenAI
+- Generazione parallela tramite ThreadPoolExecutor
+- Validazione e analisi delle ricette generate
+- Correzione automatica dei flag dietetici
+- Gestione degli errori e tentativi ripetuti
+
+Architettura di generazione:
+1. Preparazione dei dati e prompt per l'LLM
+2. Generazione ricette in parallelo (multiple ricette simultaneamente)
+3. Validazione e correzione dei risultati
+4. Verifica finale della conformità alle preferenze
+"""
 import json
 import random
 import os
@@ -16,7 +35,13 @@ from utils import calculate_ingredient_cho_contribution
 
 
 class GeneratedRecipeOutput(BaseModel):
-    """Struttura Pydantic per l'output JSON atteso dall'LLM Generator."""
+    """
+    Struttura Pydantic per l'output JSON atteso dall'LLM Generator.
+
+    Questa classe definisce la struttura che l'LLM deve rispettare quando genera una ricetta.
+    Viene utilizzata per validare e parsare l'output JSON dell'LLM prima di convertirlo
+    in oggetti FinalRecipeOption.
+    """
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     recipe_name: str = PydanticField(description="Nome della ricetta generata")
@@ -41,6 +66,25 @@ class GeneratedRecipeOutput(BaseModel):
 def extract_json_from_llm_response(response_str: str) -> dict:
     """
     Estrae l'oggetto JSON dalla risposta dell'LLM.
+
+    Questa funzione cerca di estrarre un oggetto JSON valido dalla risposta testuale
+    dell'LLM, gestendo vari formati di risposta possibili: JSON puro, JSON in un blocco
+    di codice markdown, o JSON all'interno di testo.
+
+    Args:
+        response_str: La risposta testuale dell'LLM.
+
+    Returns:
+        dict: L'oggetto JSON estratto.
+
+    Raises:
+        ValueError: Se non è possibile estrarre un JSON valido dalla risposta.
+
+    Note:
+        - Prova diversi metodi di estrazione in sequenza:
+          1. Presume che la risposta sia già in formato JSON
+          2. Cerca un blocco di codice markdown con ```json ... ```
+          3. Cerca il primo set di parentesi graffe valido nella risposta
     """
     # Controlla se è già un JSON pulito
     if response_str.strip().startswith('{') and response_str.strip().endswith('}'):
@@ -78,10 +122,33 @@ def extract_json_from_llm_response(response_str: str) -> dict:
 def generate_single_recipe(preferences: UserPreferences, ingredient_data: Dict[str, IngredientInfo],
                            generator_chain, recipe_index: int) -> Optional[FinalRecipeOption]:
     """
-    Genera una singola ricetta usando l'LLM e restituisce la ricetta come FinalRecipeOption,
-    verificando la coerenza dei flag dietetici.
+    Genera una singola ricetta usando l'LLM e restituisce la ricetta come FinalRecipeOption.
+
+    Questa funzione implementa il processo completo di generazione di una singola ricetta:
+    1. Preparazione del prompt con preferenze e ingredienti
+    2. Invocazione dell'LLM
+    3. Parsing e validazione della risposta
+    4. Verifica della conformità dietetica
+    5. Calcolo dei contributi nutrizionali
+
+    Args:
+        preferences: Preferenze dell'utente (target CHO, restrizioni dietetiche)
+        ingredient_data: Dizionario degli ingredienti disponibili
+        generator_chain: Chain LangChain configurata per generare ricette
+        recipe_index: Indice progressivo della ricetta (usato per diversificare)
+
+    Returns:
+        Optional[FinalRecipeOption]: Ricetta generata e validata o None in caso di errore
+
+    Note:
+        - Implementa un meccanismo di retry (fino a 2 tentativi) in caso di errori
+        - Verifica e corregge automaticamente i flag dietetici basandosi sugli ingredienti effettivi
+        - Calcola i contributi nutrizionali di ogni ingrediente
+        - Filtra gli ingredienti per assicurare che rispettino le preferenze dietetiche dell'utente
     """
     print(f"Thread: Generazione ricetta #{recipe_index+1}")
+
+    # ----- SEZIONE 1: PREPARAZIONE DATI PER IL PROMPT -----
 
     # Costruisci la stringa delle preferenze dietetiche per il prompt
     dietary_preferences = []
@@ -154,9 +221,10 @@ def generate_single_recipe(preferences: UserPreferences, ingredient_data: Dict[s
     medium_cho_examples = ", ".join(random.sample(
         medium_cho_ingredients, min(len(medium_cho_ingredients), 10)))
 
-    # Implementa retry (logica esistente)
-    max_retries = 2
-    retry_delay = 1  # secondi
+    # ----- SEZIONE 2: GENERAZIONE RICETTA CON RETRY -----
+    # Configurazione del meccanismo di retry
+    max_retries = 2  # Numero massimo di tentativi
+    retry_delay = 1  # Ritardo in secondi tra i tentativi, aumenta con ogni tentativo
 
     for attempt in range(max_retries + 1):
         try:
@@ -173,12 +241,14 @@ def generate_single_recipe(preferences: UserPreferences, ingredient_data: Dict[s
 
             # Estrai e valida il JSON
             try:
+                # ----- SEZIONE 3: PARSING E VALIDAZIONE DELLA RISPOSTA -----
+                # Estrae il JSON dalla risposta
                 llm_output = extract_json_from_llm_response(response_str)
                 if "error" in llm_output and len(llm_output) == 1:
                     print(
                         f"Thread: Errore dall'LLM per ricetta #{recipe_index+1}: {llm_output['error']}")
                     return None
-
+                # Valida l'output con il modello Pydantic
                 validated_output = GeneratedRecipeOutput.model_validate(
                     llm_output)
 
@@ -187,7 +257,8 @@ def generate_single_recipe(preferences: UserPreferences, ingredient_data: Dict[s
                         f"Thread: Errore dall'LLM per ricetta #{recipe_index+1}: {validated_output.error}")
                     return None
 
-                # --- INIZIO CHECK/CORREZIONE FLAG DIETETICI ---
+                # ----- SEZIONE 4: VERIFICA E CORREZIONE FLAG DIETETICI -----
+                # aggiunta perchè ho notato che "perdeva" i flag durante la modifica delle ricette
                 calculated_is_vegan = True
                 calculated_is_vegetarian = True
                 # Potenzialmente anche per GF/LF
@@ -232,11 +303,11 @@ def generate_single_recipe(preferences: UserPreferences, ingredient_data: Dict[s
                     print(
                         f"Info: Correggendo flag 'is_vegetarian' per ricetta '{validated_output.recipe_name}'. LLM: {validated_output.is_vegetarian}, Calcolato: {calculated_is_vegetarian}.")
 
-                # Per GF/LF per ora manteniamo quelli dell'LLM, ma potresti aggiungere logica simile:
+                # Per GF/LF per ora manteniamo quelli dell'LLM:
                 corrected_is_gluten_free = validated_output.is_gluten_free
                 corrected_is_lactose_free = validated_output.is_lactose_free
                 # --- FINE CHECK/CORREZIONE FLAG DIETETICI ---
-
+                # ----- SEZIONE 5: VALIDAZIONE INGREDIENTI -----
                 # Verifica che tutti gli ingredienti USATI siano nella lista dei NOMI VALIDI
                 # (quelli che rispettano le preferenze iniziali)
                 invalid_ingredients = []
@@ -277,7 +348,7 @@ def generate_single_recipe(preferences: UserPreferences, ingredient_data: Dict[s
 
                 # Se siamo qui, gli ingredienti sono validi e formattati
                 recipe_ingredients_pydantic = current_recipe_ingredients
-
+                # ----- SEZIONE 6: CALCOLO CONTRIBUTI NUTRIZIONALI -----
                 # Calcola contributi nutrizionali
                 calculated_ingredients = calculate_ingredient_cho_contribution(
                     recipe_ingredients_pydantic, ingredient_data

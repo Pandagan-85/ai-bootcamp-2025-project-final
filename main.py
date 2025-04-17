@@ -1,3 +1,14 @@
+"""
+Script principale per l'esecuzione del sistema di generazione di ricette personalizzate.
+
+Questo modulo contiene la funzione principale (run_recipe_generation) che orchestra 
+l'intero processo di generazione delle ricette personalizzate. Il sistema prende le preferenze 
+dell'utente (target di carboidrati e restrizioni dietetiche) e genera ricette 
+che soddisfano quei criteri utilizzando un workflow basato su LangGraph.
+
+Il modulo può essere eseguito direttamente dalla riga di comando o importato
+e utilizzato dall'interfaccia web Streamlit (app.py).
+"""
 import os
 import argparse  # Importa argparse
 import time
@@ -31,21 +42,34 @@ def run_recipe_generation(
     """
     Funzione principale che orchestra il processo di generazione delle ricette.
 
+    Questa funzione esegue l'intero flusso di generazione di ricette personalizzate:
+    1. Carica la chiave API OpenAI e verifica la configurazione
+    2. Crea un oggetto preferenze utente con i parametri specificati
+    3. Carica il database degli ingredienti disponibili
+    4. Crea e compila il grafo di workflow LangGraph
+    5. Esegue il workflow che genererà e verificherà le ricette
+    6. Formatta e restituisce il risultato
+
     Args:
-        target_cho: Target di carboidrati in grammi
-        vegan: Flag per ricette vegane
-        vegetarian: Flag per ricette vegetariane
-        gluten_free: Flag per ricette senza glutine
-        lactose_free: Flag per ricette senza lattosio
-        max_recipes: Numero massimo di ricette da elaborare
+        target_cho: Target di carboidrati in grammi desiderato
+        vegan: Flag per richiedere ricette vegane
+        vegetarian: Flag per richiedere ricette vegetariane
+        gluten_free: Flag per richiedere ricette senza glutine
+        lactose_free: Flag per richiedere ricette senza lattosio
+        max_recipes: Numero massimo di ricette da elaborare (opzionale)
         streamlit_output: Se True, formatta l'output per Streamlit
         streamlit_write: Funzione st.write di Streamlit (opzionale)
         streamlit_info: Funzione st.info di Streamlit (opzionale)
         streamlit_error: Funzione st.error di Streamlit (opzionale)
-        img_dict: Dictionary with HTML for icons (optional)
+        img_dict: Dizionario con HTML per le icone (opzionale)
 
     Returns:
-        L'output formattato (stringa Markdown)
+        L'output formattato (stringa HTML/Markdown)
+
+    Note:
+        - Questa funzione può essere utilizzata sia da interfaccia CLI che da interfaccia web
+        - Il parametro streamlit_output modifica il comportamento per integrarsi con l'interfaccia web
+        - Se utilizzata da riga di comando, stampa informazioni aggiuntive durante l'esecuzione
     """
     start_time = time.time()
     if not streamlit_output:
@@ -118,16 +142,18 @@ def run_recipe_generation(
         print("\n--- RISULTATO FINALE ---")
 
     output_string = ""  # Inizializza la stringa di output
-
+    # Estrazione dell'output dal risultato del workflow
     if final_state and isinstance(final_state, dict):
         if 'final_output' in final_state and final_state['final_output']:
+            # Utilizza l'output formattato generato dall'agente formatter
             output_string = final_state['final_output']
         else:
+            # Fallback: formatta manualmente le ricette se l'agente formatter ha fallito
             output_string = "Non è stato possibile recuperare l'output formattato. Ecco le ricette trovate:\n"
             if 'final_verified_recipes' in final_state and final_state['final_verified_recipes']:
                 recipes = final_state['final_verified_recipes']
                 preferences = final_state['user_preferences']
-
+                # Crea una stringa di preferenze per l'intestazione
                 prefs_list = []
                 if preferences.vegan:
                     prefs_list.append("Vegano")
@@ -141,11 +167,11 @@ def run_recipe_generation(
                     prefs_list) if prefs_list else "Nessuna preferenza specifica"
 
                 output_string += f"\nEcco {len(recipes)} proposte di ricette che soddisfano i tuoi criteri (Target CHO: ~{preferences.target_cho:.1f}g, {prefs_string}):\n\n"
-
+                # Formatta ogni ricetta in formato markdown
                 for i, recipe in enumerate(recipes):
                     output_string += f"**{i+1}. {recipe.name}**\n"
                     output_string += f"* CHO Totali: {recipe.total_cho:.1f}g\n"
-
+                    # Aggiungi flag dietetici
                     recipe_flags = []
                     if recipe.is_vegan:
                         recipe_flags.append("Vegana")
@@ -158,14 +184,14 @@ def run_recipe_generation(
                     flags_string = ", ".join(
                         recipe_flags) if recipe_flags else "Standard"
                     output_string += f"* Caratteristiche: {flags_string}\n\n"
-
+                    # Aggiungi ingredienti
                     output_string += "* Ingredienti:\n"
                     for ing in recipe.ingredients:
                         output_string += f"    * {ing.name}: {ing.quantity_g:.1f}g (CHO: {ing.cho_contribution:.1f}g)\n"
                     output_string += "\n"
             else:
                 output_string += "Nessuna ricetta verificata trovata.\n"
-
+            # Aggiungi eventuale messaggio di errore
             if 'error_message' in final_state and final_state['error_message']:
                 output_string += f"Errore: {final_state['error_message']}\n"
     else:
