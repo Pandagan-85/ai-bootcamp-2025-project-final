@@ -17,7 +17,7 @@ from model_schema import GraphState
 from agents.generator_agent import generate_recipes_agent
 from agents.verifier_agent import verifier_agent
 from agents.formatter_agent import format_output_agent
-from agents.hybrid_verifier_agent import hybrid_verifier_agent
+
 
 # --- Funzioni Decisionali per il Routing Condizionale ---
 
@@ -84,10 +84,6 @@ def create_workflow() -> StateGraph:
 
     print("Aggiunta nodo: verify_recipes")
     workflow.add_node("verify_recipes", verifier_agent)
-
-    # Nota: hybdrid_verifier_agent è un'alternativa a verifier_agent che stavo testando per avere un approccio ibrido di agente Python e LLM
-    # print("Aggiunta nodo: verify_recipes")
-    # workflow.add_node("verify_recipes", hybrid_verifier_agent)
 
     print("Aggiunta nodo: format_output")
     workflow.add_node("format_output", format_output_agent)

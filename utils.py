@@ -1,151 +1,177 @@
-
-"""
-Funzioni di utilità per il sistema di generazione ricette.
-
-Questo modulo contiene funzioni per i calcoli nutrizionali e le verifiche dietetiche delle ricette. Le funzioni qui presenti sono utilizzate da diversi componenti del sistema per eseguire calcoli coerenti di carboidrati e altri valori nutrizionali.
-"""
-from typing import List, Dict
+# utils.py
+import re
+import pickle
+from typing import List, Dict, Optional, Tuple, Any, Callable
+import numpy as np
+import faiss
+from sentence_transformers import SentenceTransformer
 # Importa le classi da model_schema se necessario per type hinting
-from model_schema import RecipeIngredient, IngredientInfo, CalculatedIngredient, Recipe, FinalRecipeOption, UserPreferences
+from model_schema import RecipeIngredient, IngredientInfo, CalculatedIngredient, FinalRecipeOption, UserPreferences
 
 
-def calculate_total_cho(
-    ingredients: List[RecipeIngredient],
-    ingredient_data: Dict[str, IngredientInfo]
-) -> float:
-    """
-    Calcola i CHO (carboidrati) totali per una lista di ingredienti di una ricetta.
+def normalize_name(name: str) -> str:
+    """Normalizza il nome per il matching (minuscolo, rimuove eccesso spazi)."""
+    if not isinstance(name, str):
+        return ""
+    name = name.lower().strip()
+    name = re.sub(r'\s+', ' ', name)
+    return name
 
-    Questa funzione itera attraverso ogni ingrediente nella ricetta, cerca le sue informazioni nutrizionali nel dizionario ingredient_data, e calcola il suo contributo di carboidrati in base alla sua quantità in grammi.
 
-    Args:
-        ingredients: Lista di oggetti RecipeIngredient dalla ricetta.
-        ingredient_data: Dizionario con le informazioni nutrizionali ({nome: IngredientInfo}).
+def find_best_match_faiss(
+    llm_name: str,
+    faiss_index: faiss.Index,
+    index_to_name_mapping: List[str],
+    model: SentenceTransformer,
+    normalize_func: Callable[[str], str],
+    threshold: float = 0.65  # Soglia più bassa
+) -> Optional[Tuple[str, float]]:
+    """Trova il miglior match usando un approccio a più livelli."""
 
-    Returns:
-        float: CHO totali calcolati per la ricetta, arrotondati a 2 decimali.
+    # PRETRATTAMENTO e NORMALIZZAZIONE
+    common_synonyms = {
+        "carote": "carota",
+        "gamberi": "gambero",
+        "couscous": "cuscus",
+        "coriandolo": "coriandolo fresco",
+        "peperoni": "peperone",
+        "feta": "formaggio feta",
+        "olive nere": "olive",
+        "formaggio halloumi": "halloumi",
+        # Aggiungi altri sinonimi
+    }
 
-    Note:
-        - Se un ingrediente non viene trovato nel dizionario ingredient_data, viene
-          mostrato un avviso e l'ingrediente viene ignorato nel calcolo
-        - Il calcolo utilizza la formula: (quantità_g * cho_per_100g) / 100.0
-        - Se cho_per_100g è None o 0, l'ingrediente non contribuisce ai CHO totali
-    """
-    total_cho = 0.0
-    for item in ingredients:
-        if item.name in ingredient_data:
-            info = ingredient_data[item.name]
-            # Assicurati che la divisione per 100 non causi problemi se cho_per_100g è 0
-            if info.cho_per_100g is not None and info.cho_per_100g > 0:
-                total_cho += (item.quantity_g * info.cho_per_100g) / 100.0
-        else:
-            # Gestione errore: ingrediente non trovato nel dataset ingredienti
-            # Potresti loggare un warning o lanciare un errore più specifico
-            print(
-                f"Attenzione: Ingrediente '{item.name}' non trovato nel database ingredienti.")
-            # O potresti decidere di ignorare questo ingrediente nel calcolo
-            # raise KeyError(f"Ingredient data not found for: {item.name}")
-    return round(total_cho, 2)  # Arrotonda a 2 decimali
+    # Normalizza input
+    normalized_llm = normalize_func(llm_name)
+
+    # 1. TENTATIVO 1: Corrispondenza diretta o tramite sinonimo noto
+    if normalized_llm in index_to_name_mapping:
+        exact_index = index_to_name_mapping.index(normalized_llm)
+        return index_to_name_mapping[exact_index], 1.0
+
+    if normalized_llm in common_synonyms:
+        synonym = common_synonyms[normalized_llm]
+        if synonym in index_to_name_mapping:
+            synonym_index = index_to_name_mapping.index(synonym)
+            return index_to_name_mapping[synonym_index], 0.95
+
+    # 2. TENTATIVO 2: Matching FAISS standard
+    try:
+        query_embedding = model.encode(
+            [normalized_llm],
+            convert_to_numpy=True,
+            normalize_embeddings=True
+        ).astype('float32')
+
+        # Cerca i top 3 vicini invece di solo 1
+        k = 3
+        D, I = faiss_index.search(query_embedding, k)
+
+        # Controlla risultati nell'ordine
+        for i in range(min(k, I.shape[1])):
+            match_index = I[0][i]
+            match_score = D[0][i]
+
+            if 0 <= match_index < len(index_to_name_mapping) and match_score >= threshold:
+                matched_name = index_to_name_mapping[match_index]
+                return matched_name, float(match_score)
+
+        # TENTATIVO 3: Strategie aggiuntive per ingredienti problematici
+        # Verifica forme singolare/plurale con soglia ridotta
+        if normalized_llm.endswith('i'):  # Possibile plurale in italiano
+            singular = normalized_llm[:-1] + 'o'  # es. "gamberi" → "gambero"
+            singular_embedding = model.encode(
+                [singular],
+                convert_to_numpy=True,
+                normalize_embeddings=True
+            ).astype('float32')
+
+            D_sing, I_sing = faiss_index.search(singular_embedding, 1)
+            if I_sing.size > 0 and D_sing.size > 0:
+                match_index = I_sing[0][0]
+                match_score = D_sing[0][0]
+
+                if 0 <= match_index < len(index_to_name_mapping) and match_score >= threshold - 0.1:
+                    return index_to_name_mapping[match_index], float(match_score)
+
+        return None
+    except Exception as e:
+        print(
+            f"Errore durante la ricerca FAISS avanzata per '{llm_name}': {e}")
+        return None
+
+# --- Mantieni le altre funzioni di utilità ---
 
 
 def calculate_ingredient_cho_contribution(
     ingredients: List[RecipeIngredient],
     ingredient_data: Dict[str, IngredientInfo]
 ) -> List[CalculatedIngredient]:
-    """
-    Calcola il contributo nutrizionale dettagliato di ogni ingrediente in una ricetta.
+    """Calcola i contributi nutrizionali per una lista di ingredienti."""
+    calculated_list = []
+    for ing in ingredients:
+        # Cerca l'ingrediente (con nome DB) nel dizionario
+        info = ingredient_data.get(ing.name)
+        if info:
+            cho_per_100g = info.cho_per_100g if info.cho_per_100g is not None else 0.0
+            cho_contribution = (cho_per_100g / 100.0) * ing.quantity_g
 
-    Questa funzione è più completa di calculate_total_cho perché calcola non solo
-    il contributo in carboidrati, ma anche in calorie, proteine, grassi e fibre
-    per ogni ingrediente. Crea una nuova lista di oggetti CalculatedIngredient
-    che includono tutte queste informazioni.
+            # Calcola contributi altri nutrienti (gestendo None)
+            calories = (info.calories_per_100g / 100.0) * \
+                ing.quantity_g if info.calories_per_100g is not None else None
+            protein = (info.protein_g_per_100g / 100.0) * \
+                ing.quantity_g if info.protein_g_per_100g is not None else None
+            fat = (info.fat_g_per_100g / 100.0) * \
+                ing.quantity_g if info.fat_g_per_100g is not None else None
+            fiber = (info.fiber_g_per_100g / 100.0) * \
+                ing.quantity_g if info.fiber_g_per_100g is not None else None
 
-    Args:
-        ingredients: Lista di oggetti RecipeIngredient dalla ricetta.
-        ingredient_data: Dizionario con le informazioni nutrizionali ({nome: IngredientInfo}).
-
-    Returns:
-        List[CalculatedIngredient]: Lista di ingredienti con i contributi nutrizionali calcolati.
-
-    Note:
-        - Se un ingrediente non viene trovato nel dizionario ingredient_data, viene
-          mostrato un avviso e viene restituito un CalculatedIngredient con contributo 0
-        - I valori nutrizionali sono calcolati con la formula: (quantità_g * valore_per_100g) / 100.0
-        - I valori sono arrotondati a 2 decimali per una migliore leggibilità
-        - I valori nutrizionali opzionali (calorie, proteine, grassi, fibre) vengono
-          calcolati solo se disponibili nel database degli ingredienti
-    """
-    calculated_list: List[CalculatedIngredient] = []
-    for item in ingredients:
-        cho_contribution = 0.0
-        calories_contribution = None
-        protein_contribution_g = None
-        fat_contribution_g = None
-        fiber_contribution_g = None
-
-        if item.name in ingredient_data:
-            info = ingredient_data[item.name]
-            # Calcola il contributo CHO
-            if info.cho_per_100g is not None:
-                cho_contribution = round(
-                    (item.quantity_g * info.cho_per_100g) / 100.0, 2)
-
-            # Calcola gli altri contributi nutrizionali se disponibili
-            if info.calories_per_100g is not None:
-                calories_contribution = round(
-                    (item.quantity_g * info.calories_per_100g) / 100.0, 2)
-
-            if info.protein_per_100g is not None:
-                protein_contribution_g = round(
-                    (item.quantity_g * info.protein_per_100g) / 100.0, 2)
-
-            if info.fat_per_100g is not None:
-                fat_contribution_g = round(
-                    (item.quantity_g * info.fat_per_100g) / 100.0, 2)
-
-            if info.fiber_per_100g is not None:
-                fiber_contribution_g = round(
-                    (item.quantity_g * info.fiber_per_100g) / 100.0, 2)
-        else:
-            print(
-                f"Attenzione: Dati per l'ingrediente '{item.name}' non trovati per calcolo contributo nutrizionale.")
-
-        calculated_list.append(
-            CalculatedIngredient(
-                name=item.name,
-                quantity_g=item.quantity_g,
-                cho_contribution=cho_contribution,
-                calories_contribution=calories_contribution,
-                protein_contribution_g=protein_contribution_g,
-                fat_contribution_g=fat_contribution_g,
-                fiber_contribution_g=fiber_contribution_g
+            # MODIFICA QUI: Assicurati di passare esplicitamente quantity_grams come ing.quantity_g
+            calculated_list.append(
+                CalculatedIngredient(
+                    name=ing.name,
+                    quantity_g=ing.quantity_g,  # ← Assicurati che questo sia presente e corretto
+                    cho_per_100g=cho_per_100g,
+                    cho_contribution=round(cho_contribution, 2),
+                    # Aggiungi valori nutrizionali calcolati
+                    calories_per_100g=info.calories_per_100g,
+                    calories_contribution=round(
+                        calories, 2) if calories is not None else None,
+                    protein_g_per_100g=info.protein_g_per_100g,
+                    protein_contribution_g=round(
+                        protein, 2) if protein is not None else None,
+                    fat_g_per_100g=info.fat_g_per_100g,
+                    fat_contribution_g=round(
+                        fat, 2) if fat is not None else None,
+                    fiber_g_per_100g=info.fiber_g_per_100g,
+                    fiber_contribution_g=round(
+                        fiber, 2) if fiber is not None else None,
+                    # Flag dietetici dall'info base
+                    is_vegan=info.is_vegan,
+                    is_vegetarian=info.is_vegetarian,
+                    is_gluten_free=info.is_gluten_free,
+                    is_lactose_free=info.is_lactose_free
+                )
             )
-        )
+        else:
+            # Questo non dovrebbe succedere se gli ingredienti sono validati prima
+            print(
+                f"Attenzione (utils): Info ingrediente '{ing.name}' non trovate durante calcolo CHO.")
+            # Aggiungi un placeholder o salta l'ingrediente
+            calculated_list.append(
+                CalculatedIngredient(
+                    name=f"{ing.name} (Info Mancanti!)",
+                    quantity_g=ing.quantity_g,  # ← Assicurati che questo sia presente anche qui
+                    cho_contribution=0.0
+                )
+            )
+
     return calculated_list
 
 
-def check_dietary_match(recipe: Recipe, preferences: 'UserPreferences') -> bool:
-    """
-    Verifica se una ricetta soddisfa le preferenze dietetiche dell'utente.
-
-    Questa funzione controlla che i flag dietetici della ricetta (vegano, vegetariano,
-    senza glutine, senza lattosio) siano compatibili con le preferenze dell'utente.
-    Una ricetta è compatibile se soddisfa tutte le restrizioni dietetiche richieste.
-
-    Args:
-        recipe: L'oggetto Recipe da verificare.
-        preferences: Le preferenze dell'utente (UserPreferences).
-
-    Returns:
-        bool: True se la ricetta soddisfa tutte le preferenze, False altrimenti.
-
-    Note:
-        - Se l'utente ha selezionato una preferenza (es. vegano=True), la ricetta
-          deve avere il corrispondente flag (is_vegan_recipe=True) per essere compatibile
-        - Se l'utente non ha selezionato una preferenza (es. vegano=False), la ricetta
-          può avere qualsiasi valore per quel flag
-        - Questa funzione è utilizzata nel pre-filtering delle ricette
-    """
+def check_dietary_match(recipe: Any, preferences: UserPreferences) -> bool:
+    """Verifica se una ricetta (vecchio tipo Recipe) soddisfa le preferenze."""
+    # Mantieni questa funzione se ancora usata da qualche parte, altrimenti rimuovi
     if preferences.vegan and not recipe.is_vegan_recipe:
         return False
     if preferences.vegetarian and not recipe.is_vegetarian_recipe:
@@ -157,26 +183,8 @@ def check_dietary_match(recipe: Recipe, preferences: 'UserPreferences') -> bool:
     return True
 
 
-def check_final_recipe_dietary_match(recipe: FinalRecipeOption, preferences: 'UserPreferences') -> bool:
-    """
-    Verifica se una ricetta finale e verificata soddisfa le preferenze dietetiche dell'utente.
-
-    Funziona in modo simile a check_dietary_match, ma opera su oggetti FinalRecipeOption
-    anziché Recipe. Le ricette finali hanno nomi di campi leggermente diversi per i flag
-    dietetici rispetto alle ricette iniziali.
-
-    Args:
-        recipe: L'oggetto FinalRecipeOption da verificare.
-        preferences: Le preferenze dell'utente (UserPreferences).
-
-    Returns:
-        bool: True se la ricetta finale soddisfa tutte le preferenze, False altrimenti.
-
-    Note:
-        - Questa funzione è utilizzata nella fase finale di verifica delle ricette
-        - I nomi dei campi per i flag dietetici sono diversi qui rispetto a check_dietary_match
-          (is_vegan invece di is_vegan_recipe, ecc.)
-    """
+def check_final_recipe_dietary_match(recipe: FinalRecipeOption, preferences: UserPreferences) -> bool:
+    """Verifica se una ricetta (FinalRecipeOption) soddisfa le preferenze."""
     if preferences.vegan and not recipe.is_vegan:
         return False
     if preferences.vegetarian and not recipe.is_vegetarian:

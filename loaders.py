@@ -1,147 +1,125 @@
-"""
-Funzioni di caricamento dati per il sistema di generazione ricette.
-
-Questo modulo contiene le funzioni necessarie per caricare i dataset di ingredienti e ricette dai file CSV. Queste funzioni gestiscono la lettura, il parsing e la conversione dei dati nei modelli Pydantic appropriati.
-"""
-from typing import List, Dict
+# loaders.py
+import time
+from typing import List, Dict, Any, Callable
 import pandas as pd
+import numpy as np
+# SentenceTransformer NON è più necessario qui per caricare i dati base
+from utils import normalize_name  # Assumi sia ancora in utils
+from model_schema import IngredientInfo
 
-from model_schema import IngredientInfo, Recipe, RecipeIngredient
+# Rimuovi EMBEDDING_MODEL_NAME se non serve più qui
 
 
-def load_ingredients(filepath: str) -> Dict[str, IngredientInfo]:
+def load_basic_ingredient_info(filepath: str) -> Dict[str, IngredientInfo] | None:
     """
-    Carica il dataset degli ingredienti da un file CSV.
-
-    Questa funzione legge un file CSV contenente informazioni sugli ingredienti
-    e le converte in un dizionario di oggetti IngredientInfo, dove la chiave è
-    il nome dell'ingrediente.
-
-    Args:
-        filepath: Percorso al file CSV degli ingredienti.
-
-    Returns:
-        Dict[str, IngredientInfo]: Dizionario dove la chiave è il nome dell'ingrediente
-        e il valore è un oggetto IngredientInfo con tutte le informazioni nutrizionali.
-
-    Note:
-        - Formato atteso del CSV:
-          name,cho_per_100g,is_vegan,is_vegetarian,is_gluten_free,is_lactose_free
-        - I nomi degli ingredienti vengono ripuliti da spazi extra
-        - I valori booleani vengono convertiti da vari formati (stringa, numero) a bool
-        - Il dizionario risultante è utile per accessi rapidi in O(1) per nome
-        - Gestisce errori di file non trovato o formato errato
+    Carica solo le informazioni base degli ingredienti (dizionario nome->info) dal CSV.
+    NON carica/calcola embedding o modello.
     """
+    print(f"--- Caricamento Info Base Ingredienti da {filepath} ---")
+    start_time = time.time()
+    ingredients_data: Dict[str, IngredientInfo] = {}
+
+    # Funzione helper per il parsing booleano
+    def parse_bool(value):
+        if isinstance(value, bool):
+            return value
+        if isinstance(value, str):
+            val = value.strip().lower()
+            if val in ('true', 'vero', '1', 'yes', 'sì', 'si'):
+                return True
+            if val in ('false', 'falso', '0', 'no'):
+                return False
+        if isinstance(value, (int, float)):
+            return bool(value)
+        return False
+
+    def safe_float_conversion(value, field_name, ingredient_name):
+        if pd.isna(value):
+            return None
+        try:
+            return float(value)
+        except (ValueError, TypeError):
+            print(
+                f"Attenzione (loaders): Valore {field_name} non valido ('{value}') per '{ingredient_name}'. Impostato a None.")
+            return None
+
     try:
-        df = pd.read_csv(filepath)
-        ingredients_dict = {}
-        # Assicurati che i nomi delle colonne corrispondano al tuo CSV
-        # Converte i booleani da possibili stringhe/numeri a veri booleani
-        for _, row in df.iterrows():
-            # Semplice conversione, robustezza può essere migliorata
-            def parse_bool(value):
-                if isinstance(value, bool):
-                    return value
-                if isinstance(value, str):
-                    return value.lower() in ['true', '1', 'yes', 'sì', 'si', 'vero']
-                return bool(value)  # Converte 0 a False, altri numeri a True
+        # Usa encoding esplicito per robustezza
+        try:
+            df = pd.read_csv(filepath, encoding='utf-8')
+        except UnicodeDecodeError:
+            print("ATTENZIONE (loaders): Fallita lettura UTF-8, tentativo con Latin-1...")
+            df = pd.read_csv(filepath, encoding='latin-1')
+
+        # Pulisci nomi colonne
+        df.columns = df.columns.str.strip()
+
+        # Verifica colonna 'name' obbligatoria
+        if 'name' not in df.columns:
+            raise ValueError("Colonna 'name' obbligatoria mancante nel CSV.")
+        # Verifica colonna 'cho_per_100g' obbligatoria
+        if 'cho_per_100g' not in df.columns:
+            raise ValueError(
+                "Colonna 'cho_per_100g' obbligatoria mancante nel CSV.")
+
+        # Loop per popolare il dizionario
+        for index, row in df.iterrows():
+            name = str(row['name']).strip()
+            if not name:
+                # print(f"Attenzione (loaders): Riga {index+2} saltata per nome mancante.")
+                continue  # Salta righe senza nome
+
+            # Gestisci CHO (obbligatorio)
+            try:
+                cho = float(row['cho_per_100g'])
+            except (ValueError, TypeError):
+                print(
+                    f"Attenzione (loaders): Valore CHO non valido ('{row.get('cho_per_100g')}') per '{name}'. Impostato a 0.")
+                cho = 0.0
+
+            # Accedi alle altre colonne opzionali usando get con default None
+            calories = safe_float_conversion(
+                row.get('calories_per_100g'), 'Calorie', name)
+            protein = safe_float_conversion(
+                row.get('protein_g_per_100g'), 'Proteine', name)
+            fat = safe_float_conversion(
+                row.get('fat_g_per_100g'), 'Grassi', name)
+            fiber = safe_float_conversion(
+                row.get('fiber_g_per_100g'), 'Fibre', name)
 
             ingredient = IngredientInfo(
-                name=row['name'].strip(),  # Pulisce spazi extra
-                cho_per_100g=float(row['cho_per_100g']),
-                is_vegan=parse_bool(row['is_vegan']),
-                is_vegetarian=parse_bool(row['is_vegetarian']),
-                is_gluten_free=parse_bool(row['is_gluten_free']),
-                is_lactose_free=parse_bool(row['is_lactose_free'])
+                name=name,  # Nome originale come chiave
+                cho_per_100g=cho,
+                calories_per_100g=calories,
+                protein_g_per_100g=protein,
+                fat_g_per_100g=fat,
+                fiber_g_per_100g=fiber,
+                # Usa get con default
+                is_vegan=parse_bool(row.get('is_vegan', False)),
+                is_vegetarian=parse_bool(row.get('is_vegetarian', False)),
+                is_gluten_free=parse_bool(row.get('is_gluten_free', False)),
+                is_lactose_free=parse_bool(row.get('is_lactose_free', False)),
             )
-            ingredients_dict[ingredient.name] = ingredient
-        print(f"Caricati {len(ingredients_dict)} ingredienti da {filepath}")
-        return ingredients_dict
+
+            if name in ingredients_data:
+                print(
+                    f"Attenzione (loaders): Nome ingrediente duplicato '{name}' alla riga {index+2}. Verrà sovrascritto.")
+            ingredients_data[name] = ingredient
+
+        loading_end_time = time.time()
+        print(
+            f"--- Caricamento Info Base completato ({len(ingredients_data)} ingredienti) in {loading_end_time - start_time:.2f} secondi ---")
+        return ingredients_data
+
     except FileNotFoundError:
-        print(f"Errore: File ingredienti non trovato a {filepath}")
-        return {}
+        print(f"ERRORE (loaders): File ingredienti non trovato a {filepath}")
+        return None  # Ritorna None per indicare fallimento critico
+    except ValueError as ve:  # Cattura errori di colonna mancante
+        print(f"ERRORE (loaders): Problema con le colonne del CSV: {ve}")
+        return None
     except Exception as e:
-        print(f"Errore durante il caricamento degli ingredienti: {e}")
-        return {}
-
-# Probabilmente con la nuova struttura non la usermo più
-
-
-def load_recipes(filepath: str) -> List[Recipe]:
-    """
-    Carica il dataset delle ricette da un file CSV.
-
-    Questa funzione legge un file CSV contenente informazioni sulle ricette,
-    inclusi gli ingredienti in formato JSON, e le converte in una lista
-    di oggetti Recipe.
-
-    Args:
-        filepath: Percorso al file CSV delle ricette.
-
-    Returns:
-        List[Recipe]: Lista di oggetti Recipe caricati dal file.
-
-    Note:
-        - Formato atteso del CSV:
-          name,ingredients_json,is_vegan_recipe,is_vegetarian_recipe,is_gluten_free_recipe,is_lactose_free_recipe
-        - La colonna ingredients_json deve contenere una stringa JSON nel formato:
-          '[{"name": "Ingrediente1", "quantity_g": 100}, {"name": "Ingrediente2", "quantity_g": 50}]'
-        - I nomi delle ricette vengono ripuliti da spazi extra
-        - I valori booleani vengono convertiti da vari formati a bool
-        - La funzione gestisce errori di JSON malformato, colonne mancanti o valori errati
-    """
-    try:
-        df = pd.read_csv(filepath)
-        recipes_list = []
-        import json  # Importa qui per evitare dipendenza globale se non usato altrove
-
-        for _, row in df.iterrows():
-            try:
-                # Parsa la stringa JSON degli ingredienti
-                ingredients_raw = json.loads(row['ingredients_json'])
-                recipe_ingredients = [
-                    RecipeIngredient(name=ing['name'].strip(
-                    ), quantity_g=float(ing['quantity_g']))
-                    for ing in ingredients_raw
-                ]
-
-                # Converte i booleani (come sopra)
-                def parse_bool(value):
-                    if isinstance(value, bool):
-                        return value
-                    if isinstance(value, str):
-                        return value.lower() in ['true', '1', 'yes', 'sì', 'si', 'vero']
-                    return bool(value)
-
-                recipe = Recipe(
-                    name=row['name'].strip(),
-                    ingredients=recipe_ingredients,
-                    is_vegan_recipe=parse_bool(row['is_vegan_recipe']),
-                    is_vegetarian_recipe=parse_bool(
-                        row['is_vegetarian_recipe']),
-                    is_gluten_free_recipe=parse_bool(
-                        row['is_gluten_free_recipe']),
-                    is_lactose_free_recipe=parse_bool(
-                        row['is_lactose_free_recipe'])
-                    # initial_total_cho potrebbe essere calcolato qui se necessario,
-                    # ma lo faremo dinamicamente nel flusso per ora
-                )
-                recipes_list.append(recipe)
-            except json.JSONDecodeError:
-                print(
-                    f"Errore parsing JSON per ricetta: {row.get('name', 'N/A')}")
-            except KeyError as ke:
-                print(
-                    f"Errore chiave mancante ({ke}) per ricetta: {row.get('name', 'N/A')}")
-            except ValueError as ve:
-                print(
-                    f"Errore valore non valido ({ve}) per ricetta: {row.get('name', 'N/A')}")
-
-        print(f"Caricate {len(recipes_list)} ricette da {filepath}")
-        return recipes_list
-    except FileNotFoundError:
-        print(f"Errore: File ricette non trovato a {filepath}")
-        return []
-    except Exception as e:
-        print(f"Errore durante il caricamento delle ricette: {e}")
-        return []
+        print(
+            f"ERRORE IMPREVISTO (loaders) durante caricamento info base: {e}")
+        import traceback
+        traceback.print_exc()
+        return None

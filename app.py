@@ -1,235 +1,326 @@
-"""
-Applicazione web Streamlit per il sistema di generazione ricette.
-
-Questo modulo implementa l'interfaccia web usando Streamlit per il sistema di generazione ricette.
-Consente agli utenti di inserire le loro preferenze (target CHO e restrizioni dietetiche)
-attraverso un'interfaccia grafica user-friendly e mostra le ricette generate in HTML.
-
-L'interfaccia include:
-- Selezione del target di carboidrati (CHO)
-- Opzioni per restrizioni dietetiche (vegano, vegetariano, senza glutine, senza lattosio)
-- Visualizzazione delle ricette generate con formattazione HTML
-- Indicatori di avanzamento durante la generazione
-"""
-import time
+# app.py
 import os
+import time
 import base64
+import pickle  # Per caricare il mapping nomi
 from PIL import Image
-
 import streamlit as st
-from main import run_recipe_generation
+import numpy as np
+import faiss  # Importa FAISS
+from sentence_transformers import SentenceTransformer
+from typing import Dict, Any, List
+
+# Importa funzioni e classi necessarie dai tuoi moduli
+try:
+    from main import run_recipe_generation
+    # Importa GraphState aggiornato
+    from model_schema import UserPreferences, GraphState
+    from loaders import load_basic_ingredient_info  # Usa il nuovo loader base
+    from utils import normalize_name  # Mantiene normalize_name
+except ImportError as e:
+    st.error(
+        f"Errore import: {e}. Assicurati che tutti i file .py siano presenti e corretti.")
+    st.stop()
+
+# --- Definizione Costanti ---
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+STATIC_DIR = os.path.join(BASE_DIR, "static")
+
+INGREDIENTS_FILE = os.path.join(DATA_DIR, "ingredients.csv")
+FAISS_INDEX_FILE = os.path.join(
+    DATA_DIR, "ingredients.index")  # Percorso indice FAISS
+NAME_MAPPING_FILE = os.path.join(
+    DATA_DIR, "ingredient_names.pkl")  # Percorso mapping nomi
+
+# Stesso modello usato per creare l'indice
+EMBEDDING_MODEL_NAME = 'paraphrase-multilingual-mpnet-base-v2'
+
+# Percorsi Immagini Statiche
+VEGAN_IMG_PATH = os.path.join(STATIC_DIR, "vegan.png")
+VEGETARIAN_IMG_PATH = os.path.join(STATIC_DIR, "vegetarian.png")
+GLUTEN_FREE_IMG_PATH = os.path.join(STATIC_DIR, "gluten_free.png")
+LACTOSE_FREE_IMG_PATH = os.path.join(STATIC_DIR, "lactose_free.png")
+LOADING_IMG_PATH = os.path.join(STATIC_DIR, "loading.gif")
+
+# Verifica Esistenza Cartelle e File Indice/Mapping all'avvio
+if not os.path.exists(FAISS_INDEX_FILE):
+    st.error(f"Errore Critico: File indice FAISS non trovato: '{FAISS_INDEX_FILE}'. "
+             f"Esegui lo script 'create_faiss_index.py' prima di avviare l'app.")
+    st.stop()
+if not os.path.exists(NAME_MAPPING_FILE):
+    st.error(f"Errore Critico: File mapping nomi non trovato: '{NAME_MAPPING_FILE}'. "
+             f"Esegui lo script 'create_faiss_index.py' prima di avviare l'app.")
+    st.stop()
 
 
-# Create a proper path to access static files in Streamlit
-
-
-def get_base64_encoded_image(image_path):
-    """
-    Converte un'immagine in una stringa base64 per l'embedding in HTML.
-
-    Args:
-        image_path: Percorso all'immagine da codificare
-
-    Returns:
-        str: Stringa base64 dell'immagine
-
-    Note:
-        - Utilizzata per incorporare icone direttamente nell'HTML dell'output
-        - La codifica base64 permette di visualizzare immagini senza salvarle 
-          come file separati, ideale per interfacce web dinamiche
-    """
-    with open(image_path, "rb") as img_file:
-        return base64.b64encode(img_file.read()).decode('utf-8')
-
-
-# Impostazione del percorso alla cartella static
-# È necessario creare una cartella 'static' con le immagini delle icone all'interno
-# La cartella static deve essere nella stessa directory dell'app Streamlit
-static_folder = "static"
-
-# Assicurati che la cartella static esista
-if not os.path.exists(static_folder):
-    os.makedirs(static_folder)
-    st.warning(
-        f"Created '{static_folder}' folder. Please place your icon images in this folder.")
-
-# Percorsi delle immagini (relativi alla cartella static)
-vegan_img_path = os.path.join(static_folder, "vegan.png")
-vegetarian_img_path = os.path.join(static_folder, "vegetarian.png")
-gluten_free_img_path = os.path.join(static_folder, "gluten_free.png")
-lactose_free_img_path = os.path.join(static_folder, "lactose_free.png")
-loading_img_path = os.path.join(static_folder, "loading.gif")
-
-# Follia per creare i checkbok con img custom
-
-
-def image_checkbox(label, img_path, img_width=150, key=None, value=False, text_below=True):
-    """
-    Crea un checkbox personalizzato con un'immagine.
-
-    Questa funzione crea un elemento UI personalizzato che combina un'immagine
-    e un checkbox, per un'interfaccia più intuitiva per le opzioni dietetiche.
-
-    Args:
-        label (str): Il testo da visualizzare.
-        img_path (str): Il percorso all'immagine.
-        img_width (int, optional): La larghezza desiderata per l'immagine. Default 150.
-        key (str, optional): Una chiave univoca per il widget. Default None.
-        value (bool, optional): Il valore iniziale del checkbox. Default False.
-        text_below (bool, optional): Se True, mostra il testo sotto l'immagine. Default True.
-
-    Returns:
-        bool: True se il checkbox è selezionato, False altrimenti.
-
-    Note:
-        - Gestisce fallback a emoji se l'immagine non è disponibile
-        - Supporta layout verticale (testo sotto l'immagine) o orizzontale
-        - Cattura e gestisce eccezioni durante il caricamento dell'immagine
-    """
+def get_base64_encoded_image(image_path: str) -> str | None:
+    if not os.path.exists(image_path):
+        return None
     try:
-        if text_below:
-            # Layout verticale con testo sotto l'immagine
-            container = st.container()
-            img_col = container.container()
+        with open(image_path, "rb") as img_file:
+            return base64.b64encode(img_file.read()).decode('utf-8')
+    except Exception as e:
+        print(f"Error encoding image {image_path}: {e}")
+        return None
 
-            # Immagine
-            if os.path.exists(img_path):
-                img = Image.open(img_path)
-                img_col.image(img, width=img_width, use_container_width=False)
-            else:
-                # Fallback emoji
-                fallback_emojis = {
-                    "vegan.png": "🌱",
-                    "vegetarian.png": "🥗",
-                    "gluten_free.png": "🌾",
-                    "lactose_free.png": "🥛"
-                }
-                emoji = fallback_emojis.get(os.path.basename(img_path), "⚠️")
-                img_col.markdown(
-                    f"<h1 style='text-align: center;'>{emoji}</h1>", unsafe_allow_html=True)
 
-            # Testo e Checkbox centrati
-            return img_col.checkbox(label, key=key, value=value, label_visibility="visible")
-        else:
-            # Layout originale con colonne affiancate
-            col1, col2 = st.columns([1, 10])
-            if os.path.exists(img_path):
-                img = Image.open(img_path)
-                col1.image(img, width=img_width)
-            else:
-                # Fallback emoji
-                fallback_emojis = {
-                    "vegan.png": "🌱",
-                    "vegetarian.png": "🥗",
-                    "gluten_free.png": "🌾",
-                    "lactose_free.png": "🥛"
-                }
-                emoji = fallback_emojis.get(os.path.basename(img_path), "⚠️")
-                col1.markdown(
-                    f"<h3 style='margin: 0; padding: 0;'>{emoji}</h3>", unsafe_allow_html=True)
-            return col2.checkbox(label, key=key, value=value)
+def get_img_html(img_path: str, width: int = 24) -> str:
+    base64_image = get_base64_encoded_image(img_path)
+    if base64_image:
+        return f'<img src="data:image/png;base64,{base64_image}" width="{width}" style="margin-right: 5px; vertical-align: middle;" alt="{os.path.basename(img_path)}">'
+    else:
+        fallback_emojis = {"vegan.png": "🌱", "vegetarian.png": "🥗",
+                           "gluten_free.png": "🌾", "lactose_free.png": "🥛"}
+        emoji = fallback_emojis.get(os.path.basename(img_path), "⚠️")
+        return f'<span title="Icona mancante: {os.path.basename(img_path)}" style="margin-right: 5px; vertical-align: middle;">{emoji}</span>'
+
+
+def image_checkbox(label: str, img_path: str, img_width: int = 60, key: str | None = None, value: bool = False, text_below: bool = True) -> bool:
+    # Implementazione come nella versione precedente
+    container = st.container()
+    img_col = container.container()
+    img_html_for_display = ""
+    if os.path.exists(img_path):
+        try:
+            img = Image.open(img_path)
+            img_col.image(img, width=img_width, use_container_width='auto')
+        except Exception as e:
+            print(f"Error displaying image {img_path}: {e}")
+            fallback_emojis = {"vegan.png": "🌱", "vegetarian.png": "🥗",
+                               "gluten_free.png": "🌾", "lactose_free.png": "🥛"}
+            emoji = fallback_emojis.get(os.path.basename(img_path), "⚠️")
+            img_col.markdown(
+                f"<h1 style='text-align: center; margin-bottom: 5px;'>{emoji}</h1>", unsafe_allow_html=True)
+    else:
+        fallback_emojis = {"vegan.png": "🌱", "vegetarian.png": "🥗",
+                           "gluten_free.png": "🌾", "lactose_free.png": "🥛"}
+        emoji = fallback_emojis.get(os.path.basename(img_path), "⚠️")
+        img_col.markdown(
+            f"<h1 style='text-align: center; margin-bottom: 5px;'>{emoji}</h1>", unsafe_allow_html=True)
+        if key == "first_run_check" and not st.session_state.get('missing_icon_warning_shown', False):
+            st.warning(f"Icona non trovata: {img_path}. Verrà usata un'emoji.")
+            st.session_state['missing_icon_warning_shown'] = True
+    checkbox_col = container.container()
+    checked = checkbox_col.checkbox(
+        label, key=key, value=value, label_visibility="visible")
+    return checked
+
+
+# --- Funzioni di Caricamento Dati/Risorse con Cache ---
+
+# Cache per il modello
+@st.cache_resource(show_spinner="Caricamento modello SBERT...")
+def load_sbert_model_cached(model_name):
+    print(f"--- Loading SentenceTransformer Model ({model_name}) ---")
+    try:
+        # Prova MPS, fallback su CPU se dà errore o se si preferisce CPU
+        # return SentenceTransformer(model_name, device='cpu') # Forza CPU se MPS dà ancora problemi
+        return SentenceTransformer(model_name)  # Tenta MPS di default
     except Exception as e:
         st.error(
-            f"Errore nella visualizzazione del checkbox con immagine: {e}")
-        return st.checkbox(label, key=key, value=value)
-# Function to get image HTML for output formatting
+            f"Errore caricamento modello SBERT '{model_name}': {e}. Verificare installazione Pytorch/SentenceTransformers.")
+        return None
 
 
-def get_img_html(img_path, width=24):
-    """
-    Genera un tag HTML img con dati immagine codificati in base64.
-
-    Questa funzione crea un tag HTML per un'immagine che può essere incorporato
-    direttamente nell'output HTML, senza necessità di file esterni.
-
-    Args:
-        img_path: Percorso all'immagine
-        width: Larghezza desiderata dell'immagine in pixel
-
-    Returns:
-        str: Tag HTML completo con l'immagine codificata in base64
-
-    Note:
-        - Usa la codifica base64 per incorporare l'immagine direttamente nel HTML
-        - Fornisce un simbolo di avviso (⚠️) come fallback se l'immagine non è trovata
-        - Include stile CSS inline per allineamento e spaziatura
-    """
+# Cache per indice
+@st.cache_resource(show_spinner="Caricamento indice FAISS...")
+def load_faiss_index_cached(index_path):
+    print(f"--- Loading FAISS index from {index_path} ---")
     try:
-        if os.path.exists(img_path):
-            base64_image = get_base64_encoded_image(img_path)
-            return f'<img src="data:image/png;base64,{base64_image}" width="{width}" style="margin-right: 5px; vertical-align: middle;">'
-        else:
-            return "⚠️"  # Return a warning symbol if image not found
+        return faiss.read_index(index_path)
     except Exception as e:
-        st.error(f"Error creating image HTML: {e}")
-        return "⚠️"
+        st.error(f"Errore caricamento indice FAISS da '{index_path}': {e}")
+        return None
 
 
-# forse dovrei spostare le funzioni sopra in utils 🚨
-# ----- INTERFACCIA PRINCIPALE STREAMLIT -----
-st.title("Generatore di Ricette Personalizzate")
+# Cache per mapping (dati)
+@st.cache_data(show_spinner="Caricamento mapping nomi...")
+def load_name_mapping_cached(mapping_path):
+    print(f"--- Loading name mapping from {mapping_path} ---")
+    try:
+        with open(mapping_path, 'rb') as f:
+            name_mapping = pickle.load(f)
+        if not isinstance(name_mapping, list):
+            raise TypeError("Il file di mapping non contiene una lista.")
+        print(f"Caricati {len(name_mapping)} nomi dal mapping.")
+        return name_mapping
+    except Exception as e:
+        st.error(f"Errore caricamento mapping nomi da '{mapping_path}': {e}")
+        return None
 
-# Selettore per il target di carboidrati
-target_cho = st.number_input("🎯 Target CHO (g)", min_value=10, value=80)
-# Layout con colonne per le icone allineate orizzontalmente
-# Layout con colonne per le icone allineate orizzontalmente
-st.write("Preferenze dietetiche:")
+
+# Cache per dati base CSV
+@st.cache_data(show_spinner="Caricamento info ingredienti...")
+def load_basic_ingredient_info_cached(csv_filepath):
+    print(f"--- Loading basic ingredient info from {csv_filepath} ---")
+    # Usa la funzione definita in loaders.py
+    data = load_basic_ingredient_info(csv_filepath)
+    if data is None:
+        # Errore già loggato da load_basic_ingredient_info
+        st.error(f"Fallito caricamento dati ingredienti da {csv_filepath}.")
+    return data
+
+
+# --- Interfaccia Streamlit ---
+st.set_page_config(
+    page_title="Generatore Ricette Low-CHO (FAISS)", layout="wide")
+st.title("🥦 Generatore di Ricette Low-CHO (FAISS) 🥕")
+st.markdown(
+    "Imposta le tue preferenze nella barra laterale e genera ricette personalizzate.")
+
+# --- Caricamento Risorse all'Avvio ---
+start_load_time = time.time()
+embedding_model = load_sbert_model_cached(EMBEDDING_MODEL_NAME)
+faiss_index = load_faiss_index_cached(FAISS_INDEX_FILE)
+index_to_name_mapping = load_name_mapping_cached(NAME_MAPPING_FILE)
+available_ingredients_data = load_basic_ingredient_info_cached(
+    INGREDIENTS_FILE)
+end_load_time = time.time()
+print(
+    f"Tempo caricamento risorse iniziali: {end_load_time - start_load_time:.2f} sec")
+
+# Verifica Fallimento Caricamento Critico
+if embedding_model is None or faiss_index is None or index_to_name_mapping is None or available_ingredients_data is None:
+    st.error(
+        "Errore critico durante il caricamento delle risorse necessarie "
+        "(Modello SBERT, Indice FAISS, Mapping Nomi o Dati Ingredienti). "
+        "Controllare i log del terminale. L'applicazione non può continuare."
+    )
+    st.stop()
+
+# Verifica consistenza indice/mapping (opzionale ma consigliato)
+if faiss_index.ntotal != len(index_to_name_mapping):
+    st.error(f"Errore Critico: Numero vettori nell'indice FAISS ({faiss_index.ntotal}) "
+             f"non corrisponde alla lunghezza del mapping nomi ({len(index_to_name_mapping)}). "
+             f"Rieseguire lo script 'create_faiss_index.py'.")
+    st.stop()
+
+
+# --- UI Sidebar ---
+st.sidebar.header("Preferenze Ricetta")
+target_cho = st.sidebar.number_input(
+    "🎯 Target Carboidrati (g/porzione)",
+    min_value=5.0,
+    max_value=300.0,
+    value=80.0,  # Valore di default
+    step=5.0,
+    help="Imposta il contenuto desiderato di carboidrati per porzione (in grammi)."
+)
+st.sidebar.markdown("---")  # Separatore
+
+# Flag per mostrare avviso solo una volta
+if 'missing_icon_warning_shown' not in st.session_state:
+    st.session_state['missing_icon_warning_shown'] = False
+
+# Preferenze dietetiche nella pagina principale
+st.subheader("Restrizioni Dietetiche")
+st.write("Seleziona le tue preferenze:")
 col1, col2, col3, col4 = st.columns(4)
+
 # Checkbox personalizzati con immagini per le preferenze dietetiche
 with col1:
-    vegan = image_checkbox("Vegano", vegan_img_path,
+    vegan = image_checkbox("Vegano", VEGAN_IMG_PATH,
                            key="vegan", text_below=True, value=False)
-
 with col2:
-    vegetarian = image_checkbox(
-        "Vegetariano", vegetarian_img_path, key="vegetarian", text_below=True, value=False)
-
+    vegetarian = image_checkbox("Vegetariano", VEGETARIAN_IMG_PATH,
+                                key="vegetarian", text_below=True, value=vegan)
 with col3:
-    gluten_free = image_checkbox(
-        "Senza Glutine", gluten_free_img_path, key="gluten_free", text_below=True, value=False)
-
+    gluten_free = image_checkbox("Senza Glutine", GLUTEN_FREE_IMG_PATH,
+                                 key="gluten_free", text_below=True, value=False)
 with col4:
-    lactose_free = image_checkbox(
-        "Senza Lattosio", lactose_free_img_path, key="lactose_free", text_below=True, value=False)
-# Pulsante per avviare la generazione delle ricette
-if st.button("Genera Ricette"):
-    # Mostra gif/indicatore durante la generazione
-    gif_container = st.empty()
-    if os.path.exists(loading_img_path):
-        gif_container.image(loading_img_path)
+    lactose_free = image_checkbox("Senza Lattosio", LACTOSE_FREE_IMG_PATH,
+                                  key="lactose_free", text_below=True, value=False)
+
+# Logica di aggiornamento: se vegan è selezionato, forza vegetarian a True
+if vegan:
+    vegetarian = True
+
+# --- Pulsante di Generazione e Logica di Esecuzione ---
+if st.sidebar.button("✨ Genera Ricette", use_container_width=True, type="primary"):
+
+    st.markdown("---")
+    results_container = st.container()
+    placeholder = results_container.empty()
+
+    # Mostra Indicatore Attesa
+    loading_message = "🍳 Sto mescolando gli ingredienti... attendi un momento!"
+    if os.path.exists(LOADING_IMG_PATH):
+        try:
+            with open(LOADING_IMG_PATH, "rb") as f:
+                contents = f.read()
+                data_url = base64.b64encode(contents).decode("utf-8")
+            placeholder.markdown(
+                f'<div style="text-align:center;"><img src="data:image/gif;base64,{data_url}" alt="loading..." width="100"><br>{loading_message}</div>', unsafe_allow_html=True)
+        except Exception as e:
+            placeholder.info(f"⏳ {loading_message}")
     else:
-        gif_container.info("Elaborazione in corso...")
+        placeholder.info(f"⏳ {loading_message}")
 
-    start_time = time.time()
+    start_time_workflow = time.time()
 
-    # Crea un dizionario con HTML per le icone da passare all'agente formatter
-    img_dict = {
-        "vegan": get_img_html(vegan_img_path),
-        "vegetarian": get_img_html(vegetarian_img_path),
-        "gluten_free": get_img_html(gluten_free_img_path),
-        "lactose_free": get_img_html(lactose_free_img_path),
-    }
+    # Prepara Dati per il Workflow
+    user_preferences = UserPreferences(target_cho=target_cho, vegan=vegan,
+                                       vegetarian=vegetarian, gluten_free=gluten_free, lactose_free=lactose_free)
 
-    # Esegui la generazione delle ricette
-    output = run_recipe_generation(
-        target_cho=target_cho,
-        vegan=vegan,
-        vegetarian=vegetarian,
-        gluten_free=gluten_free,
-        lactose_free=lactose_free,
-        streamlit_output=True,  # Indica che siamo in Streamlit
-        streamlit_write=st.write,
-        streamlit_info=st.info,
-        streamlit_error=st.error,
-        img_dict=img_dict  # Passa il dizionario delle icone
-    )
+    # Debug per le preferenze
+    print(
+        f"DEBUG APP - Preferenze selezionate: vegan={vegan}, vegetarian={vegetarian}, gluten_free={gluten_free}, lactose_free={lactose_free}")
 
-    end_time = time.time()
-    generation_time = end_time - start_time
-    # Rimuovo la GIF/indicatore dopo la generazione
-    gif_container.empty()
+    img_dict = {"vegan": get_img_html(VEGAN_IMG_PATH), "vegetarian": get_img_html(
+        VEGETARIAN_IMG_PATH), "gluten_free": get_img_html(GLUTEN_FREE_IMG_PATH), "lactose_free": get_img_html(LACTOSE_FREE_IMG_PATH)}
 
-    # Visualizza il risultato
-    st.header("Ricette Generate")
-    st.markdown(output, unsafe_allow_html=True)
-    st.info(f"Tempo di generazione: {generation_time:.2f} secondi")
+    # --- Prepara Stato Iniziale per Workflow ---
+    try:
+        initial_state = GraphState(
+            user_preferences=user_preferences,
+            available_ingredients_data=available_ingredients_data,  # Dati base da cache dati
+            embedding_model=embedding_model,                     # Modello da cache risorse
+            normalize_function=normalize_name,                   # Funzione da utils
+            faiss_index=faiss_index,                             # Indice da cache risorse
+            index_to_name_mapping=index_to_name_mapping,         # Mapping da cache dati
+            # Campi risultati inizializzati
+            generated_recipes=[],
+            final_verified_recipes=[],
+            error_message=None,
+            final_output=None
+        )
+    except Exception as state_err:
+        st.error(
+            f"Errore imprevisto nella creazione dello stato iniziale: {state_err}")
+        st.stop()
+
+    # --- ESEGUI WORKFLOW ---
+    try:
+        output_html = run_recipe_generation(
+            initial_state=initial_state,  # Passa lo stato completo
+            streamlit_output=True,
+            img_dict=img_dict
+        )
+        if output_html is None:
+            output_html = "<p>Errore: Nessun output valido dal workflow.</p>"
+
+    except Exception as workflow_error:
+        st.error(
+            f"Errore imprevisto durante l'esecuzione del workflow: {workflow_error}")
+        st.exception(workflow_error)
+        output_html = f"<div style='border: 2px solid red; padding: 10px; background-color: #ffeeee;'><h2>Errore Inaspettato</h2><pre>{workflow_error}</pre></div>"
+
+    end_time_workflow = time.time()
+    generation_time = end_time_workflow - start_time_workflow
+
+    # --- Mostra Risultati ---
+    placeholder.empty()
+    results_container.success(
+        f"🎉 Ricette elaborate in {generation_time:.2f} secondi!")
+    results_container.markdown("---")
+    results_container.markdown(output_html, unsafe_allow_html=True)
+
+else:
+    # Messaggio iniziale
+    st.info("👋 Benvenuto! Imposta le tue preferenze e clicca '✨ Genera Ricette'.")
+
+# --- Footer ---
+st.markdown("---")
+st.caption(
+    "Applicazione Generatore Ricette v1.2 (FAISS) - Powered by Streamlit & AI")
