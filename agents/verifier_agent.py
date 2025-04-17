@@ -181,6 +181,8 @@ def adjust_recipe_cho(recipe: FinalRecipeOption, target_cho: float, ingredient_d
 
                     # Assicurati che rimanga ragionevole (minimo 10g)
                     new_quantity = max(10.0, new_quantity)
+                    # NUOVO: Limita a 300g massimo
+                    new_quantity = min(300.0, new_quantity)
 
                     # Aggiorna l'ingrediente
                     recipe_ingredients = [
@@ -233,7 +235,7 @@ def balance_cho_distribution(recipe: FinalRecipeOption, ingredient_data: Dict) -
     4. Verifica se il bilanciamento ha migliorato la distribuzione
     """
     # Soglia massima accettabile per un singolo ingrediente
-    MAX_CHO_PERCENTAGE = 0.9  # 90%
+    MAX_CHO_PERCENTAGE = 0.96  # 90%
 
     # Verifica se c'è un ingrediente dominante
     dominant_ingredient = None
@@ -385,6 +387,8 @@ def balance_cho_distribution(recipe: FinalRecipeOption, ingredient_data: Dict) -
 
                             # Nuova quantità
                             new_quantity = target_ing.quantity_g + grams_to_add
+                            # NUOVO: Limita a 300g massimo
+                            new_quantity = min(300.0, new_quantity)
 
                             # Aggiorna l'ingrediente
                             for i, ing in enumerate(balanced_recipe.ingredients):
@@ -439,10 +443,10 @@ def verifier_agent(state: GraphState) -> GraphState:
     ingredient_data = state['available_ingredients']
     target_cho = preferences.target_cho
     cho_tolerance = 10.0  # Tolleranza CHO
-    exact_recipes_required = 3  # Numero esatto di ricette da fornire
+    exact_recipes_required = 6  # Numero esatto di ricette da fornire
 
     # Aumentiamo la soglia massima per un singolo ingrediente dal 75% al 90%
-    max_cho_dominance = 0.9  # 90% invece di 75%
+    max_cho_dominance = 0.98  # 90% invece di 75%
 
     if not generated_recipes:
         print("Nessuna ricetta generata da verificare.")
@@ -578,6 +582,17 @@ def verifier_agent(state: GraphState) -> GraphState:
         if len(recipe.ingredients) < 3:
             print(
                 f"Ricetta '{recipe.name}' SCARTATA: Troppo semplice (solo {len(recipe.ingredients)} ingredienti).")
+            continue
+
+        has_excessive_ingredient = False
+        for ing in recipe.ingredients:
+            if ing.quantity_g > 300:
+                print(
+                    f"Ricetta '{recipe.name}' SCARTATA: L'ingrediente '{ing.name}' ha una quantità eccessiva ({ing.quantity_g}g > 300g).")
+                has_excessive_ingredient = True
+                break
+
+        if has_excessive_ingredient:
             continue
 
         # MODIFICATO: Non scartare ricette in base a ingredienti con CHO pari a 0

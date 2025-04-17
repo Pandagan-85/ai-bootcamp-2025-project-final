@@ -13,7 +13,7 @@ Orzo,73.0,354.0,12.5,2.3,17.3,True,True,False,True,50.0,Carboidrati
 Couscous,77.0,376.0,12.8,0.6,5.0,True,True,False,True,70.0,Carboidrati
 Gnocchi di patate,18.0,160.0,3.0,0.3,1.5,True,True,False,True,200.0,Carboidrati
 Pomodoro,4.0,20.0,1.0,0.2,1.0,True,True,True,True,150.0,Verdura
-Broccoli,6.6,34.0,2.8,0.4,2.6,True,True,True,True,200.0,Verdura
+Broccoli,3.3,34.0,2.8,0.4,2.6,True,True,True,True,200.0,Verdura
 Spinaci,3.6,23.0,2.9,0.4,2.2,True,True,True,True,100.0,Verdura
 Carote,9.6,41.0,0.9,0.2,2.8,True,True,True,True,80.0,Verdura
 Zucchine,3.1,17.0,1.2,0.3,1.0,True,True,True,True,150.0,Verdura
@@ -52,9 +52,9 @@ Filetto di manzo,0.0,217.0,26.0,11.0,0.0,False,False,True,True,150.0,Proteine
 Salmone,0.0,206.0,22.0,13.0,0.0,False,False,True,True,125.0,Proteine
 Uova,0.7,155.0,12.6,10.6,0.0,False,True,True,True,60.0,Proteine
 Tofu,1.9,76.0,8.0,4.2,0.3,True,True,True,True,100.0,Proteine
-Lenticchie,20.0,116.0,9.0,0.4,7.9,True,True,True,True,70.0,Proteine
-Fagioli borlotti,19.5,100.0,8.7,0.8,7.0,True,True,True,True,80.0,Proteine
-Ceci,27.4,164.0,8.9,2.6,7.6,True,True,True,True,70.0,Proteine
+Lenticchie,20.0,116.0,9.0,0.4,7.9,True,True,True,True,70.0,Legumi
+Fagioli borlotti,19.5,100.0,8.7,0.8,7.0,True,True,True,True,80.0,Legumi
+Ceci,27.4,164.0,8.9,2.6,7.6,True,True,True,True,70.0,Legumi
 Tacchino,0.0,189.0,29.0,7.0,0.0,False,False,True,True,150.0,Proteine
 Tonno in scatola,0.0,116.0,25.5,1.0,0.0,False,False,True,True,80.0,Proteine
 Maiale,0.0,242.0,27.0,14.0,0.0,False,False,True,True,150.0,Proteine
@@ -97,7 +97,7 @@ Aceto balsamico,17.0,88.0,0.5,0.0,0.0,True,True,True,True,10.0,Condimenti
 Salsa di soia,5.6,60.0,10.5,0.1,0.8,True,True,True,True,15.0,Condimenti
 Ketchup,22.8,112.0,1.7,0.3,0.9,True,True,True,True,15.0,Condimenti
 Senape,6.4,66.0,3.7,4.2,3.3,True,True,True,True,10.0,Condimenti
-Salsa guacamole,4.3,144.0,1.7,13.1,5.0,True,True,True,True,30.0,Condimenti
+Guacamole,4.3,144.0,1.7,13.1,5.0,True,True,True,True,30.0,Condimenti
 Miele,82.4,304.0,0.3,0.0,0.2,False,True,True,True,10.0,Dolcificanti
 Zucchero bianco,99.8,387.0,0.0,0.0,0.0,True,True,True,True,10.0,Dolcificanti
 Sciroppo d'acero,67.0,260.0,0.0,0.0,0.0,True,True,True,True,15.0,Dolcificanti
@@ -105,11 +105,11 @@ Stevia,0.0,0.0,0.0,0.0,0.0,True,True,True,True,1.0,Dolcificanti
 Zucchero di cocco,87.0,385.0,1.0,0.0,4.0,True,True,True,True,10.0,Dolcificanti
 Cioccolato fondente,46.0,598.0,8.0,43.0,11.0,True,True,True,True,25.0,Dolci
 Patate dolci,20.1,86.0,1.6,0.1,3.0,True,True,True,True,150.0,Carboidrati
-Fagioli neri,23.7,132.0,8.9,0.5,8.7,True,True,True,True,80.0,Proteine
-Fagioli rossi,22.8,127.0,8.7,0.5,7.4,True,True,True,True,80.0,Proteine
-Edamame,9.9,121.0,12.0,5.0,5.2,True,True,True,True,100.0,Proteine
-Lenticchie rosse,20.0,116.0,9.0,0.4,7.9,True,True,True,True,70.0,Proteine
-Lenticchie verdi,19.5,127.0,9.1,0.6,10.7,True,True,True,True,70.0,Proteine
+Fagioli neri,23.7,132.0,8.9,0.5,8.7,True,True,True,True,80.0,Legumi
+Fagioli rossi,22.8,127.0,8.7,0.5,7.4,True,True,True,True,80.0,Legumi
+Edamame,9.9,121.0,12.0,5.0,5.2,True,True,True,True,100.0,Legumi
+Lenticchie rosse,20.0,116.0,9.0,0.4,7.9,True,True,True,True,70.0,Legumi
+Lenticchie verdi,19.5,127.0,9.1,0.6,10.7,True,True,True,True,70.0,Legumi
 Fagiolini,7.0,31.0,1.8,0.2,3.4,True,True,True,True,100.0,Verdura
 Cavolfiore,5.0,25.0,1.9,0.3,2.0,True,True,True,True,150.0,Verdura
 Cavoletti di Bruxelles,9.0,43.0,3.4,0.3,3.8,True,True,True,True,100.0,Verdura
@@ -230,6 +230,8 @@ Pasta d'acciughe,0.0,210.0,29.0,9.7,0.0,False,False,True,True,5.0,Condimenti
 Maionese vegana,2.0,600.0,0.5,65.0,0.0,True,True,True,True,15.0,Condimenti
 Senape di Digione,5.0,143.0,8.0,11.0,4.0,True,True,True,True,10.0,Condimenti
 Rafano,11.3,48.0,1.2,0.7,3.3,True,True,True,True,5.0,Condimenti
+Sale,0.0,0.0,0.0,0.0,0.0,True,True,True,True,1.0,Condimenti
+
 Zucchero di canna,98.0,380.0,0.1,0.0,0.0,True,True,True,True,10.0,Dolcificanti
 Agave sciroppo,76.0,310.0,0.0,0.0,0.0,True,True,True,True,15.0,Dolcificanti
 Eritritolo,99.0,20.0,0.0,0.0,0.0,True,True,True,True,10.0,Dolcificanti
@@ -278,7 +280,7 @@ Lumache (cotte),2.0,90.0,16.0,1.0,0.0,False,False,True,True,100.0,Proteine
 Formaggio Halloumi,1.9,321.0,22.0,25.0,0.0,False,True,True,False,50.0,Latticini
 Formaggio Paneer,4.0,296.0,18.0,22.0,0.0,False,True,True,False,50.0,Latticini
 Proteine vegetali testurizzate (TVP secche),34.0,327.0,52.0,1.0,18.0,True,True,True,True,25.0,Proteine
-Lupini (cotti e  salati),9.9,119.0,15.6,2.9,4.8,True,True,True,True,80.0,Proteine
+Lupini (cotti e  salati),9.9,119.0,15.6,2.9,4.8,True,True,True,True,80.0,Legumi
 Kefir (latte intero),4.0,64.0,3.3,3.5,0.0,False,True,True,False,200.0,Bevande
 Latticello,4.8,40.0,3.3,0.9,0.0,False,True,True,False,200.0,Bevande
 Panna acida,3.0,198.0,2.4,19.4,0.0,False,True,True,False,30.0,Latticini

@@ -424,7 +424,7 @@ def generate_recipes_agent(state: GraphState) -> GraphState:
 
     # Configura il numero di ricette da generare (più di quelle necessarie per compensare possibili fallimenti)
     # Miriamo a generare 8 ricette per averne poi almeno 3 valide dopo la verifica
-    target_recipes = 8  # Aumentiamo da 6 a 8 per avere più possibilità
+    target_recipes = 10  # Aumentiamo da 6 a 8 per avere più possibilità
 
     # Recupera la chiave API di OpenAI
     api_key = os.getenv("OPENAI_API_KEY")
@@ -443,77 +443,140 @@ def generate_recipes_agent(state: GraphState) -> GraphState:
 
     # PROMPT MIGLIORATO con enfasi sul range CHO, distribuzione bilanciata e diversità
     system_prompt = """
-Sei un esperto chef e nutrizionista specializzato nella creazione di ricette bilanciate e personalizzate. Il tuo compito è creare ricette originali che soddisfino precise esigenze nutrizionali e dietetiche.
+    **RUOLO: ** Sei un esperto chef e nutrizionista specializzato nella creazione di ricette complete, realistiche, bilanciate e personalizzate.
 
-ISTRUZIONI IMPORTANTI:
-- CRUCIALE: Devi creare una ricetta con un target di carboidrati (CHO) di ESATTAMENTE il valore specificato ±5g.
-- La ricetta deve avere una distribuzione BILANCIATA di CHO tra gli ingredienti - non più del 70% dei CHO totali deve provenire da un singolo ingrediente.
-- Usa SOLO ingredienti dalla lista fornita. Non inventare o aggiungere ingredienti che non sono in questa lista.
-- ATTENZIONE: Puoi usare ESCLUSIVAMENTE gli ingredienti che ti fornirò alla fine del prompt. Questi sono gli unici ingredienti disponibili come se fossero gli unici nella dispensa.
-- Specifica le quantità ESATTE in grammi per ogni ingrediente.
-- Segui rigorosamente le preferenze dietetiche indicate.
-- IMPORTANTE: Quando un utente NON indica nessuna preferenza dietetica, ma solo i grammi di cho e soprattutto con CHO inferiori a 30gr, tenta di includere ingredienti animali (es. carne magra, pollame, pesce, uova, formaggi magri) , se aiutano a creare una ricetta bilanciata, saporita e a raggiungere il target CHO. Punta a una buona varietà includendo una fonte proteica adeguata.
-- IMPORTANTE: Questa è la ricetta #{recipe_index}. Crea una ricetta COMPLETAMENTE DIVERSA dalle precedenti. Il nome, il tipo di piatto, gli ingredienti principali e lo stile di cucina DEVONO essere diversi da qualsiasi altra ricetta nella sessione.
+    **COMPITO: ** Genera una ricetta originale che soddisfi precisamente le esigenze nutrizionali e le preferenze dietetiche dell'utente, seguendo TUTTE le istruzioni sottostanti.
 
-STRATEGIA PER RAGGIUNGERE IL TARGET CHO:
-1. Seleziona una combinazione di ingredienti ad alto, medio e basso contenuto di CHO.
-2. Calcola attentamente il contributo in CHO di ogni ingrediente: (quantità_g * CHO_per_100g) / 100
-3. Assicurati che il totale sia VICINO al target (entro ±5g).
-4. IMPORTANTE: Distribuisci i CHO tra più ingredienti per una ricetta bilanciata.
+    ---
 
-ESEMPI DI INGREDIENTI E LORO CONTENUTO CHO:
-- Ingredienti ad alto contenuto di CHO: {high_cho_examples}
-- Ingredienti a medio contenuto di CHO: {medium_cho_examples}
+    ## 1. OBIETTIVI NUTRIZIONALI OBBLIGATORI
 
-RICETTE BILANCIATE:
-- Usa almeno 4-5 ingredienti per un piatto completo.
-- Includi sempre una fonte proteica primaria (carne, pesce, pollame, uova, legumi, tofu, latticini proteici), una fonte di carboidrati, verdure/frutta e grassi sani, compatibilmente con le preferenze dietetiche.
-- Quantità ragionevoli: 70-120g di cereali (pasta, riso), 100-200g di proteine, 100-200g di verdure.
-- Un singolo ingrediente NON dovrebbe contribuire più del 70% dei CHO totali.
+    * **Target Carboidrati (CHO):**
+        * La ricetta DEVE contenere **{target_cho}g** di CHO, con una tolleranza massima di **±5g**.
+        * *Questo vincolo è FONDAMENTALE e verrà verificato.*
+    * **Distribuzione Macronutrienti (Indicativa su Grammi):**
+        * Punta a un bilanciamento approssimativo dei **grammi** totali dei macronutrienti:
+            * CHO: ~45–60% dei grammi totali di macro
+            * Proteine: ~15–20% dei grammi totali di macro
+            * Grassi: ~25–30% dei grammi totali di macro
+        * *Nota: L'obiettivo primario è il target CHO in grammi.*
 
-DIVERSITÀ DELLE RICETTE:
-- Se stai creando la ricetta #1: scegli liberamente un tipo di piatto.
-- Se stai creando la ricetta #2: scegli un tipo di piatto COMPLETAMENTE DIVERSO dalla ricetta #1 (es. se #1 era un primo, fai un secondo o un piatto unico).
-- Se stai creando la ricetta #3 o successive: scegli un tipo di piatto diverso dalle precedenti, con cucina di origine diversa (es. mediterranea, asiatica, sudamericana).
-- NON ripetere gli stessi ingredienti principali delle ricette precedenti.
-- VARIA le tecniche di cottura tra le diverse ricette (cottura al forno, saltato in padella, bollitura, ecc).
+    ---
 
-FORMATO JSON RICHIESTO:
-```json
-{{
-  "recipe_name": "Nome Creativo della Ricetta",
-  "description": "Breve descrizione del piatto e dei suoi sapori",
-  "ingredients": [
-    {{"name": "Nome Ingrediente 1", "quantity_g": 100}},
-    {{"name": "Nome Ingrediente 2", "quantity_g": 50}}
-  ],
-  "is_vegan": true,
-  "is_vegetarian": true,
-  "is_gluten_free": false,
-  "is_lactose_free": true,
-  "instructions": [
-    "Passo 1: Descrizione dettagliata",
-    "Passo 2: Descrizione dettagliata"
-  ]
-}}
-```
+    ## 2. UTILIZZO DEGLI INGREDIENTI
 
-ASSICURATI CHE:
-- Ogni ingrediente DEVE esistere ESATTAMENTE nella lista di ingredienti validi.
-- Il valore totale di CHO DEVE essere entro ±5g del target specificato.
-- I CHO siano DISTRIBUITI tra più ingredienti (max 70% da un singolo ingrediente).
-- Le quantità siano numeri realistici in grammi.
-- I valori booleani riflettano accuratamente le proprietà della ricetta.
-- Le istruzioni siano chiare e complete.
-- Il nome e il tipo di piatto deve essere DIVERSO dalle ricette precedenti.
-"""
+    * **Lista Esclusiva:** Usa **SOLO ED ESCLUSIVAMENTE** gli ingredienti forniti alla fine di questo prompt (`{valid_ingredients}`).
+        * *NON inventare o usare ingredienti non presenti in quella lista.*
+        * *Considera la lista fornita come l'unica dispensa disponibile.*
+    * **Quantità:** Specifica la quantità **ESATTA in grammi** per ogni ingrediente usato.
+    * **Limite per Ingrediente:** **NESSUN singolo ingrediente può superare i 200g.** *Questo limite è CRITICO.*
+    * **Limite Condimenti:** La somma totale dei condimenti (spezie, erbe, salse concentrate, aceti, sale, ecc.) non deve superare i **10g**.
+    * **Restrizione Pasta/Riso:** **NON usare MAI pasta e riso insieme** nella stessa ricetta. Scegline solo uno, se necessario.
+
+    ---
+
+    ## 3. STRUTTURA E BILANCIAMENTO DEL PIATTO
+
+    * **Numero Ingredienti:** Includi almeno **4-5 ingredienti diversi**.
+    * **Componenti Essenziali:** Assicurati di includere (compatibilmente con le preferenze dietetiche):
+        * Una **fonte proteica principale** (carne, pesce, pollame, uova, legumi, tofu, tempeh, seitan, latticini proteici).
+        * Una **fonte di carboidrati** (cereali, patate, pane, legumi, frutta).
+        * Almeno una **verdura o frutta**.
+        * Una **fonte di grassi sani** (olio EVO, avocado, frutta secca, semi).
+    * **Quantità Indicative (Linee Guida Utili):**
+        * Fonte di Carboidrati (pasta/riso secchi, patate, pane): ~70–120g (se non diversamente specificato per CHO alti/bassi).
+        * Fonte Proteica (carne, pesce, tofu): ~100–200g.
+        * Verdure: ~100–200g (se non diversamente specificato per CHO alti/bassi).
+
+    ---
+
+    ## 4. STRATEGIA PER IL TARGET CHO
+
+    1.  **Selezione:** Scegli una combinazione bilanciata di ingredienti ad alto, medio e basso contenuto di CHO dalla lista fornita.
+        * *Esempio Alto CHO:* `{high_cho_examples}`
+        * *Esempio Medio CHO:* `{medium_cho_examples}`
+    2.  **Calcolo:** Calcola con precisione il contributo CHO di ogni ingrediente: `CHO_contributo = (quantità_g * CHO_per_100g) / 100`.
+    3.  **Verifica Totale:** Assicurati che la somma dei `CHO_contributo` sia **entro ±5g** dal `{target_cho}` richiesto.
+    4.  **Equilibrio:** Mantieni la distribuzione bilanciata dei macronutrienti come indicato al punto 1.
+
+    ---
+
+    ## 5. PREFERENZE DIETETICHE (Obbligatorie)
+
+    * Rispetta **RIGOROSAMENTE** le seguenti preferenze:
+        * Vegano: {{is_vegan}}
+        * Vegetariano: {{is_vegetarian}}
+        * Senza Glutine: {{is_gluten_free}}
+        * Senza Lattosio: {{is_lactose_free}}
+    * *Usa solo ingredienti che sono compatibili con tutte le preferenze impostate a `true`.*
+
+    ---
+
+    ## 6. CASI SPECIALI (Adattamento della Strategia)
+
+
+    * **Nessuna Preferenza Specifica:** Se tutti i flag dietetici sono `false`, sei incoraggiato a includere ingredienti di origine animale (carne magra, pesce, pollame, uova, formaggi magri) per creare ricette più varie e bilanciate, sempre rispettando il target CHO.
+    * **Target CHO < 20g:** Limita drasticamente o escludi pasta, riso, pane, couscous, patate ad alto CHO. Focalizzati su proteine magre, verdure a basso CHO, grassi sani e latticini (se permessi).
+    * **Target CHO tra 40g e 100g:** PREFERISCI FORTEMENTE l'uso della pasta come fonte principale di carboidrati. Utilizza tipi diversi di pasta (spaghetti, penne, fusilli, fettuccine, ecc.) e varia i condimenti per creare ricette diverse. Usa circa 70-120g di pasta secca per porzione.
+    * **Target CHO > 100g:** La ricetta DEVE essere basata su porzioni significative di alimenti ad alta densità di CHO, con FORTE PREFERENZA PER LA PASTA. Usa le seguenti quantità come riferimento PRINCIPALE:
+        * Pasta (peso secco): ~100–180g
+        * Pane: ~150–250g
+        * Patate: ~300–500g
+        * Legumi (peso secco): ~80–150g
+        * *In questo caso:* Limita le verdure totali a max 200–300g e rispetta il limite di 10g per i condimenti.
+
+    ---
+
+    # 7. DIVERSIFICAZIONE (Obbligatoria per Ricette Multiple)
+
+    # {recipe_index}** che stai generando in questa sessione.
+    * Questa è la ** Ricetta
+    * **Se Ricetta  # 1:** Massima libertà nella scelta.
+    * **Se Ricetta  # 2 o Successiva:**
+        * **DEVI ** creare una ricetta ** COMPLETAMENTE DIVERSA ** dalle precedenti.
+        * **Cambia: ** Nome, concetto del piatto, ingredienti principali, stile di cucina(es. Mediterranea, Asiatica, Messicana...), tipologia(primo, secondo, piatto unico, zuppa, bowl...), tecnica di cottura(forno, padella, vapore, griglia, crudo...).
+        * **NON RIPETERE ** gli stessi ingredienti principali(soprattutto fonte proteica e fonte CHO principale).
+
+    ---
+
+    # 8. FORMATO OUTPUT (Obbligatorio)
+
+    * Fornisci la ricetta ** ESCLUSIVAMENTE ** nel seguente formato JSON, senza alcun testo o commento aggiuntivo prima o dopo:
+
+    ```json
+    {{
+    "recipe_name": "Nome Creativo e Unico della Ricetta",
+    "description": "Breve descrizione accattivante del piatto",
+    "ingredients": [
+        {{"name": "Nome Ingrediente Valido 1", "quantity_g": 120.0}},
+        {{"name": "Nome Ingrediente Valido 2", "quantity_g": 85.5}}
+        // ... altri ingredienti ...
+    ],
+    "is_vegan": boolean, // Deve riflettere la ricetta finale
+    "is_vegetarian": boolean, // Deve riflettere la ricetta finale
+    "is_gluten_free": boolean, // Deve riflettere la ricetta finale
+    "is_lactose_free": boolean, // Deve riflettere la ricetta finale
+    "instructions": [
+        "Passo 1: Istruzione chiara e dettagliata.",
+        "Passo 2: Altra istruzione chiara."
+        // ... altri passi ...
+    ]
+    }}
+    # INGREDIENTI DISPONIBILI (Usa solo questi):
+    {valid_ingredients}
+
+    """
 
     human_prompt = """
-Genera la ricetta #{recipe_index} rispettando questi criteri:
+
+
+Genera la ricetta  # {recipe_index} rispettando questi criteri:
 
 TARGET NUTRIZIONALE:
-- Carboidrati (CHO): {target_cho}g (±5g) - QUESTO È CRUCIALE!
-- Distribuzione: Nessun ingrediente deve fornire più del 70% dei CHO totali.
+- Carboidrati(CHO): {target_cho}g(±5g) - QUESTO È CRUCIALE!
+- Distribuzione: Bilanciata, seguendo le preferenze dell'utente, tentando di include proteine, carboidarti e verdure.
+- IMPORTANTE: Nessun ingrediente deve superare i 200g.
+- IMPORTANTE: Nelle ricette non devi usare pasta e riso insieme, ma solo uno dei due. Ad esempio non puoi proporre "Pasta e riso".
 
 PREFERENZE DIETETICHE:
 {dietary_preferences}
