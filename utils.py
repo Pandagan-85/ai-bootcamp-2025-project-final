@@ -1,10 +1,7 @@
-# utils.py
-# Questo file non richiede modifiche specifiche per il nuovo sistema
-# poiché le funzioni di utilità sono già compatibili con l'approccio "Generate then Fix"
 import re
-import pickle
+
 from typing import List, Dict, Optional, Tuple, Any, Callable
-import numpy as np
+
 import faiss
 from sentence_transformers import SentenceTransformer
 # Importa le classi da model_schema se necessario per type hinting

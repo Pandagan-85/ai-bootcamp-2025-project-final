@@ -327,7 +327,7 @@ def adjust_recipe_proportionally(recipe: FinalRecipeOption, cho_contributors: Li
         if ing.name in contributor_names:
             original_quantity = ing.quantity_g
             # Applica scaling con limiti
-            new_quantity = max(5, min(300, original_quantity * scaling_factor))
+            new_quantity = max(5, min(250, original_quantity * scaling_factor))
             adjusted_recipe.ingredients[i].quantity_g = round(new_quantity, 1)
 
             print(
@@ -676,173 +676,307 @@ def verifier_agent(state: GraphState) -> GraphState:
     Node Function: Verifica, ottimizza e corregge le ricette generate.
     Versione potenziata con verifica di diversità e correzione flag dietetici.
     """
-    print("--- ESECUZIONE NODO: Verifica e Ottimizzazione Ricette ---")
+    print("\n--- ESECUZIONE NODO: Verifica e Ottimizzazione Ricette ---")
 
-    # Recupera componenti necessari
-    recipes = state.get('generated_recipes', [])
-    preferences = state['user_preferences']
-    ingredient_data = state.get('available_ingredients_data', {})
+    # Recupera componenti necessari dallo stato
+    recipes_from_generator = state.get('generated_recipes', [])
+    preferences = state.get('user_preferences')
+    ingredient_data = state.get('available_ingredients_data')
     faiss_index = state.get('faiss_index')
-    index_to_name_mapping = state.get('index_to_name_mapping', [])
+    index_to_name_mapping = state.get('index_to_name_mapping')
     embedding_model = state.get('embedding_model')
-    normalize_function = state.get('normalize_function', normalize_name)
+    # Dovrebbe essere normalize_name da utils
+    normalize_function = state.get('normalize_function')
 
-    if not recipes:
-        state['error_message'] = "Nessuna ricetta da verificare."
+    # Validazione input essenziali
+    if not recipes_from_generator:
+        print("Errore Verifier: Nessuna ricetta ricevuta dal generatore.")
+        state['error_message'] = "Nessuna ricetta generata da verificare."
         state['final_verified_recipes'] = []
         return state
 
-    if not ingredient_data or not faiss_index or not index_to_name_mapping or not embedding_model:
-        state['error_message'] = "Dati o componenti mancanti per la verifica."
+    if not all([preferences, ingredient_data, faiss_index, index_to_name_mapping, embedding_model, normalize_function]):
+        print("Errore Verifier: Componenti essenziali mancanti nello stato (prefs, db, faiss, model, etc.).")
+        state['error_message'] = "Errore interno: Dati o componenti mancanti per la verifica."
         state['final_verified_recipes'] = []
         return state
 
     target_cho = preferences.target_cho
-    cho_tolerance = 25.0  # Tolleranza più ampia per la prima verifica
+    # Tolleranza % per considerare una ricetta "nel range" dopo l'ottimizzazione iniziale
+    # +/- 30% (più larga per dare chance all'ottimizzazione)
+    initial_cho_tolerance_percent = 0.30
+    min_cho_initial = target_cho * (1 - initial_cho_tolerance_percent)
+    max_cho_initial = target_cho * (1 + initial_cho_tolerance_percent)
 
-    print(f"Verifica di {len(recipes)} ricette. Target CHO: {target_cho}g (Range: {target_cho-cho_tolerance} - {target_cho+cho_tolerance})")
+    print(
+        f"Verifica di {len(recipes_from_generator)} ricette generate. Target CHO: {target_cho:.1f}g")
+    print(
+        f"Range CHO post-ottimizzazione iniziale target: {min_cho_initial:.1f} - {max_cho_initial:.1f}g")
 
-    # --- FASE 1: MATCHING E CALCOLO NUTRIENTI ---
-    matched_recipes = []
-    print("Fase 1: Matching ingredienti e calcolo valori nutrizionali")
+    # --- FASE 1: MATCHING, CALCOLO NUTRIENTI E VERIFICA DIETETICA PRELIMINARE ---
+    processed_recipes_phase1 = []
+    print("\nFase 1: Matching Ingredienti, Calcolo Nutrienti e Verifica Dietetica Preliminare")
 
-    for recipe in recipes:
-        # Match degli ingredienti con il database
-        matched_recipe, all_matched = match_recipe_ingredients(
-            recipe, ingredient_data, faiss_index,
+    for recipe_gen in recipes_from_generator:
+        # 1. Match ingredienti e calcolo iniziale nutrienti
+        recipe_matched, match_success = match_recipe_ingredients(
+            recipe_gen, ingredient_data, faiss_index,
             index_to_name_mapping, embedding_model, normalize_function
         )
 
-        if all_matched:
-            # Calcola i flag dietetici in base agli ingredienti effettivi
-            matched_recipe = compute_dietary_flags(
-                matched_recipe, ingredient_data)
-            # Aggiungi correzione aggiuntiva basata sulle liste di ingredienti
-            matched_recipe = correct_dietary_flags(
-                matched_recipe, ingredient_data)
+        if not match_success:
             print(
-                f"Ricetta '{matched_recipe.name}' completamente matchata: CHO={matched_recipe.total_cho:.1f}g")
-            matched_recipes.append(matched_recipe)
+                f"Ricetta '{recipe_gen.name}' scartata (Fase 1): Matching fallito o CHO non calcolabile.")
+            continue
+
+        # 2. Calcola/Verifica flag dietetici basati sul DB
+        recipe_flags_computed = compute_dietary_flags(
+            recipe_matched, ingredient_data)
+        # Aggiunta opzionale: correzione basata su keywords
+        # recipe_flags_computed = correct_dietary_flags(recipe_flags_computed, ingredient_data)
+
+        # 3. Verifica preliminare rispetto alle preferenze utente
+        if not verify_dietary_preferences(recipe_flags_computed, preferences):
+            print(
+                f"Ricetta '{recipe_flags_computed.name}' scartata (Fase 1): Non rispetta le preferenze dietetiche.")
+            continue
+
+        # Se passa tutti i controlli della fase 1, aggiungila alla lista
+        processed_recipes_phase1.append(recipe_flags_computed)
+
+    if not processed_recipes_phase1:
+        print(
+            "Errore Verifier: Nessuna ricetta ha superato la Fase 1 (matching/dietetica).")
+        state['error_message'] = "Nessuna ricetta valida dopo il matching iniziale e la verifica dietetica."
+        state['final_verified_recipes'] = []
+        return state
+    print(
+        f"Ricette che hanno superato la Fase 1: {len(processed_recipes_phase1)}")
+
+    # --- FASE 2: OTTIMIZZAZIONE CHO ---
+    processed_recipes_phase2 = []
+    print("\nFase 2: Ottimizzazione CHO")
+
+    for recipe_p1 in processed_recipes_phase1:
+        # Controlla se CHO è valido prima di ottimizzare
+        if recipe_p1.total_cho is None:
+            print(
+                f"Ricetta '{recipe_p1.name}' scartata (Fase 2): CHO non calcolato, impossibile ottimizzare.")
+            continue
+
+        # Verifica se è già nel range target INIZIALE
+        is_in_initial_range = (
+            min_cho_initial <= recipe_p1.total_cho <= max_cho_initial)
+
+        if is_in_initial_range:
+            print(
+                f"Ricetta '{recipe_p1.name}' già nel range CHO iniziale ({recipe_p1.total_cho:.1f}g).")
+            # Mantiene la ricetta così com'è
+            processed_recipes_phase2.append(recipe_p1)
+            continue
+
+        # Se non è nel range, tenta l'ottimizzazione
+        print(
+            f"Ricetta '{recipe_p1.name}' fuori range iniziale ({recipe_p1.total_cho:.1f}g). Tento ottimizzazione...")
+        optimized_recipe = optimize_recipe_cho(
+            deepcopy(recipe_p1), target_cho, ingredient_data)
+
+        if optimized_recipe and optimized_recipe.total_cho is not None:
+            is_optimized_in_range = (
+                min_cho_initial <= optimized_recipe.total_cho <= max_cho_initial)
+            improved = abs(optimized_recipe.total_cho -
+                           target_cho) < abs(recipe_p1.total_cho - target_cho)
+            if is_optimized_in_range:
+                print(
+                    f" -> Ottimizzazione riuscita! Nuovo CHO: {optimized_recipe.total_cho:.1f}g (Nel range iniziale)")
+                processed_recipes_phase2.append(optimized_recipe)
+            elif improved:
+                print(
+                    f" -> Ottimizzazione parziale. Nuovo CHO: {optimized_recipe.total_cho:.1f}g (Migliorato ma fuori range iniziale)")
+                processed_recipes_phase2.append(optimized_recipe)
+            else:
+                print(
+                    f" -> Ottimizzazione non migliorativa (Nuovo CHO: {optimized_recipe.total_cho:.1f}g). Scarto ricetta.")
         else:
             print(
-                f"Ricetta '{recipe.name}' scartata: non tutti gli ingredienti sono stati matchati")
+                f" -> Ottimizzazione base fallita per '{recipe_p1.name}'. Tento aggiustamento ADD/MODIFY...")
+            adjustment_suggestion = suggest_cho_adjustment(
+                recipe_p1, target_cho, ingredient_data)
+            adjusted_recipe = None
+            if adjustment_suggestion:
+                action, ingredient_name_db, quantity = adjustment_suggestion
+                if action == "add":
+                    adjusted_recipe = add_ingredient(
+                        deepcopy(recipe_p1), ingredient_name_db, quantity, ingredient_data)
+                elif action == "modify":
+                    target_ing_to_modify = None
+                    for ing in recipe_p1.ingredients:
+                        name = ing.name if ing.name and "Info Mancanti" not in ing.name else ing.original_llm_name
+                        if name == ingredient_name_db:
+                            target_ing_to_modify = ing
+                            break
+                    if target_ing_to_modify and target_ing_to_modify.quantity_g is not None:
+                        if ingredient_name_db in ingredient_data and ingredient_data[ingredient_name_db].cho_per_100g is not None and ingredient_data[ingredient_name_db].cho_per_100g > 0.1:
+                            cho_diff_for_tune = (quantity - target_ing_to_modify.quantity_g) * (
+                                ingredient_data[ingredient_name_db].cho_per_100g / 100.0)
+                            adjusted_recipe = fine_tune_recipe(
+                                deepcopy(recipe_p1), target_ing_to_modify, cho_diff_for_tune, ingredient_data)
+                        else:
+                            print(
+                                f"Errore (suggest-modify): Info CHO mancanti per '{ingredient_name_db}'")
+                    else:
+                        print(
+                            f"Errore (suggest-modify): Ingrediente '{ingredient_name_db}' non trovato o qtà nulla in ricetta.")
 
-    if not matched_recipes:
-        state['error_message'] = "Nessuna ricetta con ingredienti completamente matchati."
+            if adjusted_recipe and adjusted_recipe.total_cho is not None:
+                is_adjusted_in_range = (
+                    min_cho_initial <= adjusted_recipe.total_cho <= max_cho_initial)
+                improved_drastic = abs(
+                    adjusted_recipe.total_cho - target_cho) < abs(recipe_p1.total_cho - target_cho)
+                if is_adjusted_in_range:
+                    print(
+                        f" -> Aggiustamento ADD/MODIFY riuscito! Nuovo CHO: {adjusted_recipe.total_cho:.1f}g (Nel range iniziale)")
+                    processed_recipes_phase2.append(adjusted_recipe)
+                elif improved_drastic:
+                    print(
+                        f" -> Aggiustamento ADD/MODIFY parziale. Nuovo CHO: {adjusted_recipe.total_cho:.1f}g (Migliorato ma fuori range iniziale)")
+                    processed_recipes_phase2.append(adjusted_recipe)
+                else:
+                    print(
+                        f" -> Aggiustamento ADD/MODIFY non migliorativo. Scarto ricetta.")
+            else:
+                print(
+                    f" -> Ottimizzazione/Aggiustamento falliti definitivamente per '{recipe_p1.name}'. Scarto ricetta.")
+
+    if not processed_recipes_phase2:
+        print(
+            "Errore Verifier: Nessuna ricetta ha superato la Fase 2 (ottimizzazione CHO).")
+        state['error_message'] = "Nessuna ricetta è risultata valida o ottimizzabile per il target CHO."
+        state['final_verified_recipes'] = []
+        return state
+    print(
+        f"Ricette che hanno superato la Fase 2: {len(processed_recipes_phase2)}")
+
+    # --- FASE 3: VERIFICA FINALE (QUALITÀ, REALISMO, RANGE STRETTO) ---
+    processed_recipes_phase3 = []  # Cambiato nome variabile per chiarezza
+    print("\nFase 3: Verifica Finale (Qualità, Realismo, Range CHO Stretto)")
+
+    # Tolleranza % finale più stretta
+    final_cho_tolerance_percent = 0.15  # +/- 15%
+    min_cho_final = target_cho * (1 - final_cho_tolerance_percent)
+    max_cho_final = target_cho * (1 + final_cho_tolerance_percent)
+    print(
+        f"Range CHO finale target: {min_cho_final:.1f} - {max_cho_final:.1f}g")
+
+    # Soglia quantità massima e ingredienti da escludere
+    max_ingredient_quantity_g = 250.0
+    quantity_check_exclusions = {
+        "brodo vegetale", "acqua", "latte", "vino bianco", "brodo di pollo", "brodo di pesce",
+        "passata di pomodoro", "polpa di pomodoro"
+    }
+    print(
+        f"Controllo quantità massima per ingrediente solido: < {max_ingredient_quantity_g}g")
+
+    # Usa la variabile corretta (processed_recipes_phase2) nel loop
+    for recipe_p2 in processed_recipes_phase2:
+        # a) Controllo numero minimo ingredienti
+        if not recipe_p2.ingredients or len(recipe_p2.ingredients) < 3:
+            print(
+                f"Ricetta '{recipe_p2.name}' scartata (Fase 3): Meno di 3 ingredienti.")
+            continue
+        # b) Controllo numero minimo istruzioni
+        if not recipe_p2.instructions or len(recipe_p2.instructions) < 2:
+            print(
+                f"Ricetta '{recipe_p2.name}' scartata (Fase 3): Meno di 2 istruzioni.")
+            continue
+
+        # c) *** INIZIO BLOCCO CONTROLLO QUANTITA' MASSIMA ***
+        quantity_ok = True
+        for ing in recipe_p2.ingredients:
+            # Nome per controllo esclusione e stampa
+            check_name = ing.name if ing.name and "Info Mancanti" not in ing.name else ing.original_llm_name
+            # Controlla solo se il nome esiste e non è tra le esclusioni
+            if check_name and check_name not in quantity_check_exclusions:
+                # Controlla la quantità solo se è un numero valido
+                if ing.quantity_g is not None and ing.quantity_g > max_ingredient_quantity_g:
+                    print(
+                        f"Ricetta '{recipe_p2.name}' scartata (Fase 3): Ingrediente '{check_name}' supera quantità massima ({ing.quantity_g:.1f}g > {max_ingredient_quantity_g:.1f}g)")
+                    quantity_ok = False
+                    break  # Esci dal loop interno
+        if not quantity_ok:
+            # Salta al prossimo ciclo del loop esterno (prossima ricetta)
+            continue
+        # *** FINE BLOCCO CONTROLLO QUANTITA' MASSIMA ***
+
+        # d) Controllo range CHO finale (stretto)
+        if not (recipe_p2.total_cho and min_cho_final <= recipe_p2.total_cho <= max_cho_final):
+            print(
+                f"Ricetta '{recipe_p2.name}' scartata (Fase 3): CHO={recipe_p2.total_cho:.1f}g fuori dal range finale ({min_cho_final:.1f}-{max_cho_final:.1f}g)")
+            continue
+
+        # e) Ri-verifica preferenze dietetiche (sicurezza)
+        if not verify_dietary_preferences(recipe_p2, preferences):
+            print(
+                f"Ricetta '{recipe_p2.name}' scartata (Fase 3): Fallita verifica dietetica finale.")
+            continue
+
+        # Se passa tutti i controlli della fase 3
+        print(
+            f"Ricetta '{recipe_p2.name}' verificata (Fase 3) (CHO: {recipe_p2.total_cho:.1f}g, Ingredienti: {len(recipe_p2.ingredients)})")
+        # Aggiungi alla lista di quelle che passano la fase 3
+        processed_recipes_phase3.append(recipe_p2)
+
+    if not processed_recipes_phase3:
+        print("Errore Verifier: Nessuna ricetta ha superato la Fase 3 (verifiche finali).")
+        state['error_message'] = "Nessuna ricetta ha superato i controlli finali di qualità e range CHO."
+        state['final_verified_recipes'] = []
+        return state
+    print(
+        f"Ricette che hanno superato la Fase 3: {len(processed_recipes_phase3)}")
+
+    # --- FASE 4: VERIFICA DIVERSITÀ ---
+    processed_recipes_phase4 = []  # Cambiato nome variabile
+    if len(processed_recipes_phase3) > 1:
+        print("\nFase 4: Verifica Diversità tra Ricette")
+        similarity_thr = 0.65
+        # Usa la lista corretta (processed_recipes_phase3) come input
+        processed_recipes_phase4 = ensure_recipe_diversity(
+            processed_recipes_phase3, target_cho, similarity_threshold=similarity_thr)
+        print(
+            f"Ricette diverse selezionate: {len(processed_recipes_phase4)} su {len(processed_recipes_phase3)} (Soglia: {similarity_thr})")
+    else:
+        # Se c'è solo una ricetta, passa direttamente
+        processed_recipes_phase4 = processed_recipes_phase3
+
+    if not processed_recipes_phase4:
+        print("Errore Verifier: Nessuna ricetta rimasta dopo il controllo di diversità.")
+        state['error_message'] = "Nessuna ricetta selezionata dopo il filtro di diversità."
         state['final_verified_recipes'] = []
         return state
 
-    # --- FASE 2: OTTIMIZZAZIONE CHO ---
-    optimized_recipes = []
-    print("Fase 2: Ottimizzazione CHO delle ricette")
+    # --- FASE 5: SELEZIONE FINALE E ORDINAMENTO ---
+    print("\nFase 5: Selezione Finale e Ordinamento")
+    # Ordina le ricette diverse (processed_recipes_phase4) per vicinanza al target CHO
+    processed_recipes_phase4.sort(key=lambda r: abs(
+        r.total_cho - target_cho) if r.total_cho is not None else float('inf'))
 
-    for recipe in matched_recipes:
-        # Controlla se la ricetta è già nel range target
-        is_in_range = (
-            recipe.total_cho is not None and
-            target_cho - cho_tolerance <= recipe.total_cho <= target_cho + cho_tolerance
-        )
+    # Limita al numero massimo desiderato di ricette finali
+    max_final_recipes = 3  # Puoi cambiare questo valore
+    final_selected_recipes = processed_recipes_phase4[:max_final_recipes]
+    print(
+        f"Selezionate le migliori {len(final_selected_recipes)} ricette finali.")
 
-        if is_in_range:
-            print(
-                f"Ricetta '{recipe.name}' già nel range CHO: {recipe.total_cho:.1f}g")
-            optimized_recipes.append(recipe)
-            continue
+    # --- AGGIORNA STATO FINALE ---
+    state['final_verified_recipes'] = final_selected_recipes
 
-        # Tenta l'ottimizzazione
-        optimized = optimize_recipe_cho(recipe, target_cho, ingredient_data)
-        if optimized and optimized.total_cho is not None:
-            print(
-                f"Ricetta '{recipe.name}' ottimizzata: CHO da {recipe.total_cho:.1f}g a {optimized.total_cho:.1f}g")
-            optimized_recipes.append(optimized)
-        else:
-            # Tenta un approccio più drastico: aggiungi o rimuovi ingrediente
-            adjustment = suggest_cho_adjustment(
-                recipe, target_cho, ingredient_data)
-            if adjustment:
-                action, ingredient_name, new_quantity = adjustment
-                if action == "add":
-                    print(
-                        f"Aggiungendo '{ingredient_name}' ({new_quantity:.1f}g) a '{recipe.name}'")
-                    modified = add_ingredient(
-                        recipe, ingredient_name, new_quantity, ingredient_data)
-                    if modified and abs(modified.total_cho - target_cho) < abs(recipe.total_cho - target_cho):
-                        print(
-                            f"Ricetta '{recipe.name}' migliorata con aggiunta: CHO da {recipe.total_cho:.1f}g a {modified.total_cho:.1f}g")
-                        optimized_recipes.append(modified)
-                        continue
-
-                # Se l'azione drastica non ha funzionato, manteniamo la ricetta originale
-                print(
-                    f"Impossibile ottimizzare '{recipe.name}', mantenuta originale")
-
-            # Mantieni comunque la ricetta originale se non troppo lontana
-            if recipe.total_cho and abs(recipe.total_cho - target_cho) < cho_tolerance * 1.5:
-                print(
-                    f"Ricetta '{recipe.name}' mantenuta nonostante CHO non ottimale: {recipe.total_cho:.1f}g")
-                optimized_recipes.append(recipe)
-
-    # --- FASE 3: VERIFICA FINALE E FILTRI ---
-    verified_recipes = []
-    print("Fase 3: Verifica finale e selezione ricette")
-
-    # Verifica dietetica più stretta
-    for recipe in optimized_recipes:
-        # Verifica preferenze dietetiche
-        if not verify_dietary_preferences(recipe, preferences):
-            print(
-                f"Ricetta '{recipe.name}' scartata: non rispetta preferenze dietetiche")
-            continue
-
-        # Verifica qualità generale
-        if len(recipe.ingredients) < 3:
-            print(
-                f"Ricetta '{recipe.name}' scartata: troppo pochi ingredienti ({len(recipe.ingredients)})")
-            continue
-
-        # Verifica CHO finale più stringente
-        final_cho_tolerance = 15.0  # Tolleranza più stretta per la selezione finale
-        if not (recipe.total_cho and target_cho - final_cho_tolerance <= recipe.total_cho <= target_cho + final_cho_tolerance):
-            print(
-                f"Ricetta '{recipe.name}' scartata in fase finale: CHO={recipe.total_cho:.1f}g fuori dal range target")
-            continue
-
-        print(
-            f"Ricetta '{recipe.name}' verificata (CHO: {recipe.total_cho:.1f}g, Ingredienti: {len(recipe.ingredients)})")
-        verified_recipes.append(recipe)
+    # Imposta messaggio di errore/successo nello stato
+    if not final_selected_recipes:
+        state['error_message'] = "Processo completato ma nessuna ricetta finale selezionata."
+    elif len(final_selected_recipes) < max_final_recipes:
+        state['error_message'] = f"Trovate solo {len(final_selected_recipes)} ricette finali (invece delle {max_final_recipes} desiderate). Potresti provare a rilassare i vincoli."
+    else:
+        state.pop('error_message', None)  # Rimuovi errore se successo pieno
 
     print(
-        f"Ricette che hanno passato tutte le verifiche finali: {len(verified_recipes)}")
-
-    # --- NUOVA FASE 4: VERIFICA DIVERSITÀ ---
-    if len(verified_recipes) > 1:
-        print("Fase 4: Verifica diversità delle ricette")
-        diverse_recipes = ensure_recipe_diversity(
-            verified_recipes, target_cho, similarity_threshold=0.6)
-        print(
-            f"Ricette diverse selezionate: {len(diverse_recipes)} su {len(verified_recipes)} valide")
-    else:
-        diverse_recipes = verified_recipes
-
-    # --- FASE 5: SELEZIONE FINALE ---
-    # Ordina per vicinanza al target CHO
-    diverse_recipes.sort(key=lambda r: abs(
-        r.total_cho - target_cho) if r.total_cho else float('inf'))
-
-    # Limita a 5 ricette
-    final_recipes = diverse_recipes[:5]
-
-    # --- AGGIORNA STATO ---
-    state['final_verified_recipes'] = final_recipes
-
-    if not final_recipes:
-        state['error_message'] = "Nessuna ricetta ha superato la verifica finale."
-    elif len(final_recipes) < 3:
-        state['error_message'] = f"Solo {len(final_recipes)} ricette hanno superato la verifica."
-    else:
-        # Rimuovi eventuali messaggi di errore precedenti
-        state.pop('error_message', None)
-
-    print(
-        f"Verifica completata: {len(final_recipes)} ricette selezionate su {len(recipes)} iniziali")
+        f"\n--- Verifica completata: {len(final_selected_recipes)} ricette finali selezionate ---")
     return state

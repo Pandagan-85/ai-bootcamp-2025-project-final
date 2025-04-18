@@ -1,4 +1,3 @@
-# app.py (Aggiornato per il sistema semplificato "Generate then Fix")
 import os
 import time
 import base64
@@ -151,10 +150,10 @@ def load_basic_ingredient_info_cached(csv_filepath):
 
 # --- Interfaccia Streamlit ---
 st.set_page_config(
-    page_title="Generatore Ricette Low-CHO (Generate then Fix)", layout="wide")
-st.title("🥦 Generatore di Ricette Low-CHO (Generate then Fix) 🥕")
+    page_title="NutriCHOice - Generatore Ricette CHO", layout="wide")
+st.title("🥦 NutriCHOice la scelta intelligente, per un'alimentazione su misura) 🥕")
 st.markdown(
-    "Imposta le tue preferenze nella barra laterale e genera ricette personalizzate.")
+    "Imposta le tue preferenze nella e genera ricette personalizzate.")
 
 # --- Caricamento Risorse all'Avvio ---
 start_load_time = time.time()

@@ -1,11 +1,15 @@
+acciughe
 acciughe (fresche)
 acciughe (sott'olio)
+acciughi
 aceto balsamici
 aceto balsamico
 aceto di mele
 aceto di meli
 aceto di vino bianci
 aceto di vino bianco
+acqua frizzante
+acqua frizzanti
 acqua minerale
 acqua minerali
 acqua tonica
@@ -44,12 +48,8 @@ banana
 banane
 barbabietola
 barbabietole
-barretta energetica (mista)
 besciamella
 besciamelle
-bevanda energetica
-bevanda energetice
-bevanda gassata (cola)
 biete
 bieti
 birra
@@ -97,6 +97,8 @@ cetriolo
 cicoria belga (indivia)
 ciliegia
 ciliegie
+cinghiale
+cinghiali
 cioccolato al latte
 cioccolato al latti
 cioccolato bianci
@@ -158,6 +160,8 @@ farri
 farro
 fecola di patate
 fecola di patati
+fegato di manzi
+fegato di manzo
 fesa di tacchini
 fesa di tacchino
 feta
@@ -168,6 +172,8 @@ fichi
 fichi secchi
 filetto di manzi
 filetto di manzo
+filetto di salmone affumicati
+filetto di salmone affumicato
 finocchii
 finocchio
 fiocchi di latte
@@ -201,6 +207,8 @@ germogli di soie
 ghee (burro chiarificato)
 gnocchi di patate
 gnocchi di patati
+gnocchi di risi
+gnocchi di riso
 grano saraceni
 grano saraceno
 grissini
@@ -351,8 +359,11 @@ pasta all'uovo
 pasta d'acciughe
 pasta d'acciughi
 pasta di ceci
+pasta di lenticchie
 pasta di lenticchie rosse
 pasta di lenticchie rossi
+pasta di lenticchii
+pasta di piselli
 pasta integrale
 pasta integrali
 paste
@@ -491,7 +502,6 @@ tacchino
 tagliatelle
 tahini (pasta di sesamo)
 tempeh
-tisana (non zuccherata)
 tofu
 tonno fresci
 tonno fresco

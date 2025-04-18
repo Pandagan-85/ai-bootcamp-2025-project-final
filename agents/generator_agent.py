@@ -1,4 +1,3 @@
-# generator_agent.py (SEMPLIFICATO CORRETTO)
 import json
 import random
 import os
@@ -162,7 +161,7 @@ def generate_recipes_agent(state: GraphState) -> GraphState:
 
         # Setup LLM, Prompt
         target_recipes = 5  # Numero ricette da tentare
-        max_workers = min(3, target_recipes)
+        max_workers = 8
         api_key = os.getenv("OPENAI_API_KEY")
 
         if not api_key:
