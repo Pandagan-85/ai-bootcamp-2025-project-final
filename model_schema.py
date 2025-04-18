@@ -1,6 +1,4 @@
-# model_schema.py
 from typing import List, Dict, Optional, TypedDict, Any, Callable
-# Aggiungi ConfigDict se usi Pydantic V2
 from pydantic import BaseModel, Field, ConfigDict
 import numpy as np
 import faiss  # Importa faiss per type hint (opzionale)
@@ -10,7 +8,7 @@ from sentence_transformers import SentenceTransformer
 
 
 class UserPreferences(BaseModel):
-
+    """Rappresenta le preferenze dietetiche e nutrizionali dell'utente."""
     model_config = ConfigDict(arbitrary_types_allowed=True)
     target_cho: float = Field(description="Target CHO in grams")
     vegan: bool = Field(description="Vegan preference")

@@ -21,7 +21,26 @@ EMBEDDING_MODEL_NAME = 'paraphrase-multilingual-mpnet-base-v2'
 
 
 def prepare_consistent_ingredient_data(filepath: str) -> list[str]:
-    """Carica e arricchisce i nomi degli ingredienti garantendo coerenza case-sensitive."""
+    """
+    Carica e arricchisce i nomi degli ingredienti garantendo coerenza case-sensitive.
+
+    Processo:
+    1. Carica i nomi base degli ingredienti dal CSV
+    2. Normalizza i nomi (minuscolo, rimuove spazi in eccesso)
+    3. Arricchisce il dataset con varianti linguistiche:
+       - Singolare/plurale (es. "carota" -> "carote")
+       - Sinonimi comuni (es. "polpo" -> "polipo")
+    4. Rimuove duplicati e salva lista arricchita
+
+    Args:
+        filepath: Percorso al file CSV con gli ingredienti base
+
+    Returns:
+        Lista ordinata di nomi di ingredienti normalizzati e arricchiti
+
+    Raises:
+        ValueError: Se la colonna 'name' non è presente nel CSV
+    """
     try:
         print(f"Caricamento nomi da: {filepath}")
         df = pd.read_csv(filepath, encoding='utf-8')

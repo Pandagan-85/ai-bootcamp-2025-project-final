@@ -12,8 +12,22 @@ from model_schema import IngredientInfo
 
 def load_basic_ingredient_info(filepath: str) -> Dict[str, IngredientInfo] | None:
     """
-    Carica solo le informazioni base degli ingredienti (dizionario nome->info) dal CSV.
-    NON carica/calcola embedding o modello.
+    Carica le informazioni base degli ingredienti dal file CSV specificato.
+
+    Funzionalità:
+    1. Legge il CSV degli ingredienti (prova prima UTF-8, poi Latin-1 come fallback)
+    2. Estrae e converte correttamente i dati nutrizionali e i flag dietetici
+    3. Gestisce errori di formattazione, valori mancanti e duplicati
+
+    Args:
+        filepath: Percorso completo al file CSV degli ingredienti
+
+    Returns:
+        Dizionario {nome_ingrediente: IngredientInfo} con tutti i dati nutrizionali
+        e flag dietetici, o None in caso di errore critico (file mancante, colonne obbligatorie assenti)
+
+    Raises:
+        Gestisce internamente le eccezioni, stampando messaggi di errore dettagliati
     """
     print(f"--- Caricamento Info Base Ingredienti da {filepath} ---")
     start_time = time.time()

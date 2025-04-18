@@ -2,7 +2,7 @@
 Agente di verifica e ottimizzazione delle ricette generate.
 
 Questo modulo implementa l'agente verificatore potenziato, responsabile dell'analisi,
-matching, ottimizzazione e verifica delle ricette generate. Questo agente è il 
+matching, ottimizzazione e verifica delle ricette generate. Questo agente è il
 "cervello" del sistema in grado di correggere e migliorare le ricette per soddisfare
 i requisiti nutrizionali e dietetici.
 """
@@ -18,7 +18,13 @@ from utils import find_best_match_faiss, calculate_ingredient_cho_contribution, 
 
 def calculate_recipe_similarity(recipe1: FinalRecipeOption, recipe2: FinalRecipeOption) -> float:
     """
-    Calcola un punteggio di somiglianza tra due ricette.
+    Calcola un punteggio di somiglianza tra due ricette basato su vari fattori.
+
+    Criteri di similarità (con pesi differenti):
+    1. Somiglianza nel titolo (peso: 0.2) - escluse parole comuni
+    2. Ingredienti principali condivisi (peso: 0.4) - top 3 per quantità
+    3. Tipo di piatto basato su parole chiave (peso: 0.25)
+    4. Attributi dietetici comuni (peso: 0.15) - vegano, vegetariano, ecc.
 
     Args:
         recipe1, recipe2: Le ricette da confrontare
@@ -113,14 +119,19 @@ def calculate_recipe_similarity(recipe1: FinalRecipeOption, recipe2: FinalRecipe
 
 def ensure_recipe_diversity(recipes: List[FinalRecipeOption], target_cho: float, similarity_threshold: float = 0.6) -> List[FinalRecipeOption]:
     """
-    Filtra una lista di ricette per assicurarsi che non ci siano ricette troppo simili.
+    Filtra una lista di ricette per assicurarsi che non ci siano ricette troppo simili tra loro.
+
+    Implementazione:
+    1. Ordina le ricette per qualità (vicinanza al target CHO)
+    2. Parte dalla ricetta migliore e aggiunge solo ricette sufficientemente diverse
 
     Args:
         recipes: Lista di ricette da filtrare
+        target_cho: Valore target di carboidrati per la valutazione della qualità
         similarity_threshold: Soglia sopra la quale le ricette sono considerate troppo simili
 
     Returns:
-        Lista di ricette filtrata per diversità
+        Lista di ricette filtrata per massimizzare diversità mantenendo qualità
     """
     if len(recipes) <= 1:
         return recipes
@@ -152,14 +163,18 @@ def ensure_recipe_diversity(recipes: List[FinalRecipeOption], target_cho: float,
 
 def correct_dietary_flags(recipe: FinalRecipeOption, ingredient_data: Dict[str, IngredientInfo]) -> FinalRecipeOption:
     """
-    Corregge i flag dietetici di una ricetta basandosi sugli ingredienti.
+    Corregge i flag dietetici di una ricetta basandosi sugli ingredienti contenuti.
+
+    Utilizza liste predefinite di ingredienti non compatibili con ciascuna categoria
+    dietetica per verificare e correggere i flag, esaminando gli ingredienti
+    della ricetta.
 
     Args:
         recipe: Ricetta da verificare
-        ingredient_data: Database ingredienti
+        ingredient_data: Database degli ingredienti con informazioni nutrizionali
 
     Returns:
-        Ricetta con flag dietetici corretti
+        Ricetta con flag dietetici corretti in base agli ingredienti effettivi
     """
     # Lista di ingredienti NON vegani
     non_vegan_ingredients = {"pollo", "tacchino", "manzo", "vitello", "maiale", "prosciutto",
@@ -213,14 +228,16 @@ def correct_dietary_flags(recipe: FinalRecipeOption, ingredient_data: Dict[str, 
 
 def identify_cho_contributors(recipe: FinalRecipeOption, ingredient_data: Dict[str, IngredientInfo]) -> List[CalculatedIngredient]:
     """
-    Identifica gli ingredienti che contribuiscono maggiormente ai CHO.
+    Identifica gli ingredienti che contribuiscono maggiormente ai carboidrati (CHO) nella ricetta.
 
     Args:
         recipe: Ricetta da analizzare
-        ingredient_data: Database ingredienti
+        ingredient_data: Database ingredienti con informazioni nutrizionali
 
     Returns:
         Lista di ingredienti ordinati per contributo CHO (dal maggiore al minore)
+        Include sia ingredienti con contributo CHO già calcolato che ingredienti
+        identificati come ricchi di CHO nel database anche se non ancora calcolati
     """
     # Filtra solo ingredienti con contributo CHO significativo
     cho_rich_ingredients = []
@@ -249,14 +266,17 @@ def fine_tune_recipe(recipe: FinalRecipeOption, ingredient_to_adjust: Calculated
     """
     Effettua un aggiustamento fine della ricetta modificando un singolo ingrediente.
 
+    Strategia utilizzata per piccole differenze di CHO (< 15g) rispetto al target.
+    Modifica la quantità di un ingrediente specifico per compensare la differenza di CHO.
+
     Args:
         recipe: Ricetta da aggiustare
         ingredient_to_adjust: Ingrediente da modificare
-        cho_difference: Differenza di CHO da compensare
-        ingredient_data: Database ingredienti
+        cho_difference: Differenza di CHO da compensare (target - attuale)
+        ingredient_data: Database ingredienti con informazioni nutrizionali
 
     Returns:
-        Ricetta modificata
+        Ricetta modificata con valori nutrizionali ricalcolati
     """
     adjusted_recipe = deepcopy(recipe)
 
@@ -308,16 +328,19 @@ def fine_tune_recipe(recipe: FinalRecipeOption, ingredient_to_adjust: Calculated
 def adjust_recipe_proportionally(recipe: FinalRecipeOption, cho_contributors: List[CalculatedIngredient],
                                  scaling_factor: float, ingredient_data: Dict[str, IngredientInfo]) -> FinalRecipeOption:
     """
-    Aggiusta proporzionalmente tutti gli ingredienti ricchi di CHO.
+    Aggiusta proporzionalmente tutti gli ingredienti ricchi di CHO in una ricetta.
+
+    Strategia utilizzata per differenze di CHO più significative (> 15g) rispetto al target.
+    Applica un fattore di scala a tutti gli ingredienti che contribuiscono ai CHO.
 
     Args:
         recipe: Ricetta da aggiustare
         cho_contributors: Lista di ingredienti ricchi di CHO
-        scaling_factor: Fattore di scala da applicare
-        ingredient_data: Database ingredienti
+        scaling_factor: Fattore di scala da applicare (es: 1.2 per aumentare del 20%)
+        ingredient_data: Database ingredienti con informazioni nutrizionali
 
     Returns:
-        Ricetta modificata
+        Ricetta modificata con valori nutrizionali ricalcolati
     """
     adjusted_recipe = deepcopy(recipe)
     contributor_names = [ing.name for ing in cho_contributors]
@@ -359,16 +382,20 @@ def adjust_recipe_proportionally(recipe: FinalRecipeOption, cho_contributors: Li
 
 def optimize_recipe_cho(recipe: FinalRecipeOption, target_cho: float, ingredient_data: Dict[str, IngredientInfo]) -> Optional[FinalRecipeOption]:
     """
-    Ottimizza una ricetta per raggiungere il target CHO.
-    Utilizza diverse strategie in base alla situazione.
+    Ottimizza una ricetta per raggiungere il target CHO utilizzando diverse strategie.
+
+    Processo decisionale:
+    1. Se la ricetta è già nel range target (±5g), la mantiene inalterata
+    2. Per piccole differenze (< 15g), usa fine_tune_recipe sull'ingrediente principale
+    3. Per differenze maggiori (≥ 15g), usa adjust_recipe_proportionally su tutti gli ingredienti CHO
 
     Args:
         recipe: Ricetta da ottimizzare
         target_cho: Target CHO in grammi
-        ingredient_data: Database ingredienti
+        ingredient_data: Database ingredienti con informazioni nutrizionali
 
     Returns:
-        Ricetta ottimizzata o None se non ottimizzabile
+        Ricetta ottimizzata o None se non è stato possibile ottimizzarla
     """
     # 1. Calcola i valori nutrizionali attuali se non già calcolati
     if recipe.total_cho is None:
@@ -423,16 +450,22 @@ def match_recipe_ingredients(recipe: FinalRecipeOption, ingredient_data: Dict[st
     """
     Effettua il matching degli ingredienti della ricetta con il database usando FAISS.
 
+    Per ogni ingrediente della ricetta:
+    1. Cerca una corrispondenza nel database con find_best_match_faiss
+    2. Sostituisce il nome generato dall'LLM con il nome matchato dal DB
+    3. Calcola i contributi nutrizionali per ogni ingrediente matchato
+
     Args:
         recipe: Ricetta con ingredienti da matchare
-        ingredient_data: Database ingredienti
-        faiss_index: Indice FAISS
-        index_to_name_mapping: Mapping indice-nome
-        embedding_model: Modello di embedding
-        normalize_function: Funzione di normalizzazione
+        ingredient_data: Database ingredienti con informazioni nutrizionali
+        faiss_index: Indice FAISS per la ricerca semantica
+        index_to_name_mapping: Mapping da indice a nome ingrediente
+        embedding_model: Modello SentenceTransformer per generare embeddings
+        normalize_function: Funzione per normalizzare i nomi degli ingredienti
 
     Returns:
         Tupla con (ricetta con ingredienti matchati, flag successo)
+        flag=True solo se tutti gli ingredienti sono stati matchati con successo
     """
     matched_recipe = deepcopy(recipe)
     matched_ingredients = []
@@ -599,15 +632,24 @@ def suggest_cho_adjustment(recipe: FinalRecipeOption, target_cho: float,
                            ingredient_data: Dict[str, IngredientInfo]) -> Optional[Tuple[str, str, float]]:
     """
     Suggerisce un aggiustamento per avvicinare la ricetta al target CHO.
-    Può suggerire di aggiungere un nuovo ingrediente o modificare uno esistente.
+
+    Strategie:
+    1. Se serve aumentare CHO: suggerisce di aggiungere un nuovo ingrediente ricco di CHO
+       o di aumentare la quantità di un ingrediente esistente
+    2. Se serve ridurre CHO: suggerisce di ridurre la quantità dell'ingrediente
+       con il maggior contributo di CHO
 
     Args:
         recipe: Ricetta da analizzare
         target_cho: Target CHO in grammi
-        ingredient_data: Database ingredienti
+        ingredient_data: Database ingredienti con informazioni nutrizionali
 
     Returns:
-        Tupla (tipo_aggiustamento, nome_ingrediente, quantità) o None se non possibile
+        Tupla (tipo_aggiustamento, nome_ingrediente, quantità) dove:
+        - tipo_aggiustamento: "add" o "modify"
+        - nome_ingrediente: nome dell'ingrediente da aggiungere o modificare
+        - quantità: nuova quantità o quantità da aggiungere
+        Ritorna None se non è possibile suggerire un aggiustamento valido
     """
     if recipe.total_cho is None or target_cho is None:
         return None

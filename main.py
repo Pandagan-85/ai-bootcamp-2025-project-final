@@ -1,16 +1,17 @@
 import os
+from typing import Dict, Optional
+import numpy as np
 import argparse
 import time
 import pickle
-from pprint import pprint
+
 from dotenv import load_dotenv
-import numpy as np
+
 import faiss
 from sentence_transformers import SentenceTransformer
-from typing import Dict, Any, Optional, List
 
 # Importa componenti dal progetto
-from model_schema import UserPreferences, GraphState, FinalRecipeOption, IngredientInfo
+from model_schema import UserPreferences, GraphState
 from loaders import load_basic_ingredient_info
 from workflow import create_workflow  # Usa il workflow aggiornato
 from utils import normalize_name

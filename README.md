@@ -1,4 +1,4 @@
-# Sistema Generatore di Ricette Personalizzate (Generate then Fix)
+# NutriCHOice - Generatore Ricette CHO (Generate then Fix)
 
 ## 📋 Panoramica
 

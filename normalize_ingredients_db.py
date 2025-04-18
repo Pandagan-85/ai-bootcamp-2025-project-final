@@ -1,4 +1,20 @@
-# normalize_ingredients_db.py
+"""
+Script di utilità per normalizzare i nomi degli ingredienti nel database.
+
+Questo script:
+1. Carica il database degli ingredienti dal CSV
+2. Crea un backup del file originale
+3. Normalizza ogni nome di ingrediente (minuscolo, rimuove spazi in eccesso, prima lettera maiuscola)
+4. Rimuove eventuali duplicati creati dalla normalizzazione
+5. Salva sia un nuovo file normalizzato che sovrascrive l'originale
+
+Utilizzo:
+python normalize_ingredients_db.py
+
+Note:
+- Assicurarsi che il file ingredients.csv esista nella cartella data/
+- Controlla attentamente l'output per eventuali avvisi di duplicati rimossi
+"""
 import os
 import pandas as pd
 from utils import normalize_name

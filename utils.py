@@ -25,7 +25,26 @@ def find_best_match_faiss(
     normalize_func: Callable[[str], str],
     threshold: float = 0.65  # Soglia più bassa
 ) -> Optional[Tuple[str, float]]:
-    """Trova il miglior match usando un approccio a più livelli."""
+    """
+    Trova il miglior match per un nome di ingrediente usando un approccio a più livelli con FAISS.
+
+    Implementa una strategia multi-step:
+    1. Tenta corrispondenza diretta con nomi esatti
+    2. Tenta match con sinonimi comuni
+    3. Esegue ricerca semantica con FAISS
+    4. Tenta strategie di fallback (es: forme singolare/plurale)
+
+    Args:
+        llm_name: Nome dell'ingrediente generato dall'LLM da matchare
+        faiss_index: Indice FAISS precaricato con embeddings degli ingredienti
+        index_to_name_mapping: Lista di mapping da indice a nome ingrediente
+        model: Modello SentenceTransformer per generare embeddings
+        normalize_func: Funzione per normalizzare i nomi degli ingredienti
+        threshold: Soglia minima di similarità (default: 0.65)
+
+    Returns:
+        Tuple con (nome_matchato, score_similarità) se trovato, None altrimenti
+    """
 
     # PRETRATTAMENTO e NORMALIZZAZIONE
     common_synonyms = {
@@ -104,7 +123,20 @@ def calculate_ingredient_cho_contribution(
     ingredients: List[RecipeIngredient],
     ingredient_data: Dict[str, IngredientInfo]
 ) -> List[CalculatedIngredient]:
-    """Calcola i contributi nutrizionali per una lista di ingredienti."""
+    """Calcola i contributi nutrizionali per una lista di ingredienti.
+
+    Processo:
+    1. Per ogni ingrediente, cerca una corrispondenza nel database (exact, case-insensitive, sinonimi)
+    2. Calcola i contributi nutrizionali (CHO, calorie, proteine, grassi, fibre) in base alla quantità
+    3. Preserva anche i flag dietetici (vegano, senza glutine, ecc.) dall'info base
+
+    Args:
+        ingredients: Lista di oggetti RecipeIngredient con nome e quantità in grammi
+        ingredient_data: Dizionario con i dati nutrizionali degli ingredienti {nome: IngredientInfo}
+
+    Returns:
+        Lista di oggetti CalculatedIngredient con tutti i contributi nutrizionali calcolati
+        Gli ingredienti non trovati nel DB vengono comunque inclusi con CHO=0 e un flag "(Info Mancanti!)"""
     calculated_list = []
 
     # Crea un dizionario case-insensitive per il matching
@@ -231,7 +263,18 @@ def calculate_ingredient_cho_contribution(
 
 
 def check_dietary_match(recipe: Any, preferences: UserPreferences) -> bool:
-    """Verifica se una ricetta (vecchio tipo Recipe) soddisfa le preferenze."""
+    """Verifica se una ricetta (vecchio tipo Recipe) soddisfa le preferenze dietetiche dell'utente.
+
+    Args:
+        recipe: Oggetto ricetta (vecchio tipo) con flag dietetici is_X_recipe
+        preferences: Preferenze dietetiche dell'utente
+
+    Returns:
+        True se la ricetta soddisfa tutte le preferenze dietetiche, False altrimenti
+
+    Note:
+        Funzione mantenuta per retrocompatibilità. Considerare l'uso di
+        check_final_recipe_dietary_match per il nuovo tipo FinalRecipeOption."""
     # Mantieni questa funzione se ancora usata da qualche parte, altrimenti rimuovi
     if preferences.vegan and not recipe.is_vegan_recipe:
         return False
@@ -245,7 +288,14 @@ def check_dietary_match(recipe: Any, preferences: UserPreferences) -> bool:
 
 
 def check_final_recipe_dietary_match(recipe: FinalRecipeOption, preferences: UserPreferences) -> bool:
-    """Verifica se una ricetta (FinalRecipeOption) soddisfa le preferenze."""
+    """Verifica se una ricetta (FinalRecipeOption) soddisfa le preferenze dietetiche dell'utente.
+
+    Args:
+        recipe: Oggetto FinalRecipeOption con flag dietetici (is_vegan, is_vegetarian, ecc.)
+        preferences: Preferenze dietetiche dell'utente (vegan, vegetarian, gluten_free, lactose_free)
+
+    Returns:
+        True se la ricetta soddisfa tutte le preferenze dietetiche, False altrimenti"""
     if preferences.vegan and not recipe.is_vegan:
         return False
     if preferences.vegetarian and not recipe.is_vegetarian:

@@ -9,7 +9,7 @@ import os
 import time
 import base64
 import torch
-torch.classes.__path__ = []  # Aggiungi questa riga
+torch.classes.__path__ = []  # per streamlit
 
 # Importa funzioni e classi necessarie
 try:
@@ -53,6 +53,15 @@ if not os.path.exists(NAME_MAPPING_FILE):
 
 
 def get_base64_encoded_image(image_path: str) -> str | None:
+    """
+    Codifica un'immagine in base64 per incorporarla direttamente nell'HTML.
+
+    Args:
+        image_path: Percorso completo al file immagine
+
+    Returns:
+        Stringa dell'immagine codificata in base64 o None se l'immagine non esiste o si verifica un errore
+    """
     if not os.path.exists(image_path):
         return None
     try:
@@ -64,6 +73,15 @@ def get_base64_encoded_image(image_path: str) -> str | None:
 
 
 def get_img_html(img_path: str, width: int = 24) -> str:
+    """
+    Codifica un'immagine in base64 per incorporarla direttamente nell'HTML.
+
+    Args:
+        image_path: Percorso completo al file immagine
+
+    Returns:
+        Stringa dell'immagine codificata in base64 o None se l'immagine non esiste o si verifica un errore
+    """
     base64_image = get_base64_encoded_image(img_path)
     if base64_image:
         return f'<img src="data:image/png;base64,{base64_image}" width="{width}" style="margin-right: 5px; vertical-align: middle;" alt="{os.path.basename(img_path)}">'
@@ -75,6 +93,20 @@ def get_img_html(img_path: str, width: int = 24) -> str:
 
 
 def image_checkbox(label: str, img_path: str, img_width: int = 60, key: str | None = None, value: bool = False, text_below: bool = True) -> bool:
+    """
+    Crea un checkbox personalizzato con un'immagine sopra l'etichetta utilizzando componenti Streamlit.
+
+    Args:
+        label: Etichetta testuale del checkbox
+        img_path: Percorso completo all'immagine da visualizzare
+        img_width: Larghezza desiderata dell'immagine in pixel (default: 60)
+        key: Chiave unica per il componente Streamlit (necessaria per state management)
+        value: Valore iniziale del checkbox (default: False)
+        text_below: Se True, posiziona il testo sotto l'immagine, altrimenti a fianco
+
+    Returns:
+        Stato corrente del checkbox (True se selezionato, False altrimenti)
+    """
     container = st.container()
     img_col = container.container()
     img_html_for_display = ""

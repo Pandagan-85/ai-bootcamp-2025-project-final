@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Workflow Diagram - Generazione Ricette (Hardcoded)</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: "default",
+        flowchart: {
+          useMaxWidth: false,
+          curve: "basis",
+        },
+      });
+    </script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        line-height: 1.6;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      h1 {
+        color: #333;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 10px;
+      }
+      .mermaid {
+        text-align: center;
+        margin: 30px 0;
+      }
+      .footer {
+        margin-top: 40px;
+        font-size: 0.9em;
+        color: #666;
+        text-align: center;
+        border-top: 1px solid #eee;
+        padding-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Workflow Diagram - Generazione Ricette (Hardcoded)</h1>
+    <p>
+      Diagramma predefinito del sistema di generazione ricette 'Generate then
+      Fix'
+    </p>
+    <div class="mermaid">
+      flowchart TD %% Inizializzazione A[Caricamento Risorse] --> B[FAISS Index]
+      A --> C[SentenceTransformer] A --> D[Ingredient DB] A --> E[User
+      Preferences] B & C & D & E --> F[GraphState Initialization] %% Generator
+      Agent F --> G[Generator Agent] G --> H[Generazione Ricette Creative] H -->
+      I[Conversione a FinalRecipeOption] I --> K{decide_after_generation} %%
+      Routing Decision K -->|Ricette Valide| L[Verifier Agent] K -->|Errore/No
+      Ricette| X[Formatter Agent] %% Verifier Agent L --> M[Fase 1: Matching &
+      Validazione] M --> O[Fase 2: Ottimizzazione CHO] O --> T[Fase 3: Verifica
+      Finale & Selezione] T --> X %% Formatter Agent X --> Y[Formattazione HTML]
+      Y --> Z[Output Finale] classDef blue
+      fill:#ddf,stroke:#33f,stroke-width:2px classDef green
+      fill:#dfd,stroke:#3a3,stroke-width:2px classDef orange
+      fill:#fed,stroke:#f93,stroke-width:2px classDef yellow
+      fill:#ffd,stroke:#ff3,stroke-width:2px classDef purple
+      fill:#edf,stroke:#93f,stroke-width:2px class A,B,C,D,E,F blue class G,H,I
+      green class K yellow class L,M,O,T orange class X,Y purple class Z gray
+    </div>
+    <div class="footer">
+      <p>
+        Sistema Generatore di Ricette Personalizzate - Approccio "Generate then
+        Fix"
+      </p>
+    </div>
+  </body>
+</html>
