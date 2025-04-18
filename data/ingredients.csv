@@ -38,7 +38,7 @@ Finocchio,7.3,31.0,1.2,0.2,3.1,True,True,True,True,100.0,Verdura
 Mela,14.0,52.0,0.3,0.2,2.4,True,True,True,True,150.0,Frutta
 Banana,22.8,89.0,1.1,0.3,2.6,True,True,True,True,120.0,Frutta
 Arancia,11.8,47.0,0.9,0.1,2.4,True,True,True,True,150.0,Frutta
-Farina di farro	67.0	335.0	14.0	2.5	6.0	True	True	False	True	30.0	Carboidrati
+Farina di farro,67.0,335.0,14.0,2.5,6.0,True,True,False,True,30.0,Carboidrati
 Pera,15.5,57.0,0.4,0.1,3.1,True,True,True,True,150.0,Frutta
 Fragole,7.7,32.0,0.7,0.3,2.0,True,True,True,True,100.0,Frutta
 Ananas,11.8,50.0,0.5,0.1,1.4,True,True,True,True,100.0,Frutta
