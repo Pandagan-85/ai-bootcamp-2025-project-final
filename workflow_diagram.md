@@ -1,4 +1,4 @@
-# Workflow LangGraph per Generazione Ricette (Hardcoded)
+# Workflow LangGraph per Generazione Ricette
 
 ```mermaid
 flowchart TD
@@ -7,7 +7,10 @@ flowchart TD
     A --> C[SentenceTransformer]
     A --> D[Ingredient DB]
     A --> E[User Preferences]
-    B & C & D & E --> F[GraphState Initialization]
+    B --> F[GraphState Initialization]
+    C --> F
+    D --> F
+    E --> F
     
     %% Generator Agent
     F --> G[Generator Agent]
@@ -29,6 +32,7 @@ flowchart TD
     X --> Y[Formattazione HTML]
     Y --> Z[Output Finale]
     
+    %% Stili
     classDef blue fill:#ddf,stroke:#33f,stroke-width:2px
     classDef green fill:#dfd,stroke:#3a3,stroke-width:2px
     classDef orange fill:#fed,stroke:#f93,stroke-width:2px
