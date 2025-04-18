@@ -308,9 +308,10 @@ Pane azzimo,69.0,325.0,9.0,1.5,3.5,True,True,False,True,50.0,Carboidrati
 Latte,4.8,64.0,3.3,3.6,0.0,False,True,True,False,250.0,Latticini
 Besciamella,6.0,120.0,2.5,8.5,0.0,False,True,True,False,50.0,Condimenti
 Pasta di lenticchie,52.0,340.0,24.0,1.7,7.0,True,True,True,True,80.0,Carboidrati
-Pasta di ceci,47.0,336.0,21.0,2.9,6.5,True,True,True,True,80.0,Carboidrati
 Pasta di piselli,55.0,350.0,22.0,2.0,6.0,True,True,True,True,80.0,Carboidrati
 Acqua frizzante,0.0,0.0,0.0,0.0,0.0,True,True,True,True,500.0,Bevande
 Fegato di manzo,3.9,135.0,20.0,3.6,0.0,False,False,True,True,100.0,Proteine
 Cinghiale,0.0,160.0,30.0,4.0,0.0,False,False,True,True,120.0,Proteine
 Acciughe,0.0,131.0,20.4,4.8,0.0,False,False,True,True,80.0,Proteine
+Gnocchi di riso,24.0,140.0,2.0,0.5,0.5,True,True,True,True,200.0,Carboidrati
+Filetto di salmone affumicato,0.0,180.0,22.0,10.0,0.0,False,False,True,True,50.0,Proteine
