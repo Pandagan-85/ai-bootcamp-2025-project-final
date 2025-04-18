@@ -182,9 +182,9 @@ if faiss_index.ntotal != len(index_to_name_mapping):
              f"Rieseguire lo script 'create_faiss_index.py'.")
     st.stop()
 
-# --- UI Sidebar ---
-st.sidebar.header("Preferenze Ricetta")
-target_cho = st.sidebar.number_input(
+
+st.header("Preferenze Ricetta")
+target_cho = st.number_input(
     "🎯 Target Carboidrati (g/porzione)",
     min_value=5.0,
     max_value=300.0,
@@ -192,7 +192,7 @@ target_cho = st.sidebar.number_input(
     step=5.0,
     help="Imposta il contenuto desiderato di carboidrati per porzione (in grammi)."
 )
-st.sidebar.markdown("---")
+st.markdown("---")
 
 # Flag per mostrare avviso solo una volta
 if 'missing_icon_warning_shown' not in st.session_state:
@@ -222,7 +222,7 @@ if vegan:
     vegetarian = True
 
 # --- Pulsante di Generazione e Logica di Esecuzione ---
-if st.sidebar.button("✨ Genera Ricette", use_container_width=True, type="primary"):
+if st.button("✨ Genera Ricette", use_container_width=True, type="primary"):
 
     st.markdown("---")
     results_container = st.container()
