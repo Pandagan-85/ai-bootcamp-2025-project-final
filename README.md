@@ -1,174 +1,155 @@
-# Sistema Generatore di Ricette Personalizzate
+# Sistema Generatore di Ricette Personalizzate (Generate then Fix)
 
 ## 📋 Panoramica
 
-Questo progetto implementa un sistema avanzato di generazione di ricette personalizzate basato su LLM che crea ricette con un contenuto specifico di carboidrati (CHO) rispettando preferenze dietetiche come vegano, vegetariano, senza glutine e senza lattosio.
+Questo progetto implementa un sistema di generazione di ricette personalizzate basato su LLM, focalizzato sull'approccio **"Generate then Fix"**. L'obiettivo è creare ricette che rispettino un target specifico di carboidrati (CHO) e preferenze dietetiche (vegano, vegetariano, senza glutine, senza lattosio).
 
-Il sistema utilizza un'architettura basata su agenti orchestrati da LangGraph per gestire il flusso completo: dalla generazione delle ricette alla loro verifica, fino alla formattazione dell'output finale per l'utente.
+Il sistema utilizza un'architettura basata su agenti orchestrati da **LangGraph**. Un agente generatore crea ricette iniziali in modo creativo, mentre un agente verificatore potenziato analizza, corregge, ottimizza e filtra queste ricette per garantire la conformità ai requisiti e la qualità finale.
 
 ## 🎯 Obiettivo del progetto
 
-Creare ricette bilanciate e personalizzate che soddisfino specifiche esigenze dietetiche e nutrizionali, con particolare attenzione al contenuto di carboidrati (CHO), permettendo di generare pasti adatti a persone con restrizioni alimentari o che necessitano di controllare l'apporto di carboidrati.
+Generare ricette gustose, realistiche e personalizzate che soddisfino:
 
-## 🏗️ Architettura del sistema
+- Un **target specifico di carboidrati (CHO)**.
+- **Preferenze dietetiche** definite dall'utente.
+- Requisiti di **qualità e diversità** tra le opzioni proposte.
 
-Il sistema è costruito con un'architettura modulare che utilizza il framework LangGraph per orchestrare il flusso di generazione delle ricette attraverso diversi agenti specializzati.
+## 🏗️ Architettura del sistema: Approccio "Generate then Fix"
 
-### Flusso di lavoro generale
+Il sistema adotta un approccio "Generate then Fix":
 
+1.  **Generate:** L'LLM genera ricette in modo creativo, con vincoli minimi sul calcolo preciso dei nutrienti ma rispettando le linee guida generali (formato, ingredienti comuni, preferenze dietetiche).
+2.  **Fix (Verify & Optimize):** Un agente specializzato (Verifier Agent) analizza le ricette generate. Effettua:
+    - **Matching degli ingredienti:** Collega gli ingredienti generati dall'LLM al database interno utilizzando FAISS e Sentence Transformers per l'analisi semantica.
+    - **Calcolo nutrizionale:** Calcola CHO, calorie, etc., basandosi sui dati del database.
+    - **Verifica dietetica:** Controlla e corregge i flag dietetici (vegan, gluten-free, etc.) basandosi sugli ingredienti effettivi.
+    - **Ottimizzazione CHO:** Modifica le quantità degli ingredienti (proporzionalmente o in modo mirato) per avvicinare il contenuto di CHO al target desiderato.
+    - **Verifica di qualità e diversità:** Scarta ricette incomplete, troppo semplici o troppo simili ad altre già selezionate.
+
+### Flusso di lavoro LangGraph
+
+```mermaid
+graph TD
+    A[Caricamento Dati e Preferenze] --> B(generate_recipes);
+    B --> C{decide_after_generation};
+    C -- Ricette OK --> D(verify_recipes);
+    C -- Errore o No Ricette --> E(format_output);
+    D --> E;
+    E --> F[Fine];
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#ccf,stroke:#333,stroke-width:2px
+    style C fill:#ff9,stroke:#333,stroke-width:2px
+    style D fill:#ccf,stroke:#333,stroke-width:2px
+    style E fill:#ccf,stroke:#333,stroke-width:2px
+    style F fill:#eee,stroke:#333,stroke-width:2px
 ```
-Caricamento dati → Generazione ricette → Verifica ricette → Formattazione output
-```
 
-Il grafo di LangGraph implementa questo flusso con la possibilità di percorsi alternativi in caso di errori o altre condizioni specifiche.
+Il grafo implementa questo flusso, gestendo errori e assicurando che solo ricette valide e ottimizzate raggiungano l'output finale.
 
-## 📊 Modelli di dati
+## 📊 Modelli di dati (model_schema.py)
 
-Il sistema utilizza diversi modelli di dati definiti in `model_schema.py`:
+Il sistema si basa su modelli Pydantic per una strutturazione robusta dei dati:
 
-- `UserPreferences`: Le preferenze dell'utente (target CHO, vegano, vegetariano, senza glutine, senza lattosio)
-- `IngredientInfo`: Informazioni nutrizionali e dietetiche di un ingrediente
-- `Recipe`: Una ricetta con ingredienti e proprietà dietetiche
-- `RecipeIngredient`: Un ingrediente nella ricetta con la sua quantità
-- `CalculatedIngredient`: Un ingrediente con contributo nutrizionale calcolato
-- `FinalRecipeOption`: Una ricetta completa con tutti i valori nutrizionali calcolati
-- `GraphState`: Lo stato che viene passato tra i nodi del grafo LangGraph
+`UserPreferences`: Input dell'utente (target CHO, flag dietetici).
+`IngredientInfo`: Dati nutrizionali e flag dietetici per singolo ingrediente dal DB.
+`RecipeIngredient`: Rappresenta un ingrediente con quantità (usato internamente per calcoli).
+`CalculatedIngredient`: Estende `RecipeIngredient` includendo i contributi nutrizionali calcolati e flag dietetici verificati. Contiene anche original_llm_name.
+`FinalRecipeOption`: La struttura completa di una ricetta finale, validata e ottimizzata, pronta per l'utente. Include una lista di `CalculatedIngredient`.
+`GraphState`: TypedDict che rappresenta lo stato condiviso tra i nodi del grafo LangGraph (include preferenze, dati, modelli, ricette intermedie/finali, errori).
 
 ## 🧠 Agenti e loro funzioni
 
-### Generator Agent (`generator_agent.py`)
+1. **Generator Agent (generator_agent.py)** - Semplificato
+   **Responsabilità:** Generare bozze creative di ricette basate sulle preferenze generali e sul target CHO approssimativo, senza effettuare calcoli precisi o matching ingredienti.
+   **Input:** UserPreferences, target_cho, dietary_preferences_string.
+   **Output:** Lista di FinalRecipeOption non verificate (con total_cho e altri nutrienti a None, ingredienti come `CalculatedIngredient` ma con solo name = original_llm_name e quantity_g).
+   **Tecnologia:** ChatOpenAI (GPT-4-Turbo o simili), Langchain Expression Language (LCEL).
 
-**Responsabilità**: Generare ricette da zero utilizzando LLM (GPT-3.5/4) che soddisfino i criteri nutrizionali e le preferenze dietetiche.
+2. **Verifier Agent** (verifier_agent.py) - Potenziato
+   **Responsabilità**: Il "cervello" del sistema. Analizza, valida, ottimizza e filtra le ricette generate.
+   **Input**: Lista di FinalRecipeOption non verificate, UserPreferences, database ingredienti, modello SBERT, indice FAISS.
+   **Output**: Lista di FinalRecipeOption verificate e ottimizzate.
+   Funzioni Chiave:
 
-**Dettagli implementativi**:
+   - match_recipe_ingredients: Utilizza FAISS e Sentence Transformers per mappare gli ingredienti LLM al DB. Aggiorna gli ingredienti nella ricetta e calcola i nutrienti.
+   - calculate_ingredient_cho_contribution: Funzione di utilità per calcolare i nutrienti.
+   - compute_dietary_flags: Verifica e imposta i flag dietetici basandosi sugli ingredienti matchati.
+   - optimize_recipe_cho: Applica strategie (scaling proporzionale, aggiustamento fine) per raggiungere il target CHO.
+   - suggest_cho_adjustment / add_ingredient: Eventuali modifiche più drastiche (aggiunta/modifica ingredienti) se l'ottimizzazione standard fallisce.
+   - ensure_recipe_diversity: Filtra ricette troppo simili tra loro usando calculate_recipe_similarity.
+   - Verifiche finali su range CHO, numero ingredienti/istruzioni.
 
-- Utilizza un prompt ingegnerizzato per guidare l'LLM nella creazione di ricette con target CHO specifico
-- Genera più ricette concorrenti utilizzando ThreadPoolExecutor per parallelizzare le richieste
-- Implementa un meccanismo di retry in caso di problemi con l'LLM
-- Filtra gli ingredienti disponibili in base alle preferenze dietetiche
-- Verifica la validità delle ricette generate e calcola il contenuto nutrizionale
+## 🛠️ Setup e Dipendenze Chiave
 
-**Strategia di generazione**:
+- Python 3.10+
+- Langchain (langchain, langchain-openai, langgraph)
+- Sentence Transformers (sentence-transformers)
+- FAISS (faiss-cpu o faiss-gpu)
+- Pandas (pandas) per il caricamento dati
+- NumPy (numpy)
+- Pydantic (pydantic) per la validazione dei dati
+- Streamlit (streamlit) per l'interfaccia web (opzionale, in app.py)
+- python-dotenv per la gestione delle API keys
 
-1. Crea un elenco di ingredienti validi basati sulle preferenze dietetiche
-2. Invia il prompt all'LLM con tutte le informazioni pertinenti
-3. Estrae e valida l'output JSON dall'LLM
-4. Calcola i contributi CHO di ogni ingrediente
-5. Verifica che la ricetta soddisfi i requisiti minimi
+## Preparazione Dati:
 
-### Verifier Agent (`verifier_agent.py`)
+Prima di eseguire il sistema, è necessario creare l'indice FAISS e il mapping dei nomi degli ingredienti:
 
-**Responsabilità**: Verificare e ottimizzare le ricette generate per garantire che soddisfino i requisiti e bilanciarne la composizione.
+`python create_faiss_index.py`
 
-**Funzioni chiave**:
+Questo script legge data/ingredients.csv, genera gli embedding e salva data/ingredients.index e data/ingredient_names.pkl. Assicurati che data/ingredients.csv esista e sia formattato correttamente.
 
-- `validate_recipe_ingredients`: Verifica che tutti gli ingredienti esistano nel database
-- `adjust_recipe_cho`: Modifica le quantità degli ingredienti per raggiungere il target CHO
-- `balance_cho_distribution`: Migliora la distribuzione dei CHO tra gli ingredienti
+## API Key:
 
-**Verifiche eseguite**:
-
-1. Validità degli ingredienti
-2. Range di CHO entro la tolleranza
-3. Compatibilità con le preferenze dietetiche
-4. Bilanciamento della distribuzione dei CHO
-5. Numero minimo di ingredienti per una ricetta ragionevole
-
-L'agente effettua anche aggiustamenti proattivi:
-
-- Bilancia ricette con ingredienti troppo dominanti
-- Regola le quantità per avvicinarsi al target CHO
-- Identifica e risolve potenziali problemi di distribuzione dei nutrienti
-
-### Formatter Agent (`formatter_agent.py`)
-
-**Responsabilità**: Formattare l'output finale in un formato leggibile per l'utente.
-
-**Caratteristiche**:
-
-- Genera output Markdown strutturato
-- Presenta le ricette con dettagli nutrizionali completi
-- Gestisce sia i casi di successo che di fallimento
-- Evidenzia le caratteristiche dietetiche delle ricette
-- Fornisce messaggi di errore informativi e suggerimenti quando necessario
-
-## 🔄 Workflow di esecuzione
-
-Il flusso di esecuzione è gestito da `workflow.py` che crea un grafo LangGraph con nodi e decisioni:
-
-1. **generate_recipes**: Punto di ingresso che genera ricette da zero
-2. **decide_after_generation**: Decisione su come procedere dopo la generazione
-   - Se ci sono ricette generate → passa alla verifica
-   - Se c'è un errore o nessuna ricetta → passa direttamente all'output
-3. **verify_recipes**: Verifica e ottimizza le ricette generate
-4. **format_output**: Formatta i risultati per la presentazione
+È necessaria una API key di OpenAI. Impostarla come variabile d'ambiente OPENAI_API_KEY (ad esempio in un file .env).
 
 ## 🚀 Utilizzo
 
-Il programma si esegue da linea di comando tramite `main.py` con parametri specifici:
+Esecuzione da linea di comando
 
-```bash
-python main.py 80 --vegan --gluten_free
-```
+`python main.py <target_cho> [--vegan] [--vegetarian] [--gluten_free] [--lactose_free]`
 
-Parametri:
+Esempio: Generare ricette vegetariane con circa 100g di CHO.
 
-- Il primo argomento è il target CHO in grammi (obbligatorio)
-- Flag opzionali: `--vegan`, `--vegetarian`, `--gluten_free`, `--lactose_free`
+`python main.py 100 --vegetarian`
 
-## 📂 Struttura dei file
+Esecuzione con Streamlit (Interfaccia Web)
+`streamlit run app.py`
 
-- `main.py`: Punto di ingresso dell'applicazione
-- `model_schema.py`: Definizione dei modelli di dati
-- `workflow.py`: Configurazione del grafo LangGraph
-- `utils.py`: Funzioni di utilità comuni
-- `loaders.py`: Caricamento dei dati degli ingredienti e delle ricette
-- `agents/`: Directory contenente gli agenti specializzati
-  - `generator_agent.py`: Generazione di ricette
-  - `verifier_agent.py`: Verifica e ottimizzazione delle ricette
-  - `formatter_agent.py`: Formattazione dell'output
-  - `retriever_agent.py`: Recupero ricette (non utilizzato nel flusso principale)
+Questo avvierà un server web locale con un'interfaccia utente per inserire le preferenze e visualizzare i risultati.
 
-## 🔍 Dettagli tecnici aggiuntivi
+## 🔍 Dettagli Tecnici Chiave
 
-### Calcolo dei contributi nutrizionali
-
-Il sistema calcola i contributi nutrizionali di ogni ingrediente in base alla quantità utilizzata:
-
-```python
-cho_contribution = (quantity_g * cho_per_100g) / 100.0
-```
-
-Questo viene applicato anche per calorie, proteine, grassi e fibre quando disponibili.
-
-### Tolleranza e bilanciamento
-
-- Tolleranza CHO: La deviazione accettabile dal target CHO (generalmente ±10g)
-- Bilanciamento dei CHO: Nessun singolo ingrediente dovrebbe contribuire più del 90% del CHO totale
-- Quantità minime: Il sistema garantisce che le modifiche mantengano quantità realistiche per ogni ingrediente
-
-### Strategie di ottimizzazione delle ricette
-
-1. **Aggiustamento proporzionale**: Scala tutti gli ingredienti ricchi di CHO
-2. **Aggiustamento mirato**: Modifica solo l'ingrediente principale
-3. **Bilanciamento**: Redistribuisce i CHO tra più ingredienti
-4. **Sostituzione**: Aggiunge nuovi ingredienti se necessario
-
-## 💡 Punti di forza del sistema
-
-- **Altamente personalizzabile**: Target CHO e preferenze dietetiche configurabili
-- **Robustezza**: Gestione degli errori a più livelli
-- **Scalabilità**: Elaborazione parallela per la generazione di ricette
-- **Ottimizzazione automatica**: Le ricette vengono automaticamente aggiustate per soddisfare i requisiti
-- **Output completo**: Le ricette includono tutti i dettagli nutrizionali
-- **Esperienza utente**: Output formattato in modo chiaro e leggibile
+- Matching Ingredienti: utils.find_best_match_faiss utilizza Sentence Transformers per creare embedding vettoriali dei nomi degli ingredienti (sia dal LLM che dal DB) e FAISS per trovare la corrispondenza più vicina nello spazio vettoriale.
+- Calcolo Nutrienti: utils.calculate_ingredient_cho_contribution calcola i contributi basandosi sui dati del DB per gli ingredienti matchati. Gestisce ingredienti non trovati o senza dati.
+- Ottimizzazione CHO: verifier_agent.optimize_recipe_cho implementa logiche di scaling proporzionale e aggiustamento fine basate sulla differenza tra CHO attuale e target.
+- Gestione Stato: GraphState (TypedDict) mantiene lo stato condiviso, permettendo ai nodi di accedere e modificare dati come le preferenze, le ricette generate/verificate e i messaggi di errore.
+  💡 Punti di forza dell'approccio "Generate then Fix"
+- Creatività LLM: Sfrutta la capacità dell'LLM di generare idee originali senza sovraccaricarlo con calcoli precisi.
+- Accuratezza del Verificatore: Garantisce la conformità ai requisiti numerici e dietetici tramite logica Python e dati certi.
+- Robustezza: Separa la generazione dalla verifica, rendendo il sistema meno suscettibile a errori di calcolo dell'LLM.
+- Flessibilità: L'agente verificatore può implementare logiche di ottimizzazione complesse.
 
 ## 🔄 Flusso di elaborazione dettagliato
 
-1. L'utente specifica target CHO e preferenze dietetiche
-2. Il sistema carica il database degli ingredienti
-3. Il Generator Agent crea ricette multiple in parallelo
-4. Il Verifier Agent controlla e ottimizza le ricette
-5. Il sistema seleziona le migliori ricette verificate
-6. Il Formatter Agent crea un output leggibile
-7. L'output viene presentato all'utente
+1. L'utente specifica target CHO e preferenze (UserPreferences).
+2. `main.py` o `app.py` caricano risorse (modello SBERT, indice FAISS, dati ingredienti) e preparano GraphState iniziale.
+3. `generate_recipes_agent`: Genera N bozze di ricette creative (List[FinalRecipeOption] non verificate).
+4. `decide_after_generation`: Controlla se ci sono ricette e instrada al verificatore o direttamente al formatter.
+5. verifier_agent:
+
+- Per ogni ricetta:
+  - Matcha ingredienti (find_best_match_faiss).
+  - Calcola nutrienti (calculate_ingredient_cho_contribution).
+  - Verifica/corregge flag dietetici (compute_dietary_flags).
+  - Verifica preferenze utente.
+- Filtra ricette non matchate o non conformi.
+- Per le ricette rimanenti:
+  - Ottimizza CHO (optimize_recipe_cho, suggest_cho_adjustment).
+- Filtra ricette non ottimizzabili o fuori range finale.
+- Verifica diversità (ensure_recipe_diversity).
+- Seleziona le migliori N ricette (final_verified_recipes).
+
+6. `formatter_agent`: Prende final_verified_recipes e error_message, genera la stringa HTML final_output.
+7. L'output HTML viene presentato all'utente (console o Streamlit).

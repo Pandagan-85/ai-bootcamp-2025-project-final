@@ -2,12 +2,14 @@
 Definizione del flusso di lavoro per la generazione di ricette.
 
 Questo modulo definisce il grafo di esecuzione (workflow) utilizzando LangGraph
-per orchestrare gli agenti coinvolti nella generazione e verifica di ricette personalizzate.
-Implementa l'approccio "Generate then Fix" con un generatore semplificato e un verificatore potenziato.
+per orchestrare i vari agenti coinvolti nella generazione di ricette personalizzate.
+Il workflow è strutturato come un grafo diretto con nodi (agenti) e archi (transizioni)
+che definiscono il flusso di esecuzione.
 """
 from typing import Literal
 
 from langgraph.graph import StateGraph, END
+
 
 # Importa lo schema dello stato e le funzioni dei nodi
 from model_schema import GraphState
@@ -19,12 +21,13 @@ from agents.formatter_agent import format_output_agent
 
 # --- Funzioni Decisionali per il Routing Condizionale ---
 
+
 def decide_after_generation(state: GraphState) -> Literal["verify_recipes", "format_output"]:
     """
     Funzione decisionale che determina il percorso da seguire dopo la generazione delle ricette.
 
     Questa funzione prende decisioni in base allo stato attuale del grafo:
-    - Se ci sono errori critici, va direttamente all'output
+    - Se ci sono errori critici (relativi all'LLM o all'API Key), va direttamente all'output
     - Se non sono state generate ricette, va direttamente all'output
     - Altrimenti, procede con la verifica delle ricette
 
@@ -35,15 +38,17 @@ def decide_after_generation(state: GraphState) -> Literal["verify_recipes", "for
         Una stringa che indica il nodo successivo da eseguire:
         - "verify_recipes": per procedere con la verifica delle ricette
         - "format_output": per saltare la verifica e passare direttamente all'output
+
+    Note:
+        - Assicura che ci sia un messaggio di errore appropriato se non sono state generate ricette
+        - Il percorso scelto viene registrato nel log per il debug
     """
     print("--- DECISIONE: Dopo Generazione Ricette ---")
-
     # Controlla errori specifici della fase di generazione o se la lista è vuota
     if state.get("error_message") and ("LLM" in state["error_message"] or "API Key" in state["error_message"]):
         print(
             f"Percorso: Errore Generazione ({state.get('error_message')}) -> Format Output")
         return "format_output"
-
     if not state.get("generated_recipes"):
         print("Percorso: Nessuna ricetta generata -> Format Output")
         # Assicurati che ci sia un messaggio di errore appropriato se non già presente
@@ -57,20 +62,23 @@ def decide_after_generation(state: GraphState) -> Literal["verify_recipes", "for
 
 # --- Creazione del Grafo ---
 
+
 def create_workflow() -> StateGraph:
     """
     Crea e configura il grafo LangGraph per il processo di generazione ricette.
 
-    Implementa il flusso "Generate then Fix" con:
-    1. Generator Agent: Generazione creativa con vincoli minimi
-    2. Verifier Agent: Matching, validazione e ottimizzazione
-    3. Formatter Agent: Presentazione dei risultati
+    Questo metodo definisce:
+    1. I nodi del grafo (agenti che elaborano lo stato)
+    2. Il punto di ingresso (da dove inizia l'esecuzione)
+    3. Le connessioni condizionali (decisioni basate sullo stato)
+    4. Le connessioni dirette (transizioni semplici)
     """
     print("--- Creazione Grafo Workflow ---")
     # Inizializza il grafo con lo stato definito
     workflow = StateGraph(GraphState)
 
     # 1. Aggiungi i Nodi al grafo
+    # Ogni nodo è una funzione che prende lo stato e restituisce lo stato modificato
     print("Aggiunta nodo: generate_recipes")
     workflow.add_node("generate_recipes", generate_recipes_agent)
 
@@ -109,3 +117,10 @@ def create_workflow() -> StateGraph:
     app = workflow.compile()
     print("--- Grafo Compilato con Successo ---")
     return app
+
+
+# Esempio di come usare la funzione (verrà chiamato da main.py)
+if __name__ == '__main__':
+    compiled_app = create_workflow()
+    # Stampa informazioni sul grafo compilato (opzionale)
+    # print(compiled_app.get_graph().print_ascii()) # Stampa ASCII del grafo

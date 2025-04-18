@@ -1,491 +1,848 @@
 """
 Agente di verifica e ottimizzazione delle ricette generate.
 
-Questo modulo implementa il nodo 'verifier_agent' del workflow, responsabile
-dell'analisi, filtraggio e aggiustamento delle ricette proposte dal generatore.
-NON esegue più il bilanciamento della distribuzione dei CHO tra gli ingredienti.
-
-Le operazioni principali svolte includono:
-1.  **Validazione Ingredienti:** Verifica che tutti gli ingredienti di una ricetta
-    siano presenti nel database (`ingredient_data`). Le ricette con ingredienti
-    sconosciuti vengono scartate (`validate_recipe_ingredients`).
-2.  **Aggiustamento CHO:** Tenta di modificare le quantità degli ingredienti
-    (`adjust_recipe_cho`) per portare il contenuto totale di carboidrati (CHO)
-    della ricetta entro un range accettabile rispetto al target dell'utente.
-    Questo passaggio viene applicato alle ricette che non rientrano già in un
-    range di tolleranza predefinito rispetto al loro valore originale.
-3.  **Verifica Finale Multi-criterio:** Applica una serie di controlli finali
-    sulle ricette (originali o aggiustate) per scartare quelle che non
-    soddisfano i requisiti stringenti:
-    - Range di CHO finale (target ± tolleranza).
-    - Conformità alle preferenze dietetiche specificate dall'utente (vegan, vegetarian, gluten-free, lactose-free).
-    - Criteri di 'qualità' (es. numero minimo di ingredienti > 2, quantità massime per singolo ingrediente < 300g).
-    - Controllo (meno restrittivo) su ingredienti singoli con contributo CHO eccessivamente dominante (>98%).
-
-L'agente riceve le ricette generate (`generated_recipes`), applica queste fasi
-di verifica e selezione, e restituisce una lista finale (`final_verified_recipes`)
-contenente le ricette che hanno superato tutti i controlli, pronte per la
-formattazione finale. Gestisce anche la diversificazione delle ricette selezionate
-e imposta messaggi di errore se non vengono trovate abbastanza ricette valide.
+Questo modulo implementa l'agente verificatore potenziato, responsabile dell'analisi,
+matching, ottimizzazione e verifica delle ricette generate. Questo agente è il 
+"cervello" del sistema in grado di correggere e migliorare le ricette per soddisfare
+i requisiti nutrizionali e dietetici.
 """
-from typing import List, Dict
+from typing import List, Dict, Optional, Tuple
 from copy import deepcopy
-from model_schema import GraphState, FinalRecipeOption, UserPreferences, RecipeIngredient, IngredientInfo
+import random
 
-from utils import calculate_ingredient_cho_contribution
+from model_schema import GraphState, FinalRecipeOption, UserPreferences, RecipeIngredient, IngredientInfo, CalculatedIngredient
+from utils import find_best_match_faiss, calculate_ingredient_cho_contribution, normalize_name
+
+# --- FUNZIONI DI OTTIMIZZAZIONE ---
 
 
-def adjust_recipe_cho(recipe: FinalRecipeOption, target_cho: float, ingredient_data: Dict[str, IngredientInfo]) -> FinalRecipeOption:
+def calculate_recipe_similarity(recipe1: FinalRecipeOption, recipe2: FinalRecipeOption) -> float:
     """
-    Aggiusta le quantità degli ingredienti per raggiungere il target CHO desiderato,
-    con limiti di scaling più aggressivi e logica graduale.
+    Calcola un punteggio di somiglianza tra due ricette.
+
+    Args:
+        recipe1, recipe2: Le ricette da confrontare
+
+    Returns:
+        Punteggio da 0.0 (completamente diverse) a 1.0 (identiche)
     """
-    # Verifica iniziale e copia (come prima)
-    if recipe.total_cho is None:
-        print(
-            f"Warning adjust_cho: Ricetta '{recipe.name}' ha total_cho=None. Impossibile aggiustare.")
-        return recipe  # Non fare nulla se manca il CHO iniziale
+    similarity_score = 0.0
+    total_weight = 0.0
 
-    # Se siamo già molto vicini al target, non fare nulla
-    if abs(recipe.total_cho - target_cho) < 5.0:  # Soglia di non intervento ridotta
-        # print(f"Debug adjust_cho: CHO ({recipe.total_cho:.1f}g) già vicino al target ({target_cho:.1f}g). Nessun aggiustamento.")
-        return recipe
+    # 1. Somiglianza nel titolo (peso: 0.2)
+    weight = 0.2
+    title1_words = set(recipe1.name.lower().split())
+    title2_words = set(recipe2.name.lower().split())
+    # Rimuovi parole comuni
+    common_words = {"con", "e", "al", "di", "la", "il",
+                    "le", "i", "in", "del", "della", "allo", "alla"}
+    title1_words = title1_words - common_words
+    title2_words = title2_words - common_words
 
-    adjusted_recipe = deepcopy(recipe)
-    initial_cho = adjusted_recipe.total_cho  # Salva CHO iniziale per confronto
+    if title1_words and title2_words:  # Evita divisione per zero
+        title_overlap = len(title1_words.intersection(
+            title2_words)) / min(len(title1_words), len(title2_words))
+        similarity_score += title_overlap * weight
+        total_weight += weight
 
-    # Identifica ingredienti ricchi di CHO (logica come prima)
+    # 2. Ingredienti principali (peso: 0.4)
+    weight = 0.4
+    # Estrai gli ingredienti principali (top 3 per grammi)
+
+    def get_main_ingredients(recipe):
+        sorted_ingredients = sorted(
+            recipe.ingredients, key=lambda x: x.quantity_g, reverse=True)
+        return {ing.name for ing in sorted_ingredients[:3]}
+
+    main_ingredients1 = get_main_ingredients(recipe1)
+    main_ingredients2 = get_main_ingredients(recipe2)
+
+    if main_ingredients1 and main_ingredients2:
+        ingredients_overlap = len(main_ingredients1.intersection(
+            main_ingredients2)) / min(len(main_ingredients1), len(main_ingredients2))
+        similarity_score += ingredients_overlap * weight
+        total_weight += weight
+
+    # 3. Tipo di piatto basato su parole chiave (peso: 0.25)
+    weight = 0.25
+    dish_categories = {
+        "primo": {"pasta", "risotto", "zuppa", "minestra", "minestrone", "gnocchi", "spaghetti", "lasagne", "riso"},
+        "secondo": {"pollo", "manzo", "tacchino", "vitello", "bistecca", "pesce", "salmone", "tonno", "frittata", "uova", "polpette"},
+        "contorno": {"insalata", "verdure", "vegetali", "patate", "legumi"},
+        "dessert": {"torta", "dolce", "gelato", "budino", "crema", "crostata"}
+    }
+
+    def get_dish_type(recipe: FinalRecipeOption):  # Accetta l'intero oggetto
+
+        name_lower = recipe.name.lower()
+        for category, keywords in dish_categories.items():
+            for keyword in keywords:
+                if keyword in name_lower:
+                    return category
+        # Controlla anche gli ingredienti
+        ingredients_text = " ".join([ing.name.lower()
+                                    for ing in recipe.ingredients])
+        for category, keywords in dish_categories.items():
+            for keyword in keywords:
+                if keyword in ingredients_text:
+                    return category
+        return "unknown"
+
+    dish_type1 = get_dish_type(recipe1)
+    dish_type2 = get_dish_type(recipe2)
+
+    if dish_type1 == dish_type2 and dish_type1 != "unknown":
+        similarity_score += weight
+        total_weight += weight
+
+    # 4. Attributi dietetici (peso: 0.15)
+    weight = 0.15
+    dietary_attrs1 = (recipe1.is_vegan, recipe1.is_vegetarian,
+                      recipe1.is_gluten_free, recipe1.is_lactose_free)
+    dietary_attrs2 = (recipe2.is_vegan, recipe2.is_vegetarian,
+                      recipe2.is_gluten_free, recipe2.is_lactose_free)
+
+    dietary_similarity = sum(a == b for a, b in zip(
+        dietary_attrs1, dietary_attrs2)) / 4.0
+    similarity_score += dietary_similarity * weight
+    total_weight += weight
+
+    # Normalizza il punteggio totale
+    return similarity_score / total_weight if total_weight > 0 else 0.0
+
+
+def ensure_recipe_diversity(recipes: List[FinalRecipeOption], target_cho: float, similarity_threshold: float = 0.6) -> List[FinalRecipeOption]:
+    """
+    Filtra una lista di ricette per assicurarsi che non ci siano ricette troppo simili.
+
+    Args:
+        recipes: Lista di ricette da filtrare
+        similarity_threshold: Soglia sopra la quale le ricette sono considerate troppo simili
+
+    Returns:
+        Lista di ricette filtrata per diversità
+    """
+    if len(recipes) <= 1:
+        return recipes
+
+    # Ordina ricette per qualità (in base alla distanza dal target CHO)
+    sorted_recipes = sorted(recipes, key=lambda r: abs(
+        r.total_cho - target_cho) if r.total_cho else float('inf'))
+
+    # Lista per le ricette diverse
+    diverse_recipes = [sorted_recipes[0]]  # Inizia con la migliore ricetta
+
+    # Controlla le ricette rimanenti
+    for candidate in sorted_recipes[1:]:
+        # Calcola similarità con tutte le ricette già selezionate
+        is_too_similar = False
+        for selected in diverse_recipes:
+            similarity = calculate_recipe_similarity(candidate, selected)
+            if similarity > similarity_threshold:
+                is_too_similar = True
+                print(
+                    f"Ricetta '{candidate.name}' scartata: troppo simile a '{selected.name}' (similarità: {similarity:.2f})")
+                break
+
+        if not is_too_similar:
+            diverse_recipes.append(candidate)
+
+    return diverse_recipes
+
+
+def correct_dietary_flags(recipe: FinalRecipeOption, ingredient_data: Dict[str, IngredientInfo]) -> FinalRecipeOption:
+    """
+    Corregge i flag dietetici di una ricetta basandosi sugli ingredienti.
+
+    Args:
+        recipe: Ricetta da verificare
+        ingredient_data: Database ingredienti
+
+    Returns:
+        Ricetta con flag dietetici corretti
+    """
+    # Lista di ingredienti NON vegani
+    non_vegan_ingredients = {"pollo", "tacchino", "manzo", "vitello", "maiale", "prosciutto",
+                             "pancetta", "salmone", "tonno", "pesce", "uova", "uovo", "formaggio",
+                             "parmigiano", "mozzarella", "ricotta", "burro", "latte", "panna"}
+
+    # Lista di ingredienti NON vegetariani
+    non_vegetarian_ingredients = {"pollo", "tacchino", "manzo", "vitello", "maiale", "prosciutto",
+                                  "pancetta", "salmone", "tonno", "pesce"}
+
+    # Lista di ingredienti NON senza glutine
+    gluten_ingredients = {"pasta", "pane", "farina", "couscous", "orzo", "farro",
+                          "seitan", "pangrattato", "grano"}
+
+    # Lista di ingredienti NON senza lattosio
+    lactose_ingredients = {"latte", "formaggio", "parmigiano", "mozzarella", "ricotta",
+                           "burro", "panna", "yogurt"}
+
+    updated_recipe = deepcopy(recipe)
+
+    # Controlla ogni ingrediente
+    ing_names_lower = [ing.name.lower() for ing in recipe.ingredients]
+    combined_text = " ".join(ing_names_lower).lower()
+
+    # Check vegano
+    for item in non_vegan_ingredients:
+        if item in combined_text:
+            updated_recipe.is_vegan = False
+            break
+
+    # Check vegetariano
+    for item in non_vegetarian_ingredients:
+        if item in combined_text:
+            updated_recipe.is_vegetarian = False
+            break
+
+    # Check senza glutine
+    for item in gluten_ingredients:
+        if item in combined_text:
+            updated_recipe.is_gluten_free = False
+            break
+
+    # Check senza lattosio
+    for item in lactose_ingredients:
+        if item in combined_text:
+            updated_recipe.is_lactose_free = False
+            break
+
+    return updated_recipe
+
+
+def identify_cho_contributors(recipe: FinalRecipeOption, ingredient_data: Dict[str, IngredientInfo]) -> List[CalculatedIngredient]:
+    """
+    Identifica gli ingredienti che contribuiscono maggiormente ai CHO.
+
+    Args:
+        recipe: Ricetta da analizzare
+        ingredient_data: Database ingredienti
+
+    Returns:
+        Lista di ingredienti ordinati per contributo CHO (dal maggiore al minore)
+    """
+    # Filtra solo ingredienti con contributo CHO significativo
     cho_rich_ingredients = []
-    # ... (la tua logica esistente per popolare cho_rich_ingredients) ...
-    # Esempio di logica (assicurati che sia robusta):
-    if adjusted_recipe.total_cho > 0:  # Evita divisione per zero
-        for ing in adjusted_recipe.ingredients:
-            # Considera ingredienti con almeno 5g CHO/100g
-            if ing.name in ingredient_data and ingredient_data[ing.name].cho_per_100g > 5:
-                # Usa contributo già calcolato se disponibile e valido
-                cho_contribution = ing.cho_contribution if ing.cho_contribution is not None and ing.cho_contribution > 0 else 0
-                # Considera "ricco" se contribuisce >5% o se CHO totale è basso
-                if cho_contribution > 0 and (adjusted_recipe.total_cho < 30 or (cho_contribution / adjusted_recipe.total_cho) > 0.05):
-                    cho_rich_ingredients.append(ing)
 
-    # Se non trovati, prova fallback (come prima, es. > 5g CHO/100g)
-    if not cho_rich_ingredients:
-        potential_ingredients = [
-            ing for ing in adjusted_recipe.ingredients
-            if ing.name in ingredient_data and ingredient_data[ing.name].cho_per_100g > 5
-        ]
-        if potential_ingredients:
-            cho_rich_ingredients = potential_ingredients
+    for ing in recipe.ingredients:
+        # Controlla se l'ingrediente ha un contributo CHO
+        if hasattr(ing, 'cho_contribution') and ing.cho_contribution is not None and ing.cho_contribution > 0:
+            cho_rich_ingredients.append(ing)
+        # Gestisci gli ingredienti che hanno nome ma non contributo calcolato
+        elif ing.name in ingredient_data and ingredient_data[ing.name].cho_per_100g > 5:
+            # Ingrediente ricco di CHO nel DB ma non calcolato nella ricetta
+            cho_rich_ingredients.append(ing)
 
-    if not cho_rich_ingredients:
-        print(
-            f"Debug adjust_cho: No CHO-rich ingredients identified for '{recipe.name}' to scale.")
-        return recipe  # Non possiamo aggiustare se non sappiamo cosa scalare
-
-    # Ordina per contributo (come prima)
+    # Ordina per contributo CHO (se disponibile) o per CHO/100g dal DB
     cho_rich_ingredients.sort(
-        key=lambda x: x.cho_contribution if x.cho_contribution is not None else 0, reverse=True)
-    # print(f"Debug adjust_cho: Identified {len(cho_rich_ingredients)} CHO-rich ingredients for '{recipe.name}': {[ing.name for ing in cho_rich_ingredients]}")
+        key=lambda x: (x.cho_contribution if hasattr(x, 'cho_contribution') and x.cho_contribution is not None else
+                       (ingredient_data[x.name].cho_per_100g * x.quantity_g / 100 if x.name in ingredient_data else 0)),
+        reverse=True
+    )
 
-    # Calcola differenza CHO (come prima)
-    cho_diff = target_cho - adjusted_recipe.total_cho
-    print(
-        f"Debug adjust_cho: Recipe '{recipe.name}' - Initial CHO: {initial_cho:.1f}g, Target: {target_cho:.1f}g, Diff: {cho_diff:.1f}g")
+    return cho_rich_ingredients
 
-    # --- INIZIO BLOCCO MODIFICATO: Calcolo e Applicazione Scaling Factor ---
-    scaling_factor = 1.0  # Default a nessun cambiamento
 
-    if adjusted_recipe.total_cho > 0:  # Evita divisione per zero
-        # Calcolo base del fattore di scala ideale
-        ideal_scaling_factor = target_cho / adjusted_recipe.total_cho
+def fine_tune_recipe(recipe: FinalRecipeOption, ingredient_to_adjust: CalculatedIngredient,
+                     cho_difference: float, ingredient_data: Dict[str, IngredientInfo]) -> FinalRecipeOption:
+    """
+    Effettua un aggiustamento fine della ricetta modificando un singolo ingrediente.
 
-        # Definisci i limiti minimi e massimi per lo scaling
-        min_scale = 0.3  # Limite inferiore più permissivo (riduzione maggiore)
-        # Limite superiore MOLTO aggressivo per differenze > 100g
-        max_scale_very_high_diff = 7.0
-        max_scale_high_diff = 6.0  # Limite superiore aggressivo per differenze > 60g
-        max_scale_med_diff = 4.5  # Limite superiore moderato per differenze > 30g
-        max_scale_low_diff = 3.0  # Limite superiore leggero per differenze < 30g
+    Args:
+        recipe: Ricetta da aggiustare
+        ingredient_to_adjust: Ingrediente da modificare
+        cho_difference: Differenza di CHO da compensare
+        ingredient_data: Database ingredienti
 
-        # Applica i limiti basati sulla differenza CHO e sulla direzione (aumentare/ridurre)
-        if cho_diff < 0:  # Dobbiamo RIDURRE i CHO (total_cho > target_cho)
-            # Determina limite inferiore in base all'entità della differenza
-            if abs(cho_diff) > 60:
-                effective_min_scale = min_scale  # Molto basso per grandi riduzioni
-            elif abs(cho_diff) > 30:
-                effective_min_scale = 0.4
-            else:
-                effective_min_scale = 0.5  # Riduzione meno aggressiva per differenze minori
-            # Applica il limite inferiore
-            scaling_factor = max(effective_min_scale, ideal_scaling_factor)
-            # Assicurati che non superi 1.0 (non vogliamo aumentare se dobbiamo ridurre)
-            scaling_factor = min(scaling_factor, 1.0)
-            print(
-                f"DEBUG adjust_cho (Riduzione): Diff={cho_diff:.1f}g, IdealScale={ideal_scaling_factor:.2f}, EffectiveMinScale={effective_min_scale:.2f}, FinalScale={scaling_factor:.2f}")
+    Returns:
+        Ricetta modificata
+    """
+    adjusted_recipe = deepcopy(recipe)
 
-        elif cho_diff > 0:  # Dobbiamo AUMENTARE i CHO (total_cho < target_cho)
-            # Determina il limite massimo in base all'entità della differenza
-            if abs(cho_diff) > 100:  # Differenza molto grande
-                effective_max_scale = max_scale_very_high_diff
-                print(
-                    f"DEBUG adjust_cho (Aumento >100g): Applico max_scale {effective_max_scale}")
-            elif abs(cho_diff) > 60:  # Differenza grande
-                effective_max_scale = max_scale_high_diff
-                print(
-                    f"DEBUG adjust_cho (Aumento >60g): Applico max_scale {effective_max_scale}")
-            elif abs(cho_diff) > 30:  # Differenza media
-                effective_max_scale = max_scale_med_diff
-                print(
-                    f"DEBUG adjust_cho (Aumento >30g): Applico max_scale {effective_max_scale}")
-            else:  # Differenza minore
-                effective_max_scale = max_scale_low_diff
-                print(
-                    f"DEBUG adjust_cho (Aumento <30g): Applico max_scale {effective_max_scale}")
-
-            # Applica il limite superiore
-            scaling_factor = min(effective_max_scale, ideal_scaling_factor)
-            # Assicurati che sia almeno 1.0 (non vogliamo ridurre se dobbiamo aumentare)
-            scaling_factor = max(scaling_factor, 1.0)
-            print(
-                f"DEBUG adjust_cho (Aumento): Diff={cho_diff:.1f}g, IdealScale={ideal_scaling_factor:.2f}, EffectiveMaxScale={effective_max_scale:.2f}, FinalScale={scaling_factor:.2f}")
-
-        else:  # cho_diff è 0 (improbabile data la verifica iniziale, ma per sicurezza)
-            scaling_factor = 1.0
-            print("DEBUG adjust_cho: Diff=0, nessun scaling necessario.")
-
-        # Applica lo scaling agli ingredienti ricchi di CHO
-        new_recipe_ingredients_list = []
-        adjusted_ingredient_names = []  # Per log
-        for ing in adjusted_recipe.ingredients:
-            new_quantity = ing.quantity_g
-            # Applica scaling solo se è ricco di CHO e il nome è valido nel DB
-            if ing in cho_rich_ingredients and ing.name in ingredient_data:
+    # Trova l'ingrediente da modificare nella ricetta
+    for i, ing in enumerate(adjusted_recipe.ingredients):
+        if ing.name == ingredient_to_adjust.name:
+            # Calcola la nuova quantità basata sul contenuto CHO/100g
+            if ing.name in ingredient_data and ingredient_data[ing.name].cho_per_100g > 0:
+                cho_per_100g = ingredient_data[ing.name].cho_per_100g
+                # Calcola quanti grammi aggiungere/togliere
+                gram_change = (cho_difference / cho_per_100g) * 100
                 original_quantity = ing.quantity_g
-                scaled_quantity = original_quantity * scaling_factor
+                new_quantity = max(5, original_quantity +
+                                   gram_change)  # Minimo 5g
 
-                # Applica limiti MIN/MAX ASSOLUTI alla quantità finale
-                # Considera se 300g è sufficiente o serve aumentarlo a 350g
-                MAX_SINGLE_INGREDIENT_G = 300.0
-                MIN_SINGLE_INGREDIENT_G = 5.0  # Evita quantità troppo piccole
-                new_quantity = max(MIN_SINGLE_INGREDIENT_G, min(
-                    MAX_SINGLE_INGREDIENT_G, scaled_quantity))
+                print(f"Aggiustamento fine: '{ing.name}' da {original_quantity:.1f}g a {new_quantity:.1f}g " +
+                      f"(Cambio: {gram_change:+.1f}g per compensare {cho_difference:+.1f}g CHO)")
 
-                # Log se la quantità è cambiata significativamente
-                if abs(new_quantity - original_quantity) > 0.1:
-                    adjusted_ingredient_names.append(
-                        f"{ing.name} ({original_quantity:.1f}g -> {new_quantity:.1f}g)")
+                # Aggiorna la quantità
+                adjusted_recipe.ingredients[i].quantity_g = round(
+                    new_quantity, 1)
+                break
 
-            new_recipe_ingredients_list.append(
-                RecipeIngredient(name=ing.name, quantity_g=round(
-                    new_quantity, 1))  # Arrotonda a 1 decimale
-            )
+    # Ricalcola i valori nutrizionali
+    updated_ingredients = calculate_ingredient_cho_contribution(
+        adjusted_recipe.ingredients, ingredient_data
+    )
+    adjusted_recipe.ingredients = updated_ingredients
 
-        if adjusted_ingredient_names:
-            print(
-                f"DEBUG adjust_cho: Ingredienti scalati ({len(adjusted_ingredient_names)}): {'; '.join(adjusted_ingredient_names)}")
-        elif scaling_factor != 1.0:
-            print(
-                f"DEBUG adjust_cho: Scaling factor ({scaling_factor:.2f}) applicato, ma nessun ingrediente CHO-rich modificato significativamente.")
-        else:
-            print(f"DEBUG adjust_cho: Nessun scaling applicato (scaling_factor=1.0).")
+    # Aggiorna i totali
+    adjusted_recipe.total_cho = sum(
+        ing.cho_contribution for ing in updated_ingredients if ing.cho_contribution is not None)
+    adjusted_recipe.total_calories = sum(
+        ing.calories_contribution for ing in updated_ingredients if ing.calories_contribution is not None)
+    adjusted_recipe.total_protein_g = sum(
+        ing.protein_contribution_g for ing in updated_ingredients if ing.protein_contribution_g is not None)
+    adjusted_recipe.total_fat_g = sum(
+        ing.fat_contribution_g for ing in updated_ingredients if ing.fat_contribution_g is not None)
+    adjusted_recipe.total_fiber_g = sum(
+        ing.fiber_contribution_g for ing in updated_ingredients if ing.fiber_contribution_g is not None)
 
-        # Ricalcola tutto dopo scaling (come prima)
-        updated_ingredients = calculate_ingredient_cho_contribution(
-            new_recipe_ingredients_list, ingredient_data)
-        adjusted_recipe.ingredients = updated_ingredients
-        adjusted_recipe.total_cho = round(sum(
-            ing.cho_contribution for ing in updated_ingredients if ing.cho_contribution is not None), 2)
-        print(
-            f"DEBUG adjust_cho: CHO dopo scaling: {adjusted_recipe.total_cho:.1f}g")
-
-    else:  # Caso adjusted_recipe.total_cho <= 0
-        print(
-            f"Warning adjust_cho: CHO iniziale non positivo ({adjusted_recipe.total_cho}g) per '{recipe.name}'. Impossibile scalare.")
-        # Non fare nulla se CHO iniziale non è valido per lo scaling
-    # --- FINE BLOCCO MODIFICATO ---
-
-    # --- INIZIO BLOCCO AGGIUSTAMENTO FINE (Mantieni la tua logica esistente) ---
-    # Aggiustamento fine (logica come prima, assicurati usi nomi DB corretti)
-    # Ricalcola la differenza *dopo* lo scaling
-    current_cho_diff_after_scaling = target_cho - adjusted_recipe.total_cho
-    fine_tuning_threshold = 5.0  # Soglia per attivare l'aggiustamento fine
-
-    if abs(current_cho_diff_after_scaling) > fine_tuning_threshold and cho_rich_ingredients:
-        print(
-            f"DEBUG adjust_cho: Tentativo aggiustamento fine (Diff: {current_cho_diff_after_scaling:.1f}g)")
-        # Trova l'ingrediente principale (già ordinati)
-        main_ingredient_obj = cho_rich_ingredients[0]
-        main_ing_name = main_ingredient_obj.name
-
-        if main_ing_name in ingredient_data and ingredient_data[main_ing_name].cho_per_100g is not None and ingredient_data[main_ing_name].cho_per_100g > 0:
-            cho_per_100g = ingredient_data[main_ing_name].cho_per_100g
-            # Calcola la modifica in grammi necessaria per l'ingrediente principale
-            gram_diff = (current_cho_diff_after_scaling / cho_per_100g) * 100.0
-            print(
-                f"DEBUG adjust_cho (Fine): Modifica '{main_ing_name}' di {gram_diff:.1f}g (CHO/100g: {cho_per_100g})")
-
-            # Modifica solo l'ingrediente principale nella lista
-            fine_tuned_ingredients_list = []
-            found = False
-            main_ing_original_qty = 0
-            main_ing_final_qty = 0
-            for ing in adjusted_recipe.ingredients:
-                new_quantity = ing.quantity_g
-                if ing.name == main_ing_name and not found:
-                    main_ing_original_qty = ing.quantity_g
-                    adjusted_quantity = main_ing_original_qty + gram_diff
-                    # Applica limiti MIN/MAX anche qui
-                    MAX_SINGLE_INGREDIENT_G = 300.0
-                    # Minimo più alto per aggiustamento fine? Valuta.
-                    MIN_SINGLE_INGREDIENT_G = 10.0
-                    new_quantity = max(MIN_SINGLE_INGREDIENT_G, min(
-                        MAX_SINGLE_INGREDIENT_G, adjusted_quantity))
-                    main_ing_final_qty = new_quantity
-                    found = True  # Modifica solo la prima occorrenza
-                fine_tuned_ingredients_list.append(
-                    RecipeIngredient(name=ing.name, quantity_g=round(
-                        new_quantity, 1))  # Arrotonda
-                )
-
-            if found:
-                print(
-                    f"DEBUG adjust_cho (Fine): Quantità '{main_ing_name}' cambiata da {main_ing_original_qty:.1f}g a {main_ing_final_qty:.1f}g.")
-                # Ricalcola di nuovo
-                updated_ingredients_final = calculate_ingredient_cho_contribution(
-                    fine_tuned_ingredients_list, ingredient_data)
-                adjusted_recipe.ingredients = updated_ingredients_final
-                adjusted_recipe.total_cho = round(sum(
-                    ing.cho_contribution for ing in updated_ingredients_final if ing.cho_contribution is not None), 2)
-                print(
-                    f"DEBUG adjust_cho: CHO dopo aggiustamento fine: {adjusted_recipe.total_cho:.1f}g")
-            else:
-                print(
-                    f"DEBUG adjust_cho (Fine): Ingrediente principale '{main_ing_name}' non trovato/modificato.")
-        else:
-            print(
-                f"DEBUG adjust_cho (Fine): Impossibile aggiustare '{main_ing_name}' (manca info CHO o CHO <= 0).")
-
-    # --- FINE BLOCCO AGGIUSTAMENTO FINE ---
-
-    # --- AGGIORNAMENTO NOME/DESCRIZIONE (Come prima) ---
-    # Aggiungi "(Aggiustata)" al nome se CHO è cambiato significativamente
-    if abs(initial_cho - adjusted_recipe.total_cho) > 1.0:  # Se c'è stata una modifica > 1g
-        if "Aggiustata" not in adjusted_recipe.name:  # Evita doppi suffissi
-            adjusted_recipe.name = f"{adjusted_recipe.name} (Aggiustata)"
-        # Aggiorna descrizione (come prima)
-        if adjusted_recipe.description and "aggiustate" not in adjusted_recipe.description.lower():
-            adjusted_recipe.description += " Quantità aggiustate per target CHO."
+    # Aggiorna il nome se modificato significativamente
+    if abs(cho_difference) > 5:
+        adjusted_recipe.name = f"{recipe.name} (Ottimizzata)"
 
     return adjusted_recipe
 
 
+def adjust_recipe_proportionally(recipe: FinalRecipeOption, cho_contributors: List[CalculatedIngredient],
+                                 scaling_factor: float, ingredient_data: Dict[str, IngredientInfo]) -> FinalRecipeOption:
+    """
+    Aggiusta proporzionalmente tutti gli ingredienti ricchi di CHO.
+
+    Args:
+        recipe: Ricetta da aggiustare
+        cho_contributors: Lista di ingredienti ricchi di CHO
+        scaling_factor: Fattore di scala da applicare
+        ingredient_data: Database ingredienti
+
+    Returns:
+        Ricetta modificata
+    """
+    adjusted_recipe = deepcopy(recipe)
+    contributor_names = [ing.name for ing in cho_contributors]
+
+    # Applica scaling a tutti gli ingredienti CHO
+    for i, ing in enumerate(adjusted_recipe.ingredients):
+        if ing.name in contributor_names:
+            original_quantity = ing.quantity_g
+            # Applica scaling con limiti
+            new_quantity = max(5, min(300, original_quantity * scaling_factor))
+            adjusted_recipe.ingredients[i].quantity_g = round(new_quantity, 1)
+
+            print(
+                f"Scaling: '{ing.name}' da {original_quantity:.1f}g a {new_quantity:.1f}g (Fattore: {scaling_factor:.2f})")
+
+    # Ricalcola i valori nutrizionali
+    updated_ingredients = calculate_ingredient_cho_contribution(
+        adjusted_recipe.ingredients, ingredient_data
+    )
+    adjusted_recipe.ingredients = updated_ingredients
+
+    # Aggiorna i totali
+    adjusted_recipe.total_cho = sum(
+        ing.cho_contribution for ing in updated_ingredients if ing.cho_contribution is not None)
+    adjusted_recipe.total_calories = sum(
+        ing.calories_contribution for ing in updated_ingredients if ing.calories_contribution is not None)
+    adjusted_recipe.total_protein_g = sum(
+        ing.protein_contribution_g for ing in updated_ingredients if ing.protein_contribution_g is not None)
+    adjusted_recipe.total_fat_g = sum(
+        ing.fat_contribution_g for ing in updated_ingredients if ing.fat_contribution_g is not None)
+    adjusted_recipe.total_fiber_g = sum(
+        ing.fiber_contribution_g for ing in updated_ingredients if ing.fiber_contribution_g is not None)
+
+    # Aggiorna il nome
+    adjusted_recipe.name = f"{recipe.name} (Ottimizzata)"
+
+    return adjusted_recipe
+
+
+def optimize_recipe_cho(recipe: FinalRecipeOption, target_cho: float, ingredient_data: Dict[str, IngredientInfo]) -> Optional[FinalRecipeOption]:
+    """
+    Ottimizza una ricetta per raggiungere il target CHO.
+    Utilizza diverse strategie in base alla situazione.
+
+    Args:
+        recipe: Ricetta da ottimizzare
+        target_cho: Target CHO in grammi
+        ingredient_data: Database ingredienti
+
+    Returns:
+        Ricetta ottimizzata o None se non ottimizzabile
+    """
+    # 1. Calcola i valori nutrizionali attuali se non già calcolati
+    if recipe.total_cho is None:
+        updated_ingredients = calculate_ingredient_cho_contribution(
+            recipe.ingredients, ingredient_data
+        )
+        recipe.ingredients = updated_ingredients
+        recipe.total_cho = sum(
+            ing.cho_contribution for ing in updated_ingredients if ing.cho_contribution is not None)
+
+    # Se già nel range target (±5g), non fare nulla
+    if abs(recipe.total_cho - target_cho) < 5:
+        return recipe
+
+    current_cho = recipe.total_cho
+    cho_difference = target_cho - current_cho
+    print(
+        f"Ottimizzazione: '{recipe.name}' - CHO attuale: {current_cho:.1f}g, Target: {target_cho:.1f}g, Diff: {cho_difference:+.1f}g")
+
+    # 2. Identifica ingredienti ricchi di CHO
+    cho_contributors = identify_cho_contributors(recipe, ingredient_data)
+    if not cho_contributors:
+        print(
+            f"Ottimizzazione fallita: Nessun ingrediente ricco di CHO trovato in '{recipe.name}'")
+        return None
+
+    # 3. Scegli la strategia in base all'entità della differenza
+    if abs(cho_difference) < 15:
+        # Aggiustamento fine su ingrediente principale
+        print(f"Strategia: Aggiustamento fine dell'ingrediente principale")
+        return fine_tune_recipe(recipe, cho_contributors[0], cho_difference, ingredient_data)
+    else:
+        # Aggiustamento proporzionale di tutti gli ingredienti CHO
+        print(f"Strategia: Scaling proporzionale di tutti gli ingredienti CHO")
+        # Calcola fattore di scaling con limiti
+        if current_cho > 0:  # Evita divisione per zero
+            ideal_scaling = target_cho / current_cho
+            # Limita il fattore di scaling per evitare cambiamenti troppo drastici
+            if cho_difference > 0:  # Aumentare CHO
+                scaling_factor = min(3.0, max(1.1, ideal_scaling))
+            else:  # Ridurre CHO
+                scaling_factor = max(0.4, min(0.9, ideal_scaling))
+
+            return adjust_recipe_proportionally(recipe, cho_contributors, scaling_factor, ingredient_data)
+
+    # Se arriviamo qui, non siamo riusciti a ottimizzare
+    return None
+
+
+def match_recipe_ingredients(recipe: FinalRecipeOption, ingredient_data: Dict[str, IngredientInfo],
+                             faiss_index, index_to_name_mapping, embedding_model, normalize_function) -> Tuple[FinalRecipeOption, bool]:
+    """
+    Effettua il matching degli ingredienti della ricetta con il database usando FAISS.
+
+    Args:
+        recipe: Ricetta con ingredienti da matchare
+        ingredient_data: Database ingredienti
+        faiss_index: Indice FAISS
+        index_to_name_mapping: Mapping indice-nome
+        embedding_model: Modello di embedding
+        normalize_function: Funzione di normalizzazione
+
+    Returns:
+        Tupla con (ricetta con ingredienti matchati, flag successo)
+    """
+    matched_recipe = deepcopy(recipe)
+    matched_ingredients = []
+    all_matched = True
+
+    print(f"Matching ingredienti per ricetta '{recipe.name}'")
+
+    for ing in recipe.ingredients:
+        # Tenta il matching con FAISS
+        match_result = find_best_match_faiss(
+            llm_name=ing.name,
+            faiss_index=faiss_index,
+            index_to_name_mapping=index_to_name_mapping,
+            model=embedding_model,
+            normalize_func=normalize_function,
+            threshold=0.60  # Soglia più bassa per aumentare le possibilità di match
+        )
+
+        if match_result:
+            matched_db_name, match_score = match_result
+            print(
+                f"Ingrediente '{ing.name}' matchato a '{matched_db_name}' (score: {match_score:.2f})")
+
+            # Crea nuovo ingrediente con nome matchato ma quantità originale
+            matched_ingredients.append(
+                RecipeIngredient(name=matched_db_name,
+                                 quantity_g=ing.quantity_g)
+            )
+        else:
+            print(f"Fallito matching per '{ing.name}'")
+            # Keep the original ingredient but mark recipe as not fully matched
+            matched_ingredients.append(ing)
+            all_matched = False
+
+    # Calcola valori nutrizionali
+    calculated_ingredients = calculate_ingredient_cho_contribution(
+        matched_ingredients, ingredient_data
+    )
+
+    # Aggiorna ricetta
+    matched_recipe.ingredients = calculated_ingredients
+
+    # Calcola totali solo se tutti gli ingredienti sono stati matchati
+    if all_matched:
+        matched_recipe.total_cho = sum(
+            ing.cho_contribution for ing in calculated_ingredients if ing.cho_contribution is not None)
+        matched_recipe.total_calories = sum(
+            ing.calories_contribution for ing in calculated_ingredients if ing.calories_contribution is not None)
+        matched_recipe.total_protein_g = sum(
+            ing.protein_contribution_g for ing in calculated_ingredients if ing.protein_contribution_g is not None)
+        matched_recipe.total_fat_g = sum(
+            ing.fat_contribution_g for ing in calculated_ingredients if ing.fat_contribution_g is not None)
+        matched_recipe.total_fiber_g = sum(
+            ing.fiber_contribution_g for ing in calculated_ingredients if ing.fiber_contribution_g is not None)
+
+    return matched_recipe, all_matched
+
+
+def verify_dietary_preferences(recipe: FinalRecipeOption, preferences: UserPreferences) -> bool:
+    """
+    Verifica che la ricetta soddisfi le preferenze dietetiche dell'utente.
+
+    Args:
+        recipe: Ricetta da verificare
+        preferences: Preferenze dell'utente
+
+    Returns:
+        True se la ricetta soddisfa le preferenze, False altrimenti
+    """
+    if preferences.vegan and not recipe.is_vegan:
+        return False
+    if preferences.vegetarian and not recipe.is_vegetarian:
+        return False
+    if preferences.gluten_free and not recipe.is_gluten_free:
+        return False
+    if preferences.lactose_free and not recipe.is_lactose_free:
+        return False
+    return True
+
+
+def compute_dietary_flags(recipe: FinalRecipeOption, ingredient_data: Dict[str, IngredientInfo]) -> FinalRecipeOption:
+    """
+    Calcola i flag dietetici (vegan, vegetarian, ecc.) in base agli ingredienti.
+
+    Args:
+        recipe: Ricetta da analizzare
+        ingredient_data: Database ingredienti
+
+    Returns:
+        Ricetta con flag dietetici aggiornati
+    """
+    updated_recipe = deepcopy(recipe)
+
+    # Default a True, diventerà False se trovato ingrediente non compatibile
+    is_vegan = True
+    is_vegetarian = True
+    is_gluten_free = True
+    is_lactose_free = True
+
+    for ing in recipe.ingredients:
+        if ing.name in ingredient_data:
+            info = ingredient_data[ing.name]
+            if not info.is_vegan:
+                is_vegan = False
+            if not info.is_vegetarian:
+                is_vegetarian = False
+            if not info.is_gluten_free:
+                is_gluten_free = False
+            if not info.is_lactose_free:
+                is_lactose_free = False
+
+    updated_recipe.is_vegan = is_vegan
+    updated_recipe.is_vegetarian = is_vegetarian
+    updated_recipe.is_gluten_free = is_gluten_free
+    updated_recipe.is_lactose_free = is_lactose_free
+
+    return updated_recipe
+
+
+def add_ingredient(recipe: FinalRecipeOption, new_ingredient_name: str,
+                   quantity: float, ingredient_data: Dict[str, IngredientInfo]) -> FinalRecipeOption:
+    """
+    Aggiunge un nuovo ingrediente alla ricetta.
+
+    Args:
+        recipe: Ricetta da modificare
+        new_ingredient_name: Nome del nuovo ingrediente
+        quantity: Quantità in grammi
+        ingredient_data: Database ingredienti
+
+    Returns:
+        Ricetta modificata
+    """
+    modified_recipe = deepcopy(recipe)
+
+    # Crea nuovo ingrediente
+    new_ingredient = RecipeIngredient(
+        name=new_ingredient_name, quantity_g=quantity)
+    modified_recipe.ingredients.append(new_ingredient)
+
+    # Ricalcola valori nutrizionali
+    updated_ingredients = calculate_ingredient_cho_contribution(
+        modified_recipe.ingredients, ingredient_data
+    )
+    modified_recipe.ingredients = updated_ingredients
+
+    # Aggiorna totali
+    modified_recipe.total_cho = sum(
+        ing.cho_contribution for ing in updated_ingredients if ing.cho_contribution is not None)
+    modified_recipe.total_calories = sum(
+        ing.calories_contribution for ing in updated_ingredients if ing.calories_contribution is not None)
+    modified_recipe.total_protein_g = sum(
+        ing.protein_contribution_g for ing in updated_ingredients if ing.protein_contribution_g is not None)
+    modified_recipe.total_fat_g = sum(
+        ing.fat_contribution_g for ing in updated_ingredients if ing.fat_contribution_g is not None)
+    modified_recipe.total_fiber_g = sum(
+        ing.fiber_contribution_g for ing in updated_ingredients if ing.fiber_contribution_g is not None)
+
+    # Aggiorna flag dietetici
+    return compute_dietary_flags(modified_recipe, ingredient_data)
+
+
+def suggest_cho_adjustment(recipe: FinalRecipeOption, target_cho: float,
+                           ingredient_data: Dict[str, IngredientInfo]) -> Optional[Tuple[str, str, float]]:
+    """
+    Suggerisce un aggiustamento per avvicinare la ricetta al target CHO.
+    Può suggerire di aggiungere un nuovo ingrediente o modificare uno esistente.
+
+    Args:
+        recipe: Ricetta da analizzare
+        target_cho: Target CHO in grammi
+        ingredient_data: Database ingredienti
+
+    Returns:
+        Tupla (tipo_aggiustamento, nome_ingrediente, quantità) o None se non possibile
+    """
+    if recipe.total_cho is None or target_cho is None:
+        return None
+
+    cho_difference = target_cho - recipe.total_cho
+
+    # Se differenza minima, non serve aggiustamento
+    if abs(cho_difference) < 5:
+        return None
+
+    # Determina se aumentare o ridurre CHO
+    if cho_difference > 0:
+        # Dobbiamo aumentare CHO
+        # Filtra ingredienti DB ricchi di CHO
+        high_cho_ingredients = [(name, info) for name, info in ingredient_data.items()
+                                if info.cho_per_100g > 20 and info.is_vegan == recipe.is_vegan
+                                and info.is_vegetarian == recipe.is_vegetarian
+                                and info.is_gluten_free == recipe.is_gluten_free
+                                and info.is_lactose_free == recipe.is_lactose_free]
+
+        if high_cho_ingredients:
+            # Seleziona casualmente un ingrediente
+            random.seed(42)  # Per riproducibilità
+            chosen_name, chosen_info = random.choice(high_cho_ingredients)
+
+            # Calcola quantità necessaria per aggiungere CHO mancanti
+            qty_needed = (cho_difference / chosen_info.cho_per_100g) * 100
+            qty_needed = max(10, min(100, qty_needed))  # Limita tra 10g e 100g
+
+            # Verifica se l'ingrediente è già presente
+            for ing in recipe.ingredients:
+                if ing.name == chosen_name:
+                    return ("modify", chosen_name, ing.quantity_g + qty_needed)
+
+            # Altrimenti, suggerisci di aggiungerlo
+            return ("add", chosen_name, qty_needed)
+    else:
+        # Dobbiamo ridurre CHO
+        # Trova l'ingrediente con più alto contributo CHO
+        max_contributor = None
+        max_contribution = 0
+
+        for ing in recipe.ingredients:
+            if ing.cho_contribution and ing.cho_contribution > max_contribution:
+                max_contributor = ing
+                max_contribution = ing.cho_contribution
+
+        if max_contributor:
+            # Calcola di quanto ridurre la quantità
+            # Limitando la riduzione al 60% per evitare di ridurre troppo
+            cho_to_remove = abs(cho_difference)
+            if max_contributor.name in ingredient_data:
+                cho_per_g = ingredient_data[max_contributor.name].cho_per_100g / 100
+                if cho_per_g > 0:
+                    qty_to_remove = min(
+                        cho_to_remove / cho_per_g, max_contributor.quantity_g * 0.6)
+                    return ("modify", max_contributor.name, max_contributor.quantity_g - qty_to_remove)
+
+    return None
+
+# --- FUNZIONE PRINCIPALE ---
+
+
 def verifier_agent(state: GraphState) -> GraphState:
     """
-    Node Function: Verifica le ricette generate dopo aggiustamento CHO.
+    Node Function: Verifica, ottimizza e corregge le ricette generate.
+    Versione potenziata con verifica di diversità e correzione flag dietetici.
     """
-    print("--- ESECUZIONE NODO: Verifica Finale Ricette ---")
-    preferences: UserPreferences = state['user_preferences']
-    # Riceve ricette GIA' validate a livello di ingredienti dal generator
-    generated_recipes: List[FinalRecipeOption] = state.get(
-        'generated_recipes', [])
-    # Estrai il dizionario ingredienti dal pacchetto
-    ingredient_data = state.get('available_ingredients_data', {})
+    print("--- ESECUZIONE NODO: Verifica e Ottimizzazione Ricette ---")
 
-    if not ingredient_data:
-        state['error_message'] = "Dati ingredienti mancanti per la verifica finale."
-        print(f"Errore: {state['error_message']}")
+    # Recupera componenti necessari
+    recipes = state.get('generated_recipes', [])
+    preferences = state['user_preferences']
+    ingredient_data = state.get('available_ingredients_data', {})
+    faiss_index = state.get('faiss_index')
+    index_to_name_mapping = state.get('index_to_name_mapping', [])
+    embedding_model = state.get('embedding_model')
+    normalize_function = state.get('normalize_function', normalize_name)
+
+    if not recipes:
+        state['error_message'] = "Nessuna ricetta da verificare."
+        state['final_verified_recipes'] = []
+        return state
+
+    if not ingredient_data or not faiss_index or not index_to_name_mapping or not embedding_model:
+        state['error_message'] = "Dati o componenti mancanti per la verifica."
         state['final_verified_recipes'] = []
         return state
 
     target_cho = preferences.target_cho
-    cho_tolerance = 25.0
-    exact_recipes_required = 2  # Numero desiderato
-    # Soglia ingrediente dominante (per scarto finale)
-    max_cho_dominance = 0.99
+    cho_tolerance = 25.0  # Tolleranza più ampia per la prima verifica
 
-    if not generated_recipes:
-        print("Nessuna ricetta valida generata da verificare.")
-        # Imposta errore se non già presente
-        if not state.get('error_message'):
-            state['error_message'] = "Nessuna ricetta valida è stata generata o mappata correttamente."
+    print(f"Verifica di {len(recipes)} ricette. Target CHO: {target_cho}g (Range: {target_cho-cho_tolerance} - {target_cho+cho_tolerance})")
+
+    # --- FASE 1: MATCHING E CALCOLO NUTRIENTI ---
+    matched_recipes = []
+    print("Fase 1: Matching ingredienti e calcolo valori nutrizionali")
+
+    for recipe in recipes:
+        # Match degli ingredienti con il database
+        matched_recipe, all_matched = match_recipe_ingredients(
+            recipe, ingredient_data, faiss_index,
+            index_to_name_mapping, embedding_model, normalize_function
+        )
+
+        if all_matched:
+            # Calcola i flag dietetici in base agli ingredienti effettivi
+            matched_recipe = compute_dietary_flags(
+                matched_recipe, ingredient_data)
+            # Aggiungi correzione aggiuntiva basata sulle liste di ingredienti
+            matched_recipe = correct_dietary_flags(
+                matched_recipe, ingredient_data)
+            print(
+                f"Ricetta '{matched_recipe.name}' completamente matchata: CHO={matched_recipe.total_cho:.1f}g")
+            matched_recipes.append(matched_recipe)
+        else:
+            print(
+                f"Ricetta '{recipe.name}' scartata: non tutti gli ingredienti sono stati matchati")
+
+    if not matched_recipes:
+        state['error_message'] = "Nessuna ricetta con ingredienti completamente matchati."
         state['final_verified_recipes'] = []
         return state
 
-    # Definisci range CHO
-    min_cho = target_cho - cho_tolerance
-    max_cho = target_cho + cho_tolerance
-    print(
-        f"Verifica di {len(generated_recipes)} ricette. Target CHO: {target_cho}g (Range: {min_cho}g - {max_cho}g)")
+    # --- FASE 2: OTTIMIZZAZIONE CHO ---
+    optimized_recipes = []
+    print("Fase 2: Ottimizzazione CHO delle ricette")
 
-    # RIMOSSA VALIDAZIONE INIZIALE INGREDIENTI QUI
+    for recipe in matched_recipes:
+        # Controlla se la ricetta è già nel range target
+        is_in_range = (
+            recipe.total_cho is not None and
+            target_cho - cho_tolerance <= recipe.total_cho <= target_cho + cho_tolerance
+        )
 
-    # Fase 1: Prepara per aggiustamento (Ex-bilanciamento)
-    recipes_to_adjust = generated_recipes  # Usa direttamente quelle generate
-    print(
-        f"Fase 1: Preparazione di {len(recipes_to_adjust)} ricette per aggiustamento CHO.")
-
-    # Fase 2: Prova ad aggiustare TUTTE le ricette per avvicinarsi al target CHO
-    adjusted_recipes = []
-    print(f"Fase 2: Tentativo di aggiustamento CHO (Target: {target_cho}g)")
-    for recipe in recipes_to_adjust:
-        # Tenta di aggiustare ogni ricetta
-        adjusted_recipe = adjust_recipe_cho(
-            recipe, target_cho, ingredient_data)
-        if adjusted_recipe.name != recipe.name:  # Se è stata modificata
+        if is_in_range:
             print(
-                f"Ricetta '{recipe.name}' -> '{adjusted_recipe.name}' AGGIUSTATA: CHO da {recipe.total_cho:.1f}g a {adjusted_recipe.total_cho:.1f}g")
-        adjusted_recipes.append(adjusted_recipe)
-
-    # Fase 3: Verifica finale multi-criterio sulle ricette aggiustate (o originali se non modificate)
-    print("Fase 3: Applicazione verifiche finali (CHO, Dieta, Qualità)")
-    valid_recipes_final: List[FinalRecipeOption] = []
-    for recipe in adjusted_recipes:
-        # 1. Verifica Range CHO Finale
-        cho_ok = min_cho <= recipe.total_cho <= max_cho
-        if not cho_ok:
-            print(
-                f"Ricetta '{recipe.name}' SCARTATA [Fase 3]: CHO ({recipe.total_cho:.1f}g) fuori range ({min_cho:.1f}-{max_cho:.1f}g).")
+                f"Ricetta '{recipe.name}' già nel range CHO: {recipe.total_cho:.1f}g")
+            optimized_recipes.append(recipe)
             continue
 
-        # 2. Verifica Dieta (Usa flag GIA' CORRETTI dal generator)
-        diet_ok = True
-        required_prefs_str = []  # Per logging
-        if preferences.vegan and not recipe.is_vegan:
-            diet_ok = False
-            if "Vegano" not in required_prefs_str:
-                required_prefs_str.append("Vegano")
-        # Se non vegano richiesto, check vegetariano (evita ridondanza nel log)
-        if preferences.vegetarian and not preferences.vegan and not recipe.is_vegetarian:
-            diet_ok = False
-            if "Vegetariano" not in required_prefs_str:
-                required_prefs_str.append("Vegetariano")
-        if preferences.gluten_free and not recipe.is_gluten_free:
-            diet_ok = False
-            if "Senza Glutine" not in required_prefs_str:
-                required_prefs_str.append("Senza Glutine")
-        if preferences.lactose_free and not recipe.is_lactose_free:
-            diet_ok = False
-            if "Senza Lattosio" not in required_prefs_str:
-                required_prefs_str.append("Senza Lattosio")
-
-        if not diet_ok:
-            prefs_str = ", ".join(
-                required_prefs_str) if required_prefs_str else "Standard"
-            # Log più chiaro dei flag ricetta
-            recipe_flags = f"V={recipe.is_vegan}, VG={recipe.is_vegetarian}, GF={recipe.is_gluten_free}, LF={recipe.is_lactose_free}"
+        # Tenta l'ottimizzazione
+        optimized = optimize_recipe_cho(recipe, target_cho, ingredient_data)
+        if optimized and optimized.total_cho is not None:
             print(
-                f"Ricetta '{recipe.name}' SCARTATA [Fase 3]: Non soddisfa preferenze dietetiche richieste ({prefs_str}). Flag ricetta: {recipe_flags}")
-            continue
-
-        # 3. Verifica Qualità/Equilibrio
-        # Scarta ricette troppo semplici
-        min_ingredients = 3
-        if len(recipe.ingredients) < min_ingredients:
-            print(
-                f"Ricetta '{recipe.name}' SCARTATA [Fase 3]: Troppo semplice (solo {len(recipe.ingredients)} ingredienti, min: {min_ingredients}).")
-            continue
-
-        # Scarta ricette con quantità eccessive (controllo fatto anche in adjust, ma ricontrolla)
-        max_quantity_g = 300.0
-        has_excessive_ingredient = False
-        for ing in recipe.ingredients:
-            if ing.quantity_g > max_quantity_g:
-                print(
-                    f"Ricetta '{recipe.name}' SCARTATA [Fase 3]: Ingrediente '{ing.name}' con quantità eccessiva ({ing.quantity_g:.1f}g > {max_quantity_g}g).")
-                has_excessive_ingredient = True
-                break
-        if has_excessive_ingredient:
-            continue
-
-        # Scarta ricette troppo sbilanciate (un ingrediente domina i CHO)
-        is_unbalanced = False
-        # Verifica solo se ci sono CHO e più di 2 ingredienti per evitare casi limite
-        if recipe.total_cho > 1.0 and len(recipe.ingredients) > 2:
-            for ing in recipe.ingredients:
-                # Assicurati che cho_contribution sia valido prima della divisione
-                if ing.cho_contribution is not None and ing.cho_contribution > 0:
-                    ratio = ing.cho_contribution / recipe.total_cho
-                    if ratio > max_cho_dominance:
+                f"Ricetta '{recipe.name}' ottimizzata: CHO da {recipe.total_cho:.1f}g a {optimized.total_cho:.1f}g")
+            optimized_recipes.append(optimized)
+        else:
+            # Tenta un approccio più drastico: aggiungi o rimuovi ingrediente
+            adjustment = suggest_cho_adjustment(
+                recipe, target_cho, ingredient_data)
+            if adjustment:
+                action, ingredient_name, new_quantity = adjustment
+                if action == "add":
+                    print(
+                        f"Aggiungendo '{ingredient_name}' ({new_quantity:.1f}g) a '{recipe.name}'")
+                    modified = add_ingredient(
+                        recipe, ingredient_name, new_quantity, ingredient_data)
+                    if modified and abs(modified.total_cho - target_cho) < abs(recipe.total_cho - target_cho):
                         print(
-                            f"Ricetta '{recipe.name}' SCARTATA [Fase 3]: Sbilanciata. Ingrediente '{ing.name}' fornisce >{int(max_cho_dominance*100)}% dei CHO ({ratio:.1%}).")
-                        is_unbalanced = True
-                        break
-        if is_unbalanced:
+                            f"Ricetta '{recipe.name}' migliorata con aggiunta: CHO da {recipe.total_cho:.1f}g a {modified.total_cho:.1f}g")
+                        optimized_recipes.append(modified)
+                        continue
+
+                # Se l'azione drastica non ha funzionato, manteniamo la ricetta originale
+                print(
+                    f"Impossibile ottimizzare '{recipe.name}', mantenuta originale")
+
+            # Mantieni comunque la ricetta originale se non troppo lontana
+            if recipe.total_cho and abs(recipe.total_cho - target_cho) < cho_tolerance * 1.5:
+                print(
+                    f"Ricetta '{recipe.name}' mantenuta nonostante CHO non ottimale: {recipe.total_cho:.1f}g")
+                optimized_recipes.append(recipe)
+
+    # --- FASE 3: VERIFICA FINALE E FILTRI ---
+    verified_recipes = []
+    print("Fase 3: Verifica finale e selezione ricette")
+
+    # Verifica dietetica più stretta
+    for recipe in optimized_recipes:
+        # Verifica preferenze dietetiche
+        if not verify_dietary_preferences(recipe, preferences):
+            print(
+                f"Ricetta '{recipe.name}' scartata: non rispetta preferenze dietetiche")
             continue
 
-        # Se tutti i check sono OK
+        # Verifica qualità generale
+        if len(recipe.ingredients) < 3:
+            print(
+                f"Ricetta '{recipe.name}' scartata: troppo pochi ingredienti ({len(recipe.ingredients)})")
+            continue
+
+        # Verifica CHO finale più stringente
+        final_cho_tolerance = 15.0  # Tolleranza più stretta per la selezione finale
+        if not (recipe.total_cho and target_cho - final_cho_tolerance <= recipe.total_cho <= target_cho + final_cho_tolerance):
+            print(
+                f"Ricetta '{recipe.name}' scartata in fase finale: CHO={recipe.total_cho:.1f}g fuori dal range target")
+            continue
+
         print(
-            f"Ricetta '{recipe.name}' VERIFICATA [Fase 3] (CHO: {recipe.total_cho:.1f}g, Dieta OK, Ingredienti: {len(recipe.ingredients)}).")
-        valid_recipes_final.append(recipe)
+            f"Ricetta '{recipe.name}' verificata (CHO: {recipe.total_cho:.1f}g, Ingredienti: {len(recipe.ingredients)})")
+        verified_recipes.append(recipe)
 
     print(
-        f"Ricette che hanno passato tutte le verifiche finali: {len(valid_recipes_final)}")
+        f"Ricette che hanno passato tutte le verifiche finali: {len(verified_recipes)}")
 
-    # Fase 4: Selezione Finale e Ordinamento (logica come prima)
-    verified_recipes_selected: List[FinalRecipeOption] = []
-    recipe_types = set()
-    main_ingredients_set = set()
-
-    if valid_recipes_final:
-        # Ordina per vicinanza al target CHO (come prima)
-        valid_recipes_final.sort(key=lambda r: abs(r.total_cho - target_cho))
-        # Logica per rompere parità (come prima)
-        for i in range(len(valid_recipes_final)-1):
-            if abs(valid_recipes_final[i].total_cho - target_cho) == abs(valid_recipes_final[i+1].total_cho - target_cho):
-                if len(valid_recipes_final[i].ingredients) < len(valid_recipes_final[i+1].ingredients):
-                    valid_recipes_final[i], valid_recipes_final[i +
-                                                                1] = valid_recipes_final[i+1], valid_recipes_final[i]
-
-        # Seleziona ricette diverse (come prima)
-        for recipe in valid_recipes_final:
-            recipe_type = recipe.name.split(
-            )[0].lower() if recipe.name else "unknown"
-            main_ingredient = ""
-            if recipe.ingredients:
-                # Trova ingrediente con più CHO (assicurati cho_contribution esista)
-                try:
-                    main_ingredient = max(
-                        recipe.ingredients, key=lambda ing: ing.cho_contribution if ing.cho_contribution is not None else -1).name
-                except ValueError:  # Lista ingredienti potrebbe essere vuota se filtrati tutti?
-                    main_ingredient = ""
-
-            # Check unicità tipo e ingrediente principale
-            if (recipe_type in recipe_types) or (main_ingredient and main_ingredient in main_ingredients_set):
-                continue
-
-            recipe_types.add(recipe_type)
-            if main_ingredient:
-                main_ingredients_set.add(main_ingredient)
-            verified_recipes_selected.append(recipe)
-            if len(verified_recipes_selected) >= exact_recipes_required:
-                break
-
-        # Riempi se non abbastanza diverse (come prima)
-        if len(verified_recipes_selected) < exact_recipes_required:
-            for recipe in valid_recipes_final:
-                if recipe not in verified_recipes_selected:
-                    verified_recipes_selected.append(recipe)
-                    if len(verified_recipes_selected) >= exact_recipes_required:
-                        break
-
+    # --- NUOVA FASE 4: VERIFICA DIVERSITÀ ---
+    if len(verified_recipes) > 1:
+        print("Fase 4: Verifica diversità delle ricette")
+        diverse_recipes = ensure_recipe_diversity(
+            verified_recipes, target_cho, similarity_threshold=0.6)
         print(
-            f"Selezionate {len(verified_recipes_selected)} ricette ottimali su {len(valid_recipes_final)} valide.")
-        # Stampa dettagli selezionate (come prima)
-        for i, recipe in enumerate(verified_recipes_selected):
-            print(f"Ricetta {i+1}: '{recipe.name}' - CHO: {recipe.total_cho:.1f}g (Dev: {abs(recipe.total_cho - target_cho):.1f}g), N.Ingr: {len(recipe.ingredients)}")
+            f"Ricette diverse selezionate: {len(diverse_recipes)} su {len(verified_recipes)} valide")
+    else:
+        diverse_recipes = verified_recipes
 
-    # Aggiorna stato finale
-    state['final_verified_recipes'] = verified_recipes_selected
+    # --- FASE 5: SELEZIONE FINALE ---
+    # Ordina per vicinanza al target CHO
+    diverse_recipes.sort(key=lambda r: abs(
+        r.total_cho - target_cho) if r.total_cho else float('inf'))
 
-    # Aggiungi messaggio di errore se necessario (come prima)
-    if len(verified_recipes_selected) < exact_recipes_required:
-        err_msg = f"Trovate solo {len(verified_recipes_selected)} ricette valide, meno delle {exact_recipes_required} richieste."
-        print(f"Attenzione: {err_msg}")
-        # Sovrascrivi errore precedente solo se più specifico
-        state['error_message'] = state.get(
-            'error_message', '') + f" ({err_msg})" if state.get('error_message') else err_msg
-    # elif state.get('error_message') and len(verified_recipes_selected) > 0:
-        # Rimuovi eventuali errori precedenti se abbiamo trovato ricette alla fine
-        # state.pop('error_message', None) # Commentato: forse è meglio tenere errori precedenti?
+    # Limita a 5 ricette
+    final_recipes = diverse_recipes[:5]
 
+    # --- AGGIORNA STATO ---
+    state['final_verified_recipes'] = final_recipes
+
+    if not final_recipes:
+        state['error_message'] = "Nessuna ricetta ha superato la verifica finale."
+    elif len(final_recipes) < 3:
+        state['error_message'] = f"Solo {len(final_recipes)} ricette hanno superato la verifica."
+    else:
+        # Rimuovi eventuali messaggi di errore precedenti
+        state.pop('error_message', None)
+
+    print(
+        f"Verifica completata: {len(final_recipes)} ricette selezionate su {len(recipes)} iniziali")
     return state

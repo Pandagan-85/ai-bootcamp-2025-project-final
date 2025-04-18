@@ -1,49 +1,53 @@
-# main.py
+# main.py (Aggiornato per il sistema semplificato "Generate then Fix")
 import os
 import argparse
 import time
-import pickle  # Per caricare mapping
+import pickle
 from pprint import pprint
 from dotenv import load_dotenv
 import numpy as np
-import faiss  # Importa FAISS
+import faiss
 from sentence_transformers import SentenceTransformer
 from typing import Dict, Any, Optional, List
 
 # Importa componenti dal progetto
 from model_schema import UserPreferences, GraphState, FinalRecipeOption, IngredientInfo
-from loaders import load_basic_ingredient_info  # Usa il nuovo loader base
-from workflow import create_workflow
-from utils import normalize_name  # Importa normalize
+from loaders import load_basic_ingredient_info
+from workflow import create_workflow  # Usa il workflow aggiornato
+from utils import normalize_name
 
 # --- Configurazione ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
-STATIC_DIR = os.path.join(BASE_DIR, "static")  # Definisci anche qui se serve
+STATIC_DIR = os.path.join(BASE_DIR, "static")
 INGREDIENTS_FILE = os.path.join(DATA_DIR, "ingredients.csv")
-FAISS_INDEX_FILE = os.path.join(
-    DATA_DIR, "ingredients.index")  # Percorso indice FAISS
-NAME_MAPPING_FILE = os.path.join(
-    DATA_DIR, "ingredient_names.pkl")  # Percorso mapping nomi
-EMBEDDING_MODEL_NAME = 'paraphrase-multilingual-mpnet-base-v2'  # Modello SBERT
+FAISS_INDEX_FILE = os.path.join(DATA_DIR, "ingredients.index")
+NAME_MAPPING_FILE = os.path.join(DATA_DIR, "ingredient_names.pkl")
+EMBEDDING_MODEL_NAME = 'paraphrase-multilingual-mpnet-base-v2'
 
-# --- Funzione di Esecuzione Principale (Firma Modificata) ---
-# Ora accetta lo stato iniziale già popolato (da app.py o da main se eseguito da CLI)
+# --- Funzione di Esecuzione Principale ---
 
 
 def run_recipe_generation(
-    initial_state: GraphState,  # Accetta lo stato pre-popolato
+    initial_state: GraphState,
     streamlit_output: bool = False,
     img_dict: Optional[Dict[str, str]] = None,
 ) -> str:
     """
     Orchestra il processo di generazione ricette usando il workflow LangGraph.
-    Ora riceve lo stato iniziale già pronto.
+
+    Args:
+        initial_state: Stato iniziale già popolato
+        streamlit_output: Flag per output formattato per Streamlit
+        img_dict: Dizionario di immagini per output HTML
+
+    Returns:
+        Output formattato come stringa
     """
-    print("\n--- Avvio Generazione Ricette (FAISS) ---")
+    print("\n--- Avvio Generazione Ricette (Generate then Fix) ---")
     start_time_workflow = time.time()
 
-    # 1. Validazione Stato Iniziale (Opzionale ma utile)
+    # 1. Validazione Stato Iniziale
     required_keys = ['user_preferences', 'available_ingredients_data', 'embedding_model',
                      'normalize_function', 'faiss_index', 'index_to_name_mapping']
     missing_keys = [
@@ -51,12 +55,11 @@ def run_recipe_generation(
     if missing_keys:
         error_msg = f"Errore critico: Stato iniziale incompleto. Chiavi mancanti o None: {missing_keys}"
         print(error_msg)
-        return error_msg  # Esce se lo stato non è valido
+        return error_msg
 
     # 2. Crea l'applicazione LangGraph
-    # Considera di creare il workflow una sola volta se la struttura è statica
     print("--- Creazione Grafo Workflow ---")
-    app = create_workflow()
+    app = create_workflow()  # Usa il workflow aggiornato
     print("--- Grafo Creato ---")
 
     # 3. Esegui il Workflow passando lo stato iniziale
@@ -95,26 +98,30 @@ def run_recipe_generation(
     return output_string
 
 
-# --- Esecuzione da Riga di Comando (Modificata) ---
+# --- Esecuzione da Riga di Comando ---
 if __name__ == "__main__":
     # Carica variabili d'ambiente (es. OPENAI_API_KEY)
     load_dotenv()
 
-    # Configurazione Argomenti Command-Line (come prima)
-    parser = argparse.ArgumentParser(...)  # Come prima
+    # Configurazione Argomenti Command-Line
+    parser = argparse.ArgumentParser(
+        description="Generatore di Ricette con specifico contenuto CHO (Generate then Fix)")
     parser.add_argument("target_cho", type=float, help="Target CHO (g)")
-    parser.add_argument("--vegan", action="store_true")
-    parser.add_argument("--vegetarian", action="store_true")
-    parser.add_argument("--gluten_free", action="store_true")
-    parser.add_argument("--lactose_free", action="store_true")
+    parser.add_argument("--vegan", action="store_true",
+                        help="Solo ricette vegane")
+    parser.add_argument("--vegetarian", action="store_true",
+                        help="Solo ricette vegetariane")
+    parser.add_argument("--gluten_free", action="store_true",
+                        help="Solo ricette senza glutine")
+    parser.add_argument("--lactose_free", action="store_true",
+                        help="Solo ricette senza lattosio")
     args = parser.parse_args()
 
     # --- Caricamento Risorse per CLI ---
-    print("--- Caricamento Risorse per CLI (FAISS) ---")
+    print("--- Caricamento Risorse per CLI ---")
     try:
         print("Caricamento modello SBERT...")
-        embedding_model = SentenceTransformer(
-            EMBEDDING_MODEL_NAME)  # Carica su CPU/MPS
+        embedding_model = SentenceTransformer(EMBEDDING_MODEL_NAME)
         print("Caricamento indice FAISS...")
         faiss_index = faiss.read_index(FAISS_INDEX_FILE)
         print("Caricamento mapping nomi...")
@@ -144,7 +151,7 @@ if __name__ == "__main__":
     prefs = UserPreferences(
         target_cho=args.target_cho,
         vegan=args.vegan,
-        vegetarian=args.vegetarian or args.vegan,
+        vegetarian=args.vegetarian or args.vegan,  # Vegano implica vegetariano
         gluten_free=args.gluten_free,
         lactose_free=args.lactose_free,
     )
@@ -154,7 +161,7 @@ if __name__ == "__main__":
         user_preferences=prefs,
         available_ingredients_data=available_ingredients_data,
         embedding_model=embedding_model,
-        normalize_function=normalize_name,  # Assumi normalize_name sia importato
+        normalize_function=normalize_name,
         faiss_index=faiss_index,
         index_to_name_mapping=index_to_name_mapping,
         generated_recipes=[],
@@ -164,12 +171,10 @@ if __name__ == "__main__":
     )
 
     # --- Esecuzione Workflow da CLI ---
-    print(
-        f"\nAvvio generazione FAISS per CHO={args.target_cho}g, Prefs={prefs}")
+    print(f"\nAvvio generazione per CHO={args.target_cho}g, Prefs={prefs}")
     output = run_recipe_generation(
-        initial_state=cli_initial_state,  # Passa lo stato
+        initial_state=cli_initial_state,
         streamlit_output=False
-        # img_dict non serve per CLI
     )
     print("\n--- Output Generato ---")
     print(output)

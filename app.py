@@ -1,22 +1,21 @@
-# app.py
+# app.py (Aggiornato per il sistema semplificato "Generate then Fix")
 import os
 import time
 import base64
-import pickle  # Per caricare il mapping nomi
+import pickle
 from PIL import Image
 import streamlit as st
 import numpy as np
-import faiss  # Importa FAISS
+import faiss
 from sentence_transformers import SentenceTransformer
 from typing import Dict, Any, List
 
-# Importa funzioni e classi necessarie dai tuoi moduli
+# Importa funzioni e classi necessarie
 try:
     from main import run_recipe_generation
-    # Importa GraphState aggiornato
     from model_schema import UserPreferences, GraphState
-    from loaders import load_basic_ingredient_info  # Usa il nuovo loader base
-    from utils import normalize_name  # Mantiene normalize_name
+    from loaders import load_basic_ingredient_info
+    from utils import normalize_name
 except ImportError as e:
     st.error(
         f"Errore import: {e}. Assicurati che tutti i file .py siano presenti e corretti.")
@@ -28,12 +27,8 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 
 INGREDIENTS_FILE = os.path.join(DATA_DIR, "ingredients.csv")
-FAISS_INDEX_FILE = os.path.join(
-    DATA_DIR, "ingredients.index")  # Percorso indice FAISS
-NAME_MAPPING_FILE = os.path.join(
-    DATA_DIR, "ingredient_names.pkl")  # Percorso mapping nomi
-
-# Stesso modello usato per creare l'indice
+FAISS_INDEX_FILE = os.path.join(DATA_DIR, "ingredients.index")
+NAME_MAPPING_FILE = os.path.join(DATA_DIR, "ingredient_names.pkl")
 EMBEDDING_MODEL_NAME = 'paraphrase-multilingual-mpnet-base-v2'
 
 # Percorsi Immagini Statiche
@@ -43,7 +38,7 @@ GLUTEN_FREE_IMG_PATH = os.path.join(STATIC_DIR, "gluten_free.png")
 LACTOSE_FREE_IMG_PATH = os.path.join(STATIC_DIR, "lactose_free.png")
 LOADING_IMG_PATH = os.path.join(STATIC_DIR, "loading.gif")
 
-# Verifica Esistenza Cartelle e File Indice/Mapping all'avvio
+# Verifica Esistenza File Indice/Mapping
 if not os.path.exists(FAISS_INDEX_FILE):
     st.error(f"Errore Critico: File indice FAISS non trovato: '{FAISS_INDEX_FILE}'. "
              f"Esegui lo script 'create_faiss_index.py' prima di avviare l'app.")
@@ -52,6 +47,8 @@ if not os.path.exists(NAME_MAPPING_FILE):
     st.error(f"Errore Critico: File mapping nomi non trovato: '{NAME_MAPPING_FILE}'. "
              f"Esegui lo script 'create_faiss_index.py' prima di avviare l'app.")
     st.stop()
+
+# --- Funzioni Helper ---
 
 
 def get_base64_encoded_image(image_path: str) -> str | None:
@@ -77,7 +74,6 @@ def get_img_html(img_path: str, width: int = 24) -> str:
 
 
 def image_checkbox(label: str, img_path: str, img_width: int = 60, key: str | None = None, value: bool = False, text_below: bool = True) -> bool:
-    # Implementazione come nella versione precedente
     container = st.container()
     img_col = container.container()
     img_html_for_display = ""
@@ -106,24 +102,19 @@ def image_checkbox(label: str, img_path: str, img_width: int = 60, key: str | No
         label, key=key, value=value, label_visibility="visible")
     return checked
 
-
 # --- Funzioni di Caricamento Dati/Risorse con Cache ---
 
-# Cache per il modello
+
 @st.cache_resource(show_spinner="Caricamento modello SBERT...")
 def load_sbert_model_cached(model_name):
     print(f"--- Loading SentenceTransformer Model ({model_name}) ---")
     try:
-        # Prova MPS, fallback su CPU se dà errore o se si preferisce CPU
-        # return SentenceTransformer(model_name, device='cpu') # Forza CPU se MPS dà ancora problemi
-        return SentenceTransformer(model_name)  # Tenta MPS di default
+        return SentenceTransformer(model_name)
     except Exception as e:
-        st.error(
-            f"Errore caricamento modello SBERT '{model_name}': {e}. Verificare installazione Pytorch/SentenceTransformers.")
+        st.error(f"Errore caricamento modello SBERT '{model_name}': {e}.")
         return None
 
 
-# Cache per indice
 @st.cache_resource(show_spinner="Caricamento indice FAISS...")
 def load_faiss_index_cached(index_path):
     print(f"--- Loading FAISS index from {index_path} ---")
@@ -134,7 +125,6 @@ def load_faiss_index_cached(index_path):
         return None
 
 
-# Cache per mapping (dati)
 @st.cache_data(show_spinner="Caricamento mapping nomi...")
 def load_name_mapping_cached(mapping_path):
     print(f"--- Loading name mapping from {mapping_path} ---")
@@ -150,22 +140,19 @@ def load_name_mapping_cached(mapping_path):
         return None
 
 
-# Cache per dati base CSV
 @st.cache_data(show_spinner="Caricamento info ingredienti...")
 def load_basic_ingredient_info_cached(csv_filepath):
     print(f"--- Loading basic ingredient info from {csv_filepath} ---")
-    # Usa la funzione definita in loaders.py
     data = load_basic_ingredient_info(csv_filepath)
     if data is None:
-        # Errore già loggato da load_basic_ingredient_info
         st.error(f"Fallito caricamento dati ingredienti da {csv_filepath}.")
     return data
 
 
 # --- Interfaccia Streamlit ---
 st.set_page_config(
-    page_title="Generatore Ricette Low-CHO (FAISS)", layout="wide")
-st.title("🥦 Generatore di Ricette Low-CHO (FAISS) 🥕")
+    page_title="Generatore Ricette Low-CHO (Generate then Fix)", layout="wide")
+st.title("🥦 Generatore di Ricette Low-CHO (Generate then Fix) 🥕")
 st.markdown(
     "Imposta le tue preferenze nella barra laterale e genera ricette personalizzate.")
 
@@ -183,19 +170,17 @@ print(
 # Verifica Fallimento Caricamento Critico
 if embedding_model is None or faiss_index is None or index_to_name_mapping is None or available_ingredients_data is None:
     st.error(
-        "Errore critico durante il caricamento delle risorse necessarie "
-        "(Modello SBERT, Indice FAISS, Mapping Nomi o Dati Ingredienti). "
+        "Errore critico durante il caricamento delle risorse necessarie. "
         "Controllare i log del terminale. L'applicazione non può continuare."
     )
     st.stop()
 
-# Verifica consistenza indice/mapping (opzionale ma consigliato)
+# Verifica consistenza indice/mapping
 if faiss_index.ntotal != len(index_to_name_mapping):
     st.error(f"Errore Critico: Numero vettori nell'indice FAISS ({faiss_index.ntotal}) "
              f"non corrisponde alla lunghezza del mapping nomi ({len(index_to_name_mapping)}). "
              f"Rieseguire lo script 'create_faiss_index.py'.")
     st.stop()
-
 
 # --- UI Sidebar ---
 st.sidebar.header("Preferenze Ricetta")
@@ -203,11 +188,11 @@ target_cho = st.sidebar.number_input(
     "🎯 Target Carboidrati (g/porzione)",
     min_value=5.0,
     max_value=300.0,
-    value=80.0,  # Valore di default
+    value=80.0,
     step=5.0,
     help="Imposta il contenuto desiderato di carboidrati per porzione (in grammi)."
 )
-st.sidebar.markdown("---")  # Separatore
+st.sidebar.markdown("---")
 
 # Flag per mostrare avviso solo una volta
 if 'missing_icon_warning_shown' not in st.session_state:
@@ -263,22 +248,25 @@ if st.sidebar.button("✨ Genera Ricette", use_container_width=True, type="prima
     user_preferences = UserPreferences(target_cho=target_cho, vegan=vegan,
                                        vegetarian=vegetarian, gluten_free=gluten_free, lactose_free=lactose_free)
 
-    # Debug per le preferenze
     print(
         f"DEBUG APP - Preferenze selezionate: vegan={vegan}, vegetarian={vegetarian}, gluten_free={gluten_free}, lactose_free={lactose_free}")
 
-    img_dict = {"vegan": get_img_html(VEGAN_IMG_PATH), "vegetarian": get_img_html(
-        VEGETARIAN_IMG_PATH), "gluten_free": get_img_html(GLUTEN_FREE_IMG_PATH), "lactose_free": get_img_html(LACTOSE_FREE_IMG_PATH)}
+    img_dict = {
+        "vegan": get_img_html(VEGAN_IMG_PATH),
+        "vegetarian": get_img_html(VEGETARIAN_IMG_PATH),
+        "gluten_free": get_img_html(GLUTEN_FREE_IMG_PATH),
+        "lactose_free": get_img_html(LACTOSE_FREE_IMG_PATH)
+    }
 
     # --- Prepara Stato Iniziale per Workflow ---
     try:
         initial_state = GraphState(
             user_preferences=user_preferences,
-            available_ingredients_data=available_ingredients_data,  # Dati base da cache dati
-            embedding_model=embedding_model,                     # Modello da cache risorse
-            normalize_function=normalize_name,                   # Funzione da utils
-            faiss_index=faiss_index,                             # Indice da cache risorse
-            index_to_name_mapping=index_to_name_mapping,         # Mapping da cache dati
+            available_ingredients_data=available_ingredients_data,
+            embedding_model=embedding_model,
+            normalize_function=normalize_name,
+            faiss_index=faiss_index,
+            index_to_name_mapping=index_to_name_mapping,
             # Campi risultati inizializzati
             generated_recipes=[],
             final_verified_recipes=[],
@@ -293,7 +281,7 @@ if st.sidebar.button("✨ Genera Ricette", use_container_width=True, type="prima
     # --- ESEGUI WORKFLOW ---
     try:
         output_html = run_recipe_generation(
-            initial_state=initial_state,  # Passa lo stato completo
+            initial_state=initial_state,
             streamlit_output=True,
             img_dict=img_dict
         )
@@ -322,5 +310,4 @@ else:
 
 # --- Footer ---
 st.markdown("---")
-st.caption(
-    "Applicazione Generatore Ricette v1.2 (FAISS) - Powered by Streamlit & AI")
+st.caption("Applicazione Generatore Ricette v2.0 (Generate then Fix) - Ricette creative ottimizzate automaticamente")

@@ -1,4 +1,6 @@
 # utils.py
+# Questo file non richiede modifiche specifiche per il nuovo sistema
+# poiché le funzioni di utilità sono già compatibili con l'approccio "Generate then Fix"
 import re
 import pickle
 from typing import List, Dict, Optional, Tuple, Any, Callable
@@ -99,8 +101,6 @@ def find_best_match_faiss(
         print(
             f"Errore durante la ricerca FAISS avanzata per '{llm_name}': {e}")
         return None
-
-# --- Mantieni le altre funzioni di utilità ---
 
 
 def calculate_ingredient_cho_contribution(

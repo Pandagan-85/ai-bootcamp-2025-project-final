@@ -259,7 +259,7 @@ def generate_single_recipe(
                         index_to_name_mapping=index_to_name_mapping,
                         model=embedding_model,
                         normalize_func=normalize_func,
-                        threshold=0.55  # Regola se necessario
+                        threshold=0.65  # Regola se necessario
                     )
                     # ==========================
 
@@ -267,10 +267,9 @@ def generate_single_recipe(
                         matched_db_name, match_score = match_result
                         # Trovato nel DB via FAISS
 
-                        # Trova il nome originale nel database con case sensitivity corretta
                         original_db_name = None
                         for db_name in all_db_names:
-                            if normalize_func(db_name).lower() == matched_db_name.lower():
+                            if normalize_func(db_name) == normalize_func(matched_db_name):
                                 original_db_name = db_name
                                 break
 
@@ -510,7 +509,7 @@ def generate_recipes_agent(state: GraphState) -> GraphState:
 
     # ----- Setup LLM, Prompt, Workers (come prima) -----
     target_recipes = 10  # Numero ricette da tentare
-    max_workers = min(6, target_recipes)
+    max_workers = min(2, target_recipes)
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
         state['error_message'] = "API Key OpenAI non trovata."

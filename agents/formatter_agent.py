@@ -228,25 +228,17 @@ def format_output_agent(state: GraphState) -> GraphState:
     def format_nutrition_section(recipe):
         """
         Formatta la sezione delle informazioni nutrizionali di una ricetta.
-
-        Crea una lista HTML con tutti i valori nutrizionali calcolati.
+        Versione semplificata che mostra solo i CHO totali.
 
         Args:
             recipe: Oggetto FinalRecipeOption
 
         Returns:
-            str: HTML formattato per la sezione nutrizione
+            str: HTML formattato per la sezione nutrizione semplificata
         """
         section = "<h3>Informazioni nutrizionali</h3><ul>"
         section += f"<li><b>CHO Totali:</b> {recipe.total_cho:.1f}g</li>"
-        if recipe.total_calories is not None:
-            section += f"<li><b>Calorie Totali:</b> {recipe.total_calories:.1f} kcal</li>"
-        if recipe.total_protein_g is not None:
-            section += f"<li><b>Proteine Totali:</b> {recipe.total_protein_g:.1f}g</li>"
-        if recipe.total_fat_g is not None:
-            section += f"<li><b>Grassi Totali:</b> {recipe.total_fat_g:.1f}g</li>"
-        if recipe.total_fiber_g is not None:
-            section += f"<li><b>Fibre Totali:</b> {recipe.total_fiber_g:.1f}g</li>"
+        # Rimuove la visualizzazione di calorie, proteine, grassi e fibre
         section += "</ul>"
         return section
 
