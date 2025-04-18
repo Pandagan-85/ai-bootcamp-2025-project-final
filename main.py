@@ -1,4 +1,3 @@
-# main.py (Aggiornato per il sistema semplificato "Generate then Fix")
 import os
 import argparse
 import time

@@ -1,13 +1,15 @@
+from typing import Dict, Any, List
+from sentence_transformers import SentenceTransformer
+import faiss
+import numpy as np
+import streamlit as st
+from PIL import Image
+import pickle
 import os
 import time
 import base64
-import pickle
-from PIL import Image
-import streamlit as st
-import numpy as np
-import faiss
-from sentence_transformers import SentenceTransformer
-from typing import Dict, Any, List
+import torch
+torch.classes.__path__ = []  # Aggiungi questa riga
 
 # Importa funzioni e classi necessarie
 try:
