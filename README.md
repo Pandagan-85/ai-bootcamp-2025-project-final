@@ -1,5 +1,16 @@
 # NutriCHOice - Generatore Ricette CHO (Generate then Fix)
 
+NutriCHOice è un assistente culinario intelligente che utilizza l'approccio innovativo **"Genera e Correggi"** per creare ricette personalizzate che rispettano i tuoi obiettivi nutrizionali.
+
+**Sviluppato come progetto finale del Bootcamp AI di Edgemony** 🎓
+
+## Team `Import error: Domenico Not Found`
+
+- Veronica Schembri
+- Francesca Ballirò
+- Valentina Bellezza
+- Giulia Gambuzza
+
 ## 📋 Panoramica
 
 Questo progetto implementa un sistema di generazione di ricette personalizzate basato su LLM, focalizzato sull'approccio **"Generate then Fix"**. L'obiettivo è creare ricette che rispettino un target specifico di carboidrati (CHO) e preferenze dietetiche (vegano, vegetariano, senza glutine, senza lattosio).
@@ -153,3 +164,16 @@ Questo avvierà un server web locale con un'interfaccia utente per inserire le p
 
 6. `formatter_agent`: Prende final_verified_recipes e error_message, genera la stringa HTML final_output.
 7. L'output HTML viene presentato all'utente (console o Streamlit).
+
+## Possibili evoluzioni 🔮
+
+1. Allargare il database con molto più ingredienti
+2. Aggiungere un sistema di Feedback e apprendimento
+3. Profili utente con storico delle ricette generate e delle preferenze
+4. Adattamento stagionale degli ingredienti
+5. Implementare il rapporto carboidrati / proteine
+6. Integrazione con Smart Device(es frigorifero) per recuperare la lista degli ingredienti
+7. Integrazione con App per la spesa
+8. Processo di Caching
+9. Implementare un modello multi modale per generare le immagini delle ricette
+10. Integrazione con **app salute** anche per monitoraggio indice glicemico

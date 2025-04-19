@@ -192,7 +192,7 @@ st.title("🥦 NutriCHOice la scelta intelligente, per un'alimentazione su misur
 st.markdown("""
 ### Come funziona NutriCHOice? 🔍
 
-NutriCHOice è un assistente culinario intelligente che utilizza l'approccio innovativo **"Genera e Correggi"** per creare ricette personalizzate che rispettano i tuoi obiettivi nutrizionali. 
+NutriCHOice è un assistente culinario intelligente che utilizza l'approccio innovativo **"Genera e Correggi"** per creare ricette personalizzate che rispettano i tuoi obiettivi nutrizionali.
 
 **Sviluppato come progetto finale del Bootcamp AI di Edgemony** 🎓
 """)
@@ -205,28 +205,28 @@ col1, col2, col3, col4 = st.columns(4)
 with col1:
     st.markdown("""
     #### 🎯 Personalizzazione
-    
+
     Imposti il tuo target di carboidrati e le preferenze alimentari (vegano, senza glutine, ecc.)
     """)
 
 with col2:
     st.markdown("""
     #### 💡 Generazione Creativa
-    
+
     Un agente AI genera ricette originali e gustose con creatività libera
     """)
 
 with col3:
     st.markdown("""
     #### ✨ Verifica e Ottimizzazione
-    
+
     FAISS confronta gli ingredienti, calcola i nutrienti e ottimizza le quantità
     """)
 
 with col4:
     st.markdown("""
     #### 📑 Presentazione
-    
+
     Le ricette validate vengono formattate con tutti i valori nutrizionali
     """)
 
@@ -275,7 +275,7 @@ if faiss_index.ntotal != len(index_to_name_mapping):
 
 st.header("Preferenze Ricetta")
 target_cho = st.number_input(
-    "🎯 Target Carboidrati (g/porzione)",
+    "🎯 Target Carboidrati (g/porzione) min 20gr, max 120gr",
     min_value=20.0,
     max_value=120.0,
     value=80.0,
@@ -343,7 +343,7 @@ if st.button("✨ Genera Ricette", use_container_width=True, type="primary", dis
                 contents = f.read()
                 data_url = base64.b64encode(contents).decode("utf-8")
             placeholder.markdown(
-                f'<div style="text-align:center;"><img src="data:image/gif;base64,{data_url}" alt="loading..." width="100"><br>{loading_message}</div>', unsafe_allow_html=True)
+                f'<div style="text-align:center;"><img src="data:image/gif;base64,{data_url}" alt="loading..." width="200"><br>{loading_message}</div>', unsafe_allow_html=True)
         except Exception as e:
             placeholder.info(f"⏳ {loading_message}")
     else:
@@ -418,9 +418,9 @@ else:
 # --- Footer ---
 st.markdown("---")
 # Intestazione chiara per indicare che inizia il footer
-st.markdown("### Footer")
+st.markdown("### Chi siamo 🚀")
 
-st.header("👥 Import Errror Domenico Not Found")
+st.subheader("👥 Import Errror Domenico Not Found")
 st.markdown("""
 ### I professionisti dietro NutriCHOice
 *Un gruppo multidisciplinare dedicato a rivoluzionare la pianificazione alimentare personalizzata*
@@ -432,59 +432,68 @@ st.markdown("<br>", unsafe_allow_html=True)
 team_col1, team_col2, team_col3, team_col4 = st.columns(4)
 
 with team_col1:
-    # Placeholder per l'immagine del membro del team
-    st.markdown("""
+    img_html_veronica = get_img_html("static/veronica.webp", width=100)
+    st.markdown(f"""
     <div style='text-align: center;'>
-        <div style='width:150px;height:150px;background-color:#f0f2f6;border-radius:50%;margin:auto;display:flex;align-items:center;justify-content:center;'>
-            <span style='font-size:80px;'>👨‍💻</span>
+        <div style='width:150px;height:150px;background-color:#f0f2f6;border-radius:50%;margin:auto;
+                    overflow:hidden;display:flex;align-items:center;justify-content:center;'>
+            {img_html_veronica}
         </div>
     </div>
     """, unsafe_allow_html=True)
-    st.markdown("### Nome Cognome")
+    st.markdown("### Veronica Schembri")
     st.markdown("**AI & Machine Learning Lead**")
-    st.markdown("PhD in Computer Science specializzata in NLP e sistemi di raccomandazione. Ha guidato lo sviluppo dell'algoritmo di generazione e ottimizzazione delle ricette.")
+    st.markdown("Architetto dai mille talenti sviluppa la sua carriera tra design e programmazione. Divoratrice seriale di fumetti e di tutto lo scibile informatico e digitale.")
     st.markdown(
-        "[LinkedIn](https://linkedin.com/placeholder) | [GitHub](https://github.com/placeholder)")
+        "[LinkedIn](https://www.linkedin.com/in/veronicaschembri/) | [GitHub](https://github.com/Pandagan-85)")
 
 with team_col2:
-    st.markdown("""
+    img_html_francesca = get_img_html("static/francesca.webp", width=100)
+    st.markdown(f"""
     <div style='text-align: center;'>
-        <div style='width:150px;height:150px;background-color:#f0f2f6;border-radius:50%;margin:auto;display:flex;align-items:center;justify-content:center;'>
-            <span style='font-size:80px;'>👩‍🔬</span>
+        <div style='width:150px;height:150px;background-color:#f0f2f6;border-radius:50%;margin:auto;
+                    overflow:hidden;display:flex;align-items:center;justify-content:center;'>
+            {img_html_francesca}
         </div>
     </div>
     """, unsafe_allow_html=True)
-    st.markdown("### Nome Cognome")
-    st.markdown("**Nutrition Data Scientist**")
-    st.markdown("Biologo nutrizionista con master in Data Science. Ha curato la creazione del database nutrizionale e l'algoritmo di validazione delle ricette.")
+    st.markdown("### Francesca Ballirò")
+    st.markdown("**AI & Machine Learning Lead**")
+    st.markdown("Ingegnere e imprenditrice, è abilissima nelle sfide lanciate dai dati. Riesce a manipolare complessi dataset anche sui mezzi pubblici.")
     st.markdown(
         "[LinkedIn](https://linkedin.com/placeholder) | [GitHub](https://github.com/placeholder)")
 
 with team_col3:
-    st.markdown("""
+    img_html_valentina = get_img_html("static/valentina.webp", width=100)
+    st.markdown(f"""
     <div style='text-align: center;'>
-        <div style='width:150px;height:150px;background-color:#f0f2f6;border-radius:50%;margin:auto;display:flex;align-items:center;justify-content:center;'>
-            <span style='font-size:80px;'>👨‍💻</span>
+        <div style='width:150px;height:150px;background-color:#f0f2f6;border-radius:50%;margin:auto;
+                    overflow:hidden;display:flex;align-items:center;justify-content:center;'>
+            {img_html_valentina}
         </div>
     </div>
     """, unsafe_allow_html=True)
-    st.markdown("### Nome Cognome")
-    st.markdown("**Full-Stack Developer**")
-    st.markdown("Ingegnere del software con 10+ anni di esperienza. Ha sviluppato l'architettura del sistema e l'interfaccia utente di NutriCHOice.")
+    st.markdown("### Valentina Bellezza")
+    st.markdown("**AI & Machine Learning Lead**")
+    st.markdown("Specialista in marketing digitale, ossessionata dai KPI per ottimizzare le performance e massimizzare i ROAS, vive tra filosofia e salvifica praxis.")
     st.markdown(
         "[LinkedIn](https://linkedin.com/placeholder) | [GitHub](https://github.com/placeholder)")
 
 with team_col4:
-    st.markdown("""
+
+    img_html_giulia = get_img_html("static/lactose_free.png", width=100)
+    st.markdown(f"""
     <div style='text-align: center;'>
-        <div style='width:150px;height:150px;background-color:#f0f2f6;border-radius:50%;margin:auto;display:flex;align-items:center;justify-content:center;'>
-            <span style='font-size:80px;'>👩‍🔬</span>
+        <div style='width:150px;height:150px;background-color:#f0f2f6;border-radius:50%;margin:auto;
+                    overflow:hidden;display:flex;align-items:center;justify-content:center;'>
+            {img_html_giulia}
         </div>
     </div>
     """, unsafe_allow_html=True)
-    st.markdown("### Nome Cognome")
-    st.markdown("**Data Engineer & MLOps**")
-    st.markdown("Specialista in infrastrutture ML e sistemi distribuiti. Ha ottimizzato il pipeline di elaborazione e integrato FAISS per la ricerca semantica.")
+
+    st.markdown("### Giulia Gambuzza")
+    st.markdown("**AI & Machine Learning Lead**")
+    st.markdown("Umanista digitale, incarna lo spirito del letterato di oggi, esperta nella manipolazione di corpora testuali, è anche dispensatrice compulsiva di materiale didattico.")
     st.markdown(
         "[LinkedIn](https://linkedin.com/placeholder) | [GitHub](https://github.com/placeholder)")
 
