@@ -38,6 +38,7 @@ banana
 banane
 barbabietola
 barbabietole
+basilico fresco
 besciamella
 besciamelle
 biete
@@ -73,7 +74,7 @@ cavoli
 cavolo
 cavolo rapa
 cavolo riccio
-ceci
+ceci cotti
 cetrioli
 cetriolo
 cheddar
@@ -99,6 +100,7 @@ corn flakes
 coscia di pollo
 couscous
 cozze
+crema di cocco
 crema di nocciole (senza zucchero)
 crema spalmabile vegetale (tipo formaggio)
 crescione
@@ -144,6 +146,7 @@ finocchii
 finocchio
 fiocchi di latte
 formaggio di capra (fresco)
+formaggio feta
 formaggio halloumi
 formaggio paneer
 formaggio spalmabile (light)
@@ -189,14 +192,14 @@ latticelli
 latticello
 lattuga
 lenticchie
-lenticchie rosse
-lenticchie verdi
 lievito alimentare in scaglie
 lievito di birra
 lime
 limi
 limone
 limoni
+linguine
+linguini
 liquore (amaro)
 lumache (cotte)
 lupini (cotti e salati)
@@ -230,6 +233,7 @@ merluzzo
 miele
 miglio
 mirtilli
+mirtilli rossi
 mirtilli rossi (freschi)
 more
 mori
@@ -256,8 +260,13 @@ olive nere
 olive verdi
 orecchiette
 orecchietti
+origani
+origano
+origano fresco
+origano secco
 orzo
 pancetta
+pancetta a cubetti
 pancette
 pane azzimo
 pane bianco
@@ -270,8 +279,6 @@ panna montata (zuccherata)
 papaya
 papaye
 paprika (spezia)
-parmigiani
-parmigiano
 parmigiano reggiano
 pasta
 pasta all'uovo
@@ -281,6 +288,8 @@ pasta di lenticchie
 pasta di lenticchie rosse
 pasta di piselli
 pasta integrale
+pasta linguine
+pasta spaghetti
 paste
 pastinaca
 pastinace
@@ -288,8 +297,13 @@ patate
 patate dolci
 patati
 patatine fritte (chips)
+pecorini
+pecorino
+pecorino grattugiato
+pecorino stagionato
 penne
 penni
+pepe nero
 peperoni
 pera
 pere
@@ -299,7 +313,7 @@ peschi
 pesti
 pesto
 petto di pollo
-pinoli 9.4 673.0 13.7 68.4 3.7 true true true true 15.0 grassi e frutta secca
+pinoli
 piselli
 pistacchi
 platani
@@ -309,8 +323,8 @@ polipo
 polpi
 polpo
 pomodori
+pomodori secchi
 pomodorini
-pomodorino ciliegino
 pomodoro
 pomodoro ciliegino
 pompelmi
@@ -319,6 +333,7 @@ popcorn (senza burro/sale)
 porri
 porro
 pretzels
+prezzemolo fresco
 prosciutto cotto
 prosciutto crudo
 proteine vegetali testurizzate (tvp secche)
@@ -344,6 +359,7 @@ riso integrale
 riso jasmine
 riso venere (nero)
 rucola
+rucola fresca
 rucole
 rughetta
 salame
@@ -373,8 +389,8 @@ senape di digione
 sgombri
 sgombro
 smoothie di frutta
-sorbetto al limone
 spaghetti
+spaghetti integrali
 spinaci
 stevia
 stevie
@@ -382,10 +398,12 @@ strutti
 strutto
 succo d'arancia
 succo d'uva
+succo di limone
 succo di mela
 tacchini
 tacchino
 tagliatelle
+tagliatelli
 tahini (pasta di sesamo)
 tempeh
 tofu
@@ -394,6 +412,8 @@ tonno in scatola
 topinambur
 tortilla di frumento
 tortilla di mais
+trofie
+trofii
 tè verde
 uova
 uove
@@ -412,6 +432,9 @@ xilitoli
 xilitolo
 yogurt di soia
 yogurt greco
+zafferani
+zafferano
+zafferano in polvere
 zenzero fresco
 zucca
 zucce
