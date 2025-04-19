@@ -925,9 +925,9 @@ def verifier_agent(state: GraphState) -> GraphState:
     target_cho = preferences.target_cho
     # Tolleranza % per considerare una ricetta "nel range" dopo l'ottimizzazione iniziale
     # +/- 30% (più larga per dare chance all'ottimizzazione)
-    initial_cho_tolerance_percent = 0.30
-    min_cho_initial = target_cho * (1 - initial_cho_tolerance_percent)
-    max_cho_initial = target_cho * (1 + initial_cho_tolerance_percent)
+    fixed_cho_tolerance = 6.0
+    min_cho_initial = target_cho - fixed_cho_tolerance
+    max_cho_initial = target_cho + fixed_cho_tolerance
 
     print(
         f"Verifica di {len(recipes_from_generator)} ricette generate. Target CHO: {target_cho:.1f}g")
@@ -1083,9 +1083,9 @@ def verifier_agent(state: GraphState) -> GraphState:
     print("\nFase 3: Verifica Finale (Qualità, Realismo, Range CHO Stretto)")
 
     # Tolleranza % finale più stretta
-    final_cho_tolerance_percent = 0.15  # +/- 15%
-    min_cho_final = target_cho * (1 - final_cho_tolerance_percent)
-    max_cho_final = target_cho * (1 + final_cho_tolerance_percent)
+    fixed_cho_tolerance = 6.0  # +/- 15%
+    min_cho_final = target_cho - fixed_cho_tolerance
+    max_cho_final = target_cho + fixed_cho_tolerance
     print(
         f"Range CHO finale target: {min_cho_final:.1f} - {max_cho_final:.1f}g")
 

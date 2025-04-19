@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 from typing import Dict, Any, List
 from sentence_transformers import SentenceTransformer
 import faiss
@@ -10,7 +11,7 @@ import time
 import base64
 import torch
 torch.classes.__path__ = []  # per streamlit
-from dotenv import load_dotenv
+load_dotenv()
 # Importa funzioni e classi necessarie
 try:
     from main import run_recipe_generation
@@ -138,13 +139,13 @@ def image_checkbox(label: str, img_path: str, img_width: int = 160, key: str | N
 # --- Funzioni di Caricamento Dati/Risorse con Cache ---
 
 
-@st.cache_resource(show_spinner="Caricamento modello SBERT...")
+@st.cache_resource(show_spinner="Caricamento modello...")
 def load_sbert_model_cached(model_name):
     print(f"--- Loading SentenceTransformer Model ({model_name}) ---")
     try:
         return SentenceTransformer(model_name)
     except Exception as e:
-        st.error(f"Errore caricamento modello SBERT '{model_name}': {e}.")
+        st.error(f"Errore caricamento modello  '{model_name}': {e}.")
         return None
 
 
