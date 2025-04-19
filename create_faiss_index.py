@@ -27,9 +27,7 @@ def prepare_consistent_ingredient_data(filepath: str) -> list[str]:
     Processo:
     1. Carica i nomi base degli ingredienti dal CSV
     2. Normalizza i nomi (minuscolo, rimuove spazi in eccesso)
-    3. Arricchisce il dataset con varianti linguistiche:
-       - Singolare/plurale (es. "carota" -> "carote")
-       - Sinonimi comuni (es. "polpo" -> "polipo")
+    3. Arricchisce il dataset con varianti linguistiche corrette
     4. Rimuove duplicati e salva lista arricchita
 
     Args:
@@ -49,11 +47,62 @@ def prepare_consistent_ingredient_data(filepath: str) -> list[str]:
         if 'name' not in df.columns:
             raise ValueError("Colonna 'name' non trovata nel CSV.")
 
+        # Definisce le parole invariabili (non cambiano al plurale)
+        INVARIABLE_WORDS = {
+            'latte', 'pepe', 'formaggio', 'sale', 'olio', 'aceto', 'caffè', 'tè',
+            'miele', 'marmellata', 'pane', 'cous cous', 'curry', 'senape', 'maionese',
+            'ketchup', 'wasabi', 'miglio', 'quinoa', 'orzo', 'burro', 'farro', 'yogurt',
+            'riso', 'grano', 'semola', 'amido', 'zucchero', 'farina', 'mais', 'lievito',
+            'brodo', 'concentrato di pomodoro', 'passata di pomodoro', 'pelati', 'acqua'
+        }
+
+        # Definisce parole che sono già al plurale
+        ALWAYS_PLURAL = {
+            'olive', 'alici', 'acciughe', 'anacardi', 'arachidi', 'capperi', 'rognoni',
+            'marsala', 'funghi', 'spinaci', 'asparagi', 'lenticchie', 'fagioli', 'ceci',
+            'piselli', 'pinoli', 'pistacchi', 'mandorle', 'noci', 'nocciole', 'datteri',
+            'fichi', 'prugne', 'uvetta', 'albicocche', 'molluschi', 'frutti di mare',
+            'gamberetti', 'cozze', 'vongole', 'calamari', 'seppie', 'broccoli'
+        }
+
+        # Sinonimi comuni con forme corrette
+        common_synonyms = {
+            'cuscus': ['couscous'],
+            'formaggio feta': ['feta'],
+            'peperone': ['peperoni', 'peperone dolce', 'peperone rosso', 'peperone giallo'],
+            'gambero': ['gamberi', 'gamberetto', 'gamberetti'],
+            'basilico': ['basilico fresco'],
+            'coriandolo': ['coriandolo fresco', 'cilantro'],
+            'melanzana': ['melanzane'],
+            # Forme corrette
+            'olive': ['olive nere', 'olive verdi', 'olive kalamata'],
+            'limone': ['lime'],
+            'cipolla': ['cipolla rossa', 'cipolla bianca', 'cipolla dorata'],
+            'formaggio parmigiano': ['parmigiano', 'parmigiano reggiano'],
+            'pasta': ['spaghetti', 'penne', 'fusilli', 'tagliatelle', 'fettuccine'],
+            'riso': ['riso bianco', 'riso integrale', 'riso arborio', 'riso carnaroli'],
+            'pomodoro': ['pomodori', 'pomodorini', 'pomodoro ciliegino', 'pomodorino ciliegino'],
+            'funghi': ['funghi champignon', 'funghi porcini', 'champignon'],
+            'zucchina': ['zucchine'],
+            'mela': ['mele'],
+            'pera': ['pere'],
+            'arancia': ['arance'],
+            'fragola': ['fragole'],
+            'uva': ['uva bianca', 'uva nera', 'uva rossa'],  # Forme corrette
+            'banana': ['banane'],
+            'rosmarino': ['rosmarino fresco'],
+            'timo': ['timo fresco'],
+            'origano': ['origano secco', 'origano fresco'],
+            'formaggio halloumi': ['halloumi'],
+            'polipo': ['polpo'],
+            'polpo': ['polipo'],
+            'rucola': ['rughetta']
+        }
+
         # Estrai i nomi base e normalizzali per coerenza
         base_names = []
         for name in df['name']:
             if isinstance(name, str) and name.strip():
-                # Assicurati che tutti i nomi siano coerenti: tutti minuscoli
                 normalized_name = normalize_name(name)
                 base_names.append(normalized_name)
 
@@ -65,54 +114,28 @@ def prepare_consistent_ingredient_data(filepath: str) -> list[str]:
         enhanced_names = list(base_names)  # Copia per iniziare
 
         for name in base_names:
-            # Aggiungi singolare/plurale
-            if name.endswith('e'):
-                # e.g., "peperone" -> "peperoni"
+            # Salta le espressioni composte (contengono spazi)
+            if ' ' in name:
+                # Le espressioni composte vanno gestite tramite il dizionario dei sinonimi
+                continue
+
+            # Salta le parole invariabili
+            if name in INVARIABLE_WORDS:
+                continue
+
+            # Salta le parole già al plurale
+            if name in ALWAYS_PLURAL:
+                continue
+
+            # Aggiungi singolare/plurale solo per parole non escluse
+            if name.endswith('e') and name not in ['latte', 'miele', 'olive', 'fave']:
                 enhanced_names.append(name[:-1] + 'i')
             elif name.endswith('a'):
-                # e.g., "carota" -> "carote"
                 enhanced_names.append(name[:-1] + 'e')
             elif name.endswith('o'):
-                # e.g., "gambero" -> "gamberi"
                 enhanced_names.append(name[:-1] + 'i')
 
-            # Aggiungi sinonimi comuni per ingredienti specifici
-            common_synonyms = {
-                'cuscus': ['couscous'],
-                'formaggio feta': ['feta'],
-                'peperone': ['peperoni', 'peperone dolce', 'peperone rosso', 'peperone giallo'],
-                'gambero': ['gamberi', 'gamberetto', 'gamberetti'],
-                'basilico': ['basilico fresco'],
-                'coriandolo': ['coriandolo fresco', 'cilantro'],
-                'melanzana': ['melanzane'],
-                'olive': ['olive nere', 'olive verdi', 'olive kalamata'],
-                'limone': ['lime'],
-                'cipolla': ['cipolla rossa', 'cipolla bianca', 'cipolla dorata'],
-                'formaggio parmigiano': ['parmigiano', 'parmigiano reggiano'],
-                'pasta': ['spaghetti', 'penne', 'fusilli', 'tagliatelle', 'fettuccine'],
-                'riso': ['riso bianco', 'riso integrale', 'riso arborio', 'riso carnaroli'],
-                'pomodoro': ['pomodori', 'pomodorini', 'pomodoro ciliegino'],
-                'funghi': ['funghi champignon', 'funghi porcini', 'champignon'],
-                'zucchina': ['zucchine'],
-                'mela': ['mele'],
-                'pera': ['pere'],
-                'arancia': ['arance'],
-                'fragola': ['fragole'],
-                'uva': ['uva bianca', 'uva nera', 'uva rossa'],
-                'banana': ['banane'],
-                'nocciola': ['nocciole'],
-                'noce': ['noci'],
-                'mandorla': ['mandorle'],
-                'pistacchio': ['pistacchi'],
-                'rosmarino': ['rosmarino fresco'],
-                'timo': ['timo fresco'],
-                'origano': ['origano secco', 'origano fresco'],
-                'formaggio halloumi': ['halloumi'],
-                'polipo': ['polpo'],       # Aggiunti sinonimi specifici
-                'polpo': ['polipo'],
-                'rucola': ['rughetta']
-            }
-
+            # Aggiungi sinonimi dal dizionario
             if name in common_synonyms:
                 for synonym in common_synonyms[name]:
                     enhanced_names.append(normalize_name(synonym))
