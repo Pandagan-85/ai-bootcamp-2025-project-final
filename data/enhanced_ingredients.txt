@@ -107,6 +107,7 @@ crostoni (croutons)
 cumino (semi)
 cuori di carciofo (conserva)
 curcuma fresca
+curry
 dado vegetale
 datteri
 edamame
@@ -187,7 +188,6 @@ latte vaccino
 latticelli
 latticello
 lattuga
-lattuge
 lenticchie
 lenticchie rosse
 lenticchie verdi

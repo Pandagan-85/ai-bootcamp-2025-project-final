@@ -10,7 +10,7 @@ import time
 import base64
 import torch
 torch.classes.__path__ = []  # per streamlit
-
+from dotenv import load_dotenv
 # Importa funzioni e classi necessarie
 try:
     from main import run_recipe_generation

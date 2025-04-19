@@ -53,7 +53,7 @@ def prepare_consistent_ingredient_data(filepath: str) -> list[str]:
             'miele', 'marmellata', 'pane', 'cous cous', 'curry', 'senape', 'maionese',
             'ketchup', 'wasabi', 'miglio', 'quinoa', 'orzo', 'burro', 'farro', 'yogurt',
             'riso', 'grano', 'semola', 'amido', 'zucchero', 'farina', 'mais', 'lievito',
-            'brodo', 'concentrato di pomodoro', 'passata di pomodoro', 'pelati', 'acqua'
+            'brodo', 'concentrato di pomodoro', 'passata di pomodoro', 'pelati', 'acqua', 'lattuga'
         }
 
         # Definisce parole che sono già al plurale

@@ -180,7 +180,7 @@ def generate_recipes_agent(state: GraphState) -> GraphState:
         system_prompt = """
         **RUOLO: ** Sei uno chef creativo esperto nella creazione di ricette originali e gustose.
 
-        **COMPITO: ** Genera una ricetta che sia appetitosa, realistica e che contenga APPROSSIMATIVAMENTE {target_cho}g di carboidrati totali.
+        **COMPITO:** Genera una ricetta PER UNA PERSONA che sia appetitosa, realistica e che contenga APPROSSIMATIVAMENTE {target_cho}g di carboidrati totali.
 
         ---
 
@@ -190,6 +190,7 @@ def generate_recipes_agent(state: GraphState) -> GraphState:
         * **Preferenze Dietetiche:** Rispetta le seguenti preferenze: {dietary_preferences}
         * **Ingredienti:** Usa ingredienti comuni e facilmente reperibili.
         * **Quantità:** Specifica le quantità in grammi per ogni ingrediente.
+        
         
         ## NON PREOCCUPARTI DI:
         * Calcolare con precisione esatta i carboidrati

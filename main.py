@@ -15,7 +15,11 @@ from model_schema import UserPreferences, GraphState
 from loaders import load_basic_ingredient_info
 from workflow import create_workflow  # Usa il workflow aggiornato
 from utils import normalize_name
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
+apy_key=os.getenv("OPENAI_API_KEY")
 # --- Configurazione ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
