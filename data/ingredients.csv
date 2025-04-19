@@ -2,6 +2,7 @@ name,cho_per_100g,calories_per_100g,protein_per_100g,fat_per_100g,fiber_per_100g
 Pasta,75.0,350.0,12.0,1.5,3.0,False,True,False,True,80.0,Carboidrati
 Riso bianco,80.0,365.0,7.0,0.6,0.4,True,True,True,True,70.0,Carboidrati
 Riso integrale,70.0,350.0,7.5,2.4,3.6,True,True,True,True,70.0,Carboidrati
+Parmigiano Reggiano,0.0,431.0,33.0,29.0,0.0,False,True,True,True,20.0,Proteine
 Fusilli,75.0,350.0,12.0,1.5,3.0,False,True,False,True,80.0,Carboidrati
 Pane integrale,45.0,247.0,11.0,3.0,7.0,True,True,False,True,50.0,Carboidrati
 Farina di frumento,76.0,340.0,10.0,1.0,2.8,True,True,False,True,30.0,Carboidrati
