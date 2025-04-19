@@ -170,7 +170,7 @@ def generate_recipes_agent(state: GraphState) -> GraphState:
             state['generated_recipes'] = []
             return state
 
-        model_name = "gpt-4-turbo"
+        model_name = "gpt-3.5-turbo"
         print(
             f"Utilizzo modello {model_name} per generazione ricette creative")
         llm = ChatOpenAI(temperature=0.9, model_name=model_name,

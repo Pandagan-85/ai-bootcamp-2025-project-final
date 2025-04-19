@@ -92,7 +92,7 @@ def get_img_html(img_path: str, width: int = 24) -> str:
         return f'<span title="Icona mancante: {os.path.basename(img_path)}" style="margin-right: 5px; vertical-align: middle;">{emoji}</span>'
 
 
-def image_checkbox(label: str, img_path: str, img_width: int = 60, key: str | None = None, value: bool = False, text_below: bool = True) -> bool:
+def image_checkbox(label: str, img_path: str, img_width: int = 160, key: str | None = None, value: bool = False, text_below: bool = True) -> bool:
     """
     Crea un checkbox personalizzato con un'immagine sopra l'etichetta utilizzando componenti Streamlit.
 
@@ -184,10 +184,66 @@ def load_basic_ingredient_info_cached(csv_filepath):
 
 # --- Interfaccia Streamlit ---
 st.set_page_config(
-    page_title="NutriCHOice - Generatore Ricette CHO", layout="wide")
+    page_title="NutriCHOice - Generatore Ricette CHO", layout="centered")
 st.title("🥦 NutriCHOice la scelta intelligente, per un'alimentazione su misura) 🥕")
-st.markdown(
-    "Imposta le tue preferenze nella e genera ricette personalizzate.")
+
+# Descrizione introduttiva con menzione Edgemony
+st.markdown("""
+### Come funziona NutriCHOice? 🔍
+
+NutriCHOice è un assistente culinario intelligente che utilizza l'approccio innovativo **"Genera e Correggi"** per creare ricette personalizzate che rispettano i tuoi obiettivi nutrizionali. 
+
+**Sviluppato come progetto finale del Bootcamp AI di Edgemony** 🎓
+""")
+
+# Il processo in 4 fasi in markdown semplice per evitare sovrapposizioni
+st.markdown("#### Il processo in 4 fasi:")
+
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    st.markdown("""
+    #### 🎯 Personalizzazione
+    
+    Imposti il tuo target di carboidrati e le preferenze alimentari (vegano, senza glutine, ecc.)
+    """)
+
+with col2:
+    st.markdown("""
+    #### 💡 Generazione Creativa
+    
+    Un agente AI genera ricette originali e gustose con creatività libera
+    """)
+
+with col3:
+    st.markdown("""
+    #### ✨ Verifica e Ottimizzazione
+    
+    FAISS confronta gli ingredienti, calcola i nutrienti e ottimizza le quantità
+    """)
+
+with col4:
+    st.markdown("""
+    #### 📑 Presentazione
+    
+    Le ricette validate vengono formattate con tutti i valori nutrizionali
+    """)
+
+st.markdown("")  # Spazio aggiuntivo
+
+st.markdown("""
+#### Perché scegliere NutriCHOice? 🌟
+
+- **Precisione assoluta**: Valori nutrizionali basati su dati scientifici verificati
+- **Creatività senza limiti**: Ricette originali e diverse ad ogni generazione
+- **Rispetto delle preferenze**: Ogni ricetta è garantita conforme alle tue esigenze dietetiche
+- **Ottimizzazione intelligente**: Le quantità vengono calibrate per raggiungere esattamente il tuo target di carboidrati
+""")
+
+st.markdown("---")
+st.info("💡 Imposta le tue preferenze qui sotto e clicca sul pulsante per generare le tue ricette personalizzate!")
+st.markdown("")
+
 
 # --- Caricamento Risorse all'Avvio ---
 start_load_time = time.time()
@@ -219,12 +275,19 @@ if faiss_index.ntotal != len(index_to_name_mapping):
 st.header("Preferenze Ricetta")
 target_cho = st.number_input(
     "🎯 Target Carboidrati (g/porzione)",
-    min_value=5.0,
-    max_value=300.0,
+    min_value=20.0,
+    max_value=120.0,
     value=80.0,
     step=5.0,
     help="Imposta il contenuto desiderato di carboidrati per porzione (in grammi)."
 )
+# Validazione del valore CHO
+cho_is_valid = 20.0 <= target_cho <= 140.0
+
+if not cho_is_valid:
+    st.error("⚠️ Il valore dei carboidrati deve essere compreso tra 10g e 140g.")
+
+st.markdown("---")
 st.markdown("---")
 
 # Flag per mostrare avviso solo una volta
@@ -255,7 +318,17 @@ if vegan:
     vegetarian = True
 
 # --- Pulsante di Generazione e Logica di Esecuzione ---
-if st.button("✨ Genera Ricette", use_container_width=True, type="primary"):
+# Disabilita il pulsante se il valore CHO non è valido
+button_disabled = not cho_is_valid
+
+# Mostra un messaggio se il pulsante è disabilitato
+if button_disabled:
+    st.warning(
+        "⚠️ Il pulsante 'Genera Ricette' è disabilitato perché il valore dei carboidrati è fuori range (10-140g).")
+
+# Il pulsante è disabilitato se il valore è fuori range
+if st.button("✨ Genera Ricette", use_container_width=True, type="primary", disabled=button_disabled):
+    # Non serve più il doppio controllo perché il pulsante è già disabilitato
 
     st.markdown("---")
     results_container = st.container()
@@ -343,4 +416,78 @@ else:
 
 # --- Footer ---
 st.markdown("---")
-st.caption("Applicazione Generatore Ricette v2.0 (Generate then Fix) - Ricette creative ottimizzate automaticamente")
+# Intestazione chiara per indicare che inizia il footer
+st.markdown("### Footer")
+
+st.header("👥 Import Errror Domenico Not Found")
+st.markdown("""
+### I professionisti dietro NutriCHOice
+*Un gruppo multidisciplinare dedicato a rivoluzionare la pianificazione alimentare personalizzata*
+""")
+
+st.markdown("<br>", unsafe_allow_html=True)
+
+# 4 colonne per i 4 membri del team
+team_col1, team_col2, team_col3, team_col4 = st.columns(4)
+
+with team_col1:
+    # Placeholder per l'immagine del membro del team
+    st.markdown("""
+    <div style='text-align: center;'>
+        <div style='width:150px;height:150px;background-color:#f0f2f6;border-radius:50%;margin:auto;display:flex;align-items:center;justify-content:center;'>
+            <span style='font-size:80px;'>👨‍💻</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown("### Nome Cognome")
+    st.markdown("**AI & Machine Learning Lead**")
+    st.markdown("PhD in Computer Science specializzata in NLP e sistemi di raccomandazione. Ha guidato lo sviluppo dell'algoritmo di generazione e ottimizzazione delle ricette.")
+    st.markdown(
+        "[LinkedIn](https://linkedin.com/placeholder) | [GitHub](https://github.com/placeholder)")
+
+with team_col2:
+    st.markdown("""
+    <div style='text-align: center;'>
+        <div style='width:150px;height:150px;background-color:#f0f2f6;border-radius:50%;margin:auto;display:flex;align-items:center;justify-content:center;'>
+            <span style='font-size:80px;'>👩‍🔬</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown("### Nome Cognome")
+    st.markdown("**Nutrition Data Scientist**")
+    st.markdown("Biologo nutrizionista con master in Data Science. Ha curato la creazione del database nutrizionale e l'algoritmo di validazione delle ricette.")
+    st.markdown(
+        "[LinkedIn](https://linkedin.com/placeholder) | [GitHub](https://github.com/placeholder)")
+
+with team_col3:
+    st.markdown("""
+    <div style='text-align: center;'>
+        <div style='width:150px;height:150px;background-color:#f0f2f6;border-radius:50%;margin:auto;display:flex;align-items:center;justify-content:center;'>
+            <span style='font-size:80px;'>👨‍💻</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown("### Nome Cognome")
+    st.markdown("**Full-Stack Developer**")
+    st.markdown("Ingegnere del software con 10+ anni di esperienza. Ha sviluppato l'architettura del sistema e l'interfaccia utente di NutriCHOice.")
+    st.markdown(
+        "[LinkedIn](https://linkedin.com/placeholder) | [GitHub](https://github.com/placeholder)")
+
+with team_col4:
+    st.markdown("""
+    <div style='text-align: center;'>
+        <div style='width:150px;height:150px;background-color:#f0f2f6;border-radius:50%;margin:auto;display:flex;align-items:center;justify-content:center;'>
+            <span style='font-size:80px;'>👩‍🔬</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown("### Nome Cognome")
+    st.markdown("**Data Engineer & MLOps**")
+    st.markdown("Specialista in infrastrutture ML e sistemi distribuiti. Ha ottimizzato il pipeline di elaborazione e integrato FAISS per la ricerca semantica.")
+    st.markdown(
+        "[LinkedIn](https://linkedin.com/placeholder) | [GitHub](https://github.com/placeholder)")
+
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("---")
+st.caption(
+    "© 2025 NutriCHOice v2.0 (Generate then Fix) - Tutti i diritti riservati")

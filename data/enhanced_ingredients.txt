@@ -94,6 +94,7 @@ cavolo riccio
 ceci
 cetrioli
 cetriolo
+cheddar
 cicoria belga (indivia)
 ciliegia
 ciliegie
@@ -136,6 +137,7 @@ dado vegetali
 datteri
 edamame
 edamami
+emmental
 eritritoli
 eritritolo
 estratto di vaniglia
@@ -149,6 +151,8 @@ farina d'avene
 farina di ceci
 farina di cocci
 farina di cocco
+farina di farri
+farina di farro
 farina di frumenti
 farina di frumento
 farina di mais (per polenta)
@@ -165,6 +169,7 @@ fegato di manzo
 fesa di tacchini
 fesa di tacchino
 feta
+fete
 fette biscottate
 fette biscottati
 fettuccine
@@ -178,17 +183,9 @@ finocchii
 finocchio
 fiocchi di latte
 fiocchi di latti
-formaggio cheddar
 formaggio di capra (fresco)
-formaggio emmental
-formaggio feta
-formaggio fete
-formaggio gorgonzola
-formaggio gorgonzole
 formaggio halloumi
 formaggio paneer
-formaggio parmigiani
-formaggio parmigiano
 formaggio spalmabile (light)
 formaggio vegano (tipo cheddar)
 fragole
@@ -207,8 +204,8 @@ germogli di soie
 ghee (burro chiarificato)
 gnocchi di patate
 gnocchi di patati
-gnocchi di risi
-gnocchi di riso
+gorgonzola
+gorgonzole
 grano saraceni
 grano saraceno
 grissini
@@ -351,7 +348,9 @@ panna montata (zuccherata)
 papaya
 papaye
 paprika (spezia)
+parmigiani
 parmigiano
+parmigiano reggiani
 parmigiano reggiano
 pasta
 pasta all'uovi
@@ -386,6 +385,8 @@ pesti
 pesto
 petto di polli
 petto di pollo
+pinoli 9.4 673.0 13.7 68.4 3.7 true true true true 15.0 grassi e frutta secca
+pinoli 9.4 673.0 13.7 68.4 3.7 true true true true 15.0 grassi e frutta secce
 piselli
 pistacchi
 platani

@@ -64,7 +64,7 @@ Il sistema si basa su modelli Pydantic per una strutturazione robusta dei dati:
    **Responsabilità:** Generare bozze creative di ricette basate sulle preferenze generali e sul target CHO approssimativo, senza effettuare calcoli precisi o matching ingredienti.
    **Input:** UserPreferences, target_cho, dietary_preferences_string.
    **Output:** Lista di FinalRecipeOption non verificate (con total_cho e altri nutrienti a None, ingredienti come `CalculatedIngredient` ma con solo name = original_llm_name e quantity_g).
-   **Tecnologia:** ChatOpenAI (GPT-4-Turbo o simili), Langchain Expression Language (LCEL).
+   **Tecnologia:** ChatOpenAI (gpt-3.5-turbo o simili), Langchain Expression Language (LCEL).
 
 2. **Verifier Agent** (verifier_agent.py) - Potenziato
    **Responsabilità**: Il "cervello" del sistema. Analizza, valida, ottimizza e filtra le ricette generate.
