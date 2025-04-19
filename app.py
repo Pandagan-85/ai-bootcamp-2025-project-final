@@ -288,7 +288,7 @@ if not cho_is_valid:
     st.error("⚠️ Il valore dei carboidrati deve essere compreso tra 10g e 140g.")
 
 st.markdown("---")
-st.markdown("---")
+
 
 # Flag per mostrare avviso solo una volta
 if 'missing_icon_warning_shown' not in st.session_state:

@@ -380,14 +380,196 @@ def adjust_recipe_proportionally(recipe: FinalRecipeOption, cho_contributors: Li
     return adjusted_recipe
 
 
+def classify_ingredients_by_cho_contribution(recipe: FinalRecipeOption) -> Dict[str, List[CalculatedIngredient]]:
+    """
+    Classifica gli ingredienti per contributo CHO relativo alla ricetta.
+
+    Args:
+        recipe: Ricetta da analizzare
+
+    Returns:
+        Dizionario con ingredienti classificati per categoria (primary, secondary, minor, non_cho)
+    """
+    total_cho = recipe.total_cho if recipe.total_cho else 0
+    classified = {'primary': [], 'secondary': [], 'minor': [], 'non_cho': []}
+
+    if total_cho == 0:
+        return classified
+
+    for ing in recipe.ingredients:
+        if not hasattr(ing, 'cho_contribution') or ing.cho_contribution is None:
+            classified['non_cho'].append(ing)
+            continue
+
+        cho_percent = (ing.cho_contribution / total_cho) * 100
+
+        if cho_percent > 50:
+            classified['primary'].append(ing)
+        elif cho_percent > 10:
+            classified['secondary'].append(ing)
+        elif cho_percent > 0:
+            classified['minor'].append(ing)
+        else:
+            classified['non_cho'].append(ing)
+
+    # Ordina per contributo decrescente in ogni categoria
+    for category in ['primary', 'secondary', 'minor']:
+        classified[category].sort(
+            key=lambda x: x.cho_contribution, reverse=True)
+
+    return classified
+
+
+def scale_ingredients_cascade(
+    recipe: FinalRecipeOption,
+    classified_ingredients: Dict[str, List[CalculatedIngredient]],
+    target_cho: float,
+    ingredient_data: Dict[str, IngredientInfo]
+) -> Optional[FinalRecipeOption]:
+    """
+    Ottimizza la ricetta usando una strategia a cascata.
+
+    Args:
+        recipe: Ricetta originale
+        classified_ingredients: Ingredienti classificati per contributo CHO
+        target_cho: Target CHO in grammi
+        ingredient_data: Database ingredienti
+
+    Returns:
+        Ricetta ottimizzata o None se non possibile
+    """
+    updated_recipe = deepcopy(recipe)
+    current_cho = recipe.total_cho if recipe.total_cho else 0
+    cho_difference = target_cho - current_cho
+
+    # FASE 1: Prova a ottimizzare SOLO la fonte primaria (se esiste)
+    if classified_ingredients['primary']:
+        primary_ing = classified_ingredients['primary'][0]
+        primary_cho = primary_ing.cho_contribution
+
+        # Calcola il fattore di scala necessario per la fonte primaria
+        if primary_cho > 0:
+            needed_scale = 1 + (cho_difference / primary_cho)
+
+            # Limita lo scaling per mantenere proporzioni realistiche
+            if cho_difference > 0:  # Aumentare CHO
+                max_scale = 1.5  # Max +50%
+                actual_scale = min(needed_scale, max_scale)
+            else:  # Ridurre CHO
+                min_scale = 0.5  # Max -50%
+                actual_scale = max(needed_scale, min_scale)
+
+            # Applica lo scaling alla fonte primaria
+            for i, ing in enumerate(updated_recipe.ingredients):
+                if ing.name == primary_ing.name:
+                    original_qty = ing.quantity_g
+                    # Limiti assoluti
+                    new_qty = max(5, min(300, original_qty * actual_scale))
+                    updated_recipe.ingredients[i].quantity_g = round(
+                        new_qty, 1)
+                    print(
+                        f"FASE 1 - Scaling primario: '{ing.name}' da {original_qty:.1f}g a {new_qty:.1f}g")
+                    break
+
+            # Ricalcola CHO
+            updated_recipe.ingredients = calculate_ingredient_cho_contribution(
+                updated_recipe.ingredients, ingredient_data)
+            updated_recipe.total_cho = sum(
+                ing.cho_contribution for ing in updated_recipe.ingredients if ing.cho_contribution is not None)
+
+            # Se siamo nel range accettabile, ritorna
+            if abs(updated_recipe.total_cho - target_cho) <= 5:
+                return updated_recipe
+
+    # FASE 2: Se necessario, aggiungi scaling limitato delle fonti secondarie
+    remaining_difference = target_cho - updated_recipe.total_cho
+    if abs(remaining_difference) > 5 and classified_ingredients['secondary']:
+        total_secondary_cho = sum(
+            ing.cho_contribution for ing in classified_ingredients['secondary'])
+
+        if total_secondary_cho > 0:
+            secondary_scale = 1 + (remaining_difference / total_secondary_cho)
+            # Limita a ±30% per gli ingredienti secondari
+            secondary_scale = max(0.7, min(1.3, secondary_scale))
+
+            for ing in classified_ingredients['secondary']:
+                for i, recipe_ing in enumerate(updated_recipe.ingredients):
+                    if recipe_ing.name == ing.name:
+                        original_qty = recipe_ing.quantity_g
+                        new_qty = max(
+                            5, min(200, original_qty * secondary_scale))
+                        updated_recipe.ingredients[i].quantity_g = round(
+                            new_qty, 1)
+                        print(
+                            f"FASE 2 - Scaling secondario: '{ing.name}' da {original_qty:.1f}g a {new_qty:.1f}g")
+                        break
+
+            # Ricalcola CHO
+            updated_recipe.ingredients = calculate_ingredient_cho_contribution(
+                updated_recipe.ingredients, ingredient_data)
+            updated_recipe.total_cho = sum(
+                ing.cho_contribution for ing in updated_recipe.ingredients if ing.cho_contribution is not None)
+
+            # Se siamo nel range accettabile, ritorna
+            if abs(updated_recipe.total_cho - target_cho) <= 8:
+                return updated_recipe
+
+    # FASE 3: Solo se assolutamente necessario, considera minimi aggiustamenti alle fonti minori
+    remaining_difference = target_cho - updated_recipe.total_cho
+    if abs(remaining_difference) > 8 and classified_ingredients['minor']:
+        total_minor_cho = sum(
+            ing.cho_contribution for ing in classified_ingredients['minor'])
+
+        if total_minor_cho > 0:
+            minor_scale = 1 + (remaining_difference / total_minor_cho)
+            # Limita a ±20% per gli ingredienti minori
+            minor_scale = max(0.8, min(1.2, minor_scale))
+
+            for ing in classified_ingredients['minor']:
+                for i, recipe_ing in enumerate(updated_recipe.ingredients):
+                    if recipe_ing.name == ing.name:
+                        original_qty = recipe_ing.quantity_g
+                        new_qty = max(5, min(150, original_qty * minor_scale))
+                        updated_recipe.ingredients[i].quantity_g = round(
+                            new_qty, 1)
+                        print(
+                            f"FASE 3 - Scaling minore: '{ing.name}' da {original_qty:.1f}g a {new_qty:.1f}g")
+                        break
+
+            # Ricalcola CHO finale
+            updated_recipe.ingredients = calculate_ingredient_cho_contribution(
+                updated_recipe.ingredients, ingredient_data)
+            updated_recipe.total_cho = sum(
+                ing.cho_contribution for ing in updated_recipe.ingredients if ing.cho_contribution is not None)
+
+    # Aggiorna anche gli altri valori nutrizionali
+    updated_recipe.total_calories = sum(
+        ing.calories_contribution for ing in updated_recipe.ingredients if ing.calories_contribution is not None)
+    updated_recipe.total_protein_g = sum(
+        ing.protein_contribution_g for ing in updated_recipe.ingredients if ing.protein_contribution_g is not None)
+    updated_recipe.total_fat_g = sum(
+        ing.fat_contribution_g for ing in updated_recipe.ingredients if ing.fat_contribution_g is not None)
+    updated_recipe.total_fiber_g = sum(
+        ing.fiber_contribution_g for ing in updated_recipe.ingredients if ing.fiber_contribution_g is not None)
+
+    # Aggiorna il nome se modificato significativamente
+    if abs(cho_difference) > 10:
+        updated_recipe.name = f"{recipe.name} (Ottimizzata)"
+
+    return updated_recipe
+
+
+# SOSTITUISCI la funzione optimize_recipe_cho esistente con questa:
 def optimize_recipe_cho(recipe: FinalRecipeOption, target_cho: float, ingredient_data: Dict[str, IngredientInfo]) -> Optional[FinalRecipeOption]:
     """
-    Ottimizza una ricetta per raggiungere il target CHO utilizzando diverse strategie.
+    Ottimizza una ricetta per raggiungere il target CHO utilizzando una strategia a cascata.
 
-    Processo decisionale:
+    Processo:
     1. Se la ricetta è già nel range target (±5g), la mantiene inalterata
-    2. Per piccole differenze (< 15g), usa fine_tune_recipe sull'ingrediente principale
-    3. Per differenze maggiori (≥ 15g), usa adjust_recipe_proportionally su tutti gli ingredienti CHO
+    2. Classifica gli ingredienti per contributo CHO (primario, secondario, minore)
+    3. Prova prima a ottimizzare solo la fonte primaria
+    4. Se necessario, aggiusta anche le fonti secondarie (con limiti più stretti)
+    5. Solo come ultima risorsa, modifica leggermente le fonti minori
 
     Args:
         recipe: Ricetta da ottimizzare
@@ -415,34 +597,31 @@ def optimize_recipe_cho(recipe: FinalRecipeOption, target_cho: float, ingredient
     print(
         f"Ottimizzazione: '{recipe.name}' - CHO attuale: {current_cho:.1f}g, Target: {target_cho:.1f}g, Diff: {cho_difference:+.1f}g")
 
-    # 2. Identifica ingredienti ricchi di CHO
-    cho_contributors = identify_cho_contributors(recipe, ingredient_data)
-    if not cho_contributors:
+    # 2. Classifica gli ingredienti per contributo CHO
+    classified_ingredients = classify_ingredients_by_cho_contribution(recipe)
+
+    # Stampa classificazione per debug
+    print("Classificazione ingredienti:")
+    for category, ingredients in classified_ingredients.items():
         print(
-            f"Ottimizzazione fallita: Nessun ingrediente ricco di CHO trovato in '{recipe.name}'")
+            f"{category}: {[f'{ing.name} ({ing.cho_contribution:.1f}g)' for ing in ingredients]}")
+
+    # 3. Verifica se ci sono ingredienti che possono essere ottimizzati
+    if not classified_ingredients['primary'] and not classified_ingredients['secondary'] and not classified_ingredients['minor']:
+        print(
+            f"Ottimizzazione fallita: Nessun ingrediente CHO trovato in '{recipe.name}'")
         return None
 
-    # 3. Scegli la strategia in base all'entità della differenza
-    if abs(cho_difference) < 15:
-        # Aggiustamento fine su ingrediente principale
-        print(f"Strategia: Aggiustamento fine dell'ingrediente principale")
-        return fine_tune_recipe(recipe, cho_contributors[0], cho_difference, ingredient_data)
-    else:
-        # Aggiustamento proporzionale di tutti gli ingredienti CHO
-        print(f"Strategia: Scaling proporzionale di tutti gli ingredienti CHO")
-        # Calcola fattore di scaling con limiti
-        if current_cho > 0:  # Evita divisione per zero
-            ideal_scaling = target_cho / current_cho
-            # Limita il fattore di scaling per evitare cambiamenti troppo drastici
-            if cho_difference > 0:  # Aumentare CHO
-                scaling_factor = min(3.0, max(1.1, ideal_scaling))
-            else:  # Ridurre CHO
-                scaling_factor = max(0.4, min(0.9, ideal_scaling))
+    # 4. Procedi con l'ottimizzazione a cascata
+    optimized_recipe = scale_ingredients_cascade(
+        recipe, classified_ingredients, target_cho, ingredient_data)
 
-            return adjust_recipe_proportionally(recipe, cho_contributors, scaling_factor, ingredient_data)
+    # 5. Verifica se l'ottimizzazione ha migliorato la situazione
+    if optimized_recipe is None or (abs(optimized_recipe.total_cho - target_cho) >= abs(current_cho - target_cho)):
+        print(f"Ottimizzazione fallita: Non è stato possibile avvicinare la ricetta al target CHO")
+        return None
 
-    # Se arriviamo qui, non siamo riusciti a ottimizzare
-    return None
+    return optimized_recipe
 
 
 def match_recipe_ingredients(recipe: FinalRecipeOption, ingredient_data: Dict[str, IngredientInfo],
