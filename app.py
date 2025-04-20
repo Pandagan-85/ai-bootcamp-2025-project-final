@@ -283,10 +283,10 @@ target_cho = st.number_input(
     help="Imposta il contenuto desiderato di carboidrati per porzione (in grammi)."
 )
 # Validazione del valore CHO
-cho_is_valid = 20.0 <= target_cho <= 140.0
+cho_is_valid = 15.0 <= target_cho <= 130.0
 
 if not cho_is_valid:
-    st.error("⚠️ Il valore dei carboidrati deve essere compreso tra 10g e 140g.")
+    st.error("⚠️ Il valore dei carboidrati deve essere compreso tra 15g e 130g.")
 
 st.markdown("---")
 
@@ -325,7 +325,7 @@ button_disabled = not cho_is_valid
 # Mostra un messaggio se il pulsante è disabilitato
 if button_disabled:
     st.warning(
-        "⚠️ Il pulsante 'Genera Ricette' è disabilitato perché il valore dei carboidrati è fuori range (10-140g).")
+        "⚠️ Il pulsante 'Genera Ricette' è disabilitato perché il valore dei carboidrati è fuori range (15-130g).")
 
 # Il pulsante è disabilitato se il valore è fuori range
 if st.button("✨ Genera Ricette", use_container_width=True, type="primary", disabled=button_disabled):
@@ -459,7 +459,7 @@ with team_col2:
     """, unsafe_allow_html=True)
     st.markdown("### Francesca Ballirò")
     st.markdown("**AI & Machine Learning Lead**")
-    st.markdown("Ingegnere e imprenditrice, è abilissima nelle sfide lanciate dai dati. Riesce a manipolare complessi dataset anche sui mezzi pubblici.")
+    st.markdown("Studentessa e imprenditrice, è abilissima nelle sfide lanciate dai dati. Riesce a manipolare complessi dataset anche sui mezzi pubblici.")
     st.markdown(
         "[LinkedIn](https://linkedin.com/placeholder) | [GitHub](https://github.com/placeholder)")
 
