@@ -63,7 +63,7 @@ def find_best_match_faiss(
         "formaggio halloumi": "halloumi",
         "cipolla rossa": "cipolla",
         "cipolla bianca": "cipolla",
-        "cipolla dorata": "cipolla",
+        "cipolla dorata": "cipolla"
         # Aggiungi altri sinonimi
     }
 

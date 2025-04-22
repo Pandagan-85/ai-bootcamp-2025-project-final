@@ -229,6 +229,7 @@ melanzani
 mele
 melone
 meloni
+menta fresca
 merluzzi
 merluzzo
 miele
@@ -370,6 +371,7 @@ salami
 sale
 salmone
 salmoni
+salsa allo yogurt
 salsa di pomodoro
 salsa di soia
 salsa sriracha
@@ -426,7 +428,7 @@ uove
 uva
 uva bianca
 uve
-uvetta sultanina
+uvetta
 vini
 vino
 vitelli
