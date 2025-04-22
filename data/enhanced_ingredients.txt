@@ -1,9 +1,7 @@
 acciughe
-acciughe (fresche)
-acciughe (sott'olio)
 aceto balsamico
 aceto di mele
-aceto di vino bianco
+aceto di vino
 acqua frizzante
 acqua minerale
 acqua tonica
@@ -18,9 +16,10 @@ alghe nori
 alghe wakame
 amaranti
 amaranto
-amido di mais (maizena)
+amido di mais
 ananas
-anatra (petto senza pelle)
+anatra
+anatre
 anguria
 angurie
 arachidi
@@ -45,7 +44,7 @@ biete
 bieti
 birra
 birre
-biscotti secchi (tipo frollini)
+biscotti secchi
 bistecca di maiale
 bresaola
 bresaole
@@ -56,13 +55,14 @@ bulgur
 burro
 burro di arachidi
 burro di mandorle
-cachi (persimmon)
+cachi
 caffè
 calamari
-cannella (polvere)
+cannella
+cannelle
 capesante
 capesanti
-capperi (sotto sale)
+capperi
 caramelle dure
 carciofi
 carote
@@ -76,21 +76,21 @@ cavolo rapa
 cavolo riccio
 ceci cotti
 cetrioli
+cetrioli a cubetti
 cetriolo
+cetriolo a cubetti
 cheddar
-cicoria belga (indivia)
+cicoria belga
 ciliegia
 ciliegie
+cioccolati
+cioccolato
 cioccolato al latte
-cioccolato bianco
 cioccolato fondente
-cioccolato fondente (85%)
 cipolla
 cipolla bianca
-cipolla dorata
-cipolla rossa
 cipolle
-cocco grattugiato (secco)
+cocco grattugiato
 concentrato di pomodoro
 coniglii
 coniglio
@@ -99,13 +99,14 @@ coscia di pollo
 couscous
 cozze
 crema di cocco
-crema di nocciole (senza zucchero)
-crema spalmabile vegetale (tipo formaggio)
+crema di nocciole
+crema spalmabile vegetale
 crescione
 crescioni
-crostoni (croutons)
-cumino (semi)
-cuori di carciofo (conserva)
+crostoni
+cumini
+cumino
+cuori di carciofo
 curcuma fresca
 curry
 dado vegetale
@@ -116,16 +117,16 @@ emmental
 eritritoli
 eritritolo
 estratto di vaniglia
+fagioli
 fagioli borlotti
 fagioli neri
-fagioli rossi
 fagiolini
 farina d'avena
 farina di ceci
 farina di cocco
 farina di farro
 farina di frumento
-farina di mais (per polenta)
+farina di mais
 farina di mandorle
 farina di riso
 farro
@@ -133,6 +134,7 @@ fecola di patate
 fegato di manzo
 fesa di tacchino
 feta
+feta a cubetti
 fete
 fette biscottate
 fettuccine
@@ -143,12 +145,10 @@ filetto di salmone affumicato
 finocchii
 finocchio
 fiocchi di latte
-formaggio di capra (fresco)
+formaggio di capra
 formaggio feta
-formaggio halloumi
-formaggio paneer
-formaggio spalmabile (light)
-formaggio vegano (tipo cheddar)
+formaggio spalmabile
+formaggio vegano
 fragole
 fragoli
 frutto della passione
@@ -159,7 +159,6 @@ gelatina in fogli
 gelato alla crema
 germogli di bambù
 germogli di soia
-ghee (burro chiarificato)
 gnocchi di patate
 gorgonzola
 gorgonzole
@@ -169,11 +168,12 @@ guacamole
 guacamoli
 guava
 guave
-halva (base sesamo)
+halva
+halve
 hummus
 indivia
 indivie
-kefir (latte intero)
+kefir
 ketchup
 kiwi
 lamponi
@@ -190,6 +190,7 @@ latticelli
 latticello
 lattuga
 lenticchie
+lievi scorze di limone grattugiate
 lievito alimentare in scaglie
 lievito di birra
 lime
@@ -198,9 +199,11 @@ limone
 limoni
 linguine
 linguini
-liquore (amaro)
-lumache (cotte)
-lupini (cotti e salati)
+liquore
+liquori
+lumache
+lumachi
+lupini cotti
 lychee
 lychei
 macinato di manzo
@@ -231,8 +234,6 @@ merluzzo
 miele
 miglio
 mirtilli
-mirtilli rossi
-mirtilli rossi (freschi)
 more
 mori
 mortadella
@@ -244,7 +245,8 @@ nettarini
 nocciole
 noci
 noci di macadamia
-okra (gombo)
+okra
+okre
 olio d'oliva
 olio di arachidi
 olio di avocado
@@ -254,8 +256,7 @@ olio di noci
 olio di semi
 olio di semi di girasole
 olio di sesamo tostato
-olive nere
-olive verdi
+olive
 orecchiette
 orecchietti
 origani
@@ -266,24 +267,24 @@ orzo
 pancetta
 pancetta a cubetti
 pancette
+pane
 pane azzimo
-pane bianco
 pane integrale
 pangrattati
 pangrattato
 panna acida
-panna da cucina (uht)
-panna montata (zuccherata)
+panna da cucina
+panna montata
 papaya
 papaye
-paprika (spezia)
+paprika
+paprike
 parmigiano reggiano
 pasta
 pasta all'uovo
 pasta d'acciughe
 pasta di ceci
 pasta di lenticchie
-pasta di lenticchie rosse
 pasta di piselli
 pasta integrale
 pasta linguine
@@ -294,14 +295,14 @@ pastinace
 patate
 patate dolci
 patati
-patatine fritte (chips)
+patatine fritte
 pecorini
 pecorino
 pecorino grattugiato
-pecorino stagionato
+pecorino romano grattugiato
 penne
 penni
-pepe nero
+pepe
 peperoni
 pera
 pere
@@ -321,20 +322,24 @@ polipo
 polpi
 polpo
 pomodori
+pomodori a cubetti
+pomodori freschi
 pomodori secchi
 pomodorini
 pomodoro
+pomodoro a cubetti
 pomodoro ciliegino
+pomodoro fresco
 pompelmi
 pompelmo
-popcorn (senza burro/sale)
+popcorn
 porri
 porro
 pretzels
 prezzemolo fresco
 prosciutto cotto
 prosciutto crudo
-proteine vegetali testurizzate (tvp secche)
+proteine vegetali testurizzate
 prugne
 prugne secche
 quinoa
@@ -350,12 +355,12 @@ ravanelli
 ricotta
 ricotte
 rigatoni
+riso
 riso arborio
 riso basmati
-riso bianco
 riso integrale
 riso jasmine
-riso venere (nero)
+riso venere
 rucola
 rucola fresca
 rucole
@@ -370,10 +375,13 @@ salsa di soia
 salsa sriracha
 salsa tabasco
 salsa worcestershire
-sardine (sott'olio)
+sardine
+sardini
 scalogni
 scalogno
 sciroppo d'acero
+scorza di limone
+scorza di limone grattugiata
 sedani
 sedano
 seitan
@@ -402,7 +410,7 @@ tacchini
 tacchino
 tagliatelle
 tagliatelli
-tahini (pasta di sesamo)
+tahini
 tempeh
 tofu
 tonno fresco
@@ -412,20 +420,19 @@ tortilla di frumento
 tortilla di mais
 trofie
 trofii
-tè verde
+tè
 uova
 uove
 uva
 uva bianca
-uva nera
-uva rossa
 uve
 uvetta sultanina
-vino bianco
-vino rosso
-vitello (lombata)
+vini
+vino
+vitelli
+vitello
 vongole
-wurstel (pollo/tacchino)
+wurstel
 xilitoli
 xilitolo
 yogurt di soia
@@ -436,7 +443,7 @@ zafferano in polvere
 zenzero fresco
 zucca
 zucce
-zucchero bianco
+zucchero
 zucchero di canna
 zucchero di cocco
 zucchine

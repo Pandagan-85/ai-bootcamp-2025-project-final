@@ -624,33 +624,71 @@ def optimize_recipe_cho(recipe: FinalRecipeOption, target_cho: float, ingredient
     return optimized_recipe
 
 
-def match_recipe_ingredients(recipe: FinalRecipeOption, ingredient_data: Dict[str, IngredientInfo],
-                             faiss_index, index_to_name_mapping, embedding_model, normalize_function) -> Tuple[FinalRecipeOption, bool]:
+def match_recipe_ingredients(recipe: FinalRecipeOption,
+                             ingredient_data: Dict[str, IngredientInfo],
+                             normalized_to_original: Dict[str, str],
+                             original_to_normalized: Dict[str, str],
+                             faiss_index,
+                             index_to_name_mapping,
+                             embedding_model,
+                             normalize_function) -> Tuple[FinalRecipeOption, bool]:
     """
     Effettua il matching degli ingredienti della ricetta con il database usando FAISS.
-
-    Per ogni ingrediente della ricetta:
-    1. Cerca una corrispondenza nel database con find_best_match_faiss
-    2. Sostituisce il nome generato dall'LLM con il nome matchato dal DB
-    3. Calcola i contributi nutrizionali per ogni ingrediente matchato
-
-    Args:
-        recipe: Ricetta con ingredienti da matchare
-        ingredient_data: Database ingredienti con informazioni nutrizionali
-        faiss_index: Indice FAISS per la ricerca semantica
-        index_to_name_mapping: Mapping da indice a nome ingrediente
-        embedding_model: Modello SentenceTransformer per generare embeddings
-        normalize_function: Funzione per normalizzare i nomi degli ingredienti
-
-    Returns:
-        Tupla con (ricetta con ingredienti matchati, flag successo)
-        flag=True solo se tutti gli ingredienti sono stati matchati con successo
+    Utilizza mappature normalizzate per un matching coerente.
     """
     matched_recipe = deepcopy(recipe)
     matched_ingredients = []
     all_matched = True
 
     print(f"Matching ingredienti per ricetta '{recipe.name}'")
+
+    # DEBUG - Verifica la presenza dei dati nel database
+    print(
+        f"DEBUG: Database ingredienti contiene {len(ingredient_data)} elementi")
+    print(
+        f"DEBUG: Mapping normalizzato contiene {len(normalized_to_original)} elementi")
+    sample_keys = list(ingredient_data.keys())[:5]
+    print(f"DEBUG: Primi 5 ingredienti nel DB: {sample_keys}")
+
+    # Dizionario per le corrispondenze comuni per ingredienti problematici
+    common_fallbacks = {
+        "pomodori": "Pomodoro",  # Nome esatto nel CSV
+        "pomodoro fresco": "Pomodoro",
+        "pomodori freschi": "Pomodoro",
+        "pomodoro a cubetti": "Pomodoro",
+        "pomodori a cubetti": "Pomodoro",
+        "peperoni": "Peperoni",
+        "peperone rosso": "Peperoni",
+        "pecorino grattugiato": "Pecorino",
+        "pecorino romano grattugiato": "Pecorino",
+        "pancetta a cubetti": "Pancetta",
+        "cetrioli": "Cetriolo",
+        "cetriolo a cubetti": "Cetriolo",
+        "cetrioli a cubetti": "Cetriolo",
+        "feta a cubetti": "Feta",
+        "mandorle a scaglie": "Mandorle",
+        "mandorle a lamelle": "Mandorle",
+        "tagliolini": "Tagliatelle",
+        "tagliolini freschi": "Tagliatelle",
+        "rucola fresca": "Rucola",
+        "rughetta": "Rucola",
+        "cipolla rossa": "Cipolla",
+        "cipolla bianca": "Cipolla",
+        "cipolla dorata": "Cipolla",
+        "zucchina": "Zucchine",
+        "zucchini": "Zucchine",
+        "pepe": "Pepe nero",
+        "origano fresco": "Origano",
+        "origano secco": "Origano",
+        "mirtilli rossi": "Mirtilli",
+        "prezzemolo fresco": "Prezzemolo",
+        "zenzero fresco": "Zenzero",
+        "zenzero fresco grattugiato": "Zenzero",
+        "limoni": "Limone",  # Chiave: variante norm. Valore: nome esatto CSV
+        "scorza di limone": "Limone",  # Mappiamo anche la scorza al limone generico
+        "scorza di limone grattugiata": "Limone",
+        "lievi scorze di limone grattugiate": "Limone",
+    }
 
     for ing in recipe.ingredients:
         # Tenta il matching con FAISS
@@ -660,24 +698,123 @@ def match_recipe_ingredients(recipe: FinalRecipeOption, ingredient_data: Dict[st
             index_to_name_mapping=index_to_name_mapping,
             model=embedding_model,
             normalize_func=normalize_function,
-            threshold=0.60  # Soglia più bassa per aumentare le possibilità di match
+            threshold=0.60
         )
+
+        ingredient_matched = False
 
         if match_result:
             matched_db_name, match_score = match_result
             print(
                 f"Ingrediente '{ing.name}' matchato a '{matched_db_name}' (score: {match_score:.2f})")
 
-            # Crea nuovo ingrediente con nome matchato ma quantità originale
-            matched_ingredients.append(
-                RecipeIngredient(name=matched_db_name,
-                                 quantity_g=ing.quantity_g)
-            )
+            # SEQUENZA DI TENTATIVI DI MATCH
+
+            # 1. Prova con il nome esatto restituito dal matching
+            if matched_db_name in ingredient_data:
+                print(
+                    f"Trovato direttamente con nome matchato: '{matched_db_name}'")
+                matched_ingredients.append(
+                    RecipeIngredient(name=matched_db_name,
+                                     quantity_g=ing.quantity_g)
+                )
+                ingredient_matched = True
+                continue
+
+            # 2. Prova con la normalizzazione e mappatura
+            normalized_name = normalize_function(matched_db_name)
+            if normalized_name in normalized_to_original:
+                original_db_name = normalized_to_original[normalized_name]
+                print(
+                    f"Usando mappatura normalizzata: '{matched_db_name}' -> '{original_db_name}'")
+
+                if original_db_name in ingredient_data:
+                    matched_ingredients.append(
+                        RecipeIngredient(name=original_db_name,
+                                         quantity_g=ing.quantity_g)
+                    )
+                    ingredient_matched = True
+                    continue
+
+            # 3. Tenta una ricerca case-insensitive nel database
+            found = False
+            for db_ingredient in ingredient_data.keys():
+                if matched_db_name.lower() == db_ingredient.lower():
+                    print(
+                        f"Match case-insensitive: '{matched_db_name}' -> '{db_ingredient}'")
+                    matched_ingredients.append(
+                        RecipeIngredient(name=db_ingredient,
+                                         quantity_g=ing.quantity_g)
+                    )
+                    found = True
+                    ingredient_matched = True
+                    break
+
+            if found:
+                continue
+
+            # 4. Prova fallback per ingredienti problematici
+            normalized_matched = normalize_function(matched_db_name)
+            if normalized_matched in common_fallbacks:
+                fallback_name = common_fallbacks[normalized_matched]
+                if fallback_name in ingredient_data:
+                    print(
+                        f"Usando fallback: '{matched_db_name}' -> '{fallback_name}'")
+                    matched_ingredients.append(
+                        RecipeIngredient(name=fallback_name,
+                                         quantity_g=ing.quantity_g)
+                    )
+                    ingredient_matched = True
+                    continue
+
+            # 5. Se ancora non trovato, prova a cercare con il nome originale dell'LLM
+            if ing.name in ingredient_data:
+                print(f"Usando nome LLM originale: '{ing.name}'")
+                matched_ingredients.append(
+                    RecipeIngredient(name=ing.name, quantity_g=ing.quantity_g)
+                )
+                ingredient_matched = True
+                continue
+
+            # Nome originale normalizzato
+            normalized_original = normalize_function(ing.name)
+            if normalized_original in common_fallbacks:
+                fallback_name = common_fallbacks[normalized_original]
+                if fallback_name in ingredient_data:
+                    print(
+                        f"Usando fallback da originale: '{ing.name}' -> '{fallback_name}'")
+                    matched_ingredients.append(
+                        RecipeIngredient(name=fallback_name,
+                                         quantity_g=ing.quantity_g)
+                    )
+                    ingredient_matched = True
+                    continue
         else:
-            print(f"Fallito matching per '{ing.name}'")
-            # Keep the original ingredient but mark recipe as not fully matched
-            matched_ingredients.append(ing)
+            print(f"Nessun match trovato per '{ing.name}'")
+
+            # Prova fallback per ingredienti non matchati
+            normalized_original = normalize_function(ing.name)
+            if normalized_original in common_fallbacks:
+                fallback_name = common_fallbacks[normalized_original]
+                if fallback_name in ingredient_data:
+                    print(
+                        f"Usando fallback per non matchato: '{ing.name}' -> '{fallback_name}'")
+                    matched_ingredients.append(
+                        RecipeIngredient(name=fallback_name,
+                                         quantity_g=ing.quantity_g)
+                    )
+                    ingredient_matched = True
+                    continue
+
+        # Se arriviamo qui, nessuno dei tentativi ha avuto successo
+        if not ingredient_matched:
             all_matched = False
+            print(
+                f"ERRORE: '{matched_db_name if match_result else ing.name}' non trovato nel database degli ingredienti!")
+            matched_ingredients.append(
+                RecipeIngredient(
+                    name=f"{ing.name} (Info Mancanti!)", quantity_g=ing.quantity_g)
+            )
 
     # Calcola valori nutrizionali
     calculated_ingredients = calculate_ingredient_cho_contribution(
@@ -903,11 +1040,22 @@ def verifier_agent(state: GraphState) -> GraphState:
     recipes_from_generator = state.get('generated_recipes', [])
     preferences = state.get('user_preferences')
     ingredient_data = state.get('available_ingredients_data')
+    normalized_to_original = state.get('normalized_to_original', {})
+    original_to_normalized = state.get(
+        'original_to_normalized', {})  # Aggiungi questo
     faiss_index = state.get('faiss_index')
     index_to_name_mapping = state.get('index_to_name_mapping')
     embedding_model = state.get('embedding_model')
     # Dovrebbe essere normalize_name da utils
     normalize_function = state.get('normalize_function')
+
+    # Aggiunta di debug per ispezionare il database ingredienti
+    print(
+        f"DEBUG: Database ingredienti contiene {len(ingredient_data)} elementi")
+    print(
+        f"DEBUG: Mapping normalizzato contiene {len(normalized_to_original)} elementi")
+    print(
+        f"DEBUG: Mapping inverso contiene {len(original_to_normalized)} elementi")
 
     # Validazione input essenziali
     if not recipes_from_generator:
@@ -941,8 +1089,14 @@ def verifier_agent(state: GraphState) -> GraphState:
     for recipe_gen in recipes_from_generator:
         # 1. Match ingredienti e calcolo iniziale nutrienti
         recipe_matched, match_success = match_recipe_ingredients(
-            recipe_gen, ingredient_data, faiss_index,
-            index_to_name_mapping, embedding_model, normalize_function
+            recipe_gen,
+            ingredient_data,
+            normalized_to_original,
+            original_to_normalized,  # Aggiungi questo parametro
+            faiss_index,
+            index_to_name_mapping,
+            embedding_model,
+            normalize_function
         )
 
         if not match_success:
@@ -953,8 +1107,6 @@ def verifier_agent(state: GraphState) -> GraphState:
         # 2. Calcola/Verifica flag dietetici basati sul DB
         recipe_flags_computed = compute_dietary_flags(
             recipe_matched, ingredient_data)
-        # Aggiunta opzionale: correzione basata su keywords
-        # recipe_flags_computed = correct_dietary_flags(recipe_flags_computed, ingredient_data)
 
         # 3. Verifica preliminare rispetto alle preferenze utente
         if not verify_dietary_preferences(recipe_flags_computed, preferences):

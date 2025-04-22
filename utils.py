@@ -7,14 +7,19 @@ from sentence_transformers import SentenceTransformer
 # Importa le classi da model_schema se necessario per type hinting
 from model_schema import RecipeIngredient, IngredientInfo, CalculatedIngredient, FinalRecipeOption, UserPreferences
 
+COLOR_WORDS = {'rosso', 'rossa', 'rossi', 'rosse', 'giallo', 'gialla', 'gialli', 'gialle',
+               'verde', 'verdi', 'nera', 'nere', 'nero', 'bianchi', 'bianco', 'bianche', 'dorata', 'dorato'}
+
 
 def normalize_name(name: str) -> str:
-    """Normalizza il nome per il matching (minuscolo, rimuove eccesso spazi)."""
+    """Normalizza il nome per il matching (minuscolo, rimuove colori eccesso spazi)."""
     if not isinstance(name, str):
         return ""
     name = name.lower().strip()
     name = re.sub(r'\s+', ' ', name)
-    return name
+    tokens = name.split()
+    filtered_tokens = [token for token in tokens if token not in COLOR_WORDS]
+    return " ".join(filtered_tokens)
 
 
 def find_best_match_faiss(
@@ -56,21 +61,29 @@ def find_best_match_faiss(
         "feta": "formaggio feta",
         "olive nere": "olive",
         "formaggio halloumi": "halloumi",
+        "cipolla rossa": "cipolla",
+        "cipolla bianca": "cipolla",
+        "cipolla dorata": "cipolla",
         # Aggiungi altri sinonimi
     }
 
     # Normalizza input
     normalized_llm = normalize_func(llm_name)
 
+    # Crea versione normalizzata del mapping
+    normalized_index_mapping = [normalize_func(
+        name) for name in index_to_name_mapping]
+
     # 1. TENTATIVO 1: Corrispondenza diretta o tramite sinonimo noto
-    if normalized_llm in index_to_name_mapping:
-        exact_index = index_to_name_mapping.index(normalized_llm)
+    if normalized_llm in normalized_index_mapping:
+        exact_index = normalized_index_mapping.index(normalized_llm)
         return index_to_name_mapping[exact_index], 1.0
 
     if normalized_llm in common_synonyms:
         synonym = common_synonyms[normalized_llm]
-        if synonym in index_to_name_mapping:
-            synonym_index = index_to_name_mapping.index(synonym)
+        normalized_synonym = normalize_func(synonym)
+        if normalized_synonym in normalized_index_mapping:
+            synonym_index = normalized_index_mapping.index(normalized_synonym)
             return index_to_name_mapping[synonym_index], 0.95
 
     # 2. TENTATIVO 2: Matching FAISS standard
@@ -136,48 +149,52 @@ def calculate_ingredient_cho_contribution(
 
     Returns:
         Lista di oggetti CalculatedIngredient con tutti i contributi nutrizionali calcolati
-        Gli ingredienti non trovati nel DB vengono comunque inclusi con CHO=0 e un flag "(Info Mancanti!)"""
+        Gli ingredienti non trovati nel DB vengono comunque inclusi con CHO=0 e un flag "(Info Mancanti!)"
+    """
     calculated_list = []
 
     # Crea un dizionario case-insensitive per il matching
-    lowercase_to_original = {
-        normalize_name(name): name for name in ingredient_data.keys()}
+    lowercase_to_original = {}
+    for name in ingredient_data.keys():
+        lowercase_to_original[normalize_name(name)] = name
+
+    # Crea un dizionario normalizzato dei dati degli ingredienti
+    normalized_ingredient_data = {}
+    for name, info in ingredient_data.items():
+        normalized_ingredient_data[normalize_name(name)] = info
+
+    # Sinonimi comuni normalizzati
+    common_synonyms = {
+        "polpo": "polipo",
+        "pomodoro": "pomodori",
+        "pomodori": "pomodoro",
+        "ceci": "cece",
+        "olive": "oliva",
+        "olive nere": "olive",
+        "rucola": "rughetta",
+        "cipolla rossa": "cipolla",
+        "cipolla bianca": "cipolla",
+        "cipolla dorata": "cipolla",
+    }
 
     for ing in ingredients:
-        # Cerca l'ingrediente (ignorando case) nel dizionario
+        # Normalizza sempre il nome dell'ingrediente
+        normalized_name = normalize_name(ing.name)
         ingredient_key = None
 
-        # Match diretto per nome esatto
-        if ing.name in ingredient_data:
-            ingredient_key = ing.name
-        # Match case-insensitive
-        elif normalize_name(ing.name) in lowercase_to_original:
-            ingredient_key = lowercase_to_original[normalize_name(ing.name)]
+        # Match diretto con nome normalizzato
+        if normalized_name in normalized_ingredient_data:
+            ingredient_key = lowercase_to_original[normalized_name]
 
         # Se non trovato, prova sinonimi comuni
-        if not ingredient_key:
-            common_synonyms = {
-                "polpo": "polipo",
-                "pomodoro": "pomodori",
-                "pomodori": "pomodoro",
-                "ceci": "cece",
-                "olive": "oliva",
-                "olive nere": "olive",
-                "rucola": "rughetta",
-            }
-
-            normalized_name = normalize_name(ing.name)
-            if normalized_name in common_synonyms:
-                synonym = common_synonyms[normalized_name]
-                if synonym in ingredient_data:
-                    ingredient_key = synonym
-                elif synonym in lowercase_to_original:
-                    ingredient_key = lowercase_to_original[synonym]
+        if not ingredient_key and normalized_name in common_synonyms:
+            synonym = common_synonyms[normalized_name]
+            normalized_synonym = normalize_name(synonym)
+            if normalized_synonym in normalized_ingredient_data:
+                ingredient_key = lowercase_to_original[normalized_synonym]
 
         # Se ancora non trovato, prova variazioni singolare/plurale
         if not ingredient_key:
-            normalized_name = normalize_name(ing.name)
-
             # Singolare → Plurale
             plural_form = None
             if normalized_name.endswith('o'):

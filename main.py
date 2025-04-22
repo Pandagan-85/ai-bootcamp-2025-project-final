@@ -12,14 +12,14 @@ from sentence_transformers import SentenceTransformer
 
 # Importa componenti dal progetto
 from model_schema import UserPreferences, GraphState
-from loaders import load_basic_ingredient_info
+from loaders import load_basic_ingredient_info, load_ingredient_database_with_mappings
 from workflow import create_workflow  # Usa il workflow aggiornato
 from utils import normalize_name
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
-apy_key=os.getenv("OPENAI_API_KEY")
+apy_key = os.getenv("OPENAI_API_KEY")
 # --- Configurazione ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
@@ -132,7 +132,7 @@ if __name__ == "__main__":
         with open(NAME_MAPPING_FILE, 'rb') as f:
             index_to_name_mapping = pickle.load(f)
         print("Caricamento info ingredienti...")
-        available_ingredients_data = load_basic_ingredient_info(
+        available_ingredients_data, normalized_to_original, original_to_normalized = load_ingredient_database_with_mappings(
             INGREDIENTS_FILE)
 
         # Verifica caricamenti
@@ -167,7 +167,8 @@ if __name__ == "__main__":
         embedding_model=embedding_model,
         normalize_function=normalize_name,
         faiss_index=faiss_index,
-        index_to_name_mapping=index_to_name_mapping,
+        index_to_name_mapping=index_to_name_mapping, normalized_to_original=normalized_to_original,
+        original_to_normalized=original_to_normalized,
         generated_recipes=[],
         final_verified_recipes=[],
         error_message=None,

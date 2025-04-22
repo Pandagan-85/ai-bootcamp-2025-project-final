@@ -102,7 +102,8 @@ class GraphState(TypedDict, total=False):  # Usa total=False per opzionalità
     faiss_index: faiss.Index                             # Indice FAISS caricato
     # Mapping indice -> nome
     index_to_name_mapping: List[str]
-
+    normalized_to_original: Dict[str, str]
+    original_to_normalized: Dict[str, str]
     # Risultati intermedi e finali
     # Ricette da LLM (post-parsing/validazione iniziale)
     generated_recipes: List[FinalRecipeOption]

@@ -67,27 +67,30 @@ def prepare_consistent_ingredient_data(filepath: str) -> list[str]:
 
         # Sinonimi comuni con forme corrette
         common_synonyms = {
+
             'cuscus': ['couscous'],
-            'linguine':['pasta linguine'],
-            'spaghetti':['pasta spaghetti'],
-            'peperone': ['peperoni', 'peperone dolce', 'peperone rosso', 'peperone giallo'],
+            'linguine': ['pasta linguine'],
+            'spaghetti': ['pasta spaghetti'],
+            'peperone': ['peperoni', 'peperone dolce', 'peperone rosso', 'peperone giallo', 'peperoni rossi', 'peperoni gialli'],
             'gambero': ['gamberi', 'gamberetto', 'gamberetti'],
             'basilico': ['basilico fresco'],
             'coriandolo': ['coriandolo fresco', 'cilantro'],
             'melanzana': ['melanzane'],
-            'mandorle':['mandorle a scaglie', 'mandorle a lamelle'],
-            'pancetta':['pancetta a cubetti'],
-            'pecorino':['pecorino grattugiato', 'pecorino stagionato'],
+            'mandorle': ['mandorle a scaglie', 'mandorle a lamelle'],
+            'pancetta': ['pancetta a cubetti'],
+            'pecorino': ['pecorino grattugiato', 'pecorino romano grattugiato'],
+            'cetriolo': ['cetrioli', 'cetriolo a cubetti', 'cetrioli a cubetti'],
             # Forme corrette
             'olive': ['olive nere', 'olive verdi', 'olive kalamata'],
-            'limone': ['lime'],
+            # Chiave: nome CSV norm. Valore: varianti norm.
+            'limone': ['limoni', 'scorza di limone', 'scorza di limone grattugiata', 'lievi scorze di limone grattugiate', 'lime'],
             'cipolla': ['cipolla rossa', 'cipolla bianca', 'cipolla dorata'],
             'formaggio parmigiano': ['parmigiano', 'parmigiano reggiano', 'parmigiano grattugiato'],
             'pasta': ['spaghetti', 'penne', 'fusilli', 'tagliatelle', 'fettuccine'],
             'riso': ['riso bianco', 'riso integrale', 'riso arborio', 'riso carnaroli'],
-            'pomodoro': ['pomodori', 'pomodorini'],
+            'pomodoro': ['pomodori', 'pomodoro fresco', 'pomodori freschi', 'pomodoro a cubetti', 'pomodori a cubetti'],
             'funghi': ['funghi champignon', 'funghi porcini', 'champignon'],
-            'mirtilli':['mirtilli rossi'],
+            'mirtilli': ['mirtilli rossi'],
             'zucchina': ['zucchine'],
             'mela': ['mele'],
             'pera': ['pere'],
@@ -98,15 +101,15 @@ def prepare_consistent_ingredient_data(filepath: str) -> list[str]:
             'rosmarino': ['rosmarino fresco'],
             'timo': ['timo fresco'],
             'origano': ['origano secco', 'origano fresco'],
-            'formaggio halloumi': ['halloumi'],
+
             'polipo': ['polpo'],
             'polpo': ['polipo'],
             'rucola': ['rughetta', 'rucola fresca'],
-            'feta':['formaggio feta'],
-            'zafferano':['zafferano in polvere'],
-            'prezzemolo':['prezzemolo fresco'],
-            'lenticchie':['lenticchie rosse', 'lenticchie verdi'],
-            'curcuma':['curmuca fresca']
+            'feta': ['feta a cubetti', 'formaggio feta'],
+            'zafferano': ['zafferano in polvere'],
+            'prezzemolo': ['prezzemolo fresco'],
+            'lenticchie': ['lenticchie rosse', 'lenticchie verdi'],
+            'curcuma': ['curmuca fresca']
         }
 
         # Estrai i nomi base e normalizzali per coerenza

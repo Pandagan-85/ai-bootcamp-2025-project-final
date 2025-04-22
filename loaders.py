@@ -1,5 +1,6 @@
 # loaders.py
 import time
+import os
 from typing import List, Dict, Any, Callable
 import pandas as pd
 import numpy as np
@@ -7,7 +8,91 @@ import numpy as np
 from utils import normalize_name  # Assumi sia ancora in utils
 from model_schema import IngredientInfo
 
-# Rimuovi EMBEDDING_MODEL_NAME se non serve più qui
+
+def load_ingredient_database_with_mappings(filepath: str):
+    """
+    Carica il database degli ingredienti e crea mappature normalizzate.
+
+    Args:
+        filepath: Percorso al file CSV degli ingredienti
+
+    Returns:
+        Tuple con:
+        - ingredient_data: Dizionario originale {nome_originale: IngredientInfo}
+        - normalized_to_original: Dizionario {nome_normalizzato: nome_originale}
+        - original_to_normalized: Dizionario {nome_originale: nome_normalizzato}
+    """
+    # Carica il database degli ingredienti usando la funzione esistente
+    ingredient_data = load_basic_ingredient_info(filepath)
+
+    # Debug
+    print(
+        f"Caricati {len(ingredient_data) if ingredient_data else 0} ingredienti dal database CSV")
+    if ingredient_data:
+        sample_keys = list(ingredient_data.keys())[:5]
+        print(f"Esempio primi 5 ingredienti: {sample_keys}")
+
+    if not ingredient_data:
+        print("ERRORE: Nessun dato di ingredienti caricato dal CSV!")
+        return {}, {}, {}
+
+    # Crea mappature normalizzate
+    normalized_to_original = {}
+    original_to_normalized = {}
+
+    # DEBUG: Stampa alcune chiavi del dizionario per verificare
+    print(f"DEBUG: Creazione mappature per {len(ingredient_data)} ingredienti")
+    debug_count = 0
+
+    for original_name, info in ingredient_data.items():
+        # Assicurati che original_name sia una stringa valida
+        if not isinstance(original_name, str):
+            print(
+                f"ATTENZIONE: Chiave non stringa nel dizionario: {type(original_name)}")
+            continue
+
+        normalized_name = normalize_name(original_name)
+
+        # DEBUG per verificare la normalizzazione
+        if debug_count < 5:
+            print(f"DEBUG: Mappatura '{original_name}' -> '{normalized_name}'")
+            debug_count += 1
+
+        # Gestione di potenziali collisioni (due nomi diversi che normalizzano allo stesso valore)
+        if normalized_name in normalized_to_original:
+            existing_original = normalized_to_original[normalized_name]
+            print(f"ATTENZIONE (loaders): Collisione nella normalizzazione! "
+                  f"'{original_name}' e '{existing_original}' normalizzano a '{normalized_name}'")
+            # Mantieni comunque la mappatura (la prima vince in caso di collisione)
+        else:
+            normalized_to_original[normalized_name] = original_name
+
+        # La mappatura inversa è sempre 1:1
+        original_to_normalized[original_name] = normalized_name
+
+    print(
+        f"Mappature di normalizzazione create: {len(normalized_to_original)} uniche, {len(original_to_normalized)} originali")
+
+    # DEBUG: Verifica alcune mappature create
+    if len(normalized_to_original) > 0:
+        sample_keys = list(normalized_to_original.keys())[:3]
+        print(f"DEBUG: Esempio mappature normalizzate:")
+        for key in sample_keys:
+            print(f"  '{key}' -> '{normalized_to_original[key]}'")
+    else:
+        # Aggiunto questo DEBUG
+        print("DEBUG: normalized_to_original è vuoto!")
+
+    if len(original_to_normalized) > 0:
+        sample_keys_orig = list(original_to_normalized.keys())[:3]
+        print(f"DEBUG: Esempio mappature originali:")
+        for key in sample_keys_orig:
+            print(f"  '{key}' -> '{original_to_normalized[key]}'")
+    else:
+        # Aggiunto questo DEBUG
+        print("DEBUG: original_to_normalized è vuoto!")
+
+    return ingredient_data, normalized_to_original, original_to_normalized
 
 
 def load_basic_ingredient_info(filepath: str) -> Dict[str, IngredientInfo] | None:
@@ -58,23 +143,54 @@ def load_basic_ingredient_info(filepath: str) -> Dict[str, IngredientInfo] | Non
             return None
 
     try:
+        # Verifica esistenza del file
+        if not os.path.exists(filepath):
+            print(
+                f"ERRORE: File CSV degli ingredienti non trovato in: {filepath}")
+            print(f"Path corrente: {os.getcwd()}")
+            return None
+
+        # Debug per vedere il contenuto del CSV
+        print(f"Verifica contenuto CSV: {filepath}")
+        try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                first_lines = ''.join([f.readline() for _ in range(5)])
+                print(f"Prime 5 linee del CSV:\n{first_lines}")
+        except Exception as e:
+            print(f"Errore nella lettura del file CSV per debug: {e}")
+
         # Usa encoding esplicito per robustezza
         try:
             df = pd.read_csv(filepath, encoding='utf-8')
+            print(f"CSV caricato con encoding UTF-8, shape: {df.shape}")
         except UnicodeDecodeError:
             print("ATTENZIONE (loaders): Fallita lettura UTF-8, tentativo con Latin-1...")
             df = pd.read_csv(filepath, encoding='latin-1')
+            print(f"CSV caricato con encoding Latin-1, shape: {df.shape}")
 
         # Pulisci nomi colonne
         df.columns = df.columns.str.strip()
+        print(f"Colonne disponibili: {df.columns.tolist()}")
 
         # Verifica colonna 'name' obbligatoria
         if 'name' not in df.columns:
-            raise ValueError("Colonna 'name' obbligatoria mancante nel CSV.")
+            print(f"ERRORE: Colonna 'name' obbligatoria mancante nel CSV.")
+            print(f"Colonne disponibili: {df.columns.tolist()}")
+            return None
+
         # Verifica colonna 'cho_per_100g' obbligatoria
         if 'cho_per_100g' not in df.columns:
-            raise ValueError(
-                "Colonna 'cho_per_100g' obbligatoria mancante nel CSV.")
+            # Tentativo fallback con altri nomi possibili
+            if 'carbs' in df.columns:
+                df = df.rename(columns={'carbs': 'cho_per_100g'})
+                print("Rinominata colonna 'carbs' in 'cho_per_100g'")
+            elif 'carbohydrates' in df.columns:
+                df = df.rename(columns={'carbohydrates': 'cho_per_100g'})
+                print("Rinominata colonna 'carbohydrates' in 'cho_per_100g'")
+            else:
+                print(f"ERRORE: Colonna 'cho_per_100g' obbligatoria mancante nel CSV.")
+                print(f"Colonne disponibili: {df.columns.tolist()}")
+                return None
 
         # Loop per popolare il dizionario
         for index, row in df.iterrows():
@@ -95,11 +211,24 @@ def load_basic_ingredient_info(filepath: str) -> Dict[str, IngredientInfo] | Non
             calories = safe_float_conversion(
                 row.get('calories_per_100g'), 'Calorie', name)
             protein = safe_float_conversion(
-                row.get('protein_g_per_100g'), 'Proteine', name)
+                row.get('protein_g_per_100g') or row.get('protein_per_100g'), 'Proteine', name)
             fat = safe_float_conversion(
-                row.get('fat_g_per_100g'), 'Grassi', name)
+                row.get('fat_g_per_100g') or row.get('fat_per_100g'), 'Grassi', name)
             fiber = safe_float_conversion(
-                row.get('fiber_g_per_100g'), 'Fibre', name)
+                row.get('fiber_g_per_100g') or row.get('fiber_per_100g'), 'Fibre', name)
+
+            # Gestione flag dietetici con vari nomi possibili di colonna
+            is_vegan = parse_bool(row.get('is_vegan', False))
+            is_vegetarian = parse_bool(row.get('is_vegetarian', False))
+
+            # Gestisci il fatto che is_gluten_free potrebbe essere una stringa
+            is_gluten_free_val = row.get('is_gluten_free', False)
+            if isinstance(is_gluten_free_val, str):
+                is_gluten_free = parse_bool(is_gluten_free_val)
+            else:
+                is_gluten_free = bool(is_gluten_free_val)
+
+            is_lactose_free = parse_bool(row.get('is_lactose_free', False))
 
             ingredient = IngredientInfo(
                 name=name,  # Nome originale come chiave
@@ -109,10 +238,10 @@ def load_basic_ingredient_info(filepath: str) -> Dict[str, IngredientInfo] | Non
                 fat_g_per_100g=fat,
                 fiber_g_per_100g=fiber,
                 # Usa get con default
-                is_vegan=parse_bool(row.get('is_vegan', False)),
-                is_vegetarian=parse_bool(row.get('is_vegetarian', False)),
-                is_gluten_free=parse_bool(row.get('is_gluten_free', False)),
-                is_lactose_free=parse_bool(row.get('is_lactose_free', False)),
+                is_vegan=is_vegan,
+                is_vegetarian=is_vegetarian,
+                is_gluten_free=is_gluten_free,
+                is_lactose_free=is_lactose_free,
             )
 
             if name in ingredients_data:
@@ -123,6 +252,13 @@ def load_basic_ingredient_info(filepath: str) -> Dict[str, IngredientInfo] | Non
         loading_end_time = time.time()
         print(
             f"--- Caricamento Info Base completato ({len(ingredients_data)} ingredienti) in {loading_end_time - start_time:.2f} secondi ---")
+
+        # Debug - mostra alcuni esempi
+        sample_items = list(ingredients_data.items())[:3]
+        for name, info in sample_items:
+            print(
+                f"Ingrediente: {name}, CHO: {info.cho_per_100g}, Vegan: {info.is_vegan}")
+
         return ingredients_data
 
     except FileNotFoundError:

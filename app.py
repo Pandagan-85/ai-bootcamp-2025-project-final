@@ -16,7 +16,7 @@ load_dotenv()
 try:
     from main import run_recipe_generation
     from model_schema import UserPreferences, GraphState
-    from loaders import load_basic_ingredient_info
+    from loaders import load_basic_ingredient_info, load_ingredient_database_with_mappings
     from utils import normalize_name
 except ImportError as e:
     st.error(
@@ -35,9 +35,9 @@ EMBEDDING_MODEL_NAME = 'paraphrase-multilingual-mpnet-base-v2'
 
 # Percorsi Immagini Statiche
 VEGAN_IMG_PATH = os.path.join(STATIC_DIR, "vegan.png")
-VEGETARIAN_IMG_PATH = os.path.join(STATIC_DIR, "vegetarian.png")
-GLUTEN_FREE_IMG_PATH = os.path.join(STATIC_DIR, "gluten_free.png")
-LACTOSE_FREE_IMG_PATH = os.path.join(STATIC_DIR, "lactose_free.png")
+VEGETARIAN_IMG_PATH = os.path.join(STATIC_DIR, "vegetarian_2.png")
+GLUTEN_FREE_IMG_PATH = os.path.join(STATIC_DIR, "gluten_free_2.png")
+LACTOSE_FREE_IMG_PATH = os.path.join(STATIC_DIR, "lactose_free_2.png")
 LOADING_IMG_PATH = os.path.join(STATIC_DIR, "loading.gif")
 
 # Verifica Esistenza File Indice/Mapping
@@ -88,7 +88,7 @@ def get_img_html(img_path: str, width: int = 24) -> str:
         return f'<img src="data:image/png;base64,{base64_image}" width="{width}" style="margin-right: 5px; vertical-align: middle;" alt="{os.path.basename(img_path)}">'
     else:
         fallback_emojis = {"vegan.png": "🌱", "vegetarian.png": "🥗",
-                           "gluten_free.png": "🌾", "lactose_free.png": "🥛"}
+                           "gluten_free_2.png": "🌾", "lactose_free_2.png": "🥛"}
         emoji = fallback_emojis.get(os.path.basename(img_path), "⚠️")
         return f'<span title="Icona mancante: {os.path.basename(img_path)}" style="margin-right: 5px; vertical-align: middle;">{emoji}</span>'
 
@@ -118,13 +118,13 @@ def image_checkbox(label: str, img_path: str, img_width: int = 160, key: str | N
         except Exception as e:
             print(f"Error displaying image {img_path}: {e}")
             fallback_emojis = {"vegan.png": "🌱", "vegetarian.png": "🥗",
-                               "gluten_free.png": "🌾", "lactose_free.png": "🥛"}
+                               "gluten_free_2.png": "🌾", "lactose_free_2.png": "🥛"}
             emoji = fallback_emojis.get(os.path.basename(img_path), "⚠️")
             img_col.markdown(
                 f"<h1 style='text-align: center; margin-bottom: 5px;'>{emoji}</h1>", unsafe_allow_html=True)
     else:
         fallback_emojis = {"vegan.png": "🌱", "vegetarian.png": "🥗",
-                           "gluten_free.png": "🌾", "lactose_free.png": "🥛"}
+                           "gluten_free_2.png": "🌾", "lactose_free_2.png": "🥛"}
         emoji = fallback_emojis.get(os.path.basename(img_path), "⚠️")
         img_col.markdown(
             f"<h1 style='text-align: center; margin-bottom: 5px;'>{emoji}</h1>", unsafe_allow_html=True)
@@ -181,6 +181,16 @@ def load_basic_ingredient_info_cached(csv_filepath):
     if data is None:
         st.error(f"Fallito caricamento dati ingredienti da {csv_filepath}.")
     return data
+
+
+@st.cache_data(show_spinner="Caricamento info ingredienti con mappature...")
+def load_ingredient_info_with_mappings_cached(csv_filepath):
+    print(f"--- Loading ingredient info with mappings from {csv_filepath} ---")
+    data, normalized_to_original, original_to_normalized = load_ingredient_database_with_mappings(
+        csv_filepath)
+    if data is None:
+        st.error(f"Fallito caricamento dati ingredienti da {csv_filepath}.")
+    return data, normalized_to_original, original_to_normalized
 
 
 # --- Interfaccia Streamlit ---
@@ -251,7 +261,7 @@ start_load_time = time.time()
 embedding_model = load_sbert_model_cached(EMBEDDING_MODEL_NAME)
 faiss_index = load_faiss_index_cached(FAISS_INDEX_FILE)
 index_to_name_mapping = load_name_mapping_cached(NAME_MAPPING_FILE)
-available_ingredients_data = load_basic_ingredient_info_cached(
+available_ingredients_data, normalized_to_original, original_to_normalized = load_ingredient_info_with_mappings_cached(
     INGREDIENTS_FILE)
 end_load_time = time.time()
 print(
@@ -278,7 +288,7 @@ target_cho = st.number_input(
     "🎯 Target Carboidrati (g/porzione) min 20gr, max 120gr",
     min_value=20.0,
     max_value=120.0,
-    value=80.0,
+    value=60.0,
     step=5.0,
     help="Imposta il contenuto desiderato di carboidrati per porzione (in grammi)."
 )
@@ -374,6 +384,8 @@ if st.button("✨ Genera Ricette", use_container_width=True, type="primary", dis
             normalize_function=normalize_name,
             faiss_index=faiss_index,
             index_to_name_mapping=index_to_name_mapping,
+            normalized_to_original=normalized_to_original,  # NUOVO
+            original_to_normalized=original_to_normalized,  # NUOVO
             # Campi risultati inizializzati
             generated_recipes=[],
             final_verified_recipes=[],

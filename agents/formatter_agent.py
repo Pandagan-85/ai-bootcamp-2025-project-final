@@ -95,9 +95,9 @@ def format_output_agent(state: GraphState) -> GraphState:
     # Percorsi delle immagini e loro configurazione
     icons_config = {
         "vegan": {"path": os.path.join(static_folder, "vegan.png"), "width": 24},
-        "vegetarian": {"path": os.path.join(static_folder, "vegetarian.png"), "width": 24},
-        "gluten_free": {"path": os.path.join(static_folder, "gluten_free.png"), "width": 24},
-        "lactose_free": {"path": os.path.join(static_folder, "lactose_free.png"), "width": 24},
+        "vegetarian": {"path": os.path.join(static_folder, "vegetarian_2.png"), "width": 24},
+        "gluten_free": {"path": os.path.join(static_folder, "gluten_free_2.png"), "width": 24},
+        "lactose_free": {"path": os.path.join(static_folder, "lactose_free_2.png"), "width": 24},
     }
 
     # Genera HTML per le icone
