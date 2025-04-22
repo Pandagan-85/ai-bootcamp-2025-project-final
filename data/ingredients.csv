@@ -65,7 +65,7 @@ Uova,0.7,155.0,12.6,10.6,0.0,False,True,True,True,60.0,Proteine
 Tofu,1.9,76.0,8.0,4.2,0.3,True,True,True,True,100.0,Proteine
 Lenticchie,20.0,116.0,9.0,0.4,7.9,True,True,True,True,70.0,Legumi
 Fagioli borlotti,19.5,100.0,8.7,0.8,7.0,True,True,True,True,80.0,Legumi
-Basilico fresco,2.7,23.0,3.2,0.6,1.6,True,True,True,True,5.0,Verdura
+Basilico,2.7,23.0,3.2,0.6,1.6,True,True,True,True,5.0,Verdura
 Origano,68.0,265.0,9.0,4.3,42.5,True,True,True,True,1.0,Condimenti
 Ceci cotti,27.4,164.0,8.9,2.6,7.6,True,True,True,True,70.0,Legumi
 Tacchino,0.0,189.0,29.0,7.0,0.0,False,False,True,True,150.0,Proteine
@@ -185,6 +185,7 @@ Pasta all'uovo,68.0,368.0,13.0,3.0,2.5,False,True,False,True,80.0,Carboidrati
 Grissini,75.0,410.0,11.0,9.0,3.0,True,True,False,True,30.0,Carboidrati
 Pane bianco,50.0,265.0,9.0,3.2,2.7,True,True,False,True,50.0,Carboidrati
 Fette biscottate,72.0,410.0,11.0,7.0,4.0,True,True,False,True,20.0,Carboidrati
+Coriandolo,3.7,23.0,2.1,0.5,2.8,True,True,True,True,5.0,Spezie
 Corn flakes,84.0,357.0,7.0,0.4,3.0,True,True,False,True,30.0,Carboidrati
 Polenta istantanea,78.0,359.0,8.0,1.5,3.0,True,True,True,True,50.0,Carboidrati
 Pecorino,0.0,387.0,28.0,32.0,0.0,False,True,True,False,30.0,Latticini
@@ -218,7 +219,7 @@ Gorgonzola,0.1,350.0,19.0,30.0,0.0,False,True,True,False,30.0,Latticini
 Formaggio spalmabile,5.0,150.0,10.0,9.0,0.0,False,True,True,False,30.0,Latticini
 Fiocchi di latte,3.4,98.0,11.1,4.3,0.0,False,True,True,False,100.0,Latticini
 Panna da cucina,3.3,215.0,2.4,21.0,0.0,False,True,True,False,30.0,Latticini
-Menta fresca,8.4,44.0,3.3,0.7,6.8,True,True,True,True,5.0,Erbe aromatiche
+Menta,8.4,44.0,3.3,0.7,6.8,True,True,True,True,5.0,Erbe aromatiche
 Panna montata,15.0,300.0,2.0,25.0,0.0,False,True,True,False,20.0,Latticini
 Latte di avena,6.5,48.0,0.3,1.5,0.8,True,True,False,True,250.0,Bevande
 Latte di riso,9.0,47.0,0.3,1.0,0.3,True,True,True,True,250.0,Bevande
@@ -305,8 +306,8 @@ Strutto,0.0,902.0,0.0,100.0,0.0,False,False,True,True,10.0,Grassi
 Olio di noci,0.0,884.0,0.0,100.0,0.0,True,True,True,True,15.0,Grassi
 Olio di avocado,0.0,884.0,0.0,100.0,0.0,True,True,True,True,15.0,Grassi
 Olio di sesamo tostato,0.0,884.0,0.0,100.0,0.0,True,True,True,True,10.0,Grassi
-Zenzero fresco,17.8,80.0,1.8,0.8,2.0,True,True,True,True,5.0,Condimenti
-Curcuma fresca,64.9,354.0,7.8,9.9,21.1,True,True,True,True,5.0,Condimenti
+Zenzero,17.8,80.0,1.8,0.8,2.0,True,True,True,True,5.0,Condimenti
+Curcuma,64.9,354.0,7.8,9.9,21.1,True,True,True,True,5.0,Condimenti
 Paprika,54.0,282.0,14.0,13.0,35.0,True,True,True,True,2.0,Condimenti
 Cumino,44.2,375.0,17.8,22.3,10.5,True,True,True,True,2.0,Condimenti
 Cannella,80.6,247.0,4.0,1.2,53.1,True,True,True,True,2.0,Condimenti

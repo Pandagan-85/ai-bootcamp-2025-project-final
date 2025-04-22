@@ -202,14 +202,12 @@ LOGO_PATH = os.path.join(STATIC_DIR, "logo.png")  # salva qui il logo generato
 col_logo, col_title = st.columns([1, 4])
 
 with col_logo:
-    if os.path.exists(LOGO_PATH):
-        st.image(LOGO_PATH, width=100)
-    else:
-        st.warning("⚠️ Logo non trovato in 'static/logo.png'. Aggiungi l'immagine nella cartella.")
+    st.image('static/logo.png',  width=200)
 
 with col_title:
+
     st.markdown("""
-    ## 🥦 **NutriCHOice**
+    # **NutriCHOice**
     #### _Scelta intelligente per un'alimentazione su misura_
     """)
 
@@ -224,38 +222,43 @@ NutriCHOice è un assistente culinario intelligente che utilizza l'approccio inn
 """)
 
 # Il processo in 4 fasi in markdown semplice per evitare sovrapposizioni
+st.markdown('---')
 st.markdown("#### Il processo in 4 fasi:")
 
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     st.markdown("""
-        <h4 style='font-size: 14px'>🎯 Personalizzazione</h4>
+        <p style='font-size: 36px; margin-bottom:-20px'>🎯</p>
+        <h4 style='font-size: 16px'>Personalizzazione</h4>
         <p>
             Imposti il tuo target di carboidrati e le preferenze alimentari (vegano, senza glutine, ecc.)
         </p>
         """, unsafe_allow_html=True)
 with col2:
     st.markdown("""
-    #### 💡 Generazione Creativa
+    <p style='font-size: 36px; margin-bottom:-20px'>💡</p> 
+    <h4 style='font-size: 16px'>Generazione Creativa</h4>
 
-    Un agente AI genera ricette originali e gustose con creatività libera
-    """)
+    <p>Un agente AI genera ricette originali e gustose con creatività libera</p>
+    """, unsafe_allow_html=True)
 
 with col3:
     st.markdown("""
-    #### ✨ Verifica e Ottimizzazione
+    <p style='font-size: 36px; margin-bottom:-20px'>✨</p>
+    <h4 style='font-size: 16px'>Verifica e Ottimizzazione</h4>
 
-    FAISS confronta gli ingredienti, calcola i nutrienti e ottimizza le quantità
-    """)
+    <p>FAISS confronta gli ingredienti, calcola i nutrienti e ottimizza le quantità</p>
+    """, unsafe_allow_html=True)
 
 with col4:
     st.markdown("""
-    #### 📑 Presentazione
+    <p style='font-size: 36px; margin-bottom:-20px'>📑<p>
+    <h4 style='font-size: 16px'>Presentazione</h4>
 
-    Le ricette validate vengono formattate con tutti i valori nutrizionali
-    """)
-
+    <p>Le ricette validate vengono formattate con tutti i valori nutrizionali</p>
+    """, unsafe_allow_html=True)
+st.markdown('---')
 st.markdown("")  # Spazio aggiuntivo
 
 st.markdown("""
@@ -300,8 +303,10 @@ if faiss_index.ntotal != len(index_to_name_mapping):
 
 
 st.header("Preferenze Ricetta")
+st.subheader("🎯 Target Carboidrati (CHO in grammi)")
+st.markdown("min 20gr, max 120gr")
 target_cho = st.number_input(
-    "🎯 Target Carboidrati (g/porzione) min 20gr, max 120gr",
+    label="",
     min_value=20.0,
     max_value=120.0,
     value=60.0,
@@ -489,7 +494,7 @@ with team_col2:
     st.markdown("**AI & Machine Learning Lead**")
     st.markdown("Studentessa e imprenditrice, è abilissima nelle sfide lanciate dai dati. Riesce a manipolare complessi dataset anche sui mezzi pubblici.")
     st.markdown(
-        "[LinkedIn](https://linkedin.com/placeholder) | [GitHub](https://github.com/placeholder)")
+        "[LinkedIn](https://www.linkedin.com/in/francesca-ballir%C3%B2-060b92331/) | [GitHub](https://github.com/francescaballiro)")
 
 with team_col3:
     img_html_valentina = get_img_html("static/valentina.webp", width=100)
@@ -505,11 +510,11 @@ with team_col3:
     st.markdown("**AI & Machine Learning Lead**")
     st.markdown("Specialista in marketing digitale, ossessionata dai KPI per ottimizzare le performance e massimizzare i ROAS, vive tra filosofia e salvifica praxis.")
     st.markdown(
-        "[LinkedIn](https://linkedin.com/placeholder) | [GitHub](https://github.com/placeholder)")
+        "[LinkedIn](https://www.linkedin.com/in/valentinabellezza/) | [GitHub](https://github.com/Valentina-create)")
 
 with team_col4:
 
-    img_html_giulia = get_img_html("static/lactose_free.png", width=100)
+    img_html_giulia = get_img_html("static/giulia.webp", width=100)
     st.markdown(f"""
     <div style='text-align: center;'>
         <div style='width:150px;height:150px;background-color:#f0f2f6;border-radius:50%;margin:auto;
@@ -523,7 +528,7 @@ with team_col4:
     st.markdown("**AI & Machine Learning Lead**")
     st.markdown("Umanista digitale, incarna lo spirito del letterato di oggi, esperta nella manipolazione di corpora testuali, è anche dispensatrice compulsiva di materiale didattico.")
     st.markdown(
-        "[LinkedIn](https://linkedin.com/placeholder) | [GitHub](https://github.com/placeholder)")
+        "[LinkedIn](https://www.linkedin.com/in/giulia-g-71b19613b/) | [GitHub](https://github.com/KaguyaHime905)")
 
 st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("---")

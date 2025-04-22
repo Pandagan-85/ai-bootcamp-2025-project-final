@@ -37,6 +37,8 @@ banana
 banane
 barbabietola
 barbabietole
+basilici
+basilico
 basilico fresco
 besciamella
 besciamelle
@@ -81,6 +83,7 @@ cetriolo
 cetriolo a cubetti
 cheddar
 cicoria belga
+cilantro
 ciliegia
 ciliegie
 cioccolati
@@ -94,6 +97,9 @@ cocco grattugiato
 concentrato di pomodoro
 coniglii
 coniglio
+coriandoli
+coriandolo
+coriandolo fresco
 corn flakes
 coscia di pollo
 couscous
@@ -107,7 +113,9 @@ crostoni
 cumini
 cumino
 cuori di carciofo
-curcuma fresca
+curcuma
+curcume
+curmuca fresca
 curry
 dado vegetale
 datteri
@@ -145,6 +153,8 @@ filetto di salmone affumicato
 finocchii
 finocchio
 fiocchi di latte
+foglie di basilico fresco
+foglie di menta
 formaggio di capra
 formaggio feta
 formaggio spalmabile
@@ -229,7 +239,9 @@ melanzani
 mele
 melone
 meloni
+menta
 menta fresca
+mente
 merluzzi
 merluzzo
 miele
@@ -442,7 +454,8 @@ yogurt greco
 zafferani
 zafferano
 zafferano in polvere
-zenzero fresco
+zenzeri
+zenzero
 zucca
 zucce
 zucchero

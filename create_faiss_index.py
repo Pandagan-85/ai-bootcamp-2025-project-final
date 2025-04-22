@@ -86,7 +86,7 @@ def prepare_consistent_ingredient_data(filepath: str) -> list[str]:
             'olive': ['olive nere', 'olive verdi', 'olive kalamata'],
             # Chiave: nome CSV norm. Valore: varianti norm.
             'limone': ['limoni', 'scorza di limone', 'scorza di limone grattugiata', 'lievi scorze di limone grattugiate', 'lime'],
-            'vino bianco':['vino bianco secco'],
+            'vino bianco': ['vino bianco secco'],
             'cipolla': ['cipolla rossa', 'cipolla bianca', 'cipolla dorata'],
             'formaggio parmigiano': ['parmigiano', 'parmigiano reggiano', 'parmigiano grattugiato'],
             'pasta': ['spaghetti', 'penne', 'fusilli', 'tagliatelle', 'fettuccine'],
@@ -94,7 +94,7 @@ def prepare_consistent_ingredient_data(filepath: str) -> list[str]:
             'pomodoro': ['pomodori', 'pomodoro fresco', 'pomodori freschi', 'pomodoro a cubetti', 'pomodori a cubetti'],
             'funghi': ['funghi champignon', 'funghi porcini', 'champignon'],
             'mirtilli': ['mirtilli rossi'],
-            'uvetta':['uvetta sultanina', 'uvetta comune'],
+            'uvetta': ['uvetta sultanina', 'uvetta comune'],
             'zucchina': ['zucchine'],
             'mela': ['mele'],
             'pera': ['pere'],
