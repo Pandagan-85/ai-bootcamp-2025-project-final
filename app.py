@@ -196,7 +196,23 @@ def load_ingredient_info_with_mappings_cached(csv_filepath):
 # --- Interfaccia Streamlit ---
 st.set_page_config(
     page_title="NutriCHOice - Generatore Ricette CHO", layout="centered")
-st.title("🥦 NutriCHOice la scelta intelligente, per un'alimentazione su misura) 🥕")
+# --- Header con logo e titoli ---
+LOGO_PATH = os.path.join(STATIC_DIR, "logo.png")  # salva qui il logo generato
+
+col_logo, col_title = st.columns([1, 4])
+
+with col_logo:
+    if os.path.exists(LOGO_PATH):
+        st.image(LOGO_PATH, width=100)
+    else:
+        st.warning("⚠️ Logo non trovato in 'static/logo.png'. Aggiungi l'immagine nella cartella.")
+
+with col_title:
+    st.markdown("""
+    ## 🥦 **NutriCHOice**
+    #### _Scelta intelligente per un'alimentazione su misura_
+    """)
+
 
 # Descrizione introduttiva con menzione Edgemony
 st.markdown("""
@@ -214,11 +230,11 @@ col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     st.markdown("""
-    #### 🎯 Personalizzazione
-
-    Imposti il tuo target di carboidrati e le preferenze alimentari (vegano, senza glutine, ecc.)
-    """)
-
+        <h4 style='font-size: 14px'>🎯 Personalizzazione</h4>
+        <p>
+            Imposti il tuo target di carboidrati e le preferenze alimentari (vegano, senza glutine, ecc.)
+        </p>
+        """, unsafe_allow_html=True)
 with col2:
     st.markdown("""
     #### 💡 Generazione Creativa
@@ -432,7 +448,7 @@ st.markdown("---")
 # Intestazione chiara per indicare che inizia il footer
 st.markdown("### Chi siamo 🚀")
 
-st.subheader("👥 Import Errror Domenico Not Found")
+st.subheader("👥 Import Error Domenico Not Found")
 st.markdown("""
 ### I professionisti dietro NutriCHOice
 *Un gruppo multidisciplinare dedicato a rivoluzionare la pianificazione alimentare personalizzata*
