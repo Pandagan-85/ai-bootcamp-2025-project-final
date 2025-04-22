@@ -105,7 +105,8 @@ def prepare_consistent_ingredient_data(filepath: str) -> list[str]:
             'feta':['formaggio feta'],
             'zafferano':['zafferano in polvere'],
             'prezzemolo':['prezzemolo fresco'],
-            'lenticchie':['lenticchie rosse', 'lenticchie verdi']
+            'lenticchie':['lenticchie rosse', 'lenticchie verdi'],
+            'curcuma':['curmuca fresca']
         }
 
         # Estrai i nomi base e normalizzali per coerenza
