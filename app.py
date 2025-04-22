@@ -444,7 +444,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 team_col1, team_col2, team_col3, team_col4 = st.columns(4)
 
 with team_col1:
-    img_html_veronica = get_img_html("static/veronica.webp", width=100)
+    img_html_veronica = get_img_html("static/Veronica.webp", width=100)
     st.markdown(f"""
     <div style='text-align: center;'>
         <div style='width:150px;height:150px;background-color:#f0f2f6;border-radius:50%;margin:auto;
@@ -460,7 +460,7 @@ with team_col1:
         "[LinkedIn](https://www.linkedin.com/in/veronicaschembri/) | [GitHub](https://github.com/Pandagan-85)")
 
 with team_col2:
-    img_html_francesca = get_img_html("static/francesca.webp", width=100)
+    img_html_francesca = get_img_html("static/Francesca.webp", width=100)
     st.markdown(f"""
     <div style='text-align: center;'>
         <div style='width:150px;height:150px;background-color:#f0f2f6;border-radius:50%;margin:auto;
