@@ -6,6 +6,7 @@ matching, ottimizzazione e verifica delle ricette generate. Questo agente è il
 "cervello" del sistema in grado di correggere e migliorare le ricette per soddisfare
 i requisiti nutrizionali e dietetici.
 """
+from ingredient_synonyms import FALLBACK_MAPPING
 from typing import List, Dict, Optional, Tuple
 from copy import deepcopy
 import random
@@ -650,56 +651,6 @@ def match_recipe_ingredients(recipe: FinalRecipeOption,
     sample_keys = list(ingredient_data.keys())[:5]
     print(f"DEBUG: Primi 5 ingredienti nel DB: {sample_keys}")
 
-    # Dizionario per le corrispondenze comuni per ingredienti problematici
-    common_fallbacks = {
-        "pomodori": "Pomodoro",  # Nome esatto nel CSV
-        "pomodoro fresco": "Pomodoro",
-        "pomodori freschi": "Pomodoro",
-        "pomodoro a cubetti": "Pomodoro",
-        "pomodori a cubetti": "Pomodoro",
-        "peperoni": "Peperoni",
-        "peperone rosso": "Peperoni",
-        "pecorino grattugiato": "Pecorino",
-        "pecorino romano grattugiato": "Pecorino",
-        "pancetta a cubetti": "Pancetta",
-        "cetrioli": "Cetriolo",
-        "cetriolo a cubetti": "Cetriolo",
-        "cetrioli a cubetti": "Cetriolo",
-        "feta a cubetti": "Feta",
-        "mandorle a scaglie": "Mandorle",
-        "mandorle a lamelle": "Mandorle",
-        "mandorle a fette": "Mandorle",
-        "mandorle tritate": "Mandorle",
-        "tagliolini": "Tagliatelle",
-        "tagliolini freschi": "Tagliatelle",
-        "rucola fresca": "Rucola",
-        "rughetta": "Rucola",
-        "cipolla rossa": "Cipolla",
-        "cipolla bianca": "Cipolla",
-        "cipolla dorata": "Cipolla",
-
-        "zucchina": "Zucchine",
-        "zucchini": "Zucchine",
-        "pepe": "Pepe nero",
-        "curcuma": "Curcuma",
-        "coriandolo": "Coriandolo",
-        "coriandolo fresco":"Coriandolo",
-        "origano fresco": "Origano",
-        "origano secco": "Origano",
-        "mirtilli rossi": "Mirtilli",
-        "prezzemolo fresco": "Prezzemolo",
-        "spaghetti": "Spaghetti",
-        "zenzero fresco": "Zenzero",
-        "zenzero fresco grattugiato": "Zenzero",
-        "limoni": "Limone",  # Chiave: variante norm. Valore: nome esatto CSV
-        "scorza di limone": "Limone",  # Mappiamo anche la scorza al limone generico
-        "scorza di limone grattugiata": "Limone",
-        "lievi scorze di limone grattugiate": "Limone",
-        "lime": "Limone",
-        "uvetta sultanina":"Uvetta",
-        "Vino bianco secco": "Vino bianco"
-    }
-
     for ing in recipe.ingredients:
         # Tenta il matching con FAISS
         match_result = find_best_match_faiss(
@@ -765,8 +716,8 @@ def match_recipe_ingredients(recipe: FinalRecipeOption,
 
             # 4. Prova fallback per ingredienti problematici
             normalized_matched = normalize_function(matched_db_name)
-            if normalized_matched in common_fallbacks:
-                fallback_name = common_fallbacks[normalized_matched]
+            if normalized_matched in FALLBACK_MAPPING:
+                fallback_name = FALLBACK_MAPPING[normalized_matched]
                 if fallback_name in ingredient_data:
                     print(
                         f"Usando fallback: '{matched_db_name}' -> '{fallback_name}'")
@@ -788,8 +739,8 @@ def match_recipe_ingredients(recipe: FinalRecipeOption,
 
             # Nome originale normalizzato
             normalized_original = normalize_function(ing.name)
-            if normalized_original in common_fallbacks:
-                fallback_name = common_fallbacks[normalized_original]
+            if normalized_original in FALLBACK_MAPPING:
+                fallback_name = FALLBACK_MAPPING[normalized_original]
                 if fallback_name in ingredient_data:
                     print(
                         f"Usando fallback da originale: '{ing.name}' -> '{fallback_name}'")
@@ -804,8 +755,8 @@ def match_recipe_ingredients(recipe: FinalRecipeOption,
 
             # Prova fallback per ingredienti non matchati
             normalized_original = normalize_function(ing.name)
-            if normalized_original in common_fallbacks:
-                fallback_name = common_fallbacks[normalized_original]
+            if normalized_original in FALLBACK_MAPPING:
+                fallback_name = FALLBACK_MAPPING[normalized_original]
                 if fallback_name in ingredient_data:
                     print(
                         f"Usando fallback per non matchato: '{ing.name}' -> '{fallback_name}'")

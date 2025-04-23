@@ -1,4 +1,5 @@
 # create_consistent_faiss_index.py
+from ingredient_synonyms import SYNONYMS_FOR_INDEX, INVARIABLE_WORDS, ALWAYS_PLURAL
 import os
 import time
 import pickle
@@ -15,7 +16,6 @@ INGREDIENTS_CSV_PATH = os.path.join(DATA_DIR, "ingredients.csv")
 FAISS_INDEX_PATH = os.path.join(DATA_DIR, "ingredients.index")
 NAME_MAPPING_PATH = os.path.join(DATA_DIR, "ingredient_names.pkl")
 ENHANCED_MAPPING_PATH = os.path.join(DATA_DIR, "enhanced_ingredients.txt")
-
 # Usa lo stesso modello definito altrove
 EMBEDDING_MODEL_NAME = 'paraphrase-multilingual-mpnet-base-v2'
 
@@ -46,79 +46,6 @@ def prepare_consistent_ingredient_data(filepath: str) -> list[str]:
 
         if 'name' not in df.columns:
             raise ValueError("Colonna 'name' non trovata nel CSV.")
-
-        # Definisce le parole invariabili (non cambiano al plurale)
-        INVARIABLE_WORDS = {
-            'latte', 'pepe', 'formaggio', 'sale', 'olio', 'aceto', 'caffè', 'tè',
-            'miele', 'marmellata', 'pane', 'cous cous', 'curry', 'senape', 'maionese',
-            'ketchup', 'wasabi', 'miglio', 'quinoa', 'orzo', 'burro', 'farro', 'yogurt',
-            'riso', 'grano', 'semola', 'amido', 'zucchero', 'farina', 'mais', 'lievito',
-            'brodo', 'concentrato di pomodoro', 'passata di pomodoro', 'pelati', 'acqua', 'lattuga'
-        }
-
-        # Definisce parole che sono già al plurale
-        ALWAYS_PLURAL = {
-            'olive', 'alici', 'acciughe', 'anacardi', 'arachidi', 'capperi', 'rognoni',
-            'marsala', 'funghi', 'spinaci', 'asparagi', 'lenticchie', 'fagioli', 'ceci',
-            'piselli', 'pinoli', 'pistacchi', 'mandorle', 'noci', 'nocciole', 'datteri',
-            'fichi', 'prugne', 'uvetta', 'albicocche', 'molluschi', 'frutti di mare',
-            'gamberetti', 'cozze', 'vongole', 'calamari', 'seppie', 'broccoli'
-        }
-
-        # Sinonimi comuni con forme corrette
-        common_synonyms = {
-
-            'couscous': ['cuscus'],
-            'linguine': ['pasta linguine'],
-            'peperoni': ['peperone', 'peperone dolce', 'peperone rosso', 'peperone giallo', 'peperoni rossi', 'peperoni gialli'],
-            'gamberi': ['gambero', 'gamberetto', 'gamberetti'],
-            'basilico': ['basilico fresco', 'foglie di basilico fresco'],
-            'menta': ['menta fresca', 'foglie di menta'],
-            'coriandolo': ['coriandolo fresco', 'cilantro'],
-            'spezie miste': ['cumino', 'coriandolo', 'paprika'],
-            'melanzane': ['melanzana'],
-            'mandorle': ['mandorle a scaglie', 'mandorle a lamelle', 'mandorle tritate', 'mandorle a fette'],
-            'pancetta': ['pancetta a cubetti'],
-            'pecorino': ['pecorino grattugiato', 'pecorino romano grattugiato'],
-            'cetriolo': ['cetrioli', 'cetriolo a cubetti', 'cetrioli a cubetti'],
-
-            # Chiave: nome CSV norm. Valore: varianti norm.
-            'limone': ['limoni', 'scorza di limone', 'scorza di limone grattugiata', 'lievi scorze di limone grattugiate', 'lime'],
-            'vino bianco': ['vino bianco secco'],
-            'cipolla': ['cipolla rossa', 'cipolla bianca', 'cipolla dorata'],
-            'parmigiano reggiano': ['parmigiano', 'formaggio parmigiano', 'parmigiano grattugiato'],
-            'spaghetti':['pasta spaghetti', 'pasta'],
-            'penne':['pasta penne', 'pasta'],
-            'fusilli':['pasta fusilli', 'pasta'],
-            'tagliatelle':['pasta tagliatelle'],
-            'riso basmati':['riso','riso bianco'],
-            'riso jasmine':['riso','riso bianco'],
-            'riso venere':['riso','riso bianco'],
-            'riso arborio':['riso','riso bianco'],
-            'pomodoro': ['pomodori', 'pomodoro fresco', 'pomodori freschi', 'pomodoro a cubetti'],
-            'funghi': ['funghi champignon', 'funghi porcini', 'champignon'],
-            'mirtilli': ['mirtilli rossi'],
-            'uvetta': ['uvetta sultanina', 'uvetta comune'],
-            'zucchine': ['zucchina'],
-            'mela': ['mele'],
-            'pera': ['pere'],
-            'arancia': ['arance'],
-            'fragole': ['fragola'],
-            'uva': ['uva bianca', 'uva nera', 'uva rossa'],  # Forme corrette
-            'banana': ['banane'],
-            'rosmarino': ['rosmarino fresco'],
-            'timo': ['timo fresco'],
-            'origano': ['origano secco', 'origano fresco'],
-
-            'polpo': ['polipo'],
-            'rucola': ['rughetta', 'rucola fresca'],
-            'feta': ['feta a cubetti', 'formaggio feta'],
-            'zafferano': ['zafferano in polvere'],
-            'prezzemolo': ['prezzemolo fresco', 'prezzemolo in polvere', 'prezzemolo secco'],
-            'lenticchie': ['lenticchie rosse', 'lenticchie verdi'],
-            'pasta di lenticchie':['pasta di lenticchie rosse', 'pasta di lenticchie verdi'],
-            'curcuma': ['curmuca fresca']
-        }
 
         # Estrai i nomi base e normalizzali per coerenza
         base_names = []
@@ -157,8 +84,8 @@ def prepare_consistent_ingredient_data(filepath: str) -> list[str]:
                 enhanced_names.append(name[:-1] + 'i')
 
             # Aggiungi sinonimi dal dizionario
-            if name in common_synonyms:
-                for synonym in common_synonyms[name]:
+            if name in SYNONYMS_FOR_INDEX:
+                for synonym in SYNONYMS_FOR_INDEX[name]:
                     enhanced_names.append(normalize_name(synonym))
 
         # Rimuovi duplicati e ordina
