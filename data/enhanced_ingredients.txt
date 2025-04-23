@@ -116,6 +116,8 @@ cumino
 cuori di carciofo
 curcuma
 curcuma fresca
+curcuma in polvere
+curcuma macinata
 curcume
 curry
 cuscus
@@ -168,6 +170,7 @@ frutto della passione
 funghi
 fusilli
 gamberetti
+gamberetti sgusciati
 gamberetto
 gamberi
 gambero
@@ -213,6 +216,7 @@ lime
 limi
 limone
 limoni
+linguina
 linguine
 linguini
 liquore
@@ -301,6 +305,11 @@ paprika
 paprike
 parmigiano reggiano
 pasta
+pasta (fusilli)
+pasta (linguine)
+pasta (penne)
+pasta (spaghetti)
+pasta (tagliatelle)
 pasta all'uovo
 pasta d'acciughe
 pasta di ceci
@@ -346,6 +355,7 @@ polenta istantanea
 polipo
 polpi
 polpo
+polvere di curcuma
 pomodori
 pomodori freschi
 pomodori secchi
@@ -365,6 +375,7 @@ prezzemolo
 prezzemolo fresco
 prezzemolo in polvere
 prezzemolo secco
+prezzemolo tritato
 prosciutto cotto
 prosciutto crudo
 proteine vegetali testurizzate
@@ -449,7 +460,9 @@ tahini
 tempeh
 timi
 timo
+timo essiccato
 timo fresco
+timo secco
 tofu
 tonno fresco
 tonno in scatola
@@ -480,6 +493,8 @@ zafferano
 zafferano in polvere
 zenzeri
 zenzero
+zenzero fresco
+zenzero fresco grattugiato
 zucca
 zucce
 zucchero
