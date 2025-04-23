@@ -50,7 +50,7 @@ def find_best_match_faiss(
     Returns:
         Tuple con (nome_matchato, score_similarità) se trovato, None altrimenti
     """
-
+    from ingredient_synonyms import is_incompatible_match
     # PRETRATTAMENTO e NORMALIZZAZIONE
     common_synonyms = {
         "carote": "carota",
@@ -105,6 +105,13 @@ def find_best_match_faiss(
 
             if 0 <= match_index < len(index_to_name_mapping) and match_score >= threshold:
                 matched_name = index_to_name_mapping[match_index]
+
+                # Verifica se la corrispondenza è incompatibile
+                if is_incompatible_match(llm_name, matched_name):
+                    print(
+                        f"Match incompatibile rilevato e ignorato: '{llm_name}' -> '{matched_name}'")
+                    continue  # Prova con il prossimo match
+
                 return matched_name, float(match_score)
 
         # TENTATIVO 3: Strategie aggiuntive per ingredienti problematici

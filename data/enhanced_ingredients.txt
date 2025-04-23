@@ -13,6 +13,7 @@ aglio in polvere
 agnelli
 agnello
 albicocche
+albume
 alghe nori
 alghe wakame
 amaranti
@@ -54,6 +55,7 @@ bresaole
 broccoli
 brodo di pollo
 brodo vegetale
+bulbo di finocchio
 bulgur
 burro
 burro di arachidi
@@ -113,6 +115,8 @@ crescioni
 crostoni
 cumini
 cumino
+cumino in polvere
+cumino macinato
 cuori di carciofo
 curcuma
 curcuma fresca
@@ -147,6 +151,7 @@ fegato di manzo
 fesa di tacchino
 feta
 feta a cubetti
+feta sbriciolata
 fete
 fette biscottate
 fichi
@@ -156,6 +161,7 @@ filetto di salmone affumicato
 finocchi
 finocchii
 finocchio
+finocchio fresco
 fiocchi di latte
 foglie di basilico fresco
 foglie di menta
@@ -301,6 +307,7 @@ panna da cucina
 panna montata
 papaya
 papaye
+paprica
 paprika
 paprike
 parmigiano reggiano
@@ -335,6 +342,7 @@ pecorino romano grattugiato
 penne
 penni
 pepe
+peperoncino in polvere dolce
 peperone
 peperone dolce
 peperoni
@@ -355,6 +363,7 @@ polenta istantanea
 polipo
 polpi
 polpo
+polvere di cumino
 polvere di curcuma
 pomodori
 pomodori freschi
@@ -431,6 +440,7 @@ sedani
 sedano
 seitan
 semi di chia
+semi di cumino
 semi di girasole
 semi di lino
 semi di sesamo
@@ -471,9 +481,14 @@ tortilla di frumento
 tortilla di mais
 trofie
 trofii
+tuorlo
 tè
 uova
+uova intere
 uove
+uovo
+uovo intero
+uovo sbattuto
 uva
 uva bianca
 uve

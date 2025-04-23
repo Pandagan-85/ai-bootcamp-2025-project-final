@@ -208,7 +208,7 @@ with col_title:
 
     st.markdown("""
     # **NutriCHOice**
-    #### _Scelta intelligente per un'alimentazione su misura_
+    #### _La scelta intelligente per un'alimentazione su misura_
     """)
 
 
@@ -475,7 +475,6 @@ with team_col1:
     </div>
     """, unsafe_allow_html=True)
     st.markdown("### Veronica Schembri")
-    st.markdown("**AI & Machine Learning Lead**")
     st.markdown("Architetto dai mille talenti sviluppa la sua carriera tra design e programmazione. Divoratrice seriale di fumetti e di tutto lo scibile informatico e digitale.")
     st.markdown(
         "[LinkedIn](https://www.linkedin.com/in/veronicaschembri/) | [GitHub](https://github.com/Pandagan-85)")
@@ -491,7 +490,6 @@ with team_col2:
     </div>
     """, unsafe_allow_html=True)
     st.markdown("### Francesca Ballirò")
-    st.markdown("**AI & Machine Learning Lead**")
     st.markdown("Studentessa e imprenditrice, è abilissima nelle sfide lanciate dai dati. Riesce a manipolare complessi dataset anche sui mezzi pubblici.")
     st.markdown(
         "[LinkedIn](https://www.linkedin.com/in/francesca-ballir%C3%B2-060b92331/) | [GitHub](https://github.com/francescaballiro)")
@@ -507,7 +505,6 @@ with team_col3:
     </div>
     """, unsafe_allow_html=True)
     st.markdown("### Valentina Bellezza")
-    st.markdown("**AI & Machine Learning Lead**")
     st.markdown("Specialista in marketing digitale, ossessionata dai KPI per ottimizzare le performance e massimizzare i ROAS, vive tra filosofia e salvifica praxis.")
     st.markdown(
         "[LinkedIn](https://www.linkedin.com/in/valentinabellezza/) | [GitHub](https://github.com/Valentina-create)")
@@ -525,7 +522,6 @@ with team_col4:
     """, unsafe_allow_html=True)
 
     st.markdown("### Giulia Gambuzza")
-    st.markdown("**AI & Machine Learning Lead**")
     st.markdown("Umanista digitale, incarna lo spirito del letterato di oggi, esperta nella manipolazione di corpora testuali, è anche dispensatrice compulsiva di materiale didattico.")
     st.markdown(
         "[LinkedIn](https://www.linkedin.com/in/giulia-g-71b19613b/) | [GitHub](https://github.com/KaguyaHime905)")

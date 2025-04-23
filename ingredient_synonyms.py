@@ -34,13 +34,21 @@ ALWAYS_PLURAL = {
 SYNONYMS_FOR_INDEX = {
     'couscous': ['cuscus'],
     'peperoni': ['peperone', 'peperone dolce', 'peperone rosso', 'peperone giallo', 'peperoni rossi', 'peperoni gialli'],
+    'ceci cotti': ['ceci in scatola', 'ceci in lattina', 'ceci secchi', 'ceci lessati',
+                   'ceci precotti', 'ceci in scatola (sciacquati e scolati)', 'ceci sciacquati',
+                   'ceci scolati'],
     'gamberi': ['gambero', 'gamberetto', 'gamberetti', 'gamberetti sgusciati'],
     'basilico': ['basilico fresco', 'foglie di basilico fresco'],
     'menta': ['menta fresca', 'foglie di menta'],
     'coriandolo': ['coriandolo fresco', 'cilantro'],
-    'spezie miste': ['cumino', 'coriandolo', 'paprika'],
+    'cumino': ['cumino in polvere', 'cumino macinato', 'semi di cumino', 'polvere di cumino'],
+    'spezie miste': ['mix di spezie', 'spezie assortite', 'spezie miste (paprika, cumino, pepe nero)',
+                     'mix di erbe aromatiche', 'erbe aromatiche miste', 'spezie per curry'],
+    'paprika': ['paprica', 'paprike', 'peperoncino in polvere dolce'],
     'melanzane': ['melanzana'],
-    'mandorle': ['mandorle a scaglie', 'mandorla', 'mandorla a scaglie', 'mandorle a lamelle', 'mandorle tritate', 'mandorle a fette', 'mandorle a fettine'],
+    'mandorle': ['mandorle a scaglie', 'mandorla', 'mandorla a scaglie', 'mandorle a lamelle',
+                 'mandorle tritate', 'mandorle a fette', 'mandorle a fettine', 'mandorle tostate',
+                 'mandorle pelate', 'granella di mandorle'],
     'pancetta': ['pancetta a cubetti'],
     'pecorino': ['pecorino grattugiato', 'pecorino romano grattugiato'],
     'cetriolo': ['cetrioli', 'cetriolo a cubetti', 'cetrioli a cubetti'],
@@ -78,15 +86,17 @@ SYNONYMS_FOR_INDEX = {
 
     'polpo': ['polipo'],
     'rucola': ['rughetta', 'rucola fresca'],
-    'feta': ['feta a cubetti', 'formaggio feta'],
+    'feta': ['feta a cubetti', 'formaggio feta', 'feta sbriciolata'],
     'zafferano': ['zafferano in polvere'],
     'prezzemolo': ['prezzemolo fresco', 'prezzemolo in polvere', 'prezzemolo secco', 'prezzemolo tritato'],
     'lenticchie': ['lenticchie rosse', 'lenticchie verdi'],
     'pasta di lenticchie': ['pasta di lenticchie rosse', 'pasta di lenticchie verdi'],
     'curcuma': ['curcuma in polvere', 'polvere di curcuma', 'curcuma fresca', 'curcuma macinata'],
-    'finocchio': ['Finocchi'],
-    'vino bianco': ['vino bianco secco', 'vino'],
+    'finocchio': ['finocchi', 'finocchio fresco', 'bulbo di finocchio'],
+    'vino bianco': ['vino bianco secco', 'vino bianco dolce', 'vino bianco da cucina'],
+    'vino rosso': ['vino rosso secco', 'vino rosso corposo', 'vino rosso da cucina'],
     'sale': ['sale fino', 'sale grosso', 'sale marino', 'sale himalayano', 'sale e pepe'],
+    'uova': ['uovo', 'uovo sbattuto', 'uovo intero', 'albume', 'tuorlo', 'uova intere'],
 
 }
 
@@ -111,13 +121,16 @@ FALLBACK_MAPPING = {
     "finocchi": "Finocchio",
     "finocchio": "Finocchio",
     "feta a cubetti": "Feta",
-    "mandorle": "Mandorle",
-    "mandorla a scaglie": "Mandorle",
+    "feta sbriciolata": "Feta",
     "mandorle a scaglie": "Mandorle",
+    "mandorla a scaglie": "Mandorle",
     "mandorle a lamelle": "Mandorle",
     "mandorle a fette": "Mandorle",
     "mandorle a fettine": "Mandorle",
     "mandorle tritate": "Mandorle",
+    "mandorle tostate": "Mandorle",
+    "mandorle pelate": "Mandorle",
+    "granella di mandorle": "Mandorle",
     "menta fresca": "Menta",
     "basilico": "Basilico",
     "basilico fresco": "Basilico",
@@ -173,7 +186,6 @@ FALLBACK_MAPPING = {
     "lievi scorze di limone grattugiate": "Limone",
     "lime": "Limone",
     "uvetta sultanina": "Uvetta",
-    "vino bianco secco": "Vino bianco",
     "gamberetti": "Gamberi",
     "rosmarino fresco": "Rosmarino",
     "zafferano in polvere": "Zafferano",
@@ -182,7 +194,77 @@ FALLBACK_MAPPING = {
     "sale grosso": "Sale",
     "sale marino": "Sale",
     "sale himalayano": "Sale",
+    "uovo": "Uova",
+    "uova": "Uova",
+    "uovo sbattuto": "Uova",
+    "uovo intero": "Uova",
+    "uova intere": "Uova",
+    "vino bianco": "Vino bianco",
+    "vino bianco secco": "Vino bianco",
+    "vino bianco dolce": "Vino bianco",
+    "vino bianco da cucina": "Vino bianco",
+    "vino rosso": "Vino rosso",
+    "vino rosso secco": "Vino rosso",
+    "vino rosso corposo": "Vino rosso",
+    "vino rosso da cucina": "Vino rosso",
+    "cumino in polvere": "Cumino",
+    "cumino macinato": "Cumino",
+    "semi di cumino": "Cumino",
+    "polvere di cumino": "Cumino",
+    "ceci": "Ceci cotti",
+    "ceci in scatola": "Ceci cotti",
+    "ceci in lattina": "Ceci cotti",
+    "ceci lessati": "Ceci cotti",
+    "ceci precotti": "Ceci cotti",
+    "ceci in scatola (sciacquati e scolati)": "Ceci cotti",
+    "ceci sciacquati": "Ceci cotti",
+    "ceci scolati": "Ceci cotti",
+    "hummus di ceci": "Hummus",
+    "humus di ceci": "Hummus",
+    "humus": "Hummus"
 }
+
+INCOMPATIBLE_MATCHES = [
+    # Formati come tuple: ("ingrediente1", "ingrediente2")
+    # dove l'ingrediente1 non dovrebbe mai essere mappato a ingrediente2
+    ("mandorle", "pancetta"),
+    ("pancetta", "mandorle"),
+    ("curcuma", "prezzemolo"),
+    ("prezzemolo", "curcuma"),
+    ("mandorle", "peperoni"),
+    ("peperoni", "mandorle"),
+    ("pepe nero", "peperone"),
+    ("peperone", "pepe nero"),
+    ("pepe", "peperone"),
+    ("peperone", "pepe"),
+    # Aggiungi altre coppie incompatibili qui
+]
+
+# Funzione per verificare se una corrispondenza è incompatibile
+
+
+def is_incompatible_match(ingredient1, ingredient2):
+    """
+    Verifica se la corrispondenza tra due ingredienti è incompatibile.
+
+    Args:
+        ingredient1: Nome normalizzato del primo ingrediente
+        ingredient2: Nome normalizzato del secondo ingrediente
+
+    Returns:
+        True se la corrispondenza è incompatibile, False altrimenti
+    """
+    # Normalizza entrambi gli ingredienti
+    ing1 = normalize_for_synonyms(ingredient1)
+    ing2 = normalize_for_synonyms(ingredient2)
+
+    # Controlla se c'è una incompatibilità diretta
+    for incomp1, incomp2 in INCOMPATIBLE_MATCHES:
+        if (ing1.startswith(incomp1) and ing2.startswith(incomp2)) or \
+           (ing1.startswith(incomp2) and ing2.startswith(incomp1)):
+            return True
+
+    return False
 
 # Funzione helper per generare automaticamente FALLBACK_MAPPING da SYNONYMS_FOR_INDEX
 # da testare appena funziona veramente tutto
