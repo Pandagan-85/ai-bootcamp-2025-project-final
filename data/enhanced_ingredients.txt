@@ -117,6 +117,7 @@ curcuma
 curcume
 curmuca fresca
 curry
+cuscus
 dado vegetale
 datteri
 edamame
@@ -145,7 +146,6 @@ feta
 feta a cubetti
 fete
 fette biscottate
-fettuccine
 fichi
 fichi secchi
 filetto di manzo
@@ -159,12 +159,16 @@ formaggio di capra
 formaggio feta
 formaggio spalmabile
 formaggio vegano
+fragola
 fragole
 fragoli
 frutto della passione
-funghi champignon
+funghi
 fusilli
+gamberetti
+gamberetto
 gamberi
+gambero
 gelatina in fogli
 gelato alla crema
 germogli di bambù
@@ -234,6 +238,7 @@ marzapani
 mascarpone
 mascarponi
 mela
+melanzana
 melanzane
 melanzani
 mele
@@ -299,9 +304,12 @@ pasta d'acciughe
 pasta di ceci
 pasta di lenticchie
 pasta di piselli
+pasta fusilli
 pasta integrale
 pasta linguine
+pasta penne
 pasta spaghetti
+pasta tagliatelle
 paste
 pastinaca
 pastinace
@@ -316,6 +324,8 @@ pecorino romano grattugiato
 penne
 penni
 pepe
+peperone
+peperone dolce
 peperoni
 pera
 pere
@@ -335,7 +345,6 @@ polipo
 polpi
 polpo
 pomodori
-pomodori a cubetti
 pomodori freschi
 pomodori secchi
 pomodorini
@@ -349,7 +358,11 @@ popcorn
 porri
 porro
 pretzels
+prezzemoli
+prezzemolo
 prezzemolo fresco
+prezzemolo in polvere
+prezzemolo secco
 prosciutto cotto
 prosciutto crudo
 proteine vegetali testurizzate
@@ -374,6 +387,9 @@ riso basmati
 riso integrale
 riso jasmine
 riso venere
+rosmarini
+rosmarino
+rosmarino fresco
 rucola
 rucola fresca
 rucole
@@ -411,6 +427,7 @@ sgombro
 smoothie di frutta
 spaghetti
 spaghetti integrali
+spezie miste
 spinaci
 stevia
 stevie
@@ -426,6 +443,9 @@ tagliatelle
 tagliatelli
 tahini
 tempeh
+timi
+timo
+timo fresco
 tofu
 tonno fresco
 tonno in scatola
@@ -461,5 +481,6 @@ zucce
 zucchero
 zucchero di canna
 zucchero di cocco
+zucchina
 zucchine
 zucchini

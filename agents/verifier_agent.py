@@ -677,11 +677,13 @@ def match_recipe_ingredients(recipe: FinalRecipeOption,
         "cipolla rossa": "Cipolla",
         "cipolla bianca": "Cipolla",
         "cipolla dorata": "Cipolla",
+
         "zucchina": "Zucchine",
         "zucchini": "Zucchine",
         "pepe": "Pepe nero",
         "curcuma": "Curcuma",
         "coriandolo": "Coriandolo",
+        "coriandolo fresco":"Coriandolo",
         "origano fresco": "Origano",
         "origano secco": "Origano",
         "mirtilli rossi": "Mirtilli",
@@ -693,6 +695,9 @@ def match_recipe_ingredients(recipe: FinalRecipeOption,
         "scorza di limone": "Limone",  # Mappiamo anche la scorza al limone generico
         "scorza di limone grattugiata": "Limone",
         "lievi scorze di limone grattugiate": "Limone",
+        "lime": "Limone",
+        "uvetta sultanina":"Uvetta",
+        "Vino bianco secco": "Vino bianco"
     }
 
     for ing in recipe.ingredients:
