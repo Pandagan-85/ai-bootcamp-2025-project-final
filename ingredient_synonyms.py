@@ -41,14 +41,13 @@ SYNONYMS_FOR_INDEX = {
     'coriandolo': ['coriandolo fresco', 'cilantro'],
     'spezie miste': ['cumino', 'coriandolo', 'paprika'],
     'melanzane': ['melanzana'],
-    'mandorle': ['mandorle a scaglie', 'mandorle a lamelle', 'mandorle tritate', 'mandorle a fette', 'mandorle a fettine'],
+    'mandorle': ['mandorle a scaglie', 'mandorla', 'mandorla a scaglie', 'mandorle a lamelle', 'mandorle tritate', 'mandorle a fette', 'mandorle a fettine'],
     'pancetta': ['pancetta a cubetti'],
     'pecorino': ['pecorino grattugiato', 'pecorino romano grattugiato'],
     'cetriolo': ['cetrioli', 'cetriolo a cubetti', 'cetrioli a cubetti'],
 
     # Chiave: nome CSV norm. Valore: varianti norm.
     'limone': ['limoni', 'scorza di limone', 'scorza di limone grattugiata', 'lievi scorze di limone grattugiate', 'lime'],
-    'vino bianco': ['vino bianco secco'],
     'cipolla': ['cipolla rossa', 'cipolla bianca', 'cipolla dorata'],
     'parmigiano reggiano': ['parmigiano', 'formaggio parmigiano', 'parmigiano grattugiato'],
     'spaghetti': ['pasta spaghetti', 'pasta'],
@@ -67,6 +66,8 @@ SYNONYMS_FOR_INDEX = {
     'zucchine': ['zucchina'],
     'mela': ['mele'],
     'pera': ['pere'],
+    'aglio':['aglio in polvere'],
+    'pepe nero':['pepe nero macinato'],
     'arancia': ['arance'],
     'fragole': ['fragola'],
     'uva': ['uva bianca', 'uva nera', 'uva rossa'],  # Forme corrette
@@ -82,8 +83,9 @@ SYNONYMS_FOR_INDEX = {
     'prezzemolo': ['prezzemolo fresco', 'prezzemolo in polvere', 'prezzemolo secco'],
     'lenticchie': ['lenticchie rosse', 'lenticchie verdi'],
     'pasta di lenticchie': ['pasta di lenticchie rosse', 'pasta di lenticchie verdi'],
-    'curcuma': ['curmuca fresca'],
-    'finocchio':['Finocchi']
+    'curcuma': ['curcuma fresca'],
+    'finocchio':['Finocchi'],
+    'vino bianco':['vino bianco secco', 'vino']
 }
 
 # Formato {variante_normalizzata: nome_originale_csv}
@@ -107,13 +109,19 @@ FALLBACK_MAPPING = {
     "finocchi":"Finocchio",
     "finocchio":"Finocchio",
     "feta a cubetti": "Feta",
+    "mandorle":"Mandorle",
+    "mandorla a scaglie":"Mandorle",
     "mandorle a scaglie": "Mandorle",
     "mandorle a lamelle": "Mandorle",
     "mandorle a fette": "Mandorle",
     "mandorle a fettine": "Mandorle",
     "mandorle tritate": "Mandorle",
+    "basilico":"Basilico",
+    "basilico fresco":"Basilico",
     "tagliolini": "Tagliatelle",
     "tagliolini freschi": "Tagliatelle",
+    "aglio in polvere":"Aglio",
+    "aglio":"Aglio",
     "rucola fresca": "Rucola",
     "rughetta": "Rucola",
     "cipolla rossa": "Cipolla",
@@ -123,6 +131,7 @@ FALLBACK_MAPPING = {
     "zucchina": "Zucchine",
     "zucchini": "Zucchine",
     "pepe": "Pepe nero",
+    "pepe nero macinato": "Pepe nero",
     "curcuma": "Curcuma",
     "coriandolo": "Coriandolo",
     "coriandolo fresco": "Coriandolo",

@@ -9,6 +9,7 @@ agar agar
 agave sciroppo
 aglii
 aglio
+aglio in polvere
 agnelli
 agnello
 albicocche
@@ -114,8 +115,8 @@ cumini
 cumino
 cuori di carciofo
 curcuma
+curcuma fresca
 curcume
-curmuca fresca
 curry
 cuscus
 dado vegetale
@@ -406,6 +407,8 @@ salsa di soia
 salsa sriracha
 salsa tabasco
 salsa worcestershire
+salvia
+salvie
 sardine
 sardini
 scalogni
