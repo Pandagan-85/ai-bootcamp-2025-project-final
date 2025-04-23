@@ -41,7 +41,7 @@ SYNONYMS_FOR_INDEX = {
     'coriandolo': ['coriandolo fresco', 'cilantro'],
     'spezie miste': ['cumino', 'coriandolo', 'paprika'],
     'melanzane': ['melanzana'],
-    'mandorle': ['mandorle a scaglie', 'mandorle a lamelle', 'mandorle tritate', 'mandorle a fette'],
+    'mandorle': ['mandorle a scaglie', 'mandorle a lamelle', 'mandorle tritate', 'mandorle a fette', 'mandorle a fettine'],
     'pancetta': ['pancetta a cubetti'],
     'pecorino': ['pecorino grattugiato', 'pecorino romano grattugiato'],
     'cetriolo': ['cetrioli', 'cetriolo a cubetti', 'cetrioli a cubetti'],
@@ -82,7 +82,8 @@ SYNONYMS_FOR_INDEX = {
     'prezzemolo': ['prezzemolo fresco', 'prezzemolo in polvere', 'prezzemolo secco'],
     'lenticchie': ['lenticchie rosse', 'lenticchie verdi'],
     'pasta di lenticchie': ['pasta di lenticchie rosse', 'pasta di lenticchie verdi'],
-    'curcuma': ['curmuca fresca']
+    'curcuma': ['curmuca fresca'],
+    'finocchio':['Finocchi']
 }
 
 # Formato {variante_normalizzata: nome_originale_csv}
@@ -103,10 +104,13 @@ FALLBACK_MAPPING = {
     "cetrioli": "Cetriolo",
     "cetriolo a cubetti": "Cetriolo",
     "cetrioli a cubetti": "Cetriolo",
+    "finocchi":"Finocchio",
+    "finocchio":"Finocchio",
     "feta a cubetti": "Feta",
     "mandorle a scaglie": "Mandorle",
     "mandorle a lamelle": "Mandorle",
     "mandorle a fette": "Mandorle",
+    "mandorle a fettine": "Mandorle",
     "mandorle tritate": "Mandorle",
     "tagliolini": "Tagliatelle",
     "tagliolini freschi": "Tagliatelle",
