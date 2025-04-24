@@ -3,6 +3,7 @@ from typing import Dict, Any, List
 from sentence_transformers import SentenceTransformer
 import faiss
 import numpy as np
+from download_recipes import add_download_button
 import streamlit as st
 from PIL import Image
 import pickle
@@ -349,6 +350,12 @@ with col4:
 if vegan:
     vegetarian = True
 
+# Crea una chiave di sessione per memorizzare l'HTML delle ricette generate
+if 'output_html' not in st.session_state:
+    st.session_state.output_html = None
+if 'has_recipes' not in st.session_state:
+    st.session_state.has_recipes = False
+
 # --- Pulsante di Generazione e Logica di Esecuzione ---
 # Disabilita il pulsante se il valore CHO non è valido
 button_disabled = not cho_is_valid
@@ -427,6 +434,11 @@ if st.button("✨ Genera Ricette", use_container_width=True, type="primary", dis
         )
         if output_html is None:
             output_html = "<p>Errore: Nessun output valido dal workflow.</p>"
+        else:
+            # Memorizza l'HTML generato nella sessione per utilizzo nel download
+            st.session_state.output_html = output_html
+            # Verifica se ci sono ricette nell'output
+            st.session_state.has_recipes = "Ricette personalizzate" in output_html or "Risultati parziali" in output_html
 
     except Exception as workflow_error:
         st.error(
@@ -444,9 +456,34 @@ if st.button("✨ Genera Ricette", use_container_width=True, type="primary", dis
     results_container.markdown("---")
     results_container.markdown(output_html, unsafe_allow_html=True)
 
+    # Aggiungi pulsante di download solo se ci sono ricette
+    if st.session_state.has_recipes:
+        download_container = st.container()
+        download_container.markdown("---")
+        download_container.info(
+            "📥 Vuoi salvare queste ricette sul tuo dispositivo?")
+        col1, col2 = download_container.columns([1, 3])
+        with col1:
+            # Aggiungi pulsante download
+            add_download_button(output_html, container=col1)
+        with col2:
+            col2.caption(
+                "Le ricette verranno salvate in formato testo per consultazione offline.")
+
 else:
     # Messaggio iniziale
     st.info("👋 Benvenuto! Imposta le tue preferenze e clicca '✨ Genera Ricette'.")
+
+    if st.session_state.get('has_recipes', False) and st.session_state.get('output_html') is not None:
+        st.markdown("---")
+        st.info("Puoi ancora scaricare le ricette generate precedentemente:")
+        col1, col2 = st.columns([1, 3])
+        with col1:
+            add_download_button(st.session_state.output_html,
+                                container=col1, use_html_method=True)
+        with col2:
+            st.caption(
+                "Le ricette verranno scaricate automaticamente senza ricaricare la pagina.")
 
 # --- Footer ---
 st.markdown("---")
@@ -490,7 +527,7 @@ with team_col2:
     </div>
     """, unsafe_allow_html=True)
     st.markdown("### Francesca Ballirò")
-    st.markdown("Studentessa e imprenditrice, è abilissima nelle sfide lanciate dai dati. Riesce a manipolare complessi dataset anche sui mezzi pubblici.")
+    st.markdown("Studentessa e imprenditrice, è felicissima quando rileva bug durante i test ma è altrettanto abile nel trovare soluzioni ottimali.")
     st.markdown(
         "[LinkedIn](https://www.linkedin.com/in/francesca-ballir%C3%B2-060b92331/) | [GitHub](https://github.com/francescaballiro)")
 

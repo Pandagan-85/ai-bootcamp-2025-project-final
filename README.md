@@ -225,6 +225,7 @@ Il sistema di matching bidirezionale funziona così:
    ```
 
 3. **Lookup bidirezionale durante il matching**:
+
    ```python
    # In verifier_agent.py
    # Lookup da normalizzato a originale
@@ -314,6 +315,23 @@ Questo avvierà un server web locale con un'interfaccia utente visuale per inser
 - **Efficienza**: Generazione parallela di ricette e utilizzo di FAISS per matching semantico veloce.
 - **Sofisticazione linguistica**: Le mappature bidirezionali e i sistemi di normalizzazione consentono di gestire la variabilità linguistica nelle descrizioni degli ingredienti.
 
+## Funzionalità di Download delle Ricette
+
+NutriCHOice permette agli utenti di scaricare le ricette generate in formato testo per consultarle offline o condividerle facilmente.
+
+### Come funziona
+
+- Dopo aver generato le ricette, apparirà un pulsante rosso "Scarica Ricette" sotto i risultati
+- Cliccando sul pulsante, le ricette verranno scaricate automaticamente in un file di testo (.txt)
+- Il download avviene senza ricaricamento della pagina, mantenendo lo stato dell'applicazione
+- Il file scaricato contiene tutte le informazioni della ricetta, inclusi ingredienti, valori nutrizionali, istruzioni e caratteristiche
+
+### Dettagli tecnici
+
+- Implementato utilizzando una soluzione HTML personalizzata con schema `data:` e codifica base64
+- Converte le icone in etichette testuali (es. [VEGANA], [SENZA GLUTINE]) per garantire la compatibilità con tutti gli editor di testo
+- Il file scaricato è in formato testo semplice, leggibile su qualsiasi dispositivo o sistema operativo
+
 ## Possibili evoluzioni 🔮
 
 1. Allargare il database con molto più ingredienti
@@ -321,8 +339,18 @@ Questo avvierà un server web locale con un'interfaccia utente visuale per inser
 3. Profili utente con storico delle ricette generate e delle preferenze
 4. Adattamento stagionale degli ingredienti
 5. Implementare il rapporto carboidrati / proteine
-6. Integrazione con Smart Device(es frigorifero) per recuperare la lista degli ingredienti
+6. Integrazione con Smart Device (es. frigorifero) per recuperare la lista degli ingredienti
 7. Integrazione con App per la spesa
 8. Processo di Caching
 9. Implementare un modello multi modale per generare le immagini delle ricette
 10. Integrazione con **app salute** anche per monitoraggio indice glicemico
+11. **Download delle ricette** in formato testo per accesso offline
+12. **Specializzazione per utenti diabetici**:
+    - Aggiunta dell'Indice Glicemico (IG) e Carico Glicemico (CG) per ogni ingrediente
+    - Ottimizzazione delle ricette per minimizzare i picchi glicemici
+    - Integrazione con dispositivi di monitoraggio continuo del glucosio (CGM)
+    - Suggerimenti personalizzati basati sul rapporto insulina/carboidrati dell'utente
+    - Analisi retroattiva dell'impatto delle ricette sui livelli glicemici
+    - Modalità educativa con spiegazioni sull'effetto di ogni ingrediente sulla glicemia
+13. **Feedback ciclico basato sui dati reali** per migliorare costantemente le raccomandazioni
+14. **Flessibilità nei formati di download** - PDF, ricette stampabili, esportazione verso app di meal planning
