@@ -1,3 +1,15 @@
+"""
+main.py - Esecuzione CLI del generatore di ricette NutriCHOice
+
+Questo script:
+- Carica tutte le risorse necessarie (modello SBERT, indice FAISS, ingredienti)
+- Costruisce lo stato iniziale in base alle preferenze utente da linea di comando
+- Esegue il workflow di generazione ricette tramite LangGraph
+- Mostra l'output testuale finale in console
+
+Utilizzo previsto: esecuzione da terminale per generare ricette offline.
+"""
+
 import os
 from typing import Dict, Optional
 import numpy as np

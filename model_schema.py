@@ -1,3 +1,13 @@
+"""
+model_schema.py - Definizione dei modelli dati per NutriCHOice
+
+Contiene:
+- Preferenze utente (UserPreferences)
+- Informazioni sugli ingredienti (IngredientInfo, RecipeIngredient)
+- Ricette generate e finali (FinalRecipeOption)
+- Stato globale per il grafo LangGraph (GraphState)
+"""
+
 from typing import List, Dict, Optional, TypedDict, Any, Callable
 from pydantic import BaseModel, Field, ConfigDict
 import numpy as np
@@ -20,6 +30,12 @@ class UserPreferences(BaseModel):
 
 
 class IngredientInfo(BaseModel):
+    """
+    Modello dati per rappresentare le informazioni nutrizionali e dietetiche di un ingrediente.
+
+    Include valori per CHO, calorie, proteine, grassi, fibre e flag dietetici (vegan, vegetariano, ecc.).
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True)
     name: str
     # Rendi opzionale? O gestisci default in caricamento

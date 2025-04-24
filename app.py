@@ -1,3 +1,20 @@
+"""
+app.py - Interfaccia Streamlit per NutriCHOice
+
+Questo modulo gestisce l'interfaccia utente dell'applicazione NutriCHOice,
+permettendo all'utente di selezionare le proprie preferenze nutrizionali,
+generare ricette personalizzate con un agente AI, e scaricare il risultato finale.
+
+Componenti principali:
+- Caricamento risorse (modello SBERT, FAISS, ingredienti)
+- UI per input preferenze (CHO, vegan, vegetariano, ecc.)
+- Workflow AI: Generazione → Verifica → Formattazione
+- Visualizzazione output HTML e pulsante download
+
+Autori: Team NutriCHOice - Progetto finale Edgemony AI Bootcamp 2025
+"""
+
+# === IMPORT DI LIBRERIE E CONFIGURAZIONI INIZIALI ===
 from PIL import Image  # Aggiunto import Image
 import base64
 import os
@@ -7,6 +24,7 @@ from typing import Dict, Any, List
 import numpy as np
 import time
 import torch
+
 
 torch.classes.__path__ = []  # per streamlit
 load_dotenv()

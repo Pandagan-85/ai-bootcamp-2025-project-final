@@ -1,4 +1,12 @@
-# loaders.py
+"""
+loaders.py - Caricamento e normalizzazione dati ingredienti
+
+Contiene funzioni per:
+- Caricare ingredienti da file CSV in formato strutturato (IngredientInfo)
+- Normalizzare nomi per utilizzo nei sistemi AI
+- Creare mapping tra nomi originali e normalizzati
+"""
+
 import time
 import os
 from typing import List, Dict, Any, Callable
@@ -120,6 +128,16 @@ def load_basic_ingredient_info(filepath: str) -> Dict[str, IngredientInfo] | Non
 
     # Funzione helper per il parsing booleano
     def parse_bool(value):
+        """
+        Converte un valore generico in booleano interpretando stringhe comuni (es. 'sì', 'vero', '0', ecc.).
+
+        Args:
+            value: Valore da convertire (str, int, bool, ecc.)
+
+        Returns:
+            bool: True o False in base al contenuto
+        """
+
         if isinstance(value, bool):
             return value
         if isinstance(value, str):
@@ -133,6 +151,18 @@ def load_basic_ingredient_info(filepath: str) -> Dict[str, IngredientInfo] | Non
         return False
 
     def safe_float_conversion(value, field_name, ingredient_name):
+        """
+        Tenta la conversione sicura a float con gestione errori.
+
+        Args:
+            value: Valore da convertire
+            field_name: Nome del campo (per il log)
+            ingredient_name: Nome dell'ingrediente (per il log)
+
+        Returns:
+            float | None: Numero convertito o None in caso di errore
+        """
+
         if pd.isna(value):
             return None
         try:

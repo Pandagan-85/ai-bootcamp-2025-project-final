@@ -18,6 +18,12 @@ from model_schema import IngredientInfo, FinalRecipeOption, RecipeIngredient, Us
 
 
 class GeneratedRecipeOutput(BaseModel):
+    """
+    Modello Pydantic che rappresenta il formato di output atteso da parte dell'LLM.
+
+    Include informazioni su nome, descrizione, ingredienti, caratteristiche dietetiche
+    e istruzioni per la preparazione.
+    """
     model_config = ConfigDict(arbitrary_types_allowed=True)
     recipe_name: str = PydanticField(description="Nome della ricetta generata")
     description: str = PydanticField(

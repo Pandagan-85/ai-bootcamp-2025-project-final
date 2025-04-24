@@ -1,3 +1,12 @@
+"""
+utils_app.py - Funzioni di supporto per l'interfaccia Streamlit
+
+Contiene:
+- Componenti UI personalizzati (checkbox con immagine)
+- Utility per codifica base64 e visualizzazione immagini
+- Funzioni di caricamento risorse (modelli, indici, mapping) con cache
+"""
+
 import streamlit as st
 from sentence_transformers import SentenceTransformer
 import faiss
@@ -32,13 +41,14 @@ def get_base64_encoded_image(image_path: str) -> str | None:
 
 def get_img_html(img_path: str, width: int = 24) -> str:
     """
-    Codifica un'immagine in base64 per incorporarla direttamente nell'HTML.
+    Genera HTML per visualizzare un'immagine (codificata in base64) o un'emoji di fallback.
 
     Args:
-        image_path: Percorso completo al file immagine
+    img_path: Percorso completo al file immagine.
+    width: Larghezza dell'immagine in pixel (default: 24)
 
     Returns:
-        Stringa dell'immagine codificata in base64 o None se l'immagine non esiste o si verifica un errore
+    Stringa HTML con immagine in base64 o emoji di fallback se l'immagine è mancante.
     """
     base64_image = get_base64_encoded_image(img_path)
     if base64_image:

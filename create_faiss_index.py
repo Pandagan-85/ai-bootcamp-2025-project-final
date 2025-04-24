@@ -1,4 +1,18 @@
-# create_consistent_faiss_index.py
+"""
+create_faiss_index.py - Script per creare un indice FAISS coerente per ingredienti alimentari
+
+Questo script:
+- Carica e normalizza i nomi degli ingredienti da un file CSV
+- Arricchisce i nomi con varianti linguistiche e sinonimi
+- Calcola gli embeddings con SentenceTransformer
+- Crea un indice FAISS per il confronto vettoriale
+- Salva l’indice e il mapping dei nomi su disco
+- Esegue un test rapido per verificarne il funzionamento
+
+Utilizzato come parte del progetto NutriCHOice per ottimizzare il matching ingredienti.
+"""
+
+
 from ingredient_synonyms import SYNONYMS_FOR_INDEX, INVARIABLE_WORDS, ALWAYS_PLURAL
 import os
 import time

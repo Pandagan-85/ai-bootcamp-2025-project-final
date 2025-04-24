@@ -1,3 +1,13 @@
+"""
+utils.py - Funzioni di utilità per normalizzazione nomi, matching ingredienti e verifica preferenze.
+
+Contiene:
+- Funzioni per normalizzare nomi di ingredienti
+- Strategie di matching semantico con FAISS
+- Calcolo dei contributi nutrizionali
+- Verifica della conformità a preferenze dietetiche
+"""
+
 import re
 
 from typing import List, Dict, Optional, Tuple, Any, Callable
