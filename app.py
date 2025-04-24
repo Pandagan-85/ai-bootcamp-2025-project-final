@@ -1,24 +1,26 @@
+from PIL import Image  # Aggiunto import Image
+import base64
+import os
+import streamlit as st
 from dotenv import load_dotenv
 from typing import Dict, Any, List
-from sentence_transformers import SentenceTransformer
-import faiss
 import numpy as np
-from download_recipes import add_download_button
-import streamlit as st
-from PIL import Image
-import pickle
-import os
 import time
-import base64
 import torch
+
 torch.classes.__path__ = []  # per streamlit
 load_dotenv()
+
+
 # Importa funzioni e classi necessarie
 try:
     from main import run_recipe_generation
     from model_schema import UserPreferences, GraphState
-    from loaders import load_basic_ingredient_info, load_ingredient_database_with_mappings
     from utils import normalize_name
+    from utils_app import get_base64_encoded_image, get_img_html, image_checkbox, \
+        load_sbert_model_cached, load_faiss_index_cached, load_name_mapping_cached, \
+        load_basic_ingredient_info_cached, load_ingredient_info_with_mappings_cached
+    from download_recipes import add_download_button
 except ImportError as e:
     st.error(
         f"Errore import: {e}. Assicurati che tutti i file .py siano presenti e corretti.")
@@ -50,148 +52,6 @@ if not os.path.exists(NAME_MAPPING_FILE):
     st.error(f"Errore Critico: File mapping nomi non trovato: '{NAME_MAPPING_FILE}'. "
              f"Esegui lo script 'create_faiss_index.py' prima di avviare l'app.")
     st.stop()
-
-# --- Funzioni Helper ---
-
-
-def get_base64_encoded_image(image_path: str) -> str | None:
-    """
-    Codifica un'immagine in base64 per incorporarla direttamente nell'HTML.
-
-    Args:
-        image_path: Percorso completo al file immagine
-
-    Returns:
-        Stringa dell'immagine codificata in base64 o None se l'immagine non esiste o si verifica un errore
-    """
-    if not os.path.exists(image_path):
-        return None
-    try:
-        with open(image_path, "rb") as img_file:
-            return base64.b64encode(img_file.read()).decode('utf-8')
-    except Exception as e:
-        print(f"Error encoding image {image_path}: {e}")
-        return None
-
-
-def get_img_html(img_path: str, width: int = 24) -> str:
-    """
-    Codifica un'immagine in base64 per incorporarla direttamente nell'HTML.
-
-    Args:
-        image_path: Percorso completo al file immagine
-
-    Returns:
-        Stringa dell'immagine codificata in base64 o None se l'immagine non esiste o si verifica un errore
-    """
-    base64_image = get_base64_encoded_image(img_path)
-    if base64_image:
-        return f'<img src="data:image/png;base64,{base64_image}" width="{width}" style="margin-right: 5px; vertical-align: middle;" alt="{os.path.basename(img_path)}">'
-    else:
-        fallback_emojis = {"vegan.png": "🌱", "vegetarian.png": "🥗",
-                           "gluten_free_2.png": "🌾", "lactose_free_2.png": "🥛"}
-        emoji = fallback_emojis.get(os.path.basename(img_path), "⚠️")
-        return f'<span title="Icona mancante: {os.path.basename(img_path)}" style="margin-right: 5px; vertical-align: middle;">{emoji}</span>'
-
-
-def image_checkbox(label: str, img_path: str, img_width: int = 160, key: str | None = None, value: bool = False, text_below: bool = True) -> bool:
-    """
-    Crea un checkbox personalizzato con un'immagine sopra l'etichetta utilizzando componenti Streamlit.
-
-    Args:
-        label: Etichetta testuale del checkbox
-        img_path: Percorso completo all'immagine da visualizzare
-        img_width: Larghezza desiderata dell'immagine in pixel (default: 60)
-        key: Chiave unica per il componente Streamlit (necessaria per state management)
-        value: Valore iniziale del checkbox (default: False)
-        text_below: Se True, posiziona il testo sotto l'immagine, altrimenti a fianco
-
-    Returns:
-        Stato corrente del checkbox (True se selezionato, False altrimenti)
-    """
-    container = st.container()
-    img_col = container.container()
-    img_html_for_display = ""
-    if os.path.exists(img_path):
-        try:
-            img = Image.open(img_path)
-            img_col.image(img, width=img_width, use_container_width='auto')
-        except Exception as e:
-            print(f"Error displaying image {img_path}: {e}")
-            fallback_emojis = {"vegan.png": "🌱", "vegetarian.png": "🥗",
-                               "gluten_free_2.png": "🌾", "lactose_free_2.png": "🥛"}
-            emoji = fallback_emojis.get(os.path.basename(img_path), "⚠️")
-            img_col.markdown(
-                f"<h1 style='text-align: center; margin-bottom: 5px;'>{emoji}</h1>", unsafe_allow_html=True)
-    else:
-        fallback_emojis = {"vegan.png": "🌱", "vegetarian.png": "🥗",
-                           "gluten_free_2.png": "🌾", "lactose_free_2.png": "🥛"}
-        emoji = fallback_emojis.get(os.path.basename(img_path), "⚠️")
-        img_col.markdown(
-            f"<h1 style='text-align: center; margin-bottom: 5px;'>{emoji}</h1>", unsafe_allow_html=True)
-        if key == "first_run_check" and not st.session_state.get('missing_icon_warning_shown', False):
-            st.warning(f"Icona non trovata: {img_path}. Verrà usata un'emoji.")
-            st.session_state['missing_icon_warning_shown'] = True
-    checkbox_col = container.container()
-    checked = checkbox_col.checkbox(
-        label, key=key, value=value, label_visibility="visible")
-    return checked
-
-# --- Funzioni di Caricamento Dati/Risorse con Cache ---
-
-
-@st.cache_resource(show_spinner="Caricamento modello...")
-def load_sbert_model_cached(model_name):
-    print(f"--- Loading SentenceTransformer Model ({model_name}) ---")
-    try:
-        return SentenceTransformer(model_name)
-    except Exception as e:
-        st.error(f"Errore caricamento modello  '{model_name}': {e}.")
-        return None
-
-
-@st.cache_resource(show_spinner="Caricamento indice FAISS...")
-def load_faiss_index_cached(index_path):
-    print(f"--- Loading FAISS index from {index_path} ---")
-    try:
-        return faiss.read_index(index_path)
-    except Exception as e:
-        st.error(f"Errore caricamento indice FAISS da '{index_path}': {e}")
-        return None
-
-
-@st.cache_data(show_spinner="Caricamento mapping nomi...")
-def load_name_mapping_cached(mapping_path):
-    print(f"--- Loading name mapping from {mapping_path} ---")
-    try:
-        with open(mapping_path, 'rb') as f:
-            name_mapping = pickle.load(f)
-        if not isinstance(name_mapping, list):
-            raise TypeError("Il file di mapping non contiene una lista.")
-        print(f"Caricati {len(name_mapping)} nomi dal mapping.")
-        return name_mapping
-    except Exception as e:
-        st.error(f"Errore caricamento mapping nomi da '{mapping_path}': {e}")
-        return None
-
-
-@st.cache_data(show_spinner="Caricamento info ingredienti...")
-def load_basic_ingredient_info_cached(csv_filepath):
-    print(f"--- Loading basic ingredient info from {csv_filepath} ---")
-    data = load_basic_ingredient_info(csv_filepath)
-    if data is None:
-        st.error(f"Fallito caricamento dati ingredienti da {csv_filepath}.")
-    return data
-
-
-@st.cache_data(show_spinner="Caricamento info ingredienti con mappature...")
-def load_ingredient_info_with_mappings_cached(csv_filepath):
-    print(f"--- Loading ingredient info with mappings from {csv_filepath} ---")
-    data, normalized_to_original, original_to_normalized = load_ingredient_database_with_mappings(
-        csv_filepath)
-    if data is None:
-        st.error(f"Fallito caricamento dati ingredienti da {csv_filepath}.")
-    return data, normalized_to_original, original_to_normalized
 
 
 # --- Interfaccia Streamlit ---
@@ -277,7 +137,7 @@ st.markdown("")
 
 
 # --- Caricamento Risorse all'Avvio ---
-start_load_time = time.time()
+start_load_time = time.time()  # Definisci start_load_time qui
 embedding_model = load_sbert_model_cached(EMBEDDING_MODEL_NAME)
 faiss_index = load_faiss_index_cached(FAISS_INDEX_FILE)
 index_to_name_mapping = load_name_mapping_cached(NAME_MAPPING_FILE)
@@ -502,7 +362,8 @@ st.markdown("<br>", unsafe_allow_html=True)
 team_col1, team_col2, team_col3, team_col4 = st.columns(4)
 
 with team_col1:
-    img_html_veronica = get_img_html("static/Veronica.webp", width=100)
+    img_html_veronica = get_img_html(
+        "static/Veronica.webp", width=100)
     st.markdown(f"""
     <div style='text-align: center;'>
         <div style='width:150px;height:150px;background-color:#f0f2f6;border-radius:50%;margin:auto;
@@ -517,7 +378,8 @@ with team_col1:
         "[LinkedIn](https://www.linkedin.com/in/veronicaschembri/) | [GitHub](https://github.com/Pandagan-85)")
 
 with team_col2:
-    img_html_francesca = get_img_html("static/Francesca.webp", width=100)
+    img_html_francesca = get_img_html(
+        "static/Francesca.webp", width=100)
     st.markdown(f"""
     <div style='text-align: center;'>
         <div style='width:150px;height:150px;background-color:#f0f2f6;border-radius:50%;margin:auto;
@@ -532,7 +394,8 @@ with team_col2:
         "[LinkedIn](https://www.linkedin.com/in/francesca-ballir%C3%B2-060b92331/) | [GitHub](https://github.com/francescaballiro)")
 
 with team_col3:
-    img_html_valentina = get_img_html("static/valentina.webp", width=100)
+    img_html_valentina = get_img_html(
+        "static/valentina.webp", width=100)
     st.markdown(f"""
     <div style='text-align: center;'>
         <div style='width:150px;height:150px;background-color:#f0f2f6;border-radius:50%;margin:auto;
