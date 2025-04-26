@@ -196,17 +196,17 @@ if 'display_results' not in st.session_state:
 
 st.header("Preferenze Ricetta")
 st.subheader("🎯 Target Carboidrati (CHO in grammi)")
-st.markdown("min 20gr, max 120gr")
+st.markdown("min 20gr, max 140gr")
 target_cho = st.number_input(
     label="",
     min_value=20.0,
-    max_value=120.0,
+    max_value=140.0,
     value=60.0,
     step=5.0,
     help="Imposta il contenuto desiderato di carboidrati per porzione (in grammi)."
 )
 # Validazione del valore CHO
-cho_is_valid = 15.0 <= target_cho <= 130.0
+cho_is_valid = 15.0 <= target_cho <= 140.0
 
 if not cho_is_valid:
     st.error("⚠️ Il valore dei carboidrati deve essere compreso tra 15g e 130g.")

@@ -30,6 +30,7 @@ Melanzane,5.7,25.0,1.0,0.2,3.0,True,True,True,True,200.0,Verdura
 Peperoni,6.0,31.0,1.0,0.3,2.1,True,True,True,True,100.0,Verdura
 Pepe nero,64.8,251.0,10.4,3.3,26.5,True,True,True,True,1.0,Spezie
 Lattuga,2.2,15.0,1.4,0.2,1.3,True,True,True,True,80.0,Verdura
+Peperoncino,9.5,40.0,2.0,0.4,1.5,True,True,True,True,5.0,spezie
 Funghi,3.3,22.0,3.1,0.3,1.0,True,True,True,True,100.0,Verdura
 Cipolla,9.3,40.0,1.1,0.1,1.7,True,True,True,True,50.0,Verdura
 Aglio,33.1,149.0,6.4,0.5,2.1,True,True,True,True,5.0,Verdura
@@ -89,6 +90,8 @@ Latte vaccino,4.8,64.0,3.3,3.6,0.0,False,True,True,False,250.0,Latticini
 Latte di soia,6.0,54.0,3.3,1.8,0.6,True,True,True,True,250.0,Bevande
 Latte di mandorla,1.5,24.0,1.1,2.5,0.4,True,True,True,True,250.0,Bevande
 Latte di cocco,6.7,230.0,2.3,24.0,0.0,True,True,True,True,250.0,Bevande
+Latte,5.0,42.0,3.4,1.0,0.0,False,True,True,False,200.0,Latticini
+Farina 00,76.0,364.0,10.0,1.0,2.7,True,True,False,True,100.0,Carboidrati
 Succo d'arancia,10.4,45.0,0.7,0.2,0.5,True,True,True,True,200.0,Bevande
 Tè verde,0.0,1.0,0.0,0.0,0.0,True,True,True,True,200.0,Bevande
 Caffè,0.0,2.0,0.1,0.0,0.0,True,True,True,True,30.0,Bevande

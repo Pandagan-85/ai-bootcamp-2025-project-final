@@ -137,6 +137,7 @@ fagioli
 fagioli borlotti
 fagioli neri
 fagiolini
+farina 00
 farina d'avena
 farina di ceci
 farina di cocco
@@ -342,7 +343,10 @@ pecorino romano grattugiato
 penne
 penni
 pepe
+peperoncini
+peperoncino
 peperoncino in polvere dolce
+peperoncino piccante
 peperone
 peperone dolce
 peperoni

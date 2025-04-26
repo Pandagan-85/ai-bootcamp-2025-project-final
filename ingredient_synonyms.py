@@ -33,6 +33,7 @@ ALWAYS_PLURAL = {
 # Usato da create_faiss_index.py per arricchire l'indice
 SYNONYMS_FOR_INDEX = {
     'couscous': ['cuscus'],
+    'latte' : ['Latte intero'],
     'peperoni': ['peperone', 'peperone dolce', 'peperone rosso', 'peperone giallo', 'peperoni rossi', 'peperoni gialli'],
     'ceci cotti': ['ceci in scatola', 'ceci in lattina', 'ceci secchi', 'ceci lessati', 'ceci precotti', 'ceci in scatola (sciacquati e sgocciolati)', 'ceci sciacquati', 'ceci scolati'],
     'gamberi': ['gambero', 'gamberetto', 'gamberetti', 'gamberetti sgusciati'],
@@ -43,6 +44,7 @@ SYNONYMS_FOR_INDEX = {
     'spezie miste': ['mix di spezie', 'spezie assortite', 'spezie miste (paprika, cumino, pepe nero)',
                      'mix di erbe aromatiche', 'erbe aromatiche miste', 'spezie per curry'],
     'paprika': ['paprica', 'peperoncino in polvere dolce'],
+    'peperoncino':['peperoncino piccante', 'peperoncino rosso', 'peperoncino verde'],
     'melanzane': ['melanzana'],
     'mandorle': ['mandorle a scaglie', 'mandorla', 'mandorla a scaglie', 'mandorle a lamelle', 'mandorle tritate', 'mandorle a fette', 'mandorle a fettine', 'mandorle tostate', 'mandorle pelate', 'granella di mandorle', 'mandorle affettate'],
     'pancetta': ['pancetta a cubetti'],
@@ -93,6 +95,7 @@ SYNONYMS_FOR_INDEX = {
     'vino rosso': ['vino rosso secco', 'vino rosso corposo', 'vino rosso da cucina'],
     'sale': ['sale fino', 'sale grosso', 'sale marino', 'sale himalayano', 'sale e pepe'],
     'uova': ['uovo', 'uovo sbattuto', 'uovo intero', 'albume', 'tuorlo', 'uova intere'],
+    'piselli':['piselli freschi'],
 
 }
 
@@ -109,6 +112,8 @@ FALLBACK_MAPPING = {
     "peperoni": "Peperoni",
     "peperone": "Peperoni",
     "peperone rosso": "Peperoni",
+    "peperoncino rosso":"Peperoncino",
+    "peperoncino verde":"Peperoncino",
     "pecorino grattugiato": "Pecorino",
     "pecorino romano grattugiato": "Pecorino",
     "pancetta a cubetti": "Pancetta",
@@ -130,6 +135,7 @@ FALLBACK_MAPPING = {
     "mandorle pelate": "Mandorle",
     "granella di mandorle": "Mandorle",
     "menta fresca": "Menta",
+    "latte intero": "Latte",
     "basilico": "Basilico",
     "basilico fresco": "Basilico",
     "foglie di basilico fresco": "Basilico",
@@ -142,6 +148,7 @@ FALLBACK_MAPPING = {
     "cipolla rossa": "Cipolla",
     "cipolla bianca": "Cipolla",
     "cipolla dorata": "Cipolla",
+    "piselli freschi": "Piselli",
 
     "zucchina": "Zucchine",
     "zucchini": "Zucchine",
