@@ -34,7 +34,7 @@ Il sistema adotta un approccio "Generate then Fix":
     - **Matching semantico avanzato degli ingredienti:** Collega gli ingredienti generati dall'LLM al database interno utilizzando FAISS e Sentence Transformers con strategie multi-livello e fallback per aumentare la robustezza.
     - **Calcolo nutrizionale preciso:** Calcola CHO, calorie, proteine, grassi e fibre basandosi sui dati del database.
     - **Verifica dietetica intelligente:** Controlla e corregge i flag dietetici (vegan, gluten-free, etc.) basandosi sugli ingredienti effettivi attraverso regole specifiche di dominio.
-    - **Ottimizzazione CHO a cascata:** Implementa una strategia di ottimizzazione sofisticata che modifica le quantità degli ingredienti in modo prioritario e proporzionale per avvicinare il contenuto di CHO al target desiderato.
+    - **Ottimizzazione CHO multi-strategia:** Implementa diverse strategie di ottimizzazione modulari che modificano le quantità degli ingredienti in modo selettivo e intelligente per avvicinare il contenuto di CHO al target desiderato.
     - **Verifica di qualità e diversità:** Scarta ricette incomplete, troppo semplici o troppo simili ad altre già selezionate utilizzando metriche di somiglianza multi-criterio.
 
 ### Flusso di lavoro LangGraph
@@ -83,24 +83,28 @@ Il sistema si basa su modelli Pydantic per una strutturazione robusta dei dati:
      - Retry in caso di errori API o parsing
      - Conversione strutturata delle ricette generate in oggetti Pydantic
 
-2. **Verifier Agent** (verifier_agent.py) - Potenziato
+2. **Verifier Agent (verifier_agent.py)** - Potenziato e Refactorizzato
 
    - **Responsabilità**: Il "cervello" del sistema. Analizza, valida, ottimizza e filtra le ricette generate.
    - **Input**: Lista di FinalRecipeOption non verificate, UserPreferences, database ingredienti, modello SBERT, indice FAISS.
    - **Output**: Lista di FinalRecipeOption verificate e ottimizzate.
+   - **Nuove Classi**:
+     - `OptimizationStrategy`: Enum che definisce formalmente le strategie di ottimizzazione disponibili (SINGLE_INGREDIENT, PROPORTIONAL, CASCADE, HYBRID)
+     - `OptimizationResult`: Classe che incapsula i risultati delle ottimizzazioni con metadati utili (successo, miglioramento, strategia usata, messaggio)
    - **Funzioni Chiave**:
      - **match_recipe_ingredients**: Sistema multi-strategia di matching con FAISS, normalizzazione, mappature e fallback.
-     - **calculate_ingredient_cho_contribution**: Calcolo completo dei contributi nutrizionali con gestione casi limite.
-     - **compute_dietary_flags**: Verifica intelligente dei flag dietetici analizzando composizione ingredienti.
-     - **optimize_recipe_cho**: Implementa la strategia di ottimizzazione a cascata in tre fasi (primaria, secondaria, minore).
-     - **classify_ingredients_by_cho_contribution**: Suddivide gli ingredienti in categorie per ottimizzazione selettiva.
-     - **correct_dietary_flags**: Verifica aggiuntiva con liste predefinite di ingredienti non compatibili.
-     - **ensure_recipe_diversity**: Filtra ricette troppo simili utilizzando calculate_recipe_similarity con pesi differenziati.
-     - **scale_ingredients_cascade**: Implementa la strategia di ottimizzazione prioritaria con limiti realistici.
-     - **suggest_cho_adjustment/add_ingredient**: Strategie di fallback per modifiche più drastiche.
+     - **recalculate_nutrition**: Funzione centralizzata per il ricalcolo dei valori nutrizionali.
+     - **update_recipe_dietary_flags**: Verifica unificata dei flag dietetici basata su ingredienti.
+     - **optimize_recipe_cho**: Implementa la strategia multi-approccio per l'ottimizzazione CHO.
+     - **optimize_single_ingredient, optimize_proportionally, optimize_cascade**: Strategie di ottimizzazione modulari e specializzate.
+     - **adjust_ingredient_quantity**: Funzione helper per modifiche sicure alle quantità degli ingredienti.
+     - **calculate_recipe_similarity**: Calcola similarità tra ricette con pesi differenziati.
+     - **ensure_recipe_diversity**: Filtra ricette troppo simili basandosi su calculate_recipe_similarity.
+     - **analyze_recipe_dietary_properties**: Analisi approfondita delle proprietà dietetiche basata su ingredienti.
+     - **check_dietary_compatibility**: Verifica la compatibilità della ricetta con le preferenze utente.
    - **Processo di verifica in 5 fasi**:
      1. Matching ingredienti, calcolo nutrienti e verifica dietetica preliminare
-     2. Ottimizzazione CHO con metodi progressivi
+     2. Ottimizzazione CHO con metodi progressivi e strategie multiple
      3. Verifica finale (qualità, realismo, range CHO stretto)
      4. Verifica diversità tra ricette
      5. Selezione finale e ordinamento
@@ -165,10 +169,12 @@ Questo approccio permette di gestire efficacemente la variabilità linguistica e
 
 - **Ottimizzazione CHO Multi-strategia**:
 
-  - Classificazione ingredienti per contributo relativo (primario, secondario, minore)
-  - Strategia a cascata con prioritizzazione e limiti realistici
-  - Fine-tuning per aggiustamenti precisi
-  - Scaling proporzionale per modifiche uniformi
+  - Approccio modulare con strategie ben definite (OptimizationStrategy)
+  - Strategia singolo-ingrediente per piccole differenze (<15g)
+  - Scaling proporzionale per modifiche moderate
+  - Approccio a cascata per grandi differenze
+  - Selezione intelligente della migliore strategia basata sui risultati (OptimizationResult)
+  - Limite di sicurezza sulle quantità degli ingredienti per mantenere ricette realistiche
 
 - **Verifica Diversità Con Pesi**:
   - Algoritmo di calcolo similarità multi-criterio con pesi differenziati:
@@ -176,6 +182,15 @@ Questo approccio permette di gestire efficacemente la variabilità linguistica e
     - Ingredienti principali condivisi (0.4)
     - Tipo di piatto basato su parole chiave (0.25)
     - Attributi dietetici comuni (0.15)
+
+### Refactoring Orientato agli Oggetti
+
+Il sistema ha adottato un approccio più orientato agli oggetti, in particolare per l'ottimizzazione delle ricette:
+
+- **Modellazione del dominio**: I concetti chiave come strategie di ottimizzazione e risultati sono modellati come classi
+- **Separazione delle responsabilità**: Ogni strategia di ottimizzazione è implementata in funzioni dedicate
+- **Comunicazione strutturata**: I risultati delle ottimizzazioni vengono incapsulati in oggetti che includono metadati utili
+- **Estensibilità**: La struttura modulare facilita l'aggiunta di nuove strategie di ottimizzazione
 
 ## 🛠️ Setup e Dipendenze Chiave
 
@@ -281,23 +296,27 @@ Questo avvierà un server web locale con un'interfaccia utente visuale per inser
      - Genera embeddings "al volo" per gli ingredienti LLM e li confronta con l'indice FAISS
      - Utilizza le mappature normalized_to_original e original_to_normalized per tracciare trasformazioni
      - Calcola i contributi nutrizionali di ogni ingrediente
-     - Computa e verifica i flag dietetici in base agli ingredienti reali
+     - Computa e verifica i flag dietetici in base agli ingredienti reali usando update_recipe_dietary_flags
 
    - **Fase 2: Ottimizzazione CHO**
 
      - Applica optimize_recipe_cho alle ricette che superano Fase 1
-     - Per ricette difficili da ottimizzare, prova suggest_cho_adjustment
+     - Seleziona la strategia di ottimizzazione più appropriata in base alla differenza dal target
+     - Utilizza optimize_single_ingredient, optimize_proportionally o optimize_cascade in base alla situazione
+     - Valuta i risultati delle ottimizzazioni tramite OptimizationResult
+     - Per ricette difficili da ottimizzare, prova suggest_cho_adjustment come fallback
 
    - **Fase 3: Verifica Finale (Qualità, Realismo, Range CHO Stretto)**
 
      - Controllo numero minimo ingredienti e istruzioni
      - Controllo quantità ingredienti realistiche
      - Controllo range CHO finale più stretto
-     - Ri-verifica preferenze dietetiche
+     - Ri-verifica preferenze dietetiche con check_dietary_compatibility
 
    - **Fase 4: Verifica Diversità**
 
      - Applica ensure_recipe_diversity per eliminare ricette troppo simili
+     - Utilizza calculate_recipe_similarity con pesi differenziati
 
    - **Fase 5: Selezione Finale e Ordinamento**
      - Ordina per vicinanza al target CHO
@@ -314,6 +333,8 @@ Questo avvierà un server web locale con un'interfaccia utente visuale per inser
 - **Flessibilità**: L'agente verificatore può implementare logiche di ottimizzazione complesse con strategie a cascata.
 - **Efficienza**: Generazione parallela di ricette e utilizzo di FAISS per matching semantico veloce.
 - **Sofisticazione linguistica**: Le mappature bidirezionali e i sistemi di normalizzazione consentono di gestire la variabilità linguistica nelle descrizioni degli ingredienti.
+- **Manutenibilità migliorata**: L'approccio orientato agli oggetti e il refactoring modulare rendono il codice più facile da mantenere ed estendere.
+- **Tracciabilità**: Ogni modifica alla ricetta è documentata con metadati e messaggi informativi.
 
 ## Funzionalità di Download delle Ricette
 
@@ -354,3 +375,5 @@ NutriCHOice permette agli utenti di scaricare le ricette generate in formato tes
     - Modalità educativa con spiegazioni sull'effetto di ogni ingrediente sulla glicemia
 13. **Feedback ciclico basato sui dati reali** per migliorare costantemente le raccomandazioni
 14. **Flessibilità nei formati di download** - PDF, ricette stampabili, esportazione verso app di meal planning
+15. **Estensione delle strategie di ottimizzazione** per altri parametri nutrizionali (proteine, grassi, fibre)
+16. **Implementazione di un sistema di versionamento** per tracciare l'evoluzione delle ricette durante il processo di ottimizzazione
