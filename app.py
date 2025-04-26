@@ -180,6 +180,19 @@ if faiss_index.ntotal != len(index_to_name_mapping):
              f"Rieseguire lo script 'create_faiss_index.py'.")
     st.stop()
 
+# Inizializza le variabili di sessione
+if 'output_html' not in st.session_state:
+    st.session_state.output_html = None
+if 'has_recipes' not in st.session_state:
+    st.session_state.has_recipes = False
+if 'clear_recipes' not in st.session_state:
+    st.session_state.clear_recipes = False
+if 'missing_icon_warning_shown' not in st.session_state:
+    st.session_state['missing_icon_warning_shown'] = False
+
+# Crea una key per mantenere le ricette visibili
+if 'display_results' not in st.session_state:
+    st.session_state.display_results = False
 
 st.header("Preferenze Ricetta")
 st.subheader("🎯 Target Carboidrati (CHO in grammi)")
@@ -199,11 +212,6 @@ if not cho_is_valid:
     st.error("⚠️ Il valore dei carboidrati deve essere compreso tra 15g e 130g.")
 
 st.markdown("---")
-
-
-# Flag per mostrare avviso solo una volta
-if 'missing_icon_warning_shown' not in st.session_state:
-    st.session_state['missing_icon_warning_shown'] = False
 
 # Preferenze dietetiche nella pagina principale
 st.subheader("Restrizioni Dietetiche")
@@ -228,12 +236,6 @@ with col4:
 if vegan:
     vegetarian = True
 
-# Crea una chiave di sessione per memorizzare l'HTML delle ricette generate
-if 'output_html' not in st.session_state:
-    st.session_state.output_html = None
-if 'has_recipes' not in st.session_state:
-    st.session_state.has_recipes = False
-
 # --- Pulsante di Generazione e Logica di Esecuzione ---
 # Disabilita il pulsante se il valore CHO non è valido
 button_disabled = not cho_is_valid
@@ -244,11 +246,19 @@ if button_disabled:
         "⚠️ Il pulsante 'Genera Ricette' è disabilitato perché il valore dei carboidrati è fuori range (15-130g).")
 
 # Il pulsante è disabilitato se il valore è fuori range
-if st.button("✨ Genera Ricette", use_container_width=True, type="primary", disabled=button_disabled):
-    # Non serve più il doppio controllo perché il pulsante è già disabilitato
+generate_button = st.button(
+    "✨ Genera Ricette", use_container_width=True, type="primary", disabled=button_disabled)
 
-    st.markdown("---")
-    results_container = st.container()
+# Creiamo un container per i risultati dopo il pulsante
+results_container = st.container()
+
+# Logica per processare la generazione delle ricette
+if generate_button:
+    # Se si preme il pulsante, dobbiamo generare nuove ricette
+    st.session_state.clear_recipes = True
+    st.session_state.display_results = True
+
+    # Placeholder per il messaggio di caricamento
     placeholder = results_container.empty()
 
     # Mostra Indicatore Attesa
@@ -272,7 +282,7 @@ if st.button("✨ Genera Ricette", use_container_width=True, type="primary", dis
                                        vegetarian=vegetarian, gluten_free=gluten_free, lactose_free=lactose_free)
 
     print(
-        f"DEBUG APP - Preferenze selezionate: vegan={vegan}, vegetarian={vegetarian}, gluten_free={gluten_free}, lactose_free={lactose_free}")
+        f"DEBUG APP - Preferenze selezionate: target_cho={target_cho} vegan={vegan}, vegetarian={vegetarian}, gluten_free={gluten_free}, lactose_free={lactose_free}")
 
     img_dict = {
         "vegan": get_img_html(VEGAN_IMG_PATH),
@@ -336,7 +346,7 @@ if st.button("✨ Genera Ricette", use_container_width=True, type="primary", dis
 
     # Aggiungi pulsante di download solo se ci sono ricette
     if st.session_state.has_recipes:
-        download_container = st.container()
+        download_container = results_container.container()
         download_container.markdown("---")
         download_container.info(
             "📥 Vuoi salvare queste ricette sul tuo dispositivo?")
@@ -348,20 +358,30 @@ if st.button("✨ Genera Ricette", use_container_width=True, type="primary", dis
             col2.caption(
                 "Le ricette verranno salvate in formato testo per consultazione offline.")
 
+# Mostra le ricette esistenti se sono state generate in precedenza e non si è premuto "Genera Ricette"
+elif st.session_state.has_recipes and st.session_state.output_html is not None:
+    if st.session_state.display_results:
+        # Mostra le ricette precedentemente generate
+        results_container.markdown("---")
+        results_container.info(
+            "📋 Ecco le tue ricette precedentemente generate")
+        results_container.markdown(
+            st.session_state.output_html, unsafe_allow_html=True)
+
+        # Mostra pulsante download
+        download_container = results_container.container()
+        download_container.markdown("---")
+        download_container.info(
+            "📥 Vuoi salvare queste ricette sul tuo dispositivo?")
+        col1, col2 = download_container.columns([1, 3])
+        with col1:
+            add_download_button(st.session_state.output_html, container=col1)
+        with col2:
+            col2.caption(
+                "Le ricette verranno salvate in formato testo per consultazione offline.")
 else:
     # Messaggio iniziale
     st.info("👋 Benvenuto! Imposta le tue preferenze e clicca '✨ Genera Ricette'.")
-
-    if st.session_state.get('has_recipes', False) and st.session_state.get('output_html') is not None:
-        st.markdown("---")
-        st.info("Puoi ancora scaricare le ricette generate precedentemente:")
-        col1, col2 = st.columns([1, 3])
-        with col1:
-            add_download_button(st.session_state.output_html,
-                                container=col1, use_html_method=True)
-        with col2:
-            st.caption(
-                "Le ricette verranno scaricate automaticamente senza ricaricare la pagina.")
 
 # --- Footer ---
 st.markdown("---")

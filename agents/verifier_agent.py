@@ -560,69 +560,173 @@ def scale_ingredients_cascade(
     return updated_recipe
 
 
-# SOSTITUISCI la funzione optimize_recipe_cho esistente con questa:
-def optimize_recipe_cho(recipe: FinalRecipeOption, target_cho: float, ingredient_data: Dict[str, IngredientInfo]) -> Optional[FinalRecipeOption]:
+def optimize_recipe_cho(recipe: FinalRecipeOption, target_cho: float, ingredient_data: Dict[str, IngredientInfo], max_iterations=10) -> Optional[FinalRecipeOption]:
     """
-    Ottimizza una ricetta per raggiungere il target CHO utilizzando una strategia a cascata.
-
-    Processo:
-    1. Se la ricetta è già nel range target (±5g), la mantiene inalterata
-    2. Classifica gli ingredienti per contributo CHO (primario, secondario, minore)
-    3. Prova prima a ottimizzare solo la fonte primaria
-    4. Se necessario, aggiusta anche le fonti secondarie (con limiti più stretti)
-    5. Solo come ultima risorsa, modifica leggermente le fonti minori
+    Ottimizza una ricetta verso il target CHO usando un approccio ibrido:
+    1. Usa l'approccio a cascata per grandi differenze (>25% dal target)
+    2. Usa l'approccio iterativo per affinare il risultato
 
     Args:
         recipe: Ricetta da ottimizzare
         target_cho: Target CHO in grammi
-        ingredient_data: Database ingredienti con informazioni nutrizionali
+        ingredient_data: Database ingredienti
+        max_iterations: Numero massimo di iterazioni per la fase iterativa
 
     Returns:
-        Ricetta ottimizzata o None se non è stato possibile ottimizzarla
+        Ricetta ottimizzata o None se impossibile
     """
-    # 1. Calcola i valori nutrizionali attuali se non già calcolati
-    if recipe.total_cho is None:
-        updated_ingredients = calculate_ingredient_cho_contribution(
-            recipe.ingredients, ingredient_data
-        )
-        recipe.ingredients = updated_ingredients
-        recipe.total_cho = sum(
-            ing.cho_contribution for ing in updated_ingredients if ing.cho_contribution is not None)
+    current_recipe = deepcopy(recipe)
+    initial_recipe = deepcopy(recipe)
 
-    # Se già nel range target (±5g), non fare nulla
-    if abs(recipe.total_cho - target_cho) < 5:
-        return recipe
+    # Se già nel range, ritorna immediatamente
+    if abs(current_recipe.total_cho - target_cho) < 5:
+        return current_recipe
 
-    current_cho = recipe.total_cho
-    cho_difference = target_cho - current_cho
     print(
-        f"Ottimizzazione: '{recipe.name}' - CHO attuale: {current_cho:.1f}g, Target: {target_cho:.1f}g, Diff: {cho_difference:+.1f}g")
+        f"Ottimizzazione ibrida: '{recipe.name}' - CHO attuale: {current_recipe.total_cho:.1f}g, Target: {target_cho:.1f}g")
 
-    # 2. Classifica gli ingredienti per contributo CHO
-    classified_ingredients = classify_ingredients_by_cho_contribution(recipe)
+    # FASE 1: Approccio a cascata per grandi differenze
+    cho_difference = target_cho - current_recipe.total_cho
+    difference_percentage = abs(cho_difference) / max(target_cho, 1) * 100
 
-    # Stampa classificazione per debug
-    print("Classificazione ingredienti:")
-    for category, ingredients in classified_ingredients.items():
+    # Se la differenza è significativa (>25% del target), applica prima approccio a cascata
+    if difference_percentage > 25:
         print(
-            f"{category}: {[f'{ing.name} ({ing.cho_contribution:.1f}g)' for ing in ingredients]}")
+            f"FASE 1: Differenza CHO significativa ({difference_percentage:.1f}% del target). Applicando scaling a cascata...")
 
-    # 3. Verifica se ci sono ingredienti che possono essere ottimizzati
-    if not classified_ingredients['primary'] and not classified_ingredients['secondary'] and not classified_ingredients['minor']:
+        # Classifica gli ingredienti
+        classified = classify_ingredients_by_cho_contribution(current_recipe)
+
+        # Applica scaling a cascata
+        cascade_result = scale_ingredients_cascade(
+            current_recipe,
+            classified,
+            target_cho,
+            ingredient_data
+        )
+
+        if cascade_result and cascade_result.total_cho is not None:
+            current_recipe = cascade_result
+            print(
+                f"Risultato cascata: CHO = {current_recipe.total_cho:.1f}g (differenza: {abs(current_recipe.total_cho - target_cho):.1f}g)")
+
+            # Se siamo abbastanza vicini dopo la cascata, ritorna
+            if abs(current_recipe.total_cho - target_cho) < 5:
+                print(
+                    f"Ottimizzazione a cascata sufficiente! CHO finale = {current_recipe.total_cho:.1f}g")
+
+                # Verifica se il risultato è effettivamente migliore dell'originale
+                if abs(current_recipe.total_cho - target_cho) < abs(initial_recipe.total_cho - target_cho):
+                    return current_recipe
+                else:
+                    print(
+                        f"ATTENZIONE: Risultato cascata non è migliore dell'originale. Ritorno all'iterativo.")
+
+    # FASE 2: Approccio iterativo per affinare
+    print(
+        f"FASE 2: Ottimizzazione iterativa da CHO attuale = {current_recipe.total_cho:.1f}g a target = {target_cho:.1f}g")
+
+    for iteration in range(max_iterations):
         print(
-            f"Ottimizzazione fallita: Nessun ingrediente CHO trovato in '{recipe.name}'")
+            f"Iterazione {iteration+1}: CHO attuale = {current_recipe.total_cho:.1f}g, Target = {target_cho:.1f}g")
+
+        # Calcola la differenza corrente
+        current_diff = target_cho - current_recipe.total_cho
+
+        # Se siamo abbastanza vicini, usciamo dal ciclo
+        if abs(current_diff) < 5:
+            print(f"Target CHO raggiunto dopo {iteration+1} iterazioni!")
+            break
+
+        # Classifica gli ingredienti
+        classified = classify_ingredients_by_cho_contribution(current_recipe)
+
+        # Applica uno scaling adattivo basato sull'entità della differenza
+        if current_diff > 0:  # Dobbiamo aumentare i CHO
+            # Se è necessario un aumento significativo (>40% del valore attuale)
+            if current_diff > current_recipe.total_cho * 0.4:
+                scaling_factor = min(
+                    1.30, 1 + (current_diff / current_recipe.total_cho * 0.8))
+            else:  # Per aumenti più modesti
+                scaling_factor = min(
+                    1.15, 1 + (current_diff / current_recipe.total_cho * 0.5))
+        else:  # Dobbiamo ridurre i CHO
+            # Se è necessaria una riduzione significativa (>40% del valore attuale)
+            if abs(current_diff) > current_recipe.total_cho * 0.4:
+                scaling_factor = max(
+                    0.60, 1 - (abs(current_diff) / current_recipe.total_cho * 0.8))
+            else:  # Per riduzioni più modeste
+                scaling_factor = max(
+                    0.85, 1 - (abs(current_diff) / current_recipe.total_cho * 0.5))
+
+        print(
+            f"  Applicazione fattore di scaling: {scaling_factor:.2f} (Diff: {current_diff:.1f}g, {(current_diff/current_recipe.total_cho)*100:.1f}% del valore attuale)")
+
+        # Applica scaling
+        modified = False
+
+        # Scala gli ingredienti primari
+        if classified['primary']:
+            for ing in classified['primary']:
+                for i, recipe_ing in enumerate(current_recipe.ingredients):
+                    if recipe_ing.name == ing.name:
+                        old_qty = recipe_ing.quantity_g
+                        new_qty = max(5, min(250, old_qty * scaling_factor))
+                        current_recipe.ingredients[i].quantity_g = round(
+                            new_qty, 1)
+                        print(
+                            f"  Scaling primario: '{ing.name}' da {old_qty:.1f}g a {new_qty:.1f}g")
+                        modified = True
+
+        # Se non ci sono ingredienti primari o lo scaling è minimo, prova con gli ingredienti secondari
+        if not modified or abs(scaling_factor - 1) < 0.05:
+            if classified['secondary']:
+                # Scaling più aggressivo per i secondari
+                secondary_scaling = scaling_factor * 1.1
+                for ing in classified['secondary']:
+                    for i, recipe_ing in enumerate(current_recipe.ingredients):
+                        if recipe_ing.name == ing.name:
+                            old_qty = recipe_ing.quantity_g
+                            new_qty = max(
+                                5, min(250, old_qty * secondary_scaling))
+                            current_recipe.ingredients[i].quantity_g = round(
+                                new_qty, 1)
+                            print(
+                                f"  Scaling secondario: '{ing.name}' da {old_qty:.1f}g a {new_qty:.1f}g")
+                            modified = True
+
+        # Ricalcola i valori nutrizionali
+        current_recipe.ingredients = calculate_ingredient_cho_contribution(
+            current_recipe.ingredients, ingredient_data)
+
+        current_recipe.total_cho = sum(
+            ing.cho_contribution for ing in current_recipe.ingredients if ing.cho_contribution is not None)
+
+        # Aggiorna altri valori nutrizionali
+        current_recipe.total_calories = sum(
+            ing.calories_contribution for ing in current_recipe.ingredients if ing.calories_contribution is not None)
+        current_recipe.total_protein_g = sum(
+            ing.protein_contribution_g for ing in current_recipe.ingredients if ing.protein_contribution_g is not None)
+        current_recipe.total_fat_g = sum(
+            ing.fat_contribution_g for ing in current_recipe.ingredients if ing.fat_contribution_g is not None)
+        current_recipe.total_fiber_g = sum(
+            ing.fiber_contribution_g for ing in current_recipe.ingredients if ing.fiber_contribution_g is not None)
+
+    # Verifica che il valore finale sia effettivamente migliore di quello iniziale
+    initial_diff = abs(initial_recipe.total_cho - target_cho)
+    final_diff = abs(current_recipe.total_cho - target_cho)
+
+    if final_diff < initial_diff:
+        # Se significativamente modificato, aggiorna il nome
+        if abs(initial_recipe.total_cho - current_recipe.total_cho) > 10:
+            current_recipe.name = f"{recipe.name} (Ottimizzata)"
+        print(
+            f"Ottimizzazione ibrida riuscita: CHO finale = {current_recipe.total_cho:.1f}g (diff: {final_diff:.1f}g)")
+        return current_recipe
+    else:
+        print(
+            f"Ottimizzazione ibrida non migliorativa: {initial_recipe.total_cho:.1f}g → {current_recipe.total_cho:.1f}g")
         return None
-
-    # 4. Procedi con l'ottimizzazione a cascata
-    optimized_recipe = scale_ingredients_cascade(
-        recipe, classified_ingredients, target_cho, ingredient_data)
-
-    # 5. Verifica se l'ottimizzazione ha migliorato la situazione
-    if optimized_recipe is None or (abs(optimized_recipe.total_cho - target_cho) >= abs(current_cho - target_cho)):
-        print(f"Ottimizzazione fallita: Non è stato possibile avvicinare la ricetta al target CHO")
-        return None
-
-    return optimized_recipe
 
 
 def match_recipe_ingredients(recipe: FinalRecipeOption,

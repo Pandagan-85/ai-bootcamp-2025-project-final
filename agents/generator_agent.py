@@ -165,6 +165,10 @@ def generate_recipes_agent(state: GraphState) -> GraphState:
         # Recupera preferenze
         preferences = state['user_preferences']
 
+        target_cho = preferences.target_cho  # Ottieni il valore
+        # TRACCIA!
+        print(f"Valore target_cho ricevuto dallo stato: {target_cho}")
+
         # Setup LLM, Prompt
         target_recipes = 10  # Numero ricette da tentare
         max_workers = 8
@@ -184,24 +188,24 @@ def generate_recipes_agent(state: GraphState) -> GraphState:
 
         # PROMPT SEMPLIFICATO - CORRETTO
         system_prompt = """
-        **RUOLO: ** Sei uno chef creativo esperto nella creazione di ricette originali e gustose.
+        **RUOLO**:  Sei uno chef creativo esperto nella creazione di ricette originali e gustose.
 
-        **COMPITO:** Genera una ricetta PER UNA PERSONA che sia appetitosa, realistica e che contenga APPROSSIMATIVAMENTE {target_cho}g di carboidrati totali.
+        **COMPITO**: Genera una ricetta PER UNA PERSONA che abbia ESATTAMENTE {target_cho}g di carboidrati totali (questo è ASSOLUTAMENTE CRITICO).
 
         ---
 
         ## LINEE GUIDA
 
-        * **Target Carboidrati (CHO):** Cerca di proporre una ricetta che contenga CIRCA {target_cho}g di carboidrati totali.
-        * **Preferenze Dietetiche:** Rispetta le seguenti preferenze: {dietary_preferences}
-        * **Ingredienti:** Usa ingredienti comuni e facilmente reperibili.
-        * **Quantità:** Specifica le quantità in grammi per ogni ingrediente.
+        - **Target Carboidrati**(CHO): OGNI ricetta DEVE contenere {target_cho}g di carboidrati totali. Questo è il requisito PIÙ IMPORTANTE. Se non rispetti questo requisito, la ricetta verrà scartata.
+        - **Preferenze Dietetiche**: Rispetta le seguenti preferenze: {dietary_preferences}
+        - **Ingredienti**: Usa ingredienti comuni e facilmente reperibili.
+        - **Quantità**: Specifica le quantità in grammi per ogni ingrediente.
         
         
         ## NON PREOCCUPARTI DI:
-        * Calcolare con precisione esatta i carboidrati
-        * Bilanciare perfettamente i macronutrienti
-        * Rispettare specifici limiti di ingredienti
+        - Calcolare con precisione esatta i carboidrati
+        - Bilanciare perfettamente i macronutrienti
+        - Rispettare specifici limiti di ingredienti
         
         ## FORMATO OUTPUT
 
@@ -228,9 +232,11 @@ def generate_recipes_agent(state: GraphState) -> GraphState:
         """
 
         human_prompt = """
-        Genera la ricetta #{recipe_index} che:
-        - Contenga CIRCA {target_cho}g di carboidrati totali
-        - Sia adatta a: {dietary_preferences}
+        Genera la ricetta {recipe_index} che DEVE contenere ESATTAMENTE {target_cho}g di carboidrati totali.
+        Ricorda:
+        - Il target CHO di {target_cho}g è ASSOLUTAMENTE CRITICO
+        - La ricetta deve essere adatta a: {dietary_preferences}
+        - Seleziona attentamente gli ingredienti e le loro quantità per raggiungere questo target
 
         Sii creativo e proponi un piatto originale, gustoso e realizzabile.
         """
