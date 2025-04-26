@@ -1,7 +1,7 @@
 acciughe
 aceto balsamico
 aceto di mele
-aceto di vino
+aceto di vino bianco
 acqua frizzante
 acqua minerale
 acqua tonica
@@ -89,6 +89,7 @@ cicoria belga
 cilantro
 ciliegia
 ciliegie
+ciliegie fresche
 cioccolati
 cioccolato
 cioccolato al latte
@@ -265,6 +266,8 @@ merluzzo
 miele
 miglio
 mirtilli
+mirtilli freschi
+mirtilli surgelati
 more
 mori
 mortadella
@@ -303,6 +306,7 @@ pane azzimo
 pane integrale
 pangrattati
 pangrattato
+pangrattato senza glutine
 panna acida
 panna da cucina
 panna montata
@@ -345,11 +349,15 @@ penni
 pepe
 peperoncini
 peperoncino
+peperoncino fresco
+peperoncino fresco tritato
 peperoncino in polvere dolce
 peperoncino piccante
 peperone
+peperone a strisce
 peperone dolce
 peperoni
+peperoni misti
 pera
 pere
 pesca
@@ -499,8 +507,8 @@ uva
 uva bianca
 uve
 uvetta
-vini
-vino
+vino bianco
+vino rosso
 vitelli
 vitello
 vongole

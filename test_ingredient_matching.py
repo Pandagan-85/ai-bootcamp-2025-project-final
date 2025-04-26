@@ -169,7 +169,6 @@ ingredienti_test = [
     "Zucchine",
     "Pomodori ciliegini",
     "Olio di oliva",
-    "pane grattugiato",
     "Ceci in scatola (sciacquati e sgocciolati)"
 ]
 

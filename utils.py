@@ -22,14 +22,29 @@ COLOR_WORDS = {'rosso', 'rossa', 'rossi', 'rosse', 'giallo', 'gialla', 'gialli',
 
 
 def normalize_name(name: str) -> str:
-    """Normalizza il nome per il matching (minuscolo, rimuove colori eccesso spazi)."""
+    """Normalizza il nome per il matching (minuscolo, rimuove eccesso spazi).
+       Non rimuove i colori se il nome contiene 'vino'.
+    """
     if not isinstance(name, str):
         return ""
-    name = name.lower().strip()
-    name = re.sub(r'\s+', ' ', name)
-    tokens = name.split()
-    filtered_tokens = [token for token in tokens if token not in COLOR_WORDS]
-    return " ".join(filtered_tokens)
+
+    # Normalizzazione base: minuscolo, strip, spazi multipli
+    normalized_name = name.lower().strip()
+    normalized_name = re.sub(r'\s+', ' ', normalized_name)
+
+    # Controlla se è vino PRIMA di rimuovere i colori
+    is_wine = 'vino' in normalized_name.split()
+
+    # Rimuovi i colori solo se NON è vino
+    if not is_wine:
+        tokens = normalized_name.split()
+        filtered_tokens = [
+            token for token in tokens if token not in COLOR_WORDS]
+        normalized_name = " ".join(filtered_tokens)
+        # Rimuovi eventuali spazi doppi rimasti dopo la rimozione
+        normalized_name = re.sub(r'\s+', ' ', normalized_name).strip()
+
+    return normalized_name
 
 
 def find_best_match_faiss(

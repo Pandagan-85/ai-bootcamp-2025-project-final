@@ -321,6 +321,7 @@ Marzapane,48.0,450.0,10.0,26.0,5.0,True,True,True,True,20.0,Dolci
 Halva,54.0,516.0,12.0,28.0,6.0,True,True,True,True,30.0,Dolci
 Cioccolato fondente,30.0,604.0,12.0,46.0,11.0,True,True,True,True,25.0,Dolci
 Pangrattato,72.0,395.0,13.0,5.0,4.0,True,True,False,True,15.0,Carboidrati
+Pangrattato senza glutine,75.0,360.0,8.0,3.0,3.0,True,True,True,True,15.0,Carboidrati
 Crostoni,68.0,407.0,14.0,7.0,5.0,True,True,False,True,15.0,Carboidrati
 Tortilla di mais,44.0,218.0,5.0,2.7,4.5,True,True,True,True,30.0,Carboidrati
 Tortilla di frumento,46.0,300.0,8.0,6.0,3.0,True,True,False,True,40.0,Carboidrati

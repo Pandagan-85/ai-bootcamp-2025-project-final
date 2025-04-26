@@ -32,10 +32,11 @@ ALWAYS_PLURAL = {
 # Chiave: nome CSV norm. Valore: varianti norm.
 # Usato da create_faiss_index.py per arricchire l'indice
 SYNONYMS_FOR_INDEX = {
-    'couscous': ['cuscus'],
-    'latte' : ['Latte intero'],
-    'peperoni': ['peperone', 'peperone dolce', 'peperone rosso', 'peperone giallo', 'peperoni rossi', 'peperoni gialli'],
-    'ceci cotti': ['ceci in scatola', 'ceci in lattina', 'ceci secchi', 'ceci lessati', 'ceci precotti', 'ceci in scatola (sciacquati e sgocciolati)', 'ceci sciacquati', 'ceci scolati'],
+    'couscous': ['cuscus', 'CusCus'],
+    'ciliegia': ['ciliegie fresche', 'ciliegie'],
+    'latte': ['latte intero', 'latte scremato', 'latte fresco'],
+    'peperoni': ['peperone', 'peperone dolce', 'peperone rosso', 'peperone giallo', 'peperoni rossi', 'peperoni gialli', 'peperone rosso a strisce', 'peperoni misti'],
+    'ceci cotti': ['ceci in scatola', 'ceci in lattina', 'ceci secchi', 'ceci lessati', 'ceci precotti', 'ceci in scatola (sciacquati e sgocciolati)', 'ceci sciacquati', 'ceci scolati', 'ceci in scatola (sciacquati e scolati)'],
     'gamberi': ['gambero', 'gamberetto', 'gamberetti', 'gamberetti sgusciati'],
     'basilico': ['basilico fresco', 'foglie di basilico fresco'],
     'menta': ['menta fresca', 'foglie di menta'],
@@ -44,7 +45,7 @@ SYNONYMS_FOR_INDEX = {
     'spezie miste': ['mix di spezie', 'spezie assortite', 'spezie miste (paprika, cumino, pepe nero)',
                      'mix di erbe aromatiche', 'erbe aromatiche miste', 'spezie per curry'],
     'paprika': ['paprica', 'peperoncino in polvere dolce'],
-    'peperoncino':['peperoncino piccante', 'peperoncino rosso', 'peperoncino verde'],
+    'peperoncino': ['peperoncino piccante', 'peperoncino rosso', 'peperoncino verde', 'peperoncino fresco', 'peperoncino fresco tritato'],
     'melanzane': ['melanzana'],
     'mandorle': ['mandorle a scaglie', 'mandorla', 'mandorla a scaglie', 'mandorle a lamelle', 'mandorle tritate', 'mandorle a fette', 'mandorle a fettine', 'mandorle tostate', 'mandorle pelate', 'granella di mandorle', 'mandorle affettate'],
     'pancetta': ['pancetta a cubetti'],
@@ -66,8 +67,8 @@ SYNONYMS_FOR_INDEX = {
     'riso venere': ['riso'],
     'riso arborio': ['riso'],
     'pomodoro': ['pomodori', 'pomodoro fresco', 'pomodori freschi', 'pomodoro a cubetti'],
-    'funghi': ['funghi champignon', 'funghi porcini', 'champignon'],
-    'mirtilli': ['mirtilli rossi'],
+    'funghi': ['funghi champignon', 'funghi porcini', 'champignon', 'funghi porcini freschi', 'funghi misti', 'shiitake'],
+    'mirtilli': ['mirtilli rossi', 'mirtilli freschi', 'mirtilli surgelati'],
     'uvetta': ['uvetta sultanina', 'uvetta comune'],
     'zucchine': ['zucchina'],
     'mela': ['mele'],
@@ -95,7 +96,7 @@ SYNONYMS_FOR_INDEX = {
     'vino rosso': ['vino rosso secco', 'vino rosso corposo', 'vino rosso da cucina'],
     'sale': ['sale fino', 'sale grosso', 'sale marino', 'sale himalayano', 'sale e pepe'],
     'uova': ['uovo', 'uovo sbattuto', 'uovo intero', 'albume', 'tuorlo', 'uova intere'],
-    'piselli':['piselli freschi'],
+    'piselli': ['piselli freschi'],
 
 }
 
@@ -106,14 +107,17 @@ FALLBACK_MAPPING = {
     "pomodori": "Pomodoro",  # Nome esatto nel CSV
     "pomodoro fresco": "Pomodoro",
     "pane grattugiato": "Pangrattato",
+    "pan grattato": "Pangrattato",
+    "panko": "Pangrattato",
+    "pangrattato gluten-free": "Pangrattato senza glutine",
     "pomodori freschi": "Pomodoro",
     "pomodoro a cubetti": "Pomodoro",
     "pomodori a cubetti": "Pomodoro",
     "peperoni": "Peperoni",
     "peperone": "Peperoni",
     "peperone rosso": "Peperoni",
-    "peperoncino rosso":"Peperoncino",
-    "peperoncino verde":"Peperoncino",
+    "peperoncino rosso": "Peperoncino",
+    "peperoncino verde": "Peperoncino",
     "pecorino grattugiato": "Pecorino",
     "pecorino romano grattugiato": "Pecorino",
     "pancetta a cubetti": "Pancetta",
@@ -135,7 +139,10 @@ FALLBACK_MAPPING = {
     "mandorle pelate": "Mandorle",
     "granella di mandorle": "Mandorle",
     "menta fresca": "Menta",
-    "latte intero": "Latte",
+    "cuscus": "Couscous",
+    "ciliegie fresche": "Ciliegia",
+
+
     "basilico": "Basilico",
     "basilico fresco": "Basilico",
     "foglie di basilico fresco": "Basilico",
@@ -149,10 +156,13 @@ FALLBACK_MAPPING = {
     "cipolla bianca": "Cipolla",
     "cipolla dorata": "Cipolla",
     "piselli freschi": "Piselli",
-
+    "latte scremato": "Latte",
+    "latte fresco": "Latte",
+    "latte intero": "Latte",
     "zucchina": "Zucchine",
     "zucchini": "Zucchine",
     "pepe": "Pepe nero",
+    "acqua": "Acqua minerale",
     "pepe nero macinato": "Pepe nero",
     "curcuma": "Curcuma",
     "curcuma in polvere": "Curcuma",
@@ -228,7 +238,13 @@ FALLBACK_MAPPING = {
     "ceci scolati": "Ceci cotti",
     "hummus di ceci": "Hummus",
     "humus di ceci": "Hummus",
-    "humus": "Hummus"
+    "humus": "Hummus",
+    "funghi champignon": "Funghi",
+    "funghi porcini": "Funghi",
+    "champignon": "Funghi",
+    "funghi porcini freschi": "Funghi",
+    "funghi misti": "Funghi",
+    "funghi shiitake": "Funghi"
 }
 
 INCOMPATIBLE_MATCHES = [
@@ -273,32 +289,6 @@ def is_incompatible_match(ingredient1, ingredient2):
 
     return False
 
-# Funzione helper per generare automaticamente FALLBACK_MAPPING da SYNONYMS_FOR_INDEX
-# da testare appena funziona veramente tutto
-
-
-def generate_fallback_mapping(synonyms_dict, csv_names_mapping):
-    """
-    Genera automaticamente il dizionario di fallback partendo dal dizionario di sinonimi.
-
-    Args:
-        synonyms_dict: Dizionario nel formato {nome_normalizzato: [lista_varianti]}
-        csv_names_mapping: Dizionario nel formato {nome_normalizzato: nome_originale_nel_csv}
-
-    Returns:
-        Dizionario nel formato {variante_normalizzata: nome_originale_nel_csv}
-    """
-    fallback = {}
-    for main_name, variants in synonyms_dict.items():
-        original_csv_name = csv_names_mapping.get(main_name)
-        if not original_csv_name:
-            continue
-
-        # Aggiungi mapping per le varianti
-        for variant in variants:
-            fallback[variant] = original_csv_name
-
-    return fallback
 
 # Funzione per la normalizzazione (duplicata da utils.py per convenienza)
 
