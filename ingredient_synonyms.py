@@ -34,9 +34,7 @@ ALWAYS_PLURAL = {
 SYNONYMS_FOR_INDEX = {
     'couscous': ['cuscus'],
     'peperoni': ['peperone', 'peperone dolce', 'peperone rosso', 'peperone giallo', 'peperoni rossi', 'peperoni gialli'],
-    'ceci cotti': ['ceci in scatola', 'ceci in lattina', 'ceci secchi', 'ceci lessati',
-                   'ceci precotti', 'ceci in scatola (sciacquati e scolati)', 'ceci sciacquati',
-                   'ceci scolati'],
+    'ceci cotti': ['ceci in scatola', 'ceci in lattina', 'ceci secchi', 'ceci lessati', 'ceci precotti', 'ceci in scatola (sciacquati e sgocciolati)', 'ceci sciacquati', 'ceci scolati'],
     'gamberi': ['gambero', 'gamberetto', 'gamberetti', 'gamberetti sgusciati'],
     'basilico': ['basilico fresco', 'foglie di basilico fresco'],
     'menta': ['menta fresca', 'foglie di menta'],
@@ -46,9 +44,7 @@ SYNONYMS_FOR_INDEX = {
                      'mix di erbe aromatiche', 'erbe aromatiche miste', 'spezie per curry'],
     'paprika': ['paprica', 'peperoncino in polvere dolce'],
     'melanzane': ['melanzana'],
-    'mandorle': ['mandorle a scaglie', 'mandorla', 'mandorla a scaglie', 'mandorle a lamelle',
-                 'mandorle tritate', 'mandorle a fette', 'mandorle a fettine', 'mandorle tostate',
-                 'mandorle pelate', 'granella di mandorle', 'mandorle affettate'],
+    'mandorle': ['mandorle a scaglie', 'mandorla', 'mandorla a scaglie', 'mandorle a lamelle', 'mandorle tritate', 'mandorle a fette', 'mandorle a fettine', 'mandorle tostate', 'mandorle pelate', 'granella di mandorle', 'mandorle affettate'],
     'pancetta': ['pancetta a cubetti'],
     'pecorino': ['pecorino grattugiato', 'pecorino romano grattugiato'],
     'cetriolo': ['cetrioli', 'cetriolo a cubetti', 'cetrioli a cubetti'],
@@ -106,6 +102,7 @@ SYNONYMS_FOR_INDEX = {
 FALLBACK_MAPPING = {
     "pomodori": "Pomodoro",  # Nome esatto nel CSV
     "pomodoro fresco": "Pomodoro",
+    "pane grattugiato": "Pangrattato",
     "pomodori freschi": "Pomodoro",
     "pomodoro a cubetti": "Pomodoro",
     "pomodori a cubetti": "Pomodoro",
@@ -218,6 +215,7 @@ FALLBACK_MAPPING = {
     "ceci in lattina": "Ceci cotti",
     "ceci lessati": "Ceci cotti",
     "ceci precotti": "Ceci cotti",
+    "ceci in scatola (sciacquati e sgocciolati)": "Ceci cotti",
     "ceci in scatola (sciacquati e scolati)": "Ceci cotti",
     "ceci sciacquati": "Ceci cotti",
     "ceci scolati": "Ceci cotti",
