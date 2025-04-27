@@ -76,17 +76,14 @@ if not os.path.exists(NAME_MAPPING_FILE):
 st.set_page_config(
     page_title="NutriCHOice - Generatore Ricette CHO", layout="centered")
 # --- Header con logo e titoli ---
-LOGO_PATH = os.path.join(STATIC_DIR, "logo.png")  # salva qui il logo generato
-
 col_logo, col_title = st.columns([1, 4])
 
 with col_logo:
-    st.image('static/logo.png',  width=200)
+    st.image('static/logo.webp',  width=200)
 
 with col_title:
-
+    st.image('static/NutriCHOice.webp', width=300)
     st.markdown("""
-    # **NutriCHOice**
     #### _La scelta intelligente per un'alimentazione su misura_
     """)
 
