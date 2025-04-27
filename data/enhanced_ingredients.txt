@@ -2,8 +2,8 @@ acciughe
 aceto balsamico
 aceto di mele
 aceto di vino bianco
+acqua
 acqua frizzante
-acqua minerale
 acqua tonica
 agar agar
 agave sciroppo
@@ -104,6 +104,7 @@ coniglio
 coriandoli
 coriandolo
 coriandolo fresco
+coriandolo fresco tritato
 corn flakes
 coscia di pollo
 couscous
@@ -300,6 +301,7 @@ origano secco
 orzo
 pancetta
 pancetta a cubetti
+pancetta vegetale
 pancette
 pane
 pane azzimo
@@ -357,6 +359,8 @@ peperone
 peperone a strisce
 peperone dolce
 peperoni
+peperoni a dadini
+peperoni arrostiti a strisce
 peperoni misti
 pera
 pere

@@ -1,6 +1,7 @@
 name,cho_per_100g,calories_per_100g,protein_per_100g,fat_per_100g,fiber_per_100g,is_vegan,is_vegetarian,is_gluten_free,is_lactose_free,typical_serving_size_g,food_group
 Pasta,75.0,350.0,12.0,1.5,3.0,False,True,False,True,80.0,Carboidrati
 Linguine,75.0,350.0,12.0,1.5,3.0,False,True,False,True,80.0,Carboidrati
+Pancetta vegetale,10.0,250.0,20.0,15.0,5.0,True,True,False,True,30.0,Proteine
 Salvia,64.0,315.0,10.6,12.8,40.3,True,True,True,True,1.0,Erbe e spezie
 Riso bianco,80.0,365.0,7.0,0.6,0.4,True,True,True,True,70.0,Carboidrati
 Riso integrale,70.0,350.0,7.5,2.4,3.6,True,True,True,True,70.0,Carboidrati
@@ -99,7 +100,7 @@ Vino rosso,2.7,85.0,0.1,0.0,0.0,True,True,True,True,150.0,Bevande
 Rosmarino,21.0,331.0,4.9,15.2,43.0,True,True,True,True,1.0,Spezie
 Birra,3.6,43.0,0.5,0.0,0.0,True,True,False,True,330.0,Bevande
 Smoothie di frutta,14.0,60.0,1.0,0.5,2.0,True,True,True,True,300.0,Bevande
-Acqua minerale,0.0,0.0,0.0,0.0,0.0,True,True,True,True,500.0,Bevande
+Acqua,0.0,0.0,0.0,0.0,0.0,True,True,True,True,500.0,Bevande
 Olio d'oliva,0.0,900.0,0.0,100.0,0.0,True,True,True,True,15.0,Grassi
 Olio di semi,0.0,900.0,0.0,100.0,0.0,True,True,True,True,15.0,Grassi
 Noci,5.1,654.0,15.2,65.2,6.7,True,True,True,True,30.0,Grassi
